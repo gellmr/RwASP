@@ -5,7 +5,7 @@ const AdminLayout = ({ children }) => {
   return (
     <>
       <NavBar><a href="index">Back to Shop</a></NavBar>
-      <div id="adminLayout">
+      <div id="adminLayout" className="container-fluid" style={{ border: '3px solid orange' }} >
         {children}
       </div>
     </>
