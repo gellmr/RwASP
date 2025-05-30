@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from "../main/NavBar";
+import NavBar from "@/main/NavBar";
 
 const AdminLayout = ({ children }) => {
   return (
