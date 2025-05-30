@@ -1,23 +1,18 @@
 import ShopLayout from "../layouts/ShopLayout";
+import PaginationLinks from "@/Shop/PaginationLinks";
+import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 
 function ShopApp()
 {
-  const contents =
-    <div>
-      <h2>Shop Contents</h2>
-      <h2>Shop Contents</h2>
-      <h2>Shop Contents</h2>
-    </div>;
-
   return (
     <ShopLayout>
-
-      <div id="shopApp">
-        <h1>ShopApp</h1>
-        <p>This is the shop</p>
-        {contents}
-      </div>
-
+      <PaginationLinks />
+      <InStockProductCanAdd>Product A</InStockProductCanAdd>
+      <InStockProductCanAdd>Product B</InStockProductCanAdd>
+      <InStockProductCanAdd>Product C</InStockProductCanAdd>
+      <InStockProductCanAdd>Product D</InStockProductCanAdd>
+      <InStockProductCanAdd>Product E</InStockProductCanAdd>
+      <PaginationLinks />
     </ShopLayout>
   );
 }

@@ -1,8 +1,6 @@
 import React from 'react';
 import MgNavBar from "@/main/MgNavBar";
 import ProductSearchBox from "@/Shop/ProductSearchBox";
-import PaginationLinks from "@/Shop/PaginationLinks";
-import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 import MgCategoryMenu from "@/Shop/MgCategoryMenu";
 import "bootstrap/dist/css/bootstrap.css";
 import Container from 'react-bootstrap/Container';
@@ -24,22 +22,15 @@ const ShopLayout = ({ children }) => {
       <Container id="shopLayout" style={{ border: '3px solid lime' }}>
         <Row>
           <Col xs={6}>
-            All Products
             <MgCategoryMenu />
           </Col>
           <Col xs={6}>
             <ProductSearchBox />
-            <PaginationLinks />
-            <InStockProductCanAdd>Product A</InStockProductCanAdd>
-            <InStockProductCanAdd>Product B</InStockProductCanAdd>
-            <InStockProductCanAdd>Product C</InStockProductCanAdd>
-            <InStockProductCanAdd>Product D</InStockProductCanAdd>
-            <InStockProductCanAdd>Product E</InStockProductCanAdd>
-            <PaginationLinks />
+            {children}
           </Col>
         </Row>
         <hr />
-        {children}
+        Built with React and ASP, using .NET 8.0 and Vite
       </Container>
     </>
   );

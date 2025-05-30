@@ -6,10 +6,10 @@ function PaginationLinks() {
   return (
     <ButtonToolbar aria-label="Toolbar with button groups">
       <ButtonGroup className="me-2" aria-label="First group">
-        <Button>1</Button>
-        <Button>2</Button>
-        <Button>3</Button>
-        <Button>4</Button>
+        <Button variant="primary">1</Button>
+        <Button variant="default">2</Button>
+        <Button variant="default">3</Button>
+        <Button variant="default">4</Button>
       </ButtonGroup>
     </ButtonToolbar>
   );

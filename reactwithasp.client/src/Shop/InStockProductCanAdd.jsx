@@ -1,13 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import "@/App.css";
 
 function InStockProductCanAdd({ children }) {
   return (
     <Row style={{ border: '1px solid grey' }}>
-      <Col xs={12}>
+      <Col xs={12} className="inStockProductCanAdd">
         {children}
-        <Button>Add to Cart</Button>
+        <Button variant="success">Add to Cart</Button>
       </Col>
     </Row>
   );

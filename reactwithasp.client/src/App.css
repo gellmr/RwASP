@@ -17,3 +17,11 @@ th, td {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
+.inStockProductCanAdd{
+  /*border:3px dashed red;*/
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  padding:10px;
+}

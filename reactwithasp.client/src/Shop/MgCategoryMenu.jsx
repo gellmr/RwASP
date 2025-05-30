@@ -1,13 +1,17 @@
-import React from 'react';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function MgCategoryMenu() {
   return (
     <>
-      <ul>
-        <li>Chess</li>
-        <li>Soccer</li>
-        <li>Water Sports</li>
-      </ul>
+      <ButtonGroup vertical>
+        <Button variant="primary">All Products</Button>
+        <Button variant="default">Button</Button>
+        <Button variant="default">Button</Button>
+        <Button variant="default">Button</Button>
+      </ButtonGroup>
     </>
   );
 }
