@@ -1,6 +1,6 @@
 import AdminLayout from "../layouts/AdminLayout";
 
-function App() {
+function AdminApp() {
   const contents =
     <div>
       <h2>Admin Page</h2>
@@ -11,7 +11,7 @@ function App() {
   return (
     <AdminLayout>
       <div id="adminPage">
-        <h1>Admin Page</h1>
+        <h1>AdminApp</h1>
         <p>This is the Admin Page</p>
         {contents}
       </div>
@@ -19,4 +19,4 @@ function App() {
   );
 }
 
-export default App;
+export default AdminApp;

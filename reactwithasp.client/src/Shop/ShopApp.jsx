@@ -1,6 +1,6 @@
 import ShopLayout from "../layouts/ShopLayout";
 
-function App()
+function ShopApp()
 {
   const contents =
     <div>
@@ -11,8 +11,8 @@ function App()
 
   return (
     <ShopLayout>
-      <div id="Shop">
-        <h1>Shop</h1>
+      <div id="shopApp">
+        <h1>ShopApp</h1>
         <p>This is the shop</p>
         {contents}
       </div>
@@ -20,4 +20,4 @@ function App()
   );
 }
 
-export default App;
+export default ShopApp;

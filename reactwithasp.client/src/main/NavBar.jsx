@@ -1,10 +1,10 @@
 import React from 'react';
 
-const NavBar = () => {
+const NavBar = ({ children }) => {
   return (
     <>
       <div id="navBar">
-        <a href="admin" >Admin Page</a>
+        {children}
       </div>
     </>
   );

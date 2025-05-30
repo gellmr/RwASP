@@ -1,10 +1,10 @@
 import React from 'react';
-import NavBar from "../Shop/NavBar";
+import NavBar from "../main/NavBar";
 
 const ShopLayout = ({ children }) => {
   return (
     <>
-      <NavBar />
+      <NavBar><a href="indexAdmin">Admin Page</a></NavBar>
       <div id="shopLayout">
         {children}
       </div>
