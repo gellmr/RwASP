@@ -1,12 +1,15 @@
 import React from 'react';
-import NavBar from "@/main/NavBar";
+import MgNavBar from "@/main/MgNavBar";
 import "bootstrap/dist/css/bootstrap.css";
 import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
 
 const AdminLayout = ({ children }) => {
   return (
     <>
-      <NavBar><a href="index">Back to Shop</a></NavBar>
+      <MgNavBar>
+        <Nav.Link href="index">Shop</Nav.Link>
+      </MgNavBar>
       <Container>
         <div id="adminLayout" style={{ border: '3px solid orange' }} >
           {children}
