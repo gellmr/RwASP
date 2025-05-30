@@ -3,6 +3,7 @@ import MgNavBar from "@/main/MgNavBar";
 import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
+import MgCategoryMenu from "@/Shop/MgCategoryMenu";
 import "bootstrap/dist/css/bootstrap.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
@@ -22,7 +23,10 @@ const ShopLayout = ({ children }) => {
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '3px solid lime' }}>
         <Row>
-          <Col xs={6}>All Products</Col>
+          <Col xs={6}>
+            All Products
+            <MgCategoryMenu />
+          </Col>
           <Col xs={6}>
             <ProductSearchBox />
             <PaginationLinks />
