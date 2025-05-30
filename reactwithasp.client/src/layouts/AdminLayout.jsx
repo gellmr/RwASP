@@ -10,7 +10,7 @@ const AdminLayout = ({ children }) => {
       <Container>
         <div id="adminLayout" style={{ border: '3px solid orange' }} >
           {children}
-          </div>
+        </div>
       </Container>
     </>
   );
