@@ -2,6 +2,7 @@ import React from 'react';
 import MgNavBar from "@/main/MgNavBar";
 import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
+import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 import "bootstrap/dist/css/bootstrap.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
@@ -25,7 +26,11 @@ const ShopLayout = ({ children }) => {
           <Col xs={6}>
             <ProductSearchBox />
             <PaginationLinks />
-            Products
+            <InStockProductCanAdd>Product A</InStockProductCanAdd>
+            <InStockProductCanAdd>Product B</InStockProductCanAdd>
+            <InStockProductCanAdd>Product C</InStockProductCanAdd>
+            <InStockProductCanAdd>Product D</InStockProductCanAdd>
+            <InStockProductCanAdd>Product E</InStockProductCanAdd>
             <PaginationLinks />
           </Col>
         </Row>
