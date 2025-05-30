@@ -1,0 +1,5 @@
+# The .vs folder contains machine and user specific files. It should not be committed to source control.
+.vs/*
+
+# Ignore the build folder and contents...
+reactwithasp.client/obj/**

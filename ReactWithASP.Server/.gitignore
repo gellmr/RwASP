@@ -1,0 +1,13 @@
+
+# Ignore the Debug folder, and contents...
+bin/Debug/**
+
+# Ignore the obj folder...
+obj/**
+
+# Dont track .pubxml files they can contain sensitive information
+*.pubxml
+*.pubxml.user
+
+# Ignore project per-user settings in visual studio
+*.csproj.user
