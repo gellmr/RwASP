@@ -1,5 +1,6 @@
 import React from 'react';
 import MgNavBar from "@/main/MgNavBar";
+import ProductSearchBox from "@/Shop/ProductSearchBox";
 import "bootstrap/dist/css/bootstrap.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
@@ -20,7 +21,9 @@ const ShopLayout = ({ children }) => {
       <Container id="shopLayout" style={{ border: '3px solid lime' }}>
         <Row>
           <Col xs={6}>All Products</Col>
-          <Col xs={6}>Category: All</Col>
+          <Col xs={6}>
+            <ProductSearchBox />
+          </Col>
         </Row>
         <hr />
         {children}

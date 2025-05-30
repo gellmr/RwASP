@@ -11,11 +11,13 @@ function ShopApp()
 
   return (
     <ShopLayout>
+
       <div id="shopApp">
         <h1>ShopApp</h1>
         <p>This is the shop</p>
         {contents}
       </div>
+
     </ShopLayout>
   );
 }
