@@ -7,9 +7,9 @@ import Navbar from 'react-bootstrap/Navbar';
 const MgNavBar = ({ children }) => {
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary bg-dark" id="navBar" data-bs-theme="dark">
+      <Navbar expand="sm" className="bg-body-tertiary bg-dark" id="navBar" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">Sports Store</Navbar.Brand>
+          <Navbar.Brand href="#home">SPORTS STORE</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">

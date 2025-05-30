@@ -9,6 +9,7 @@ const AdminLayout = ({ children }) => {
     <>
       <MgNavBar>
         <Nav.Link href="index">Shop</Nav.Link>
+        <Nav.Link href="indexAdmin">Admin</Nav.Link>
       </MgNavBar>
       <Container>
         <div id="adminLayout" style={{ border: '3px solid orange' }} >

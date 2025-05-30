@@ -8,6 +8,7 @@ const ShopLayout = ({ children }) => {
   return (
     <>
       <MgNavBar>
+        <Nav.Link href="index">Shop</Nav.Link>
         <Nav.Link href="indexAdmin">Admin</Nav.Link>
       </MgNavBar>
       <Container>
