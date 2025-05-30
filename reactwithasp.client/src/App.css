@@ -18,10 +18,33 @@ th, td {
     padding-right: 1rem;
 }
 
-.inStockProductCanAdd{
-  /*border:3px dashed red;*/
-  display:flex;
-  flex-direction:row;
-  justify-content:space-between;
-  padding:10px;
+
+
+.inStockProductCanAdd {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
+.inStockProductCanAdd .productDetailsFlex{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+}
+.inStockProductCanAdd .productDetailsFlex .productDetails {
+  display:block;
+  text-align:left;
+  overflow-y:hidden;
+  width:410px;
+  overflow-x:hidden;
+}
+.inStockProductCanAdd .productDetailsFlex .productDetails span{
+  font-size:12px;
+}
+.inStockProductCanAdd .productDetailsFlex button {
+  height:35px;
+  width:100px;
+  font-size:13px;
+  align-self: flex-end;
+}
+

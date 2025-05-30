@@ -7,11 +7,10 @@ function ShopApp()
   return (
     <ShopLayout>
       <PaginationLinks />
-      <InStockProductCanAdd>Product A</InStockProductCanAdd>
-      <InStockProductCanAdd>Product B</InStockProductCanAdd>
-      <InStockProductCanAdd>Product C</InStockProductCanAdd>
-      <InStockProductCanAdd>Product D</InStockProductCanAdd>
-      <InStockProductCanAdd>Product E</InStockProductCanAdd>
+      <InStockProductCanAdd title="Soccer Ball $35.00" slug="FIFA approved size and weight." />
+      <InStockProductCanAdd title="Corner Flags $25.00" slug="Give some flourish to your playing field with these coloured corner flags." />
+      <InStockProductCanAdd title="Referee Whisle $12.00" slug="For serious games, call it with this chrome Referee Whistle." />
+      <InStockProductCanAdd title="Red and Yellow Cards $10.00" slug="Official size and colour, waterproof high visibility retroflective coating." />
       <PaginationLinks />
     </ShopLayout>
   );
