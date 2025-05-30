@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap.css';
 import './main.css'
 // js imports
-//import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 // other imports
 import ShopApp from '../Shop/ShopApp.jsx'
