@@ -7,7 +7,7 @@ import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 function ShopApp()
 {
   const products = useProducts(); // Todo - Rename as cartProducts
-  const [inStockProducts, setInStockProducts] = useState();
+  const [inStockProducts, setInStockProducts] = useState([]);
 
   useEffect(() => {
     fetchProducts();
@@ -16,16 +16,14 @@ function ShopApp()
   async function fetchProducts() {
     const response = await fetch('api/products');
     const data = await response.json();
-
-    debugger;
     setInStockProducts(data);
   }
 
   return (
     <ShopLayout>
       <PaginationLinks />
-      {products.map(product => (
-        <InStockProductCanAdd key={product.id} title={product.title} slug={product.slug} productId={product.id} />
+      {inStockProducts.map(prod => (
+        <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       ))}
       <PaginationLinks />
     </ShopLayout>
