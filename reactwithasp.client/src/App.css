@@ -43,7 +43,7 @@ th, td {
 }
 .inStockProductCanAdd .productDetailsFlex button {
   height:35px;
-  width:100px;
+  min-width:100px;
   font-size:13px;
   align-self: flex-end;
 }
