@@ -1,4 +1,34 @@
-﻿#root {
+﻿
+/* ======================================================== */
+/* =============     SMALLER THAN xs      ================= */
+/* ======================================================== */
+/*
+    I have defined a custom breakpoint to allow xxs for mg-category-menu-r. For this style, the default is xxs.
+    For all other styles the default breakpoint means xs.
+*/
+.mg-category-menu-r button{
+  text-align:left;
+}
+.mg-category-menu-r {
+  border: 3px dashed cyan;
+  width: 100%;
+}
+@media (min-width: 370px) {
+  .mg-category-menu-r {
+    border: 3px dashed magenta;
+    display:flex;
+    width: 100%;
+  }
+}
+
+/* ======================================================== */
+/* =============    DEFAULT BREAKPOINT: xs  =============== */
+/* ======================================================== */
+/* xs */
+/* Extra small devices (portrait phones, less than 576px) */
+/* No media query for `xs` since this is the default in Bootstrap */
+
+#root {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
@@ -48,3 +78,17 @@ th, td {
   align-self: flex-end;
 }
 
+
+
+/* ================================================= */
+/* ========= OTHER BREAKPOINTS BELOW HERE ========== */
+/* ================================================= */
+/* sm */
+/* Small devices (landscape phones, 576px and up) */
+
+@media (min-width: 576px) {
+  .mg-category-menu-r {
+    border: 3px dashed purple;
+    width: 100%;
+  }
+}

@@ -7,7 +7,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 function MgCategoryMenu({ isVertical }) {
   return (
     <>
-      <ButtonGroup vertical={isVertical}>
+      <ButtonGroup vertical={isVertical} className="mg-category-menu-r">
         <Button variant="primary">All Products</Button>
         <Button variant="default">Button</Button>
         <Button variant="default">Button</Button>
