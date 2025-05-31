@@ -26,7 +26,6 @@ export function useCartDispatch() {
 function cartProductsReducer(cartProducts, action) {
   switch (action.type) {
     case 'add': {
-      debugger;
       return [...cartProducts, {
         id: action.id
       }];
