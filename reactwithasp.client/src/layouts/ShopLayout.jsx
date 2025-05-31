@@ -21,13 +21,13 @@ const ShopLayout = ({ children }) => {
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '3px solid lime' }}>
         <Row>
-          <Col className="d-block d-sm-none" style={{ border: '2px dashed red' }}>
+          <Col className="d-block d-sm-none" style={{ border: '2px dashed red', padding:"0px" }}>
             <MgCategoryMenu isVertical={true} />
           </Col>
-          <Col className="d-none d-sm-block d-md-none" style={{ border: '2px dashed orange' }}>
+          <Col className="d-none d-sm-block d-md-none" style={{ border: '2px dashed orange', padding: "0px" }}>
             <MgCategoryMenu />
           </Col>
-          <Col className="d-none d-md-block col-md-3" style={{ border: '2px dashed green' }}>
+          <Col className="d-none d-md-block col-md-3" style={{ border: '2px dashed green', padding: "0px" }}>
             <MgCategoryMenu  isVertical={true}/>
           </Col>
           <Col sm={12} md={9} style={{ border:"3px dashed"}}>
