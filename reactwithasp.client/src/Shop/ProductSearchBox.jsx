@@ -16,7 +16,7 @@ function ProductSearchBox() {
           aria-label="SearchString"
           aria-describedby="basic-addon1"
         />
-        <InputGroup.Text><i class="bi bi-x-lg"></i></InputGroup.Text>
+        <InputGroup.Text><i className="bi bi-x-lg"></i></InputGroup.Text>
       </InputGroup>
     </div>
   );
