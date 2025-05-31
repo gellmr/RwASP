@@ -59,8 +59,8 @@ th, td {
 .inStockProductCanAdd {
   border: 1px solid lightgray;
   border-radius: 5px;
-  margin-top: 4px;
-  margin-bottom: 6px;
+  margin-top: 13px;
+  margin-bottom: 13px;
   padding: 10px;
 }
 .inStockProductCanAdd .productDetailsFlex{
