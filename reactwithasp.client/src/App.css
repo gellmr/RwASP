@@ -89,6 +89,7 @@ th, td {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  margin-top: 6px;
 }
 
 
