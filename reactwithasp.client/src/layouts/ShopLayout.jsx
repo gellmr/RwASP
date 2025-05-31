@@ -30,7 +30,7 @@ const ShopLayout = ({ children }) => {
           <Col className="d-none d-md-block col-md-3" style={{ border: '2px dashed green', padding: "0px" }}>
             <MgCategoryMenu  isVertical={true}/>
           </Col>
-          <Col sm={12} md={9} style={{ border:"3px dashed"}}>
+          <Col sm={12} md={9} style={{ border:"3px dashed", paddingTop:"8px", paddingBottom:"10px"}}>
             <ProductSearchBox />
             {children}
           </Col>
