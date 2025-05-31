@@ -1,11 +1,11 @@
-import { useProductsDispatch } from '@/Shop/ProductsContext';
+import { useCartDispatch } from '@/Shop/CartContext';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "@/App.css";
 
 function InStockProductCanAdd({ title, slug, productId }) {
-  const dispatch = useProductsDispatch();
+  const dispatch = useCartDispatch();
   return (
     <Row className="inStockProductCanAdd">
       <Col xs={12} className="productDetailsFlex">
@@ -18,7 +18,7 @@ function InStockProductCanAdd({ title, slug, productId }) {
             </div>
           </Col>
           <Col xs={12} sm={3} className="flexContAddToCart">
-            <Button variant="success" onClick={ ()=>{dispatch({type:'add',id:productId})} }>Add to Cart</Button>
+            <Button variant="success" onClick={ ()=>{dispatch({type:'add', id:productId})} }>Add to Cart</Button>
           </Col>
         </Row>
 

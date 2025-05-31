@@ -1,14 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { ProductsProvider } from '@/Shop/ProductsContext';
+import { CartProvider } from '@/Shop/CartContext';
 
 import './main.css'
 import ShopApp from '../Shop/ShopApp.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ProductsProvider>
+    <CartProvider>
       <ShopApp />
-    </ProductsProvider>
+    </CartProvider>
   </StrictMode>,
 )

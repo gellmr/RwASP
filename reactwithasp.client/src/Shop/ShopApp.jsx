@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useProducts, useProductsDispatch } from '@/Shop/ProductsContext';
+import { useCartProducts, useCartDispatch } from '@/Shop/CartContext';
 import ShopLayout from "@/layouts/ShopLayout";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 
 function ShopApp()
 {
-  const products = useProducts(); // Todo - Rename as cartProducts
+  const cartProducts = useCartProducts();
   const [inStockProducts, setInStockProducts] = useState([]);
 
   useEffect(() => {
