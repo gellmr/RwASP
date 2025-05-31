@@ -10,12 +10,12 @@
   text-align:left;
 }
 .mg-category-menu-r {
-  border: 3px dashed cyan;
+  /*border: 3px dashed cyan;*/
   width: 100%;
 }
 @media (min-width: 370px) {
   .mg-category-menu-r {
-    border: 3px dashed magenta;
+    /*border: 3px dashed magenta;*/
     display:flex;
     width: 100%;
   }
@@ -29,7 +29,7 @@
 /* No media query for `xs` since this is the default in Bootstrap */
 
 .mg-nav-items{
-  border:3px dashed magenta;
+  /*border:3px dashed magenta;*/
   align-items:flex-start;
   width:100%;
 }
@@ -59,7 +59,8 @@ th, td {
 .inStockProductCanAdd {
   border: 1px solid lightgray;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-top: 4px;
+  margin-bottom: 6px;
   padding: 10px;
 }
 .inStockProductCanAdd .productDetailsFlex{
@@ -67,7 +68,7 @@ th, td {
   padding-right: 0px;
 }
 .inStockProductCanAdd .productDetailsFlex .productDetails {
-  border: 2px dashed cornflowerblue;
+  /*border: 2px dashed cornflowerblue;*/
   display:block;
   text-align:left;
   overflow-y:hidden;
@@ -84,7 +85,7 @@ th, td {
   align-self: flex-end;
 }
 .flexContAddToCart {
-  border: 2px dashed darkseagreen;
+  /*border: 2px dashed darkseagreen;*/
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -100,11 +101,11 @@ th, td {
 
 @media (min-width: 576px) {
   .mg-nav-items {
-    border: 3px dashed purple;
+    /*border: 3px dashed purple;*/
     align-items: center;
   }
   .mg-category-menu-r {
-    border: 3px dashed purple;
+    /*border: 3px dashed purple;*/
     width: 100%;
   }
 }
