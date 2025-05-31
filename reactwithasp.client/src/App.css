@@ -28,11 +28,16 @@
 /* Extra small devices (portrait phones, less than 576px) */
 /* No media query for `xs` since this is the default in Bootstrap */
 
+.mg-nav-items{
+  border:3px dashed magenta;
+  align-items:flex-start;
+}
+
 #root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
 tr:nth-child(even) {
@@ -87,6 +92,10 @@ th, td {
 /* Small devices (landscape phones, 576px and up) */
 
 @media (min-width: 576px) {
+  .mg-nav-items {
+    border: 3px dashed purple;
+    align-items: center;
+  }
   .mg-category-menu-r {
     border: 3px dashed purple;
     width: 100%;

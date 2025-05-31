@@ -5,7 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 function ProductSearchBox() {
   return (
     <div>
-      <h6 style={{color:'grey'}}>Category: All</h6>
+      <h6 style={{color:'grey', textAlign:"left"}}>Category: All</h6>
 
       <InputGroup className="mb-3">
         <InputGroup.Text id="basic-addon1">

@@ -12,7 +12,7 @@ const MgNavBar = ({ children }) => {
           <Navbar.Brand href="#home">SPORTS STORE</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
+            <Nav className="me-auto mg-nav-items">
               {children}
             </Nav>
           </Navbar.Collapse>
