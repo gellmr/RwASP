@@ -43,7 +43,7 @@ export default defineConfig({ // defineConfig helper gives intellisense without 
     },
     server: {
         proxy: {
-            '^/weatherforecast': {
+            '^/api': {
                 target,
                 secure: false
             }
