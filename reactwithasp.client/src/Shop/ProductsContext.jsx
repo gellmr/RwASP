@@ -25,21 +25,10 @@ export function useProductsDispatch() {
 
 function productsReducer(products, action) {
   switch (action.type) {
-    case 'added': {
+    case 'add': {
       return [...products, {
-        id: action.id,
-        text: action.text,
-        done: false
+        id: action.id
       }];
-    }
-    case 'changed': {
-      return products.map(t => {
-        if (t.id === action.product.id) {
-          return action.product;
-        } else {
-          return t;
-        }
-      });
     }
     case 'deleted': {
       return products.filter(t => t.id !== action.id);

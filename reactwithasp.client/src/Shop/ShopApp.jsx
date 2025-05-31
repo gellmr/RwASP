@@ -10,7 +10,7 @@ function ShopApp()
     <ShopLayout>
       <PaginationLinks />
       {products.map(product => (
-        <InStockProductCanAdd key={product.id} title={product.title} slug={product.slug} />
+        <InStockProductCanAdd key={product.id} title={product.title} slug={product.slug} productId={product.id} />
       ))}
       <PaginationLinks />
     </ShopLayout>
