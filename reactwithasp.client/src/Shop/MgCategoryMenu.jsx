@@ -3,10 +3,11 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
-function MgCategoryMenu({ isVertical, propStyle, propClasses }) {
+//function MgCategoryMenu({ isVertical, propStyle, propClasses }) {
+function MgCategoryMenu({ isVertical }) {
   return (
     <>
-      <ButtonGroup vertical={isVertical} style={propStyle} className={propClasses} >
+      <ButtonGroup vertical={isVertical}>
         <Button variant="primary">All Products</Button>
         <Button variant="default">Button</Button>
         <Button variant="default">Button</Button>
