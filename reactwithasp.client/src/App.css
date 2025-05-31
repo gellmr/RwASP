@@ -60,18 +60,17 @@ th, td {
   border: 1px solid lightgray;
   border-radius: 5px;
   margin-bottom: 10px;
+  padding: 10px;
 }
 .inStockProductCanAdd .productDetailsFlex{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 .inStockProductCanAdd .productDetailsFlex .productDetails {
   display:block;
   text-align:left;
   overflow-y:hidden;
-  width:410px;
+  /*width:410px;*/
   overflow-x:hidden;
 }
 .inStockProductCanAdd .productDetailsFlex .productDetails span{
