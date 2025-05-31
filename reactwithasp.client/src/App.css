@@ -31,6 +31,7 @@
 .mg-nav-items{
   border:3px dashed magenta;
   align-items:flex-start;
+  width:100%;
 }
 
 #root {
