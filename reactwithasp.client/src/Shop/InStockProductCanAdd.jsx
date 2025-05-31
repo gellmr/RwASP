@@ -15,7 +15,9 @@ function InStockProductCanAdd({title, slug }) {
               <span>{slug}</span>
             </div>
           </Col>
-          <Col xs={12} sm={3}><Button variant="success">Add to Cart</Button></Col>
+          <Col xs={12} sm={3} className="flexContAddToCart">
+            <Button variant="success">Add to Cart</Button>
+          </Col>
         </Row>
 
       </Col>

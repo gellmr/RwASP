@@ -67,6 +67,7 @@ th, td {
   padding-right: 0px;
 }
 .inStockProductCanAdd .productDetailsFlex .productDetails {
+  border: 2px dashed cornflowerblue;
   display:block;
   text-align:left;
   overflow-y:hidden;
@@ -81,6 +82,12 @@ th, td {
   min-width:100px;
   font-size:13px;
   align-self: flex-end;
+}
+.flexContAddToCart {
+  border: 2px dashed darkseagreen;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 
