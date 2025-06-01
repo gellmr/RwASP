@@ -1,9 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { addToCart } from '@/features/cart/cartSlice.jsx'
 
-//import { useCartDispatch } from '@/Shop/CartContext';
-//import { useInStockProducts } from '@/Shop/InStockContext';
-
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -20,8 +17,6 @@ function InStockProductCanAdd({ title, slug, productId })
   const cartProducts    = useSelector(state => state.cart.value);    // get the value of the state variable in our slice. An array.
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
 
-  //const inStockProducts = useInStockProducts();
-  //const cartDispatch = useCartDispatch();
   return (
     <Row className="inStockProductCanAdd">
       <Col xs={12} className="productDetailsFlex">
@@ -37,8 +32,6 @@ function InStockProductCanAdd({ title, slug, productId })
             <Button variant="success" onClick={() => {
               const product = inStockProducts.find(p => p.id === productId); // Get the in stock product
               dispatch(addToCart({ id:productId, product:product} ));        // Add the item to Cart
-              // cartDispatch({ type: 'add', id: productId, product: product }); // Add the item to Cart
-              // cartDispatch({ type: 'add', id: productId }); // Add the item to Cart
             }}>Add to Cart</Button>
           </Col>
         </Row>
