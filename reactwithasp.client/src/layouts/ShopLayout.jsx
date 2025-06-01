@@ -20,7 +20,6 @@ const ShopLayout = ({ children }) => {
         <Nav.Link href="index">Shop</Nav.Link>
         <Nav.Link href="indexAdmin">Admin</Nav.Link>
         <Nav.Link href="cart">
-          <Button variant="success">Cart</Button>
           <Button variant="success">
             Cart: {
               cartProducts && cartProducts.length
