@@ -13,8 +13,11 @@ import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 function ShopApp()
 {
   // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
+  //    name of local state const
+  //    |                             Redux internal state (eg the store)
+  //    |                             |              Name of our slice
+  //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
-  // const cartProducts = useSelector(state => state.cart.value);    // get the value of the state variable in our slice. An array.  
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
 
   // old way: context and dispatcher for inStock

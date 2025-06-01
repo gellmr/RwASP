@@ -1,13 +1,27 @@
-import { useCartDispatch } from '@/Shop/CartContext';
-import { useInStockProducts } from '@/Shop/InStockContext';
+import { useSelector, useDispatch } from 'react-redux'
+import { addToCart } from '@/features/cart/cartSlice.jsx'
+
+//import { useCartDispatch } from '@/Shop/CartContext';
+//import { useInStockProducts } from '@/Shop/InStockContext';
+
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "@/App.css";
 
-function InStockProductCanAdd({ title, slug, productId }) {
-  const inStockProducts = useInStockProducts();
-  const cartDispatch = useCartDispatch();
+function InStockProductCanAdd({ title, slug, productId })
+{
+  // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
+  //    name of local state const
+  //    |                             Redux internal state (eg the store)
+  //    |                             |              Name of our slice
+  //    |                             |              |
+  const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
+  const cartProducts    = useSelector(state => state.cart.value);    // get the value of the state variable in our slice. An array.
+  const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
+
+  //const inStockProducts = useInStockProducts();
+  //const cartDispatch = useCartDispatch();
   return (
     <Row className="inStockProductCanAdd">
       <Col xs={12} className="productDetailsFlex">
@@ -21,9 +35,9 @@ function InStockProductCanAdd({ title, slug, productId }) {
           </Col>
           <Col xs={12} sm={3} className="flexContAddToCart">
             <Button variant="success" onClick={() => {
-              debugger;
               const product = inStockProducts.find(p => p.id === productId); // Get the in stock product
-              cartDispatch({ type: 'add', id: productId, product: product }); // Add the item to Cart
+              dispatch(addToCart({ id:productId, product:product} ));        // Add the item to Cart
+              // cartDispatch({ type: 'add', id: productId, product: product }); // Add the item to Cart
               // cartDispatch({ type: 'add', id: productId }); // Add the item to Cart
             }}>Add to Cart</Button>
           </Col>
