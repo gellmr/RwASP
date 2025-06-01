@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { useSelector } from 'react-redux'
+
 import MgNavBar from "@/main/MgNavBar";
 import ProductSearchBox from "@/Shop/ProductSearchBox";
 import MgCategoryMenu from "@/Shop/MgCategoryMenu";
@@ -10,6 +13,7 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 
 const ShopLayout = ({ children }) => {
+  const cartProducts = useSelector(state => state.cart.value);
   return (
     <>
       <MgNavBar>
@@ -17,6 +21,11 @@ const ShopLayout = ({ children }) => {
         <Nav.Link href="indexAdmin">Admin</Nav.Link>
         <Nav.Link href="cart">
           <Button variant="success">Cart</Button>
+          <Button variant="success">
+            Cart: {
+              cartProducts && cartProducts.length
+            }
+          </Button>
         </Nav.Link>
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '' }}>
