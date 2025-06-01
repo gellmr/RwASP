@@ -1,27 +1,40 @@
 import { useEffect, useState } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { setInStock } from '@/features/inStock/inStockSlice.jsx'
+
 //import { useCartProducts, useCartDispatch } from '@/Shop/CartContext';
-import { useInStockProducts, useInStockDispatch } from '@/Shop/InStockContext';
+//import { useInStockProducts, useInStockDispatch } from '@/Shop/InStockContext';
+
 import ShopLayout from "@/layouts/ShopLayout";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 
 function ShopApp()
 {
-  const inStockProducts = useInStockProducts();
-  const inStockDispatch = useInStockDispatch();
+  // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
+  const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
+  // const cartProducts = useSelector(state => state.cart.value);    // get the value of the state variable in our slice. An array.  
+  const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
 
+  // old way: context and dispatcher for inStock
+  //const inStockProducts = useInStockProducts();
+  //const inStockDispatch = useInStockDispatch();
   //const cartProducts = useCartProducts();
-  //const [inStockProducts, setInStockProducts] = useState([]); // OLD WAY. state variable
+
+  // REALLY old way: state variable.
+  //const [inStockProducts, setInStockProducts] = useState([]);
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   async function fetchProducts() {
-    const response = await fetch('api/products');
-    const data = await response.json();
+    const response = await fetch('api/products'); // get list of inStock products from ASP.
+    const data = await response.json();           // read json objects from stream.
+    dispatch(setInStock(data));                   // dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
     //setInStockProducts(data);
-    inStockDispatch({ type: 'addRange', data:data }); // UP TO HERE.    Google "react after fetch call dispatch"
+    //inStockDispatch({ type: 'addRange', data:data }); // UP TO HERE.    Google "react after fetch call dispatch"
   }
 
   return (
