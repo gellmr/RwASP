@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { useSelector } from 'react-redux'
+import { NavLink } from "react-router";
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav';
-import Button from 'react-bootstrap/Button';
 
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -21,13 +21,7 @@ const ShopLayout = ({ children }) => {
       <MgNavBar>
         <Nav.Link href="index">Shop</Nav.Link>
         <Nav.Link href="indexAdmin">Admin</Nav.Link>
-        <Nav.Link href="cart">
-          <Button variant="success">
-            Cart: {
-              cartProducts && cartProducts.length
-            }
-          </Button>
-        </Nav.Link>
+        <NavLink to="/cart" className="mgNavLinkBtn" >Cart: {cartProducts && cartProducts.length}</NavLink>
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '' }}>
         <Row>

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-
 import { useSelector, useDispatch } from 'react-redux'
 import { setInStock } from '@/features/inStock/inStockSlice.jsx'
 
@@ -7,7 +6,7 @@ import ShopLayout from "@/layouts/ShopLayout";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 
-function ShopApp()
+function Shop()
 {
   // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
   //    name of local state const
@@ -30,12 +29,12 @@ function ShopApp()
   return (
     <ShopLayout>
       <PaginationLinks />
-      {
-        inStockProducts && inStockProducts.map(prod => (<InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />))
-      }
+      {!inStockProducts && <span>"Please wait for Vite to load and then refresh browser. This should never happen in production."</span>}
+      {inStockProducts && inStockProducts.map(prod =>
+        <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
+      )}
       <PaginationLinks />
     </ShopLayout>
   );
 }
-
-export default ShopApp;
+export default Shop;
