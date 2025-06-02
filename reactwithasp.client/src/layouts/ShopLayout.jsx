@@ -2,15 +2,17 @@ import React from 'react';
 
 import { useSelector } from 'react-redux'
 
-import MgNavBar from "@/main/MgNavBar";
-import ProductSearchBox from "@/Shop/ProductSearchBox";
-import MgCategoryMenu from "@/Shop/MgCategoryMenu";
-import "bootstrap/dist/css/bootstrap.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
+
+import "bootstrap/dist/css/bootstrap.css";
+
+import MgNavBar from "@/main/MgNavBar";
+import ProductSearchBox from "@/Shop/ProductSearchBox";
+import MgCategoryMenu from "@/Shop/MgCategoryMenu";
 
 const ShopLayout = ({ children }) => {
   const cartProducts = useSelector(state => state.cart.value);
