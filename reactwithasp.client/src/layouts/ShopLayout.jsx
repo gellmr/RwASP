@@ -18,9 +18,9 @@ const ShopLayout = ({ children }) => {
   return (
     <>
       <MgNavBar>
-        <Nav.Link href="index">Shop</Nav.Link>
-        <Nav.Link href="indexAdmin">Admin</Nav.Link>
-        <NavLink to="/cart" className="mgNavLinkBtn" >Cart: {cartProducts && cartProducts.length}</NavLink>
+        <NavLink to="/" className="mgNavLinkBtn" >Shop</NavLink>
+        <NavLink to="/admin" className="mgNavLinkBtn" >Admin</NavLink>
+        <NavLink to="/cart" className="mgNavLinkBtn mgNavLinkCartBtn" >Cart: {cartProducts && cartProducts.length}</NavLink>
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '' }}>
         <Row>

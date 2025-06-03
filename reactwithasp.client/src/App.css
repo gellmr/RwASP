@@ -53,25 +53,26 @@ th, td {
     padding-left: 1rem;
     padding-right: 1rem;
 }
-
 .mgNavLinkBtn {
+  text-decoration: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 12px;
+}
+.mgNavLinkBtn.mgNavLinkCartBtn {
   /* I could not easily use Bootstrap button styling with a React Router NavLink,
     so I have just copied the bootstrap button styling approximately here,
     and applied it to the anchor element used with NavLink.
   */
   /*border: 1px dashed lime;*/
-  color:white;
-  text-decoration:none;
-  padding: 12px;
+  color: white;
   padding-top: 6px;
   padding-bottom: 6px;
   background-color: rgb(25, 135, 84);
   border-color rgb(25, 135, 84);
   border-radius: 6px;
-  box-sizing:border-box;
-  cursor: pointer;
 }
-.mgNavLinkBtn:hover {
+.mgNavLinkBtn.mgNavLinkCartBtn:hover {
   /*border: 1px dashed white;*/
   color:white;
   background-color: rgb(21, 115, 71);
