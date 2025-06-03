@@ -10,7 +10,6 @@ function Cart() {
   return (
     <ShopLayout>
       <h2>Your Cart:</h2>
-      <PaginationLinks />
       <div className="col-12">
         <Row>
           <CartBar />
@@ -22,7 +21,6 @@ function Cart() {
           <CartBar />
         </Row>
       </div>
-      <PaginationLinks />
     </ShopLayout>
   );
 }

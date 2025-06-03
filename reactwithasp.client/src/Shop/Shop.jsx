@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setInStock } from '@/features/inStock/inStockSlice.jsx'
 
 import ShopLayout from "@/layouts/ShopLayout";
+import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 
@@ -28,6 +29,7 @@ function Shop()
 
   return (
     <ShopLayout>
+      <ProductSearchBox />
       <PaginationLinks />
       {!inStockProducts && <span>"Please wait for Vite to load and then refresh browser. This should never happen in production."</span>}
       {inStockProducts && inStockProducts.map(prod =>

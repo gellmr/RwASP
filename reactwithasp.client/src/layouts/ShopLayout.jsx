@@ -11,7 +11,6 @@ import Nav from 'react-bootstrap/Nav';
 import "bootstrap/dist/css/bootstrap.css";
 
 import MgNavBar from "@/main/MgNavBar";
-import ProductSearchBox from "@/Shop/ProductSearchBox";
 import MgCategoryMenu from "@/Shop/MgCategoryMenu";
 
 const ShopLayout = ({ children }) => {
@@ -35,7 +34,6 @@ const ShopLayout = ({ children }) => {
             <MgCategoryMenu  isVertical={true}/>
           </Col>
           <Col sm={12} md={9} style={{ border:"", paddingTop:"15px", paddingBottom:"12px"}}>
-            <ProductSearchBox />
             {children}
           </Col>
         </Row>
