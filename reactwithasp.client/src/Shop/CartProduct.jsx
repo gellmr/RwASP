@@ -10,8 +10,8 @@ function CartProduct({ title, slug, productId })
 {
   //const dispatch = useDispatch(); // Redux store dispatch
   return (
-    <Row className="inCartItemRow">
-      <Col xs={12} className="">
+    <Row>
+      <Col xs={12} className="inCartProd">
 
         <Row className="innerRow">
           <Col xs={12} sm={9}>
