@@ -25,7 +25,6 @@ function CartProduct({ title, slug, productId })
 
           <Col xs={12} className="inCartItemRemove">
             <Button variant="success" onClick={() => {
-              debugger;
               const product = cartProducts.find(p => p.id === productId);
               dispatch(removeFromCart({ id: productId, product: product }));
             }}>Remove</Button>
