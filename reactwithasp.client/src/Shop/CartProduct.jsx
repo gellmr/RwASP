@@ -14,14 +14,14 @@ function CartProduct({ title, slug, productId })
       <Col xs={12} className="inCartProd">
 
         <Row className="innerRow">
-          <Col xs={12} sm={9}>
+          <Col xs={12}>
             <div data-product-id={productId} className="inCartItemText">
               <h5>{title}</h5>
               <p>{slug}</p>
             </div>
           </Col>
 
-          <Col xs={12} sm={3} className="inCartItemRemove">
+          <Col xs={12} className="inCartItemRemove">
             <Button variant="success" onClick={() => {} }>Remove</Button>
           </Col>
         </Row>

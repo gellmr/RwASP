@@ -114,28 +114,30 @@ th, td {
   margin-top: 6px;
 }
 .cartContents {
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   border-radius: 5px;
 }
 .inCartProd{
-  border: 2px dashed gold;
+  /*border: 2px dashed gold;*/
   display:flex;
   justify-content:center;
   
   border-radius: 5px;
+  
   margin-top: 5px;
   margin-bottom: 5px;
 }
 .inCartProd .innerRow{
-  border: 1px dashed lightgrey;
-  max-width:450px;
+  border: 1px solid lightgrey;
+  /*max-width:450px;*/
+  width: 100%;
   border-radius: 5px;
   padding: 10px;
   padding-right:0px;
   padding-left:0px;
 }
 .inCartProd button{
-  border: 3px dashed red;
+  /*border: 3px dashed red;*/
   float:right;
   width: 93px;
 }
