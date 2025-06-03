@@ -113,6 +113,10 @@ th, td {
   justify-content: flex-end;
   margin-top: 6px;
 }
+.cartContents {
+  border: 1px solid red;
+  border-radius: 5px;
+}
 .inCartItemRow{
   border: 1px solid lightgrey;
   border-radius: 5px;

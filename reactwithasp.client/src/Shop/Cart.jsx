@@ -6,11 +6,13 @@ function Cart() {
   const cartProducts = useSelector(state => state.cart.value); // array of products
   return (
     <ShopLayout>
-      <PaginationLinks />
       <h2>Your Cart:</h2>
-      {cartProducts && cartProducts.map(prod =>
-        <CartProduct key={prod.id} title={prod.product.title} slug={prod.product.description} productId={prod.product.id} />
-      )}
+      <PaginationLinks />
+      <div className="cartContents">
+        {cartProducts && cartProducts.map(prod =>
+          <CartProduct key={prod.id} title={prod.product.title} slug={prod.product.description} productId={prod.product.id} />
+        )}
+      </div>
       <PaginationLinks />
     </ShopLayout>
   );
