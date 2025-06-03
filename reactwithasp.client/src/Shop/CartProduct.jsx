@@ -1,5 +1,5 @@
-//import { useDispatch } from 'react-redux'
-//import { removeFromCart } from '@/features/cart/cartSlice.jsx'
+import { useSelector, useDispatch } from 'react-redux'
+import { removeFromCart } from '@/features/cart/cartSlice.jsx'
 
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
@@ -8,7 +8,9 @@ import "@/App.css";
 
 function CartProduct({ title, slug, productId })
 {
-  //const dispatch = useDispatch(); // Redux store dispatch
+  const cartProducts = useSelector(state => state.cart.value); // array of products
+  const dispatch = useDispatch(); // Redux store dispatch
+
   return (
     <Row>
       <Col xs={12} className="inCartProd">
@@ -22,7 +24,10 @@ function CartProduct({ title, slug, productId })
           </Col>
 
           <Col xs={12} className="inCartItemRemove">
-            <Button variant="success" onClick={() => {} }>Remove</Button>
+            <Button variant="success" onClick={() => {
+              const cartItem = cartProducts.find(p => p.id === productId);
+              dispatch(removeFromCart({ id: productId }));
+            }}>Remove</Button>
           </Col>
         </Row>
 
