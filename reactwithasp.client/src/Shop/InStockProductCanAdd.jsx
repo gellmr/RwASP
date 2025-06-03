@@ -14,7 +14,6 @@ function InStockProductCanAdd({ title, slug, productId })
   //    |                             |              Name of our slice
   //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
-  const cartProducts    = useSelector(state => state.cart.value);    // get the value of the state variable in our slice. An array.
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
 
   return (
