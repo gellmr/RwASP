@@ -113,8 +113,43 @@ th, td {
   justify-content: flex-end;
   margin-top: 6px;
 }
+.inCartItemRow{
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  padding-right: 0px;
+}
+.inCartItemRow .col-12{
+  display:flex;
+  justify-content:center;
+}
+.inCartItemRow .innerRow{
+  border: 1px dashed lightgrey;
+  /*border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  padding-right: 0px;*/
 
-
+  max-width:450px;
+}
+.inCartItemText {
+  text-align: left;
+}
+.inCartItemText p{
+  font-size:13px;
+}
+.inCartItemRemove{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.inCartItemRow button{
+  border: 3px dashed red;
+  float:right;
+  width: 93px;
+}
 
 /* ================================================= */
 /* ========= OTHER BREAKPOINTS BELOW HERE ========== */
