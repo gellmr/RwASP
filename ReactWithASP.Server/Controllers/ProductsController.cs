@@ -8,14 +8,39 @@ namespace ReactWithASP.Server.Controllers
   {
     private static readonly IEnumerable<InStockProduct> Prods = new List<InStockProduct>
     {
-      new InStockProduct { ID=1, Title="Soccer Ball",          Price=35.00M, Description="FIFA approved size and weight." },
-      new InStockProduct { ID=2, Title="Corner Flags",         Price=25.00M, Description="Give some flourish to your playing field with these coloured corner flags." },
-      new InStockProduct { ID=3, Title="Referee Whistle",      Price=12.00M, Description="For serious games, call it with this chrome Referee Whistle." },
-      new InStockProduct { ID=4, Title="Red and Yellow Cards", Price=10.00M, Description="Official size and colour, waterproof high visibility retroflective coating." },
+      new InStockProduct { ID=1, Title="Polycarbon Injection Molded River Kayak", Price=350.00M, Description="Tame the wilderness this one person kayak." },
+      new InStockProduct { ID=2, Title="Life Jacket", Price=100.00M, Description="Coastmaster TM Duratex All Weather Sea Life Jacket. For Tactical sea advantage." },
+      new InStockProduct { ID=3, Title="White Water Rafting Helmet", Price=90.00M, Description="Waterproof and Durable, this helmet comes in 12 colors." },
+      new InStockProduct { ID=4, Title="Single Paddle", Price=40.00M, Description="Right or Left handed paddle, for kayaking or canoeing." },
 
       new InStockProduct { ID=5, Title="Double Paddle",        Price=50.00M, Description="Double-ended paddle for kayaking or canoeing." },
       new InStockProduct { ID=6, Title="Camping Towel",        Price=15.00M, Description="Deluxe El Capitan All-Weather Towel... For drying off after water activities." },
-      new InStockProduct { ID=7, Title="Sunscreen SPF 50+",    Price=25.00M, Description="Extreme Sports Edition fast drying activewear sunblock." }
+      new InStockProduct { ID=7, Title="Sunscreen SPF 50+",    Price=25.00M, Description="Extreme Sports Edition fast drying activewear sunblock." },
+      new InStockProduct { ID=8, Title="Waterproof Equipment Bag", Price=80.00M, Description="Carry your gear in this tough and compact waterproof bag." },
+
+      new InStockProduct { ID=9,  Title="Drink Bottle", Price=20.00M, Description="Dont forget to drink water, while your out doing water sports." },
+      new InStockProduct { ID=10, Title="Hydralite",    Price=7.00M,  Description="Rehydrate yourself after an event, with these effervescent tablets." },
+      new InStockProduct { ID=11, Title="Soccer Ball",  Price=35.00M, Description="FIFA approved size and weight." },
+      new InStockProduct { ID=12, Title="Corner Flags", Price=25.00M, Description="Give some flourish to your playing field with these coloured corner flags." },
+
+      new InStockProduct { ID=13, Title="Referee Whistle",  Price=12.00M, Description="It even works under water." },
+      new InStockProduct { ID=14, Title="Red and Yellow Cards",  Price=10.00M, Description="Official size and colour, waterproof high visibility retroflective coating." },
+      new InStockProduct { ID=15, Title="Soccer Stadium",  Price=80000.00M, Description="Flat packed 30,000 seat stadium." },
+      new InStockProduct { ID=16, Title="Soccer Goals",  Price=1000.00M, Description="One lightweight aluminium standard size impact foam coated soccer goal with netting." },
+
+      new InStockProduct { ID=17, Title="Line Marking Spray",  Price=15.00M, Description="Fluorescent white spray-on line marking paint. Comes with a roll of guide string." },
+      new InStockProduct { ID=18, Title="Aviator Glasses",  Price=500.00M, Description="Football celebrities gotta go shopping sometimes." },
+      new InStockProduct { ID=19, Title="First Aid Kit",  Price=120.00M, Description="Sometimes those injuries are real..." },
+      new InStockProduct { ID=20, Title="White T-Shirt",  Price=20.00M, Description="Sometimes you need a white T Shirt." },
+
+      new InStockProduct { ID=21, Title="Thinking Cap",  Price=15.00M, Description="Improve your concentration by 4%" },
+      new InStockProduct { ID=22, Title="Chess Board",  Price=25.00M, Description="Non-reflective and slip resistant." },
+      new InStockProduct { ID=23, Title="Speed Chess Timer",  Price=50.00M, Description="Has a digital timer display on both sides, and supercollider toggle button on top. Silent and durable. Batteries not included." },
+      new InStockProduct { ID=24, Title="Chess Pieces - Full Set",  Price=90.00M, Description="Full set of chess pieces. Charcoal Black / Frost White." },
+
+      new InStockProduct { ID=25, Title="Individual Chess Piece",  Price=10.00M, Description="Single chess pieces available. Charcoal Black / Frost White." },
+      new InStockProduct { ID=26, Title="Unsteady Chair",  Price=45.00M, Description="Secretly give your opponent a disadvantage." },
+      new InStockProduct { ID=27, Title="Holo Chess",  Price=22000.00M, Description="As seen in Star Wars: A New Hope." },
     };
 
     [HttpGet(Name = "GetProducts")]
