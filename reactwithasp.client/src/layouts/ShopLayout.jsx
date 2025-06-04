@@ -6,12 +6,11 @@ import { NavLink } from "react-router";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Nav from 'react-bootstrap/Nav';
 
 import "bootstrap/dist/css/bootstrap.css";
 
 import MgNavBar from "@/main/MgNavBar";
-import MgCategoryMenu from "@/Shop/MgCategoryMenu";
+import CategoriesMenu from "@/Shop/CategoriesMenu";
 
 const ShopLayout = ({ children }) => {
   const cartProducts = useSelector(state => state.cart.value);
@@ -24,15 +23,7 @@ const ShopLayout = ({ children }) => {
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '' }}>
         <Row>
-          <Col className="d-block d-sm-none" style={{ border: '', padding:"0px" }}>
-            <MgCategoryMenu isVertical={true} />
-          </Col>
-          <Col className="d-none d-sm-block d-md-none" style={{ border: '', padding: "0px" }}>
-            <MgCategoryMenu />
-          </Col>
-          <Col className="d-none d-md-block col-md-3" style={{ border: '', padding: "0px" }}>
-            <MgCategoryMenu  isVertical={true}/>
-          </Col>
+          <CategoriesMenu />
           <Col sm={12} md={9} style={{ border:"", paddingTop:"15px", paddingBottom:"12px"}}>
             {children}
           </Col>
