@@ -17,7 +17,7 @@ function Shop()
   //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
-  const { page } = useParams();
+  const { page } = useParams(); // The page of products we are on, eg "2". Obtained from react route...  /index/2
 
   useEffect(() => {
     fetchProducts();
