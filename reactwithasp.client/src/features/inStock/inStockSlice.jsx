@@ -7,10 +7,13 @@ export const inStockSlice = createSlice({
   reducers: {
     setInStock: (state, action) => {
       state.value = action.payload; // set our inStock products array.
+    },
+    setNoStock: (state, action) => {
+      state.value = []; // no products available.
     }
   }
 })
 // Action creators are generated for each case reducer function
-export const { setInStock } = inStockSlice.actions
+export const { setInStock, setNoStock } = inStockSlice.actions
 export default inStockSlice.reducer
 

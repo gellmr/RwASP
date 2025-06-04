@@ -28,10 +28,10 @@
 /* Extra small devices (portrait phones, less than 576px) */
 /* No media query for `xs` since this is the default in Bootstrap */
 
-.mg-nav-items{
+.mg-nav-items {
   /*border:3px dashed magenta;*/
-  align-items:flex-start;
-  width:100%;
+  align-items: flex-start;
+  width: 100%;
 }
 
 #root {
@@ -153,6 +153,15 @@ th, td {
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+}
+.fetchErr {
+  color: #4695eb;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  padding: 15px;
+  background-color: #e7f7ff;
+  border-radius: 10px;
 }
 
 /* ================================================= */

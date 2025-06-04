@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { setInStock } from '@/features/inStock/inStockSlice.jsx'
+import { setInStock, setNoStock } from '@/features/inStock/inStockSlice.jsx'
 import { useParams } from 'react-router';
 
 import ShopLayout from "@/layouts/ShopLayout";
@@ -30,16 +30,20 @@ function Shop()
   }, []);
 
   async function fetchProducts() {
-    const response = await fetch('api/products'); // get list of inStock products from ASP.
-    const data = await response.json();           // read json objects from stream.
-    dispatch(setInStock(data));                   // dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
+    try {
+      const response = await fetch('api/products'); // get list of inStock products from ASP.
+      const data = await response.json();           // read json objects from stream.
+      dispatch(setInStock(data));                   // dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
+    } catch (err) {
+      dispatch(setNoStock());
+    }
   }
 
   return (
     <ShopLayout>
       <ProductSearchBox />
       <PaginationLinks numPages={4} currPage={page} />
-      {!inStockProdThisPage && <span>"Please wait for Vite to load and then refresh browser. This should never happen in production."</span>}
+      {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">Please wait for Vite to load and then refresh browser.</div>}
       {inStockProdThisPage && inStockProdThisPage.map(prod =>
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
