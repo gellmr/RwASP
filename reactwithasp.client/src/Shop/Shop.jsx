@@ -24,6 +24,8 @@ function Shop()
   const startIdx = prodPerPage * pageIdx;                               // eg ( 4 * 0 == 0)   ( 4 * 1 == 4 )   ( 4 * 2 == 8 ) ...
   const endIdx = startIdx + prodPerPage;                                // eg            4 ...           8 ...            12  ...
   const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx);
+  const extraPage = (inStockProducts.length % prodPerPage === 0) ? 0 : 1;
+  const numPages = Math.floor(inStockProducts.length / prodPerPage) + extraPage;
 
   useEffect(() => {
     fetchProducts();
@@ -42,12 +44,12 @@ function Shop()
   return (
     <ShopLayout>
       <ProductSearchBox />
-      <PaginationLinks numPages={4} currPage={page} />
+      <PaginationLinks numPages={numPages} currPage={page} />
       {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">Please wait for Vite to load and then refresh browser.</div>}
       {inStockProdThisPage && inStockProdThisPage.map(prod =>
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
-      <PaginationLinks numPages={4} currPage={page} />
+      <PaginationLinks numPages={numPages} currPage={page} />
     </ShopLayout>
   );
 }
