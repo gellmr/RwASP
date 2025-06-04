@@ -9,9 +9,9 @@ namespace ReactWithASP.Server.Controllers
 
     private static readonly IEnumerable<ProductCategory> Cats = new List<ProductCategory>
     {
-      new ProductCategory { ID=1, Title="Soccer" },
-      new ProductCategory { ID=2, Title="Chess" },
-      new ProductCategory { ID=3, Title="Water Sport" }
+      new ProductCategory { ID=1, Title="Soccer", Segment="soccer"},
+      new ProductCategory { ID=2, Title="Chess", Segment="chess"},
+      new ProductCategory { ID=3, Title="Water Sport", Segment="waterSport"}
     };
 
     [HttpGet(Name = "GetCategories")]
