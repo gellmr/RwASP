@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategories, setNoCategories } from '@/features/categories/categoriesSlice.jsx'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button';
+import { NavLink } from "react-router";
 import MgCategoryMenu from "@/Shop/MgCategoryMenu";
 import "bootstrap/dist/css/bootstrap.css";
 
@@ -28,7 +28,7 @@ function CategoriesMenu()
   const menuMarkup = (categories === undefined || categories.length === 0)
     ? <div className="fetchErr">Please wait for Vite to load and then refresh browser.</div>
     : categories && categories.map(cat =>
-      <Button key={crypto.randomUUID()} data-catid={cat.id} variant="default">{cat.title}</Button>
+      <NavLink to={"/" + cat.segment} key={crypto.randomUUID()} data-catid={cat.id}>{cat.title}</NavLink>
     );
 
   return (
