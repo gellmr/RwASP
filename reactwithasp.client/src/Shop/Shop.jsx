@@ -30,12 +30,12 @@ function Shop()
   return (
     <ShopLayout>
       <ProductSearchBox />
-      <PaginationLinks />
+      <PaginationLinks numPages={4} />
       {!inStockProducts && <span>"Please wait for Vite to load and then refresh browser. This should never happen in production."</span>}
       {inStockProducts && inStockProducts.map(prod =>
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
-      <PaginationLinks />
+      <PaginationLinks numPages={4} />
     </ShopLayout>
   );
 }

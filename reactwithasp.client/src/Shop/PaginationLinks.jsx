@@ -2,14 +2,18 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 
-function PaginationLinks() {
+function PaginationLinks({ numPages })
+{
+  const listItems = Array.from({ length: numPages }).map((_, index) => (
+    <Button key={index} variant={(index === 0) ? "primary" : "default"}>
+      {index + 1}
+    </Button>
+  ));
+
   return (
     <ButtonToolbar aria-label="Toolbar with button groups">
       <ButtonGroup className="me-2" aria-label="First group">
-        <Button variant="primary">1</Button>
-        <Button variant="default">2</Button>
-        <Button variant="default">3</Button>
-        <Button variant="default">4</Button>
+        {listItems}
       </ButtonGroup>
     </ButtonToolbar>
   );
