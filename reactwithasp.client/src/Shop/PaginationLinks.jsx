@@ -1,13 +1,14 @@
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import { NavLink } from "react-router";
 
 function PaginationLinks({ numPages })
 {
   const listItems = Array.from({ length: numPages }).map((_, index) => (
-    <Button key={index} variant={(index === 0) ? "primary" : "default"}>
+    <NavLink to={"/index/" + (index + 1)} key={index + 1} className={(index === 0) ? "btn btn-primary" : "btn btn-default"}>
       {index + 1}
-    </Button>
+    </NavLink>
   ));
 
   return (

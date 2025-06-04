@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setInStock } from '@/features/inStock/inStockSlice.jsx'
+import { useParams } from 'react-router';
 
 import ShopLayout from "@/layouts/ShopLayout";
 import ProductSearchBox from "@/Shop/ProductSearchBox";
@@ -16,6 +17,7 @@ function Shop()
   //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
+  const { page } = useParams();
 
   useEffect(() => {
     fetchProducts();
@@ -31,6 +33,7 @@ function Shop()
     <ShopLayout>
       <ProductSearchBox />
       <PaginationLinks numPages={4} />
+      You are on page {page}
       {!inStockProducts && <span>"Please wait for Vite to load and then refresh browser. This should never happen in production."</span>}
       {inStockProducts && inStockProducts.map(prod =>
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
