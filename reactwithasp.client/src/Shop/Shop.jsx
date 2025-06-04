@@ -32,13 +32,13 @@ function Shop()
   return (
     <ShopLayout>
       <ProductSearchBox />
-      <PaginationLinks numPages={4} />
+      <PaginationLinks numPages={4} currPage={page} />
       You are on page {page}
       {!inStockProducts && <span>"Please wait for Vite to load and then refresh browser. This should never happen in production."</span>}
       {inStockProducts && inStockProducts.map(prod =>
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
-      <PaginationLinks numPages={4} />
+      <PaginationLinks numPages={4} currPage={page} />
     </ShopLayout>
   );
 }
