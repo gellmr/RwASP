@@ -19,6 +19,12 @@ function Shop()
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
   const { page } = useParams(); // The page of products we are on, eg "2". Obtained from react route...  /index/2
 
+  const prodPerPage = 4;                                                // Products per page
+  const pageIdx = (page === undefined) ? 0 : Number.parseInt(page) - 1; // eg ( page 0                   1           page 2 )
+  const startIdx = prodPerPage * pageIdx;                               // eg ( 4 * 0 == 0)   ( 4 * 1 == 4 )   ( 4 * 2 == 8 ) ...
+  const endIdx = startIdx + prodPerPage;                                // eg            4 ...           8 ...            12  ...
+  const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx);
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -33,9 +39,8 @@ function Shop()
     <ShopLayout>
       <ProductSearchBox />
       <PaginationLinks numPages={4} currPage={page} />
-      You are on page {page}
-      {!inStockProducts && <span>"Please wait for Vite to load and then refresh browser. This should never happen in production."</span>}
-      {inStockProducts && inStockProducts.map(prod =>
+      {!inStockProdThisPage && <span>"Please wait for Vite to load and then refresh browser. This should never happen in production."</span>}
+      {inStockProdThisPage && inStockProdThisPage.map(prod =>
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
       <PaginationLinks numPages={4} currPage={page} />
