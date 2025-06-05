@@ -6,7 +6,7 @@ import { NavLink } from "react-router";
 function PaginationLinks({ numPages, currPage="1" })
 {
   const { category } = useParams();
-  const catSeg = category !== undefined ? category + "/" : "";
+  const catSeg = category !== undefined ? "category/" + category + "/" : "";
   const myRoute = "/" + catSeg;
 
   const listItems = Array.from({ length: numPages }).map((_, index) => (

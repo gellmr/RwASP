@@ -16,7 +16,7 @@ function Shop()
   //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
-  const { page } = useParams(); // The page of products we are on, eg "2". Obtained from react route...  /index/2
+  const { page, category } = useParams(); // The page of products we are on, eg "2". Obtained from react route...  /index/2
 
   const prodPerPage = 4;                                                // Products per page
   const pageIdx = (page === undefined) ? 0 : Number.parseInt(page) - 1; // eg ( page 0                   1           page 2 )
@@ -32,7 +32,9 @@ function Shop()
 
   async function fetchProducts() {
     try {
-      const response = await fetch('api/products'); // get list of inStock products from ASP.
+      const cat = category !== undefined ? "/" + category : "";
+      const url = "api/products" + cat;
+      const response = await fetch(url);            // get list of inStock products from ASP.
       const data = await response.json();           // read json objects from stream.
       dispatch(setInStock(data));                   // dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
     } catch (err) {

@@ -16,8 +16,8 @@ createRoot(document.getElementById('root')).render(
           <Route element={<ShopLayout />}>
             <Route path="/cart" element={<Cart />} />
 
-            <Route path="/index?/:page?" element={<Shop />} />
-            <Route path="/index?/:category/:page?" element={<Shop />} />
+            <Route path="/:page?" element={<Shop />} />
+            <Route path="/category/:category/:page?" element={<Shop />} />
           </Route>
         </Routes>
       </BrowserRouter>
