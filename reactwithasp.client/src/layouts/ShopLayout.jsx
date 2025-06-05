@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useSelector } from 'react-redux'
 import { NavLink } from "react-router";
+import { Outlet } from "react-router";
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
@@ -12,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import MgNavBar from "@/main/MgNavBar";
 import CategoriesMenu from "@/Shop/CategoriesMenu";
 
-const ShopLayout = ({ children }) => {
+const ShopLayout = () => {
   const cartProducts = useSelector(state => state.cart.value);
   return (
     <>
@@ -25,7 +26,7 @@ const ShopLayout = ({ children }) => {
         <Row>
           <CategoriesMenu />
           <Col sm={12} md={9} style={{ border:"", paddingTop:"15px", paddingBottom:"12px"}}>
-            {children}
+            <Outlet /> {/* This will be either Shop or Cart... */}
           </Col>
         </Row>
         <hr />

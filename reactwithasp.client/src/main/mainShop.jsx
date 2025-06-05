@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router";
 import './main.css'
+import ShopLayout from "@/layouts/ShopLayout";
 import Shop from '../Shop/Shop.jsx'
 import Cart from '../Shop/Cart.jsx'
 import store from '@/Shop/store.jsx'
@@ -12,9 +13,12 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/"            element={<Shop />} />
-          <Route path="/index/:page" element={<Shop />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route element={<ShopLayout />}>
+            <Route path="/cart" element={<Cart />} />
+
+            <Route path="/index?/:page?" element={<Shop />} />
+            <Route path="/index?/:category/:page?" element={<Shop />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </Provider>

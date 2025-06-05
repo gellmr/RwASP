@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setInStock, setNoStock } from '@/features/inStock/inStockSlice.jsx'
 import { useParams } from 'react-router';
 
-import ShopLayout from "@/layouts/ShopLayout";
 import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
@@ -42,7 +41,7 @@ function Shop()
   }
 
   return (
-    <ShopLayout>
+    <>
       <ProductSearchBox />
       <PaginationLinks numPages={numPages} currPage={page} />
       {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">Please wait for Vite to load and then refresh browser.</div>}
@@ -50,7 +49,7 @@ function Shop()
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
       <PaginationLinks numPages={numPages} currPage={page} />
-    </ShopLayout>
+    </>
   );
 }
 export default Shop;
