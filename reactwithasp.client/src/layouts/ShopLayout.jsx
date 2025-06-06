@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux'
 import { NavLink } from "react-router";
 import { Outlet } from "react-router";
 
@@ -12,15 +11,15 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import MgNavBar from "@/main/MgNavBar";
 import CategoriesMenu from "@/Shop/CategoriesMenu";
+import CartBtn from "@/Shop/CartBtn";
 
 const ShopLayout = () => {
-  const cartProducts = useSelector(state => state.cart.value);
   return (
     <>
       <MgNavBar>
         <NavLink to="/" className="mgNavLinkBtn" >Shop</NavLink>
         <NavLink to="/admin" className="mgNavLinkBtn" >Admin</NavLink>
-        <NavLink to="/cart" className="mgNavLinkBtn mgNavLinkCartBtn" >Cart: {cartProducts && cartProducts.length}</NavLink>
+        <CartBtn isSmall={false} />
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '' }}>
         <Row>
