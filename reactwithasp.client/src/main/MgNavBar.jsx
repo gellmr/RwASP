@@ -11,7 +11,7 @@ const MgNavBar = ({ children, showCart=true }) => {
     <>
       <Navbar expand="sm" className="bg-body-tertiary bg-dark" id="navBar" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">SPORTS STORE</Navbar.Brand>
+          <Navbar.Brand href="/">SPORTS STORE</Navbar.Brand>
           {CartButtonMarkup}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
