@@ -19,7 +19,7 @@ function Shop()
   const { page, category } = useParams(); // The page of products we are on, eg "2". Obtained from react route...  /index/2
 
   const prodPerPage = 4;                                                // Products per page
-  const pageIdx = (page === undefined) ? 0 : Number.parseInt(page) - 1; // eg ( page 0                   1           page 2 )
+  const pageIdx = (page === undefined) ? 0 : Number.parseInt(page) - 1; // eg (     page 0          page 1           page 2 )
   const startIdx = prodPerPage * pageIdx;                               // eg ( 4 * 0 == 0)   ( 4 * 1 == 4 )   ( 4 * 2 == 8 ) ...
   const endIdx = startIdx + prodPerPage;                                // eg            4 ...           8 ...            12  ...
   const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx);
