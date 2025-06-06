@@ -43,10 +43,15 @@ namespace ReactWithASP.Server.Controllers
       new InStockProduct { Category = Cat.Chess, ID=27, Title="Holo Chess",  Price=22000.00M, Description="As seen in Star Wars: A New Hope." },
     };
 
-    [HttpGet("category/{category:alpha}")] //  GET api/products/category/{category}
-    public IEnumerable<InStockProduct> Get(string category = "")
+    [HttpGet] // GET api/products
+    public IEnumerable<InStockProduct> Get(){
+      return Prods.ToList();
+    }
+
+    [HttpGet("category/{category:alpha?}")] // GET api/products/category/{category}
+    public IEnumerable<InStockProduct> Get(string? category)
     {
-      Cat paramCat = ProductCategory.ParseCat(category); // case sensitive
+      Cat paramCat = string.IsNullOrEmpty(category) ? Cat.None : ProductCategory.ParseCat(category); // case sensitive
       if (String.IsNullOrEmpty(category))
       {
         return Prods.ToArray();
