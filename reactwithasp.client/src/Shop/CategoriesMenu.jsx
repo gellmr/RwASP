@@ -28,7 +28,7 @@ function CategoriesMenu()
   const menuMarkup = (categories === undefined || categories.length === 0)
     ? <div className="fetchErr">Please wait for Vite to load and then refresh browser.</div>
     : categories && categories.map(cat =>
-      <NavLink to={"/category/" + cat.segment} key={crypto.randomUUID()} data-catid={cat.id}>{cat.title}</NavLink>
+      <NavLink to={"/category/" + cat.segment} key={crypto.randomUUID()} data-catid={cat.id} className={"btn btn-light"}>{cat.title}</NavLink>
     );
 
   return (

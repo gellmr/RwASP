@@ -6,8 +6,9 @@
     I have defined a custom breakpoint to allow xxs for mg-category-menu-r. For this style, the default is xxs.
     For all other styles the default breakpoint means xs.
 */
-.mg-category-menu-r button{
-  text-align:left;
+.mg-category-menu-r.btn-group-vertical a {
+  text-align: left;
+  border-radius: 0px;
 }
 .mg-category-menu-r {
   /*border: 3px dashed cyan;*/

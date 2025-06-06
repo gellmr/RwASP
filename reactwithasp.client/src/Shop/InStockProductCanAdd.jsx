@@ -24,7 +24,8 @@ function InStockProductCanAdd({ title, slug, productId })
           <Col xs={12} sm={9}>
             <div className="productDetails">
               <h5>{title}</h5>
-              <span>{slug}&nbsp;productId:{productId}</span>
+              {/*<span>{slug}&nbsp;productId:{productId}</span>*/}
+              <span>{slug}</span>
             </div>
           </Col>
           <Col xs={12} sm={3} className="flexContAddToCart">
