@@ -28,12 +28,12 @@ function Shop()
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [category]);
 
   async function fetchProducts() {
     try {
-      const cat = category !== undefined ? "/" + category : "";
-      const url = "api/products" + cat;
+      const cat = category !== undefined ? "/category/" + category : "";
+      const url = window.location.origin + "/api/products" + cat;
       const response = await fetch(url);            // get list of inStock products from ASP.
       const data = await response.json();           // read json objects from stream.
       dispatch(setInStock(data));                   // dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.

@@ -2,10 +2,10 @@
 {
   public enum Cat
   {
-    None,
-    Soccer,
-    Chess,
-    WaterSport
+    none,
+    soccer,
+    chess,
+    waterSport
   }
 
   public class ProductCategory
@@ -17,17 +17,17 @@
     public static Cat ParseCat(string str)
     {
       Cat myCat;
-      Cat cat = Cat.None;
+      Cat cat = Cat.none;
       try
       {
         if (Enum.TryParse(str, out myCat))
         {
           switch (myCat)
           {
-            case Cat.None: cat = Cat.None; break;
-            case Cat.Soccer: cat = Cat.Soccer; break;
-            case Cat.Chess: cat = Cat.Chess; break;
-            case Cat.WaterSport: cat = Cat.WaterSport; break;
+            case Cat.none: cat = Cat.none; break;
+            case Cat.soccer: cat = Cat.soccer; break;
+            case Cat.chess: cat = Cat.chess; break;
+            case Cat.waterSport: cat = Cat.waterSport; break;
           }
           return cat;
         }
@@ -44,10 +44,10 @@
       string myCat = "";
       switch (cat)
       {
-        case Cat.None: myCat = "None"; break;
-        case Cat.Soccer: myCat = "Soccer"; break;
-        case Cat.Chess: myCat = "Chess"; break;
-        case Cat.WaterSport: myCat = "WaterSport"; break;
+        case Cat.none: myCat = "None"; break;
+        case Cat.soccer: myCat = "Soccer"; break;
+        case Cat.chess: myCat = "Chess"; break;
+        case Cat.waterSport: myCat = "WaterSport"; break;
       }
       return myCat;
     }
