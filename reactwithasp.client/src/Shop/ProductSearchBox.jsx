@@ -18,6 +18,7 @@ function ProductSearchBox() {
           <i className="bi bi-search"></i>
         </InputGroup.Text>
         <Form.Control
+          name="searchStringInput"
           placeholder="Search (Feature under construction)"
           aria-label="SearchString"
           aria-describedby="basic-addon1"
