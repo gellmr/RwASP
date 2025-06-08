@@ -53,12 +53,12 @@ function Shop()
   return (
     <>
       <ProductSearchBox />
-      <PaginationLinks numPages={numPages} currPage={page} />
+      <PaginationLinks numPages={numPages} currPage={pageIntP} />
       {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">Please wait for Vite to load and then refresh browser.</div>}
       {inStockProdThisPage && inStockProdThisPage.map(prod =>
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
-      <PaginationLinks numPages={numPages} currPage={page} />
+      <PaginationLinks numPages={numPages} currPage={pageIntP} />
     </>
   );
 }
