@@ -28,7 +28,7 @@ function ProductSearchBox()
         </InputGroup.Text>
         <Form.Control
           name="searchStringInput"
-          placeholder="Search (Feature under construction)"
+          placeholder="Search for products"
           aria-label="SearchString"
           aria-describedby="basic-addon1"
           onChange={handleInputChange}
