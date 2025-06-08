@@ -9,6 +9,7 @@ function ProductSearchBox()
 {
   const { category } = useParams();
   const categories = useSelector(state => state.categories.value);
+  const search = useSelector(state => state.search.value);
   const dispatch = useDispatch(); // Redux dispatch
   const storeCat = categories.find((cat) => cat.segment === category);
   const displayCat = category === undefined ? "All" : storeCat.title;
@@ -29,6 +30,7 @@ function ProductSearchBox()
         <Form.Control
           name="searchStringInput"
           placeholder="Search for products"
+          defaultValue={search}
           aria-label="SearchString"
           aria-describedby="basic-addon1"
           onChange={handleInputChange}
