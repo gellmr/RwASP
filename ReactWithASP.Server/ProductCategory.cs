@@ -14,22 +14,22 @@
     public string Title { get; set; }
     public string Segment { get; set; }
 
-    public static Cat ParseCat(string str)
+    public static Cat ParseCat(string input)
     {
-      Cat myCat;
-      Cat cat = Cat.none;
       try
       {
-        if (Enum.TryParse(str, out myCat))
+        Cat parsedCat;
+        if (Enum.TryParse(input, out parsedCat))
         {
-          switch (myCat)
+          Cat result = Cat.none;
+          switch (parsedCat)
           {
-            case Cat.none: cat = Cat.none; break;
-            case Cat.soccer: cat = Cat.soccer; break;
-            case Cat.chess: cat = Cat.chess; break;
-            case Cat.waterSport: cat = Cat.waterSport; break;
+            case Cat.none: result = Cat.none; break;
+            case Cat.soccer: result = Cat.soccer; break;
+            case Cat.chess: result = Cat.chess; break;
+            case Cat.waterSport: result = Cat.waterSport; break;
           }
-          return cat;
+          return result;
         }
         throw new Exception("could not parse string as Cat enum");
       }
