@@ -20,7 +20,7 @@ function Shop()
   const { page, category } = useParams(); // The page of products we are on, eg "2". Obtained from react route...  /index/2
 
   // Apply pagination to search results
-  const pageInt = Number.parseInt(page);
+  const pageInt = page !== undefined ? Number.parseInt(page) : 1;
   const prodPerPage = 4;                                                // Products per page
   const maxWholePageNum = Math.floor(inStockProducts.length / prodPerPage); // floor ( 7 / 4 ) == 1
   const extraPage = (inStockProducts.length % prodPerPage === 0) ? 0 : 1;
@@ -31,7 +31,9 @@ function Shop()
   const startIdx = prodPerPage * pageIdx;                               // eg ( 4 * 0 == 0)   ( 4 * 1 == 4 )   ( 4 * 2 == 8 ) ...
   const endIdx = startIdx + prodPerPage;                                // eg            4 ...           8 ...            12  ...
   const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx);
-  
+
+  // pageIntP should be 1 when we first visit the site, and have an initial page of products. It may be 0 for a while during attempted re-renders as the products are still being fetched.
+
   useEffect(() => {
     fetchProducts();
   }, [category, search]);
