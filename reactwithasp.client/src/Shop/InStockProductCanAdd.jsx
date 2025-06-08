@@ -31,7 +31,7 @@ function InStockProductCanAdd({ title, slug, productId })
           <Col xs={12} sm={3} className="flexContAddToCart">
             <Button variant="success" onClick={() => {
               const product = inStockProducts.find(p => p.id === productId); // Get the in stock product
-              dispatch(addToCart({ id:productId, product:product} ));        // Add the item to Cart
+              dispatch(addToCart({ id:productId, product:product, qty:1} )); // Add the item to Cart
             }}>Add to Cart</Button>
           </Col>
         </Row>

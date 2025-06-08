@@ -9,7 +9,13 @@ export const cartSlice = createSlice({
       state.value = action.payload; // set products array.
     },
     addToCart: (state, action) => {
-      state.value = [ ...state.value, action.payload ]; // add product to cart
+      const idx = state.value.findIndex(item => item.id === action.payload.id);
+      if (idx === -1) {
+        state.value = [...state.value, action.payload]; // add product to cart
+      } else {
+        action.payload.qty += state.value[idx].qty;
+        state.value.splice(idx, 1, action.payload); // replace item at index
+      }
     },
     removeFromCart: (state, action) => {
       state.value = state.value.filter(prod => prod.id !== action.payload.id);

@@ -15,7 +15,7 @@ function Cart() {
           <Col className="cartContents col-12 col-lg-8">
             {!cartProducts || cartProducts.length === 0 && <div className="fetchErr" style={{ textAlign: "center" }}>( Empty )</div>}
             {cartProducts && cartProducts.map(prod =>
-              <CartProduct key={prod.id} title={prod.product.title} slug={prod.product.description} productId={prod.product.id} />
+              <CartProduct key={prod.id} title={prod.product.title} slug={prod.product.description} productId={prod.product.id} qty={prod.qty} />
             )}
           </Col>
           <CartBar />
