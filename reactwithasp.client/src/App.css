@@ -48,6 +48,15 @@
 /* Extra small devices (portrait phones, less than 576px) */
 /* No media query for `xs` since this is the default in Bootstrap */
 
+.storeBrand {
+  font-weight: 500;
+  font-size: 20px;
+  text-decoration: none;
+  color: white;
+  padding-right: 15px;
+  margin-top: -4px;
+}
+
 .mg-nav-items {
   /*border:3px dashed magenta;*/
   align-items: flex-start;
