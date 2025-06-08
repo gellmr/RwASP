@@ -20,6 +20,7 @@ function ProductSearchBox()
   };
 
   const handleXClicked = (e) => {
+    dispatch(setSearch(""));
   };
 
   return (
@@ -33,12 +34,14 @@ function ProductSearchBox()
         <Form.Control
           name="searchStringInput"
           placeholder="Search for products"
-          defaultValue={search}
+          value={search}
           aria-label="SearchString"
           aria-describedby="basic-addon1"
           onChange={handleInputChange}
         />
-        <InputGroup.Text onClick={handleXClicked} className="searchXBtn"><i className="bi bi-x-lg"></i></InputGroup.Text>
+        <InputGroup.Text className="searchXBtn" onClick={handleXClicked}>
+          <i className="bi bi-x-lg"></i>
+        </InputGroup.Text>
       </InputGroup>
     </div>
   );
