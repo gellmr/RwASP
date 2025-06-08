@@ -12,11 +12,14 @@ function ProductSearchBox()
   const search = useSelector(state => state.search.value);
   const dispatch = useDispatch(); // Redux dispatch
   const storeCat = categories.find((cat) => cat.segment === category);
-  const displayCat = category === undefined ? "All" : storeCat.title;
+  const displayCat = (category === undefined || storeCat === undefined) ? "All" : storeCat.title;
 
   const handleInputChange = (e) => {
     console.log("typing " + e.target.value);
     dispatch(setSearch(e.target.value));
+  };
+
+  const handleXClicked = (e) => {
   };
 
   return (
@@ -35,7 +38,7 @@ function ProductSearchBox()
           aria-describedby="basic-addon1"
           onChange={handleInputChange}
         />
-        <InputGroup.Text><i className="bi bi-x-lg"></i></InputGroup.Text>
+        <InputGroup.Text onClick={handleXClicked} className="searchXBtn"><i className="bi bi-x-lg"></i></InputGroup.Text>
       </InputGroup>
     </div>
   );

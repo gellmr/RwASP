@@ -81,7 +81,14 @@ th, td {
   color:white;
   background-color: rgb(21, 115, 71);
 }
-
+.searchXBtn:hover {
+  background-color: #7bbb9d;
+  cursor:pointer;
+}
+.searchXBtn:active {
+  background-color: #21de87;
+  cursor: pointer;
+}
 
 .inStockProductCanAdd {
   border: 1px solid lightgray;
