@@ -1,14 +1,23 @@
+import { setSearch } from '@/features/search/searchSlice.jsx'
 import { useParams } from 'react-router';
-import { useSelector} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-function ProductSearchBox() {
+function ProductSearchBox()
+{
   const { category } = useParams();
-  const categories = useSelector(state => state.categories.value); 
+  const categories = useSelector(state => state.categories.value);
+  const dispatch = useDispatch(); // Redux dispatch
   const storeCat = categories.find((cat) => cat.segment === category);
   const displayCat = category === undefined ? "All" : storeCat.title;
+
+  const handleInputChange = (e) => {
+    console.log("typing " + e.target.value);
+    dispatch(setSearch(e.target.value));
+  };
+
   return (
     <div>
       <h6 style={{color:'grey', textAlign:"left"}}>Category: {displayCat}</h6>
@@ -22,6 +31,7 @@ function ProductSearchBox() {
           placeholder="Search (Feature under construction)"
           aria-label="SearchString"
           aria-describedby="basic-addon1"
+          onChange={handleInputChange}
         />
         <InputGroup.Text><i className="bi bi-x-lg"></i></InputGroup.Text>
       </InputGroup>
