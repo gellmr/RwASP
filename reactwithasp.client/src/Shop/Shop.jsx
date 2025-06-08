@@ -20,14 +20,18 @@ function Shop()
   const { page, category } = useParams(); // The page of products we are on, eg "2". Obtained from react route...  /index/2
 
   // Apply pagination to search results
+  const pageInt = Number.parseInt(page);
   const prodPerPage = 4;                                                // Products per page
-  const pageIdx = (page === undefined) ? 0 : Number.parseInt(page) - 1; // eg (     page 0          page 1           page 2 )
+  const maxWholePageNum = Math.floor(inStockProducts.length / prodPerPage); // floor ( 7 / 4 ) == 1
+  const extraPage = (inStockProducts.length % prodPerPage === 0) ? 0 : 1;
+  const numPages = maxWholePageNum + extraPage; // Add an extra page if we need to. Eg 7 products will require (4 + 3 == 2) pages
+  const pageIntP = (pageInt > maxWholePageNum) ? numPages : pageInt; // navigate to the max number page. Eg 1 ...Maybe move call to inStock reducer action.
+
+  const pageIdx = (page === undefined) ? 0 : pageIntP - 1;              // eg (     page 0          page 1           page 2 )
   const startIdx = prodPerPage * pageIdx;                               // eg ( 4 * 0 == 0)   ( 4 * 1 == 4 )   ( 4 * 2 == 8 ) ...
   const endIdx = startIdx + prodPerPage;                                // eg            4 ...           8 ...            12  ...
   const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx);
-  const extraPage = (inStockProducts.length % prodPerPage === 0) ? 0 : 1;
-  const numPages = Math.floor(inStockProducts.length / prodPerPage) + extraPage;
-
+  
   useEffect(() => {
     fetchProducts();
   }, [category, search]);
