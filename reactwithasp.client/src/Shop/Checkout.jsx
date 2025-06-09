@@ -6,19 +6,17 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import CartBar from "@/Shop/CartBar";
 
-function Checkout() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-
+function Checkout()
+{
+  const [firstName,   setFirstName] = useState('');
+  const [lastName,    setLastName] = useState('');
   const [shipLine1, setShipLine1] = useState('');
   const [shipLine2, setShipLine2] = useState('');
   const [shipLine3, setShipLine3] = useState('');
-
-  const [shipCity, setShipCity] = useState('');
-  const [shipState, setShipState] = useState('');
-  const [shipCountry, setShipCountry] = useState('');
-  const [shipZip, setShipZip] = useState('');
-
+  const [shipCity,     setShipCity] = useState('');
+  const [shipState,    setShipState] = useState('');
+  const [shipCountry,  setShipCountry] = useState('');
+  const [shipZip,      setShipZip] = useState('');
   const [shipEmail, setShipEmail] = useState('');
 
   const handleSubmit = async (event) => {
