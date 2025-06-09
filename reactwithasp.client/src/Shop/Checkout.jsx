@@ -7,7 +7,8 @@ import CartBar from "@/Shop/CartBar";
 
 function Checkout() {
 
-  const handleCheckoutSubmit = (e) => {    
+  const handleSubmit = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -17,8 +18,10 @@ function Checkout() {
         <Row>
           <CartBar />
           <Col className="checkoutLines">
+
             <div className="shipHeading">Please provide your details below, and we'll ship your goods right away.</div>
 
+            <Form onSubmit={handleSubmit}>
             <h5 className="shipHeading">Please provide your name...</h5>
             <InputGroup className="mb-3">
               <InputGroup.Text>First Name</InputGroup.Text>
@@ -66,7 +69,9 @@ function Checkout() {
               <Form.Control id="shipEmail" />
             </InputGroup>
 
-            <Button variant="success" className={"btn btn-primary"} onClick={handleCheckoutSubmit}>Complete Order</Button>
+            <Button variant="success" className={"btn btn-primary"} type="submit" >Complete Order</Button>
+            </Form>
+
           </Col>
           <CartBar />
         </Row>
