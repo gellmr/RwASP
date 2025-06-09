@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { addToCart } from '@/features/cart/cartSlice.jsx'
 
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -14,7 +15,12 @@ function InStockProductCanAdd({ title, slug, productId })
   //    |                             |              Name of our slice
   //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
+  const cartProducts = useSelector(state => state.cart.value); // array of products
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
+
+  const product = inStockProducts.find(p => p.id === productId); // Get the in stock product
+  const prodInCart = cartProducts.find(p => p.id === productId);
+  const qtyInCart = prodInCart === undefined ? <span>&nbsp;&nbsp;</span> : prodInCart.qty;
 
   return (
     <Row className="inStockProductCanAdd">
@@ -24,15 +30,19 @@ function InStockProductCanAdd({ title, slug, productId })
           <Col xs={12} sm={9}>
             <div className="productDetails">
               <h5>{title}</h5>
-              {/*<span>{slug}&nbsp;productId:{productId}</span>*/}
               <span>{slug}</span>
             </div>
           </Col>
           <Col xs={12} sm={3} className="flexContAddToCart">
-            <Button variant="success" onClick={() => {
-              const product = inStockProducts.find(p => p.id === productId); // Get the in stock product
-              dispatch(addToCart({ id:productId, product:product, qty:1} )); // Add the item to Cart
-            }}>Add to Cart</Button>
+            <span className="d-none d-sm-block" style={{ textAlign: "right", fontSize: "13px", paddingRight: "30px", marginLeft: "0px" }}>Add to Cart</span>
+            <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight:"30px" }}>Add to Cart</span>
+            <ButtonGroup>
+              <Button variant="success" >{qtyInCart}</Button>
+              <Button variant="success"><i className="bi bi-dash"></i></Button>
+              <Button variant="success" onClick={() => {
+                dispatch(addToCart({ id: productId, product: product, qty: 1 })); // Add the item to Cart
+              }}><i className="bi bi-plus"></i></Button>
+            </ButtonGroup>
           </Col>
         </Row>
 
