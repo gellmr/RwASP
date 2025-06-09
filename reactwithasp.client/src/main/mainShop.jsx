@@ -6,6 +6,7 @@ import ShopLayout from "@/layouts/ShopLayout";
 import Shop from '../Shop/Shop.jsx'
 import Cart from '../Shop/Cart.jsx'
 import Checkout from '../Shop/Checkout.jsx'
+import CheckoutSuccess from '../Shop/CheckoutSuccess.jsx'
 import store from '@/Shop/store.jsx'
 import AdminLogin from "@/Admin/AdminLogin.jsx";
 import AdminLayout from "@/Admin/AdminLayout.jsx";
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
           <Route element={<ShopLayout />}>
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/checkoutsuccess" element={<CheckoutSuccess />} />
             <Route path="/:page?" element={<Shop />} />
             <Route path="/category/:category/:page?" element={<Shop />} />
           </Route>

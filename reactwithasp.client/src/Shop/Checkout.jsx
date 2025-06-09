@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux'
+import { useNavigate } from "react-router";
+import { clearCart } from '@/features/cart/cartSlice.jsx'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -8,6 +11,9 @@ import CartBar from "@/Shop/CartBar";
 
 function Checkout()
 {
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+
   const [firstName,   setFirstName] = useState('');
   const [lastName,    setLastName] = useState('');
   const [shipLine1, setShipLine1] = useState('');
@@ -38,6 +44,8 @@ function Checkout()
       }
       const data = await response.json();
       console.log('Success:', data);
+      dispatch(clearCart());
+      navigate("/checkoutsuccess");
     } catch (error) {
       console.error('Error:', error);
     }
