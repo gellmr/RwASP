@@ -189,6 +189,7 @@ th, td {
 }
 
 
+/* CART STYLES */
 .cartContents {
   /*border: 1px solid red;*/
   border-radius: 5px;
@@ -239,6 +240,16 @@ th, td {
   background-color: #e7f7ff;
   border-radius: 10px;
 }
+
+
+/* CHECKOUT STYLES */
+.checkoutLines .shipHeading{
+  width: 100%;
+  text-align:left;
+  padding-left:5px;
+  margin-top:25px;
+}
+
 
 /* ================================================= */
 /* ========= OTHER BREAKPOINTS BELOW HERE ========== */
