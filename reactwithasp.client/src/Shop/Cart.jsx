@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import ProceedCheckoutBtn from "@/Shop/ProceedCheckoutBtn";
 function Cart() {
   const cartProducts = useSelector(state => state.cart.value); // array of products
+  const gotItems = cartProducts.length > 0;
   const showTopCheckoutBtn = cartProducts.length > 5;
   return (
     <>
@@ -23,7 +24,7 @@ function Cart() {
           <CartBar />
         </Row>
       </div>
-      <div style={{ marginTop: "5px" }}><ProceedCheckoutBtn /></div>
+      {gotItems && <div style={{ marginTop: "5px" }}><ProceedCheckoutBtn /></div>}
     </>
   );
 }
