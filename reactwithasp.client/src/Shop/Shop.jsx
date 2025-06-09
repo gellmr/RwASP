@@ -6,6 +6,7 @@ import { useParams } from 'react-router';
 import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
+import ProceedCartBtn from "@/Shop/ProceedCartBtn";
 
 function Shop()
 {
@@ -15,6 +16,7 @@ function Shop()
   //    |                             |              Name of our slice
   //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
+  const cartProducts = useSelector(state => state.cart.value);       // array of products
   const search = useSelector(state => state.search.value);
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
   const { page, category } = useParams(); // The page of products we are on, eg "2". Obtained from react route...  /index/2
@@ -34,6 +36,8 @@ function Shop()
 
   // pageIntP should be 1 when we first visit the site, and have an initial page of products. It may be 0 for a while during attempted re-renders as the products are still being fetched.
 
+  const gotItems = cartProducts.length > 0; // true if there are items in cart
+  
   useEffect(() => {
     fetchProducts();
   }, [category, search]);
@@ -62,6 +66,8 @@ function Shop()
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
+
+      {gotItems && <div style={{ marginTop: "20px" }}><ProceedCartBtn /></div>}
     </>
   );
 }
