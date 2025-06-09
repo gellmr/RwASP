@@ -216,6 +216,7 @@ th, td {
   /*border: 3px dashed red;*/
   float:right;
   width: 85px;
+  font-size:14px;
 }
 .inCartItemText {
   text-align: left;
