@@ -147,7 +147,12 @@ th, td {
   /*background-color: lightgreen;*/
   font-size: 12px;
 }
-
+.inStockProductCanAdd .productDetailsFlex .productDetails .inStockPrice {
+  padding-left: 10px;
+  font-size: 18px;
+  color: #75a9da;
+  font-weight: 500;
+}
 
 
 .flexContAddToCart {

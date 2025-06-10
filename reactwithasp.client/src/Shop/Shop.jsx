@@ -63,7 +63,7 @@ function Shop()
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
       {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">( Search returned no results )</div>}
       {inStockProdThisPage && inStockProdThisPage.map(prod =>
-        <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
+        <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} price={prod.price} />
       )}
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
 

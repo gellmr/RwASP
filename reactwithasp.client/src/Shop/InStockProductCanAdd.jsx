@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "@/App.css";
 
-function InStockProductCanAdd({ title, slug, productId })
+function InStockProductCanAdd({ title, slug, productId, price })
 {
   // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
   //    name of local state const
@@ -29,7 +29,7 @@ function InStockProductCanAdd({ title, slug, productId })
         <Row>
           <Col xs={12} sm={9}>
             <div className="productDetails">
-              <h5>{title}</h5>
+              <h5>{title}&nbsp;<span className="inStockPrice">${price}</span></h5>
               <span>{slug}</span>
             </div>
           </Col>
