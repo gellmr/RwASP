@@ -34,16 +34,16 @@ function InStockProductCanAdd({ title, slug, productId })
             </div>
           </Col>
           <Col xs={12} sm={3} className="flexContAddToCart">
-            <span className="d-none d-sm-block" style={{ textAlign: "right", fontSize: "13px", paddingRight: "30px", marginLeft: "0px" }}>Add to Cart</span>
-            <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight:"30px" }}>Add to Cart</span>
-            <ButtonGroup>
-              <Button variant="success" className="currentlyAdded" style={{ borderRadius:"4px"}}>{qtyInCart}</Button>
-              <Button variant="success" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
+            <span className="d-none d-sm-block" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px", marginLeft: "0px" }}>Add to Cart</span>
+            <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px" }}>Add to Cart</span>
+            <ButtonGroup className="addToCartBtnGroup">
+              <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px"}}>{qtyInCart}</Button>
+              <Button variant="outline-success" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
                 if (qtyInCart > 0) {
                   dispatch(addToCart({ id: productId, product: product, qty: -1 })); // Remove one from Cart
                 }
               }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
-              <Button variant="success" onClick={() => {
+              <Button variant="outline-success" onClick={() => {
                 dispatch(addToCart({ id: productId, product: product, qty: 1 })); // Add one to Cart
               }}><i className="bi bi-plus" style={{ fontSize:"15px" }}></i></Button>
             </ButtonGroup>
