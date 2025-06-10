@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const cartSlice = createSlice({
   name: 'cart', // name of slice
   initialState: {
-    value: [] // array of objects. Each is a product in the cart.
+    value: [] // array of objects. Each is like { id: 1, product: { id: 1, title: 'River Kayak', description: 'Tame the wilderness.', price: 350, category: 3 }, qty: 5}
   },
   reducers: {
     setCart: (state, action) => {
