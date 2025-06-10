@@ -30,11 +30,11 @@ function CartProduct({ title, slug, productId, qty })
             <span style={{ fontWeight:"500" }}>{qty}</span>
           </Col>
 
-          <Col xs={6} style={{ textAlign:"left", fontSize:"13px", display: "flex", justifyContent: "flex-start" }}>
-            <p>{slug}</p>
+          <Col xs={12} sm={6} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
+            <p style={{ marginTop: "0px", marginBottom: "8px" }}>{slug}</p>
           </Col>
 
-          <Col xs={6} className="inCartItemRemove">
+          <Col xs={12} sm={6} className="inCartItemRemove">
             <ButtonGroup>
               <Button variant="light btn-sm" style={{ fontSize: "12px", width:"60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
               <Button variant="light btn-sm"><i className="bi bi-dash" style={{ fontSize: "15px" }}></i></Button>
