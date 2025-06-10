@@ -37,7 +37,7 @@ function InStockProductCanAdd({ title, slug, productId, price })
             <span className="d-none d-sm-block" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px", marginLeft: "0px" }}>Add to Cart</span>
             <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px" }}>Add to Cart</span>
             <ButtonGroup className="addToCartBtnGroup">
-              <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px"}}>{qtyInCart}</Button>
+              <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px", fontSize:"14px", fontWeight:500}}>{qtyInCart}</Button>
               <Button variant="outline-success" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
                 if (qtyInCart > 0) {
                   dispatch(addToCart({ id: productId, product: product, qty: -1 })); // Remove one from Cart
