@@ -183,7 +183,7 @@ th, td {
 }
 /* QTY IN CART PREVIEW BUTTON */
 .addToCartBtnGroup button {
-  border: 2px solid #b2dcc5;
+  /*border: 2px solid #b2dcc5;*/
 }
 .currentlyAdded:disabled {
   background-color:white;

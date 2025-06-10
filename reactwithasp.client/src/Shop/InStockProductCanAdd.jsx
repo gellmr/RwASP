@@ -38,12 +38,12 @@ function InStockProductCanAdd({ title, slug, productId, price })
             <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px" }}>Add to Cart</span>
             <ButtonGroup className="addToCartBtnGroup">
               <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px", fontSize:"14px", fontWeight:500}}>{qtyInCart}</Button>
-              <Button variant="outline-success" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
+              <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
                 if (qtyInCart > 0) {
                   dispatch(addToCart({ id: productId, product: product, qty: -1 })); // Remove one from Cart
                 }
               }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
-              <Button variant="outline-success" onClick={() => {
+              <Button variant="light" onClick={() => {
                 dispatch(addToCart({ id: productId, product: product, qty: 1 })); // Add one to Cart
               }}><i className="bi bi-plus" style={{ fontSize:"15px" }}></i></Button>
             </ButtonGroup>
