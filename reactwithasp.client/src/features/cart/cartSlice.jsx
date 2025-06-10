@@ -11,10 +11,21 @@ export const cartSlice = createSlice({
     addToCart: (state, action) => {
       const idx = state.value.findIndex(item => item.id === action.payload.id);
       if (idx === -1) {
-        state.value = [...state.value, action.payload]; // add product to cart
+        state.value = [...state.value, action.payload]; // doesnt exist. Add product to cart
       } else {
-        action.payload.qty += state.value[idx].qty;
-        state.value.splice(idx, 1, action.payload); // replace item at index
+        const payloadQty = action.payload.qty; // can be a negative value
+        const existingQty = state.value[idx].qty;
+        const isAddition = (payloadQty > 0);
+        const isSubtract = (payloadQty < 0);
+        if (isSubtract && (existingQty + payloadQty) >= 0) {
+          // Subtract
+          action.payload.qty += existingQty;
+          state.value.splice(idx, 1, action.payload); // replace item at index
+        } else if (isAddition) {
+          // Add
+          action.payload.qty += existingQty;
+          state.value.splice(idx, 1, action.payload); // replace item at index
+        }
       }
     },
     removeFromCart: (state, action) => {
