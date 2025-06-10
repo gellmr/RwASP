@@ -243,6 +243,12 @@ th, td {
   justify-content: flex-end;
   align-items: flex-end;
 }
+.inCartItemRemove .btn-group{
+  max-width:130px;
+}
+.inCartItemRemove .btn-group button{
+  /*min-width:30px;*/
+}
 .fetchErr {
   color: #4695eb;
   margin-top: 10px;

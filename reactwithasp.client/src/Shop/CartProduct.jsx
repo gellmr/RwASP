@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux'
 import { removeFromCart } from '@/features/cart/cartSlice.jsx'
 
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "@/App.css";
@@ -29,12 +30,16 @@ function CartProduct({ title, slug, productId, qty })
             <span style={{ fontWeight:"500" }}>{qty}</span>
           </Col>
 
-          <Col xs={9} style={{ textAlign:"left", fontSize:"13px", paddingRight:"55px", display: "flex", justifyContent: "flex-start" }}>
+          <Col xs={6} style={{ textAlign:"left", fontSize:"13px", display: "flex", justifyContent: "flex-start" }}>
             <p>{slug}</p>
           </Col>
 
-          <Col xs={3} className="inCartItemRemove">
-            <Button variant="success" onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
+          <Col xs={6} className="inCartItemRemove">
+            <ButtonGroup>
+              <Button variant="light btn-sm" style={{ fontSize: "12px", width:"60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
+              <Button variant="light btn-sm"><i className="bi bi-dash" style={{ fontSize: "15px" }}></i></Button>
+              <Button variant="light btn-sm"><i className="bi bi-plus" style={{ fontSize: "15px" }}></i></Button>
+            </ButtonGroup>
           </Col>
         </Row>
 
