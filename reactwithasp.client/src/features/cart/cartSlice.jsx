@@ -10,21 +10,25 @@ export const cartSlice = createSlice({
     },
     addToCart: (state, action) => {
       const idx = state.value.findIndex(item => item.id === action.payload.id);
-      if (idx === -1) {
-        state.value = [...state.value, action.payload]; // doesnt exist. Add product to cart
+      const payloadQty = action.payload.qty; // can be a negative value
+      const isAddition = (payloadQty > 0);
+      const isSubtract = (payloadQty < 0);
+      if ((idx === -1) && isAddition) {
+        // Doesnt exist. Add product to cart
+        state.value = [...state.value, action.payload];
+        console.log("Create in cart. Qty: " + action.payload.qty);
       } else {
-        const payloadQty = action.payload.qty; // can be a negative value
         const existingQty = state.value[idx].qty;
-        const isAddition = (payloadQty > 0);
-        const isSubtract = (payloadQty < 0);
         if (isSubtract && (existingQty + payloadQty) >= 0) {
           // Subtract
           action.payload.qty += existingQty;
           state.value.splice(idx, 1, action.payload); // replace item at index
+          console.log("Subtract. Quantity: " + action.payload.qty);
         } else if (isAddition) {
           // Add
           action.payload.qty += existingQty;
           state.value.splice(idx, 1, action.payload); // replace item at index
+          console.log("Added. Quantity: " + action.payload.qty);
         }
       }
     },

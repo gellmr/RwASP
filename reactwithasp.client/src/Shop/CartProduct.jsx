@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { addToCart, removeFromCart } from '@/features/cart/cartSlice.jsx'
 
@@ -7,9 +8,17 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "@/App.css";
 
-function CartProduct({ title, slug, productId, qty, product })
+function CartProduct({ productId })
 {
   const dispatch = useDispatch(); // Redux store dispatch
+  const cart = useSelector(state => state.cart.value);
+
+  const cartProduct = cart.find(p => p.id === productId);
+  const title = cartProduct.title;
+  const slug = cartProduct.description;
+  const qty = cartProduct.qty;
+
+  console.log("Render t:" + title + " s:" + slug + " i:" + productId + " q:" + qty);
 
   return (
     <Row>
@@ -37,8 +46,8 @@ function CartProduct({ title, slug, productId, qty, product })
           <Col xs={12} sm={6} className="inCartItemRemove">
             <ButtonGroup>
               <Button variant="light btn-sm" style={{ fontSize: "12px", width:"60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
-              <Button variant="light btn-sm"><i className="bi bi-dash" style={{ fontSize: "15px" }} onClick={() => { dispatch(addToCart({ id: productId, product: product, qty: -1 })) }}></i></Button>
-              <Button variant="light btn-sm"><i className="bi bi-plus" style={{ fontSize: "15px" }} onClick={() => { dispatch(addToCart({ id: productId, product: product, qty:  1 })) }}></i></Button>
+              <Button variant="light btn-sm"><i className="bi bi-dash" style={{ fontSize: "15px" }} onClick={() => { dispatch(addToCart({ id: productId, product: cartProduct, qty: -1 })) }}></i></Button>
+              <Button variant="light btn-sm"><i className="bi bi-plus" style={{ fontSize: "15px" }} onClick={() => { dispatch(addToCart({ id: productId, product: cartProduct, qty:  1 })) }}></i></Button>
             </ButtonGroup>
           </Col>
         </Row>

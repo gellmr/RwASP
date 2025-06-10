@@ -17,8 +17,8 @@ function Cart() {
           <CartBar />
           <Col className="cartContents col-12 col-lg-8">
             {!cartProducts || cartProducts.length === 0 && <div className="fetchErr" style={{ textAlign: "center" }}>( Empty )</div>}
-            {cartProducts && cartProducts.map(prod => // passing product to the CartProduct (which doesnt use selector) causes bug, since Cart doesn't always get updated.
-              <CartProduct key={prod.id} title={prod.product.title} slug={prod.product.description} productId={prod.product.id} qty={prod.qty} product={prod.product} />
+            {cartProducts && cartProducts.map(prod => // when we add more of this product, we trigger re-render and the component below will disappear.
+              <CartProduct key={prod.id} productId={prod.id} />
             )}
           </Col>
           <CartBar />
