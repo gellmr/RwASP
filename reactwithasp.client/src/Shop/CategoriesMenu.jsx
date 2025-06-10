@@ -4,6 +4,7 @@ import { setCategories, setNoCategories } from '@/features/categories/categories
 import Col from 'react-bootstrap/Col'
 import { NavLink } from "react-router";
 import MgCategoryMenu from "@/Shop/MgCategoryMenu";
+import CatCaret from "@/Shop/CatCaret";
 import "bootstrap/dist/css/bootstrap.css";
 
 function CategoriesMenu()
@@ -28,7 +29,10 @@ function CategoriesMenu()
   const menuMarkup = (categories === undefined || categories.length === 0)
     ? <div className="fetchErr">Loading...</div>
     : categories && categories.map(cat =>
-      <NavLink to={"/category/" + cat.segment} key={crypto.randomUUID()} data-catid={cat.id} className={"btn btn-light"}>{cat.title}</NavLink>
+      <NavLink to={"/category/" + cat.segment} key={crypto.randomUUID()} data-catid={cat.id} className={"btn btn-light"}>
+        <CatCaret />
+        {cat.title}
+      </NavLink>
     );
 
   return (
