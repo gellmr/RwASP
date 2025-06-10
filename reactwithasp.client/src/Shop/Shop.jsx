@@ -61,7 +61,7 @@ function Shop()
       <ProductSearchBox />
       {/*<span>pageInt:{pageInt} maxWholePageNum:{maxWholePageNum} numPages:{numPages} prods:{inStockProducts.length}</span>*/}
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
-      {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">Please wait for Vite to load and then refresh browser.</div>}
+      {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">( Search returned no results )</div>}
       {inStockProdThisPage && inStockProdThisPage.map(prod =>
         <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} />
       )}
