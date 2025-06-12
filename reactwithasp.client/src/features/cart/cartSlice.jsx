@@ -15,6 +15,7 @@ export const cartSlice = createSlice({
       state.value = action.payload; // set products array.
     },
     addToCart: (state, action) => {
+      //console.log("- - -");
       state.isLoading = true;
       const cartIndex = state.value.findIndex(item => item.id === action.payload.id);
       const payloadQty = action.payload.qty; // can be a negative value
@@ -24,7 +25,6 @@ export const cartSlice = createSlice({
         // Doesnt exist. Add product to cart
         const newEntry = JSON.parse(JSON.stringify(action.payload)); // ensure deep copy
         state.value.push(newEntry);
-        //console.log("Create in cart. Qty: " + newEntry.qty);
       }
       else
       {
@@ -44,7 +44,6 @@ export const cartSlice = createSlice({
             }
             return cProd; // return unchanged item.
           });
-          //console.log("Add or Subtract. Product: " + newProd.title + " newQty: " + newQty);
         }
       }
       state.isLoading = false;
