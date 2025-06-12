@@ -252,8 +252,8 @@ th, td {
 .inCartItemRemove .btn-group button:disabled{
   background-color:red !important;
 }
-.cartLineSubInfoBottom{
-  color:red;
+.cartLineSubInfoBottom {
+  color: #8a9fbb;
   display: flex;
   flex-direction: column;
   justify-content: end;

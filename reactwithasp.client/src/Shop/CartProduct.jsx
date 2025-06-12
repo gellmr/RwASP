@@ -38,7 +38,7 @@ function CartProduct({ productId })
           <Col xs={5} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end" }}>
             <span className="d-block d-sm-none cartQtyXXs" style={{ fontSize: "13px", paddingTop: "2px" }}>Qty:</span>
             <span className="cartQtyXs d-block d-sm-none " style={{ fontSize: "13px", paddingTop: "2px" }}>Quantity:</span>
-            <span className="d-none d-sm-block" style={{ fontSize: "14px", paddingTop:"1px" }}>Quantity:</span>
+            <span className="d-none d-sm-block" style={{ fontSize: "12px", paddingTop:"1px" }}>Quantity:</span>
             &nbsp;
             <span style={{ fontWeight:"500" }}>{qty}</span>
           </Col>
