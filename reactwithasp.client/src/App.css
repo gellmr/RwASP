@@ -249,6 +249,9 @@ th, td {
 .inCartItemRemove .btn-group button{
   /*min-width:30px;*/
 }
+.inCartItemRemove .btn-group button:disabled{
+  background-color:red !important;
+}
 .fetchErr {
   color: #4695eb;
   margin-top: 10px;

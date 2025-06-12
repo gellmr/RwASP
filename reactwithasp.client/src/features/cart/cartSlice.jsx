@@ -8,12 +8,14 @@ export const cartSlice = createSlice({
     //   product: { id: 1, title: 'River Kayak', description: 'Tame the wilderness.', price: 350, category: 3 },
     //   qty: 5
     // }
+    isLoading: false,
   },
   reducers: {
     setCart: (state, action) => {
       state.value = action.payload; // set products array.
     },
     addToCart: (state, action) => {
+      state.isLoading = true;
       const cartIndex = state.value.findIndex(item => item.id === action.payload.id);
       const payloadQty = action.payload.qty; // can be a negative value
       const isAddition = (payloadQty > 0);
@@ -45,6 +47,7 @@ export const cartSlice = createSlice({
           //console.log("Add or Subtract. Product: " + newProd.title + " newQty: " + newQty);
         }
       }
+      state.isLoading = false;
     },
     removeFromCart: (state, action) => {
       state.value = state.value.filter(prod => prod.id !== action.payload.id);

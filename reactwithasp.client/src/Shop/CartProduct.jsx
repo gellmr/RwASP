@@ -12,13 +12,14 @@ function CartProduct({ productId })
 {
   const dispatch = useDispatch(); // Redux store dispatch
   const cart = useSelector(state => state.cart.value);
+  const cartLoading = useSelector(state => state.cart.isLoading);
+
   const cartProduct = cart.find(p => p.id === productId);
   const title = cartProduct.product.title;
   const slug = cartProduct.product.description;
   const qty = cartProduct.qty;
   const copyProduct = JSON.parse(JSON.stringify(cartProduct.product)); // ensure deep copy
 
-  console.log("CartProduct  t:" + title + " s:" + slug + " i:" + productId + " q:" + qty);
 
   return (
     <Row>
@@ -48,6 +49,11 @@ function CartProduct({ productId })
               <Button variant="light btn-sm" style={{ fontSize: "12px", width:"60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
               <Button variant="light btn-sm"><i className="bi bi-dash" style={{ fontSize: "15px" }} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty: -1 })) }}></i></Button>
               <Button variant="light btn-sm"><i className="bi bi-plus" style={{ fontSize: "15px" }} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty:  1 })) }}></i></Button>
+              <Button variant="light btn-sm" style={{ fontSize: "12px", width: "60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
+              <Button variant="light btn-sm" disabled={cartLoading}><i className="bi bi-dash" style={{ fontSize: "15px" }} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty: -1 })) }}></i></Button>
+              <Button variant="light btn-sm" disabled={cartLoading}><i className="bi bi-plus" style={{ fontSize: "15px" }} onClick={() => {
+                dispatch(addToCart({ id: productId, product: copyProduct, qty: 1 }))
+              }}></i></Button>
             </ButtonGroup>
           </Col>
         </Row>
