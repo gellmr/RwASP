@@ -18,7 +18,9 @@ function CartProduct({ productId })
 
   const title = cartProduct.product.title;
   const slug  = cartProduct.product.description;
+  const price = cartProduct.product.price;
   const qty   = cartProduct.qty;
+  const subtot = price * qty;
 
   const copyProduct = JSON.parse(JSON.stringify(cartProduct.product)); // ensure deep copy
 
@@ -27,13 +29,13 @@ function CartProduct({ productId })
       <Col xs={12} className="inCartProd">
 
         <Row className="innerRow">
-          <Col xs={9}>
+          <Col xs={7}>
             <div data-product-id={productId} className="inCartItemText">
-              <h6>{title}</h6>
+              <h6>{title} ${price} <small style={{ fontWeight: 100 }}>(each)</small></h6>
             </div>
           </Col>
 
-          <Col xs={3} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end" }}>
+          <Col xs={5} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end" }}>
             <span className="d-block d-sm-none cartQtyXXs" style={{ fontSize: "13px", paddingTop: "2px" }}>Qty:</span>
             <span className="cartQtyXs d-block d-sm-none " style={{ fontSize: "13px", paddingTop: "2px" }}>Quantity:</span>
             <span className="d-none d-sm-block" style={{ fontSize: "14px", paddingTop:"1px" }}>Quantity:</span>
@@ -41,11 +43,13 @@ function CartProduct({ productId })
             <span style={{ fontWeight:"500" }}>{qty}</span>
           </Col>
 
-          <Col xs={12} sm={6} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
+          <Col xs={7} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
             <p style={{ marginTop: "0px", marginBottom: "8px" }}>{slug}</p>
           </Col>
-
-          <Col xs={12} sm={6} className="inCartItemRemove">
+          <Col xs={5}>
+            <div style={{ textAlign: "right" }}><span style={{fontSize:"12px"}}>Price: </span><span>${subtot}</span></div>
+          </Col>
+          <Col xs={12} className="inCartItemRemove">
             <ButtonGroup>
               <Button variant="light btn-sm" style={{ fontSize: "12px", width: "60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
               <Button variant="light btn-sm" disabled={cartLoading} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty: -1 })) }}><i className="bi bi-dash" style={{ fontSize: "15px" }} ></i></Button>
