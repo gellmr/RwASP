@@ -18,7 +18,7 @@ function CartProduct({ productId })
   const qty = cartProduct.qty;
   const copyProduct = JSON.parse(JSON.stringify(cartProduct.product)); // ensure deep copy
 
-  console.log("Render t:" + title + " s:" + slug + " i:" + productId + " q:" + qty);
+  console.log("CartProduct  t:" + title + " s:" + slug + " i:" + productId + " q:" + qty);
 
   return (
     <Row>
