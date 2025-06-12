@@ -11,15 +11,16 @@ import "@/App.css";
 function CartProduct({ productId })
 {
   const dispatch = useDispatch(); // Redux store dispatch
-  const cart = useSelector(state => state.cart.value);
+
   const cartLoading = useSelector(state => state.cart.isLoading);
-
+  const cart        = useSelector(state => state.cart.value);
   const cartProduct = cart.find(p => p.id === productId);
-  const title = cartProduct.product.title;
-  const slug = cartProduct.product.description;
-  const qty = cartProduct.qty;
-  const copyProduct = JSON.parse(JSON.stringify(cartProduct.product)); // ensure deep copy
 
+  const title = cartProduct.product.title;
+  const slug  = cartProduct.product.description;
+  const qty   = cartProduct.qty;
+
+  const copyProduct = JSON.parse(JSON.stringify(cartProduct.product)); // ensure deep copy
 
   return (
     <Row>

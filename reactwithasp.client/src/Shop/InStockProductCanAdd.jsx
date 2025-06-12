@@ -9,16 +9,16 @@ import "@/App.css";
 
 function InStockProductCanAdd({ title, slug, productId, price })
 {
+  const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
+
   // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
   //    name of local state const
   //    |                             Redux internal state (eg the store)
   //    |                             |              Name of our slice
   //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
-  const cartProducts = useSelector(state => state.cart.value); // array of products
-  const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
-
-  const product = inStockProducts.find(p => p.id === productId); // Get the in stock product
+  const cartProducts    = useSelector(state => state.cart.value); // array of products
+  const product    = inStockProducts.find(p => p.id === productId); // Get the in stock product
   const prodInCart = cartProducts.find(p => p.id === productId);
   const qtyInCart = prodInCart === undefined ? <span>&nbsp;&nbsp;</span> : prodInCart.qty;
 
@@ -38,14 +38,8 @@ function InStockProductCanAdd({ title, slug, productId, price })
             <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px" }}>Add to Cart</span>
             <ButtonGroup className="addToCartBtnGroup">
               <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px", fontSize:"14px", fontWeight:500}}>{qtyInCart}</Button>
-              <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
-                if (qtyInCart > 0) {
-                  dispatch(addToCart({ id: productId, product: product, qty: -1 })); // Remove one from Cart
-                }
-              }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
-              <Button variant="light" onClick={() => {
-                dispatch(addToCart({ id: productId, product: product, qty: 1 })); // Add one to Cart
-              }}><i className="bi bi-plus" style={{ fontSize:"15px" }}></i></Button>
+              <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => { if (qtyInCart > 0) { dispatch(addToCart({ id: productId, product: product, qty: -1 })) } }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
+              <Button variant="light" onClick={() => { dispatch(addToCart({ id: productId, product: product, qty: 1 })) }}><i className="bi bi-plus" style={{ fontSize:"15px" }}></i></Button>
             </ButtonGroup>
           </Col>
         </Row>
