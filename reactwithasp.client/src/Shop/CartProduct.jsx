@@ -46,9 +46,11 @@ function CartProduct({ productId })
           <Col xs={7} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
             <p style={{ marginTop: "0px", marginBottom: "8px" }}>{slug}</p>
           </Col>
-          <Col xs={5}>
+
+          <Col xs={5} className="cartLineSubInfoBottom">
             <div style={{ textAlign: "right" }}><span style={{fontSize:"12px"}}>Price: </span><span>${subtot}</span></div>
           </Col>
+
           <Col xs={12} className="inCartItemRemove">
             <ButtonGroup>
               <Button variant="light btn-sm" style={{ fontSize: "12px", width: "60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
