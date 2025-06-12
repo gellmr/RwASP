@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import CartProduct from "@/Shop/CartProduct";
 import CartBar from "@/Shop/CartBar";
+import CartSummaryLine from "@/Shop/CartSummaryLine";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import ProceedCheckoutBtn from "@/Shop/ProceedCheckoutBtn";
@@ -8,6 +9,8 @@ function Cart() {
   const cartProducts = useSelector(state => state.cart.value); // array of products
   const gotItems = cartProducts.length > 0;
   const showTopCheckoutBtn = cartProducts.length > 5;
+  const totalQty = cartProducts.reduce((sum, prod) => sum + prod.qty, 0);
+  const totalPrice = cartProducts.reduce((sum, prod) => sum + (prod.product.price * prod.qty), 0);
   return (
     <>
       <h2 style={{ marginTop:"5px" }}>Your Cart:</h2>
@@ -20,6 +23,7 @@ function Cart() {
             {cartProducts && cartProducts.map(prod => // when we add more of this product, we trigger re-render and the component below will disappear.
               <CartProduct key={prod.id} productId={prod.id} />
             )}
+            <CartSummaryLine totalQuantity={totalQty} totalPrice={totalPrice} />
           </Col>
           <CartBar />
         </Row>
