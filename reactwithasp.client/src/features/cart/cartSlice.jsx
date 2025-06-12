@@ -2,15 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 export const cartSlice = createSlice({
   name: 'cart', // name of slice
   initialState: {
-    value: [] // array of objects. Each object in the array is like...
+    value: [], // array of objects. Each object in the array is like...
     // {
     //   id: 1,
-    //   product: {
-    //     id: 1,
-    //     title: 'River Kayak',
-    //     description: 'Tame the wilderness.',
-    //     price: 350, category: 3
-    //   },
+    //   product: { id: 1, title: 'River Kayak', description: 'Tame the wilderness.', price: 350, category: 3 },
     //   qty: 5
     // }
   },
@@ -27,7 +22,7 @@ export const cartSlice = createSlice({
         // Doesnt exist. Add product to cart
         const newEntry = JSON.parse(JSON.stringify(action.payload)); // ensure deep copy
         state.value.push(newEntry);
-        console.log("Create in cart. Qty: " + newEntry.qty);
+        //console.log("Create in cart. Qty: " + newEntry.qty);
       }
       else
       {
@@ -47,7 +42,7 @@ export const cartSlice = createSlice({
             }
             return cProd; // return unchanged item.
           });
-          console.log("Add or Subtract. Product: " + newProd.title + " newQty: " + newQty);
+          //console.log("Add or Subtract. Product: " + newProd.title + " newQty: " + newQty);
         }
       }
     },
