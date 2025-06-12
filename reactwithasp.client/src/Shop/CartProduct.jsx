@@ -47,10 +47,8 @@ function CartProduct({ productId })
           <Col xs={12} sm={6} className="inCartItemRemove">
             <ButtonGroup>
               <Button variant="light btn-sm" style={{ fontSize: "12px", width: "60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
-              <Button variant="light btn-sm" disabled={cartLoading}><i className="bi bi-dash" style={{ fontSize: "15px" }} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty: -1 })) }}></i></Button>
-              <Button variant="light btn-sm" disabled={cartLoading}><i className="bi bi-plus" style={{ fontSize: "15px" }} onClick={() => {
-                dispatch(addToCart({ id: productId, product: copyProduct, qty: 1 }))
-              }}></i></Button>
+              <Button variant="light btn-sm" disabled={cartLoading} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty: -1 })) }}><i className="bi bi-dash" style={{ fontSize: "15px" }} ></i></Button>
+              <Button variant="light btn-sm" disabled={cartLoading} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty:  1 })) }}><i className="bi bi-plus" style={{ fontSize: "15px" }} ></i></Button>
             </ButtonGroup>
           </Col>
         </Row>
