@@ -11,3 +11,7 @@ obj/**
 
 # Ignore project per-user settings in visual studio
 *.csproj.user
+
+# Ignore external JSON IConfiguration files
+appsettings.Production.json
+appsettings.Development.json
