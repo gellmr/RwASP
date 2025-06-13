@@ -29,26 +29,28 @@ function CartProduct({ productId })
       <Col xs={12} className="inCartProd">
 
         <Row className="innerRow">
-          <Col xs={7}>
+          <Col xs={8}>
             <div data-product-id={productId} className="inCartItemText">
-              <h6>{title} ${price} <small style={{ fontWeight: 100 }}>(each)</small></h6>
+              <h6>
+                {title} ${price} 
+              </h6>
             </div>
           </Col>
 
-          <Col xs={5} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end" }}>
-            <span className="d-block d-sm-none cartQtyXXs" style={{ fontSize: "13px", paddingTop: "2px" }}>Qty:</span>
-            <span className="cartQtyXs d-block d-sm-none " style={{ fontSize: "13px", paddingTop: "2px" }}>Quantity:</span>
-            <span className="d-none d-sm-block" style={{ fontSize: "12px", paddingTop:"1px" }}>Quantity:</span>
+          <Col xs={4} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", fontSize:"12px" }}>
+            <span className="d-block d-sm-none cartQtyXXs" >Qty:</span>
+            <span className="cartQtyXs d-block d-sm-none" >Quantity:</span>
+            <span className="d-none d-sm-block" >Quantity:</span>
             &nbsp;
             <span style={{ fontWeight:"500" }}>{qty}</span>
           </Col>
 
-          <Col xs={7} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
+          <Col xs={8} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
             <p style={{ marginTop: "0px", marginBottom: "8px" }}>{slug}</p>
           </Col>
 
-          <Col xs={5} className="cartLineSubInfoBottom">
-            <div style={{ textAlign: "right" }}><span style={{fontSize:"12px"}}>Price: </span><span>${subtot}</span></div>
+          <Col xs={4} className="cartLineSubInfoBottom">
+            <div style={{ textAlign: "right" }}>Price: ${subtot}</div>
           </Col>
 
           <Col xs={12} className="inCartItemRemove">

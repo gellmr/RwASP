@@ -225,11 +225,14 @@ th, td {
   padding-right:0px;
   padding-left:0px;
 }
-.inCartProd button{
+.innerRow div{
+  /*border: 1px dashed lime;*/
+}
+.inCartProd button {
   /*border: 3px dashed red;*/
-  float:right;
+  float: right;
   width: 85px;
-  font-size:14px;
+  font-size: 14px;
 }
 .inCartItemText {
   text-align: left;
@@ -253,12 +256,14 @@ th, td {
   background-color:red !important;
 }
 .cartLineSubInfoBottom {
-  color: #8a9fbb;
+  color: #637183;
   display: flex;
   flex-direction: column;
   justify-content: end;
   align-items: flex-end;
   padding-bottom: 4px;
+  padding-left: 0px;
+  font-size: 12px;
 }
 .fetchErr {
   color: #4695eb;
