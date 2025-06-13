@@ -108,7 +108,7 @@ function Checkout()
               <h5 className="shipHeading">Your Email Address</h5>
               <InputGroup className="mb-5">
                 <InputGroup.Text>Email</InputGroup.Text>
-                <Form.Control id="shipEmail" id="shipEmail" type="text" value={shipEmail} onChange={(e) => setShipEmail(e.target.value)} />
+                <Form.Control id="shipEmail" name="shipEmail" type="text" value={shipEmail} onChange={(e) => setShipEmail(e.target.value)} />
               </InputGroup>
 
               <Button variant="success" className={"btn btn-primary"} type="submit" >Complete Order</Button>
