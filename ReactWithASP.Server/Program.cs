@@ -1,11 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+using ReactWithASP.Server.Domain;
+using ReactWithASP.Server.Domain.Abstract;
+using ReactWithASP.Server.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+IHostEnvironment env = builder.Environment;
+
+// Load either Development or Production JSON config. (Not in source control)
+builder.Configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StoreContext")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// DI declarations
+builder.Services.AddScoped<IOrdersRepository, EFOrdersRepository>();
+builder.Services.AddScoped<StoreContext, StoreContext>();
 
 var app = builder.Build();
 
@@ -17,6 +31,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+  var services = scope.ServiceProvider;
+  var context = services.GetRequiredService<StoreContext>();
+  context.Database.EnsureCreated(); // create the database if it doesnt exist.
 }
 
 app.UseHttpsRedirection();

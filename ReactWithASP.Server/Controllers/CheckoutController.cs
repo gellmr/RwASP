@@ -1,15 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
+using ReactWithASP.Server.Domain;
+using ReactWithASP.Server.Domain.Abstract;
 
 namespace ReactWithASP.Server.Controllers
 {
-  [Route("api/[controller]")]
+
+
+    [Route("api/[controller]")]
   [ApiController]
   public class CheckoutController: ControllerBase
   {
+    private IOrdersRepository ordersRepo;
+    public CheckoutController(IOrdersRepository oRepo) {
+      ordersRepo = oRepo;
+    }
+
     [HttpPost("submit")] // POST api/checkout/submit.  Accepts application/json POST submissions containing stringified JSON data in request body.
     public IActionResult Submit([FromBody] CheckoutSubmit checkoutSubmit)
     {
+      Order order = new Order();
+      order.OrderedProducts = new List<OrderedProduct>();
+      ordersRepo.SaveOrder(order);
       return Ok(checkoutSubmit); // Respond with 200 OK, and automatically cast object to JSON for the response.
     }
 
