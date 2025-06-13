@@ -8,7 +8,10 @@ function CartBtn({ isSmall }){
   const myCss = (isSmall === true) ? baseCss + " d-block d-sm-none lime" : baseCss + " d-none d-sm-block";
   return (
     <>
-      <NavLink to="/cart" className={myCss}>Cart: {cartProducts && cartTotalItems} Items</NavLink>
+      <NavLink to="/cart" className={myCss}>
+        <i className="bi bi-cart3" style={{marginRight:4}}></i>
+        Cart: {cartProducts && cartTotalItems} Items
+      </NavLink>
     </>
   );
 }
