@@ -11,7 +11,7 @@ import ProceedCartBtn from "@/Shop/ProceedCartBtn";
 function Shop()
 {
   // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
-  //    name of local state const
+  //    Name of local state const
   //    |                                Redux internal state (eg the store)
   //    |                                |              Name of our slice
   //    |                                |              |
@@ -26,15 +26,16 @@ function Shop()
   const prodPerPage = 4;                                                    // Products per page
   const maxWholePageNum = Math.floor(inStockProducts.length / prodPerPage); // floor ( 7 / 4 ) == 1
   const extraPage = (inStockProducts.length % prodPerPage === 0) ? 0 : 1;
-  const numPages = maxWholePageNum + extraPage;                      // Add an extra page if we need to. Eg 7 products will require (4 + 3 == 2) pages
-  const pageIntP = (pageInt > maxWholePageNum) ? numPages : pageInt; // Navigate to the max number page. Eg 1 ...Maybe move call to inStock reducer action.
+  const numPages = maxWholePageNum + extraPage;                         // Add an extra page if we need to. Eg 7 products will require (4 + 3 == 2) pages
+  const pageIntP = (pageInt > maxWholePageNum) ? numPages : pageInt;    // Navigate to the max number page. Eg 1 ...Maybe move call to inStock reducer action.
 
   const pageIdx = (page === undefined) ? 0 : pageIntP - 1;              // eg (     page 0          page 1           page 2 )
   const startIdx = prodPerPage * pageIdx;                               // eg ( 4 * 0 == 0)   ( 4 * 1 == 4 )   ( 4 * 2 == 8 ) ...
   const endIdx = startIdx + prodPerPage;                                // eg            4 ...           8 ...            12  ...
   const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx);
 
-  // pageIntP should be 1 when we first visit the site, and have an initial page of products. It may be 0 for a while during attempted re-renders as the products are still being fetched.
+  // The value of pageIntP should be 1 when we first visit the site, and have an initial page of products.
+  // It may be 0 for a while during re-renders as the products are still being fetched.
 
   const gotItems = cartProducts.length > 0; // true if there are items in cart
   
