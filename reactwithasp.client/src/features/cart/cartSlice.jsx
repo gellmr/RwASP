@@ -74,9 +74,13 @@ export const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(updateCartOnServer.fulfilled, (state, action) => {
       console.log("updateCartOnServer.fulfilled");
+      // Server indicates successful update, and has given us the finalised cart state.
+      // TODO - Dispatch an action to confirm the state change based on this data. This ensures consistency.
+      const finalCart = action.payload;
     })
     .addCase(updateCartOnServer.rejected, (state, action) => {
       console.log("updateCartOnServer.rejected");
+      // TODO - Handle error cases by reverting the local state, or displaying an error message to the user.
     });
   },
 })

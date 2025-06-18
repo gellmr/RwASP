@@ -18,7 +18,11 @@ namespace ReactWithASP.Server.Controllers
     public ActionResult Update([FromBody] CartUpdateDTO cartUpdate)
     {
       // Client cart has been updated with the given quantities.
-      return Ok(); // Respond with 200 OK
+      // TODO - Validate cartUpdate
+      // TODO - Update the user's cart in the database
+      // Send back response to client indicating success or failure.
+
+      return Ok(cartUpdate); // Respond with 200 OK, and the finalised cart state.
     }
   }
 }
