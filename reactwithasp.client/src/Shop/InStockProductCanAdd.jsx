@@ -39,7 +39,9 @@ function InStockProductCanAdd({ title, slug, productId, price })
             <ButtonGroup className="addToCartBtnGroup">
               <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px", fontSize:"14px", fontWeight:500}}>{qtyInCart}</Button>
               <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => { if (qtyInCart > 0) { dispatch(addToCart({ id: productId, product: product, qty: -1 })) } }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
-              <Button variant="light" onClick={() => { dispatch(addToCart({ id: productId, product: product, qty: 1 })) }}><i className="bi bi-plus" style={{ fontSize:"15px" }}></i></Button>
+              <Button variant="light" onClick={() => {
+                dispatch(addToCart({ id: productId, product: product, qty: 1 }));
+              }}><i className="bi bi-plus" style={{ fontSize: "15px" }}></i></Button>
             </ButtonGroup>
           </Col>
         </Row>
