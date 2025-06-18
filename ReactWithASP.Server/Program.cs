@@ -18,6 +18,14 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.Re
        .AddDefaultTokenProviders();
 
 builder.Services.AddControllers();
+
+// Enable Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options => {
+  options.Cookie.HttpOnly = true; // This makes the cookie readable only by our server. Client side javascript cannot read the cookie. Protects against XSS.
+  options.Cookie.IsEssential = true;
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -48,6 +56,8 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllers();
 
