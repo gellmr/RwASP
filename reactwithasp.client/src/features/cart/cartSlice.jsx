@@ -1,4 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios';
+
+export const updateCartOnServer = createAsyncThunk( 'cart/updateCartOnServer',
+  async (jsonData, { rejectWithValue }) => {
+    try {
+      // Notify the server our Cart has changed.
+      const options = { headers: { 'Content-Type': 'application/json' } };
+      const response = await axios.post('/api/cart/update', jsonData, options);
+      return response.data;
+    }
+    catch (error) {
+      return rejectWithValue(error.response.data); // This will trigger updateCartOnServer.rejected, with error.response.data as action.payload
+    }
+  }
+);
+
 export const cartSlice = createSlice({
   name: 'cart', // name of slice
   initialState: {
@@ -54,7 +70,15 @@ export const cartSlice = createSlice({
     clearCart: (state, action) => {
       state.value = [];
     }
-  }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(updateCartOnServer.fulfilled, (state, action) => {
+      console.log("updateCartOnServer.fulfilled");
+    })
+    .addCase(updateCartOnServer.rejected, (state, action) => {
+      console.log("updateCartOnServer.rejected");
+    });
+  },
 })
 // Action creators are generated for each case reducer function
 export const { setCart, addToCart, removeFromCart, clearCart } = cartSlice.actions

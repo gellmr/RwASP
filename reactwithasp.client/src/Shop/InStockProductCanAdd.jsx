@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { addToCart } from '@/features/cart/cartSlice.jsx'
+import { addToCart, updateCartOnServer } from '@/features/cart/cartSlice.jsx'
 
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
@@ -20,7 +20,8 @@ function InStockProductCanAdd({ title, slug, productId, price })
   const cartProducts    = useSelector(state => state.cart.value); // array of products
   const product    = inStockProducts.find(p => p.id === productId); // Get the in stock product
   const prodInCart = cartProducts.find(p => p.id === productId);
-  const qtyInCart = prodInCart === undefined ? <span>&nbsp;&nbsp;</span> : prodInCart.qty;
+  const qtyInCartInt = prodInCart === undefined ? 0 : prodInCart.qty;
+  const qtyInCartMarkup = prodInCart === undefined ? <span>&nbsp;&nbsp;</span> : prodInCart.qty;
 
   return (
     <Row className="inStockProductCanAdd">
@@ -37,10 +38,11 @@ function InStockProductCanAdd({ title, slug, productId, price })
             <span className="d-none d-sm-block" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px", marginLeft: "0px" }}>Add to Cart</span>
             <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px" }}>Add to Cart</span>
             <ButtonGroup className="addToCartBtnGroup">
-              <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px", fontSize:"14px", fontWeight:500}}>{qtyInCart}</Button>
-              <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => { if (qtyInCart > 0) { dispatch(addToCart({ id: productId, product: product, qty: -1 })) } }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
+              <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px", fontSize:"14px", fontWeight:500}}>{qtyInCartMarkup}</Button>
+              <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => { if (qtyInCartMarkup > 0) { dispatch(addToCart({ id: productId, product: product, qty: -1 })) } }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
               <Button variant="light" onClick={() => {
                 dispatch(addToCart({ id: productId, product: product, qty: 1 }));
+                dispatch(updateCartOnServer({ itemID:productId, itemQty:qtyInCartInt, adjust:1 }));
               }}><i className="bi bi-plus" style={{ fontSize: "15px" }}></i></Button>
             </ButtonGroup>
           </Col>
