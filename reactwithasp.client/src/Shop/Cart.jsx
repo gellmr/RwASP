@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { clearCart } from '@/features/cart/cartSlice.jsx'
+import { clearCart, clearCartOnServer } from '@/features/cart/cartSlice.jsx'
 import CartProduct from "@/Shop/CartProduct";
 import CartBar from "@/Shop/CartBar";
 import CartSummaryLine from "@/Shop/CartSummaryLine";
@@ -24,7 +24,10 @@ function Cart()
       <h2 style={{ marginTop:"5px" }}>Your Cart:</h2>
       {showTopCheckoutBtn && <div className="proceedCheckoutBar">
         <ButtonGroup>
-          <Button variant="light" style={{ fontSize: 13, color: "#777777" }} onClick={() => { dispatch(clearCart()) }}><i className="bi bi-trash3"></i>&nbsp;Clear Cart</Button>
+          <Button variant="light" style={{ fontSize: 13, color: "#777777" }} onClick={() => {
+            dispatch(clearCart());
+            dispatch(clearCartOnServer());
+          }}><i className="bi bi-trash3"></i>&nbsp;Clear Cart</Button>
           <ProceedCheckoutBtn />
         </ButtonGroup>
       </div>}

@@ -15,6 +15,19 @@ export const updateCartOnServer = createAsyncThunk( 'cart/updateCartOnServer',
   }
 );
 
+export const clearCartOnServer = createAsyncThunk('cart/clearCartOnServer',
+  async (jsonData, { rejectWithValue }) => {
+    try {
+      // Tell the server to clear our Cart.
+      const response = await axios.post('/api/cart/clear');
+      return response.data;
+    }
+    catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const cartSlice = createSlice({
   name: 'cart', // Name of slice
   initialState: {
@@ -73,11 +86,15 @@ export const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(updateCartOnServer.fulfilled, (state, action) => {
       console.log("updateCartOnServer.fulfilled");
-      // Server indicates successful update, and has given us the finalised cart state.
     })
     .addCase(updateCartOnServer.rejected, (state, action) => {
       console.log("updateCartOnServer.rejected");
-      // TODO - Handle error cases by reverting the local state, or displaying an error message to the user.
+    })
+    .addCase(clearCartOnServer.fulfilled, (state, action) => {
+      console.log("clearCartOnServer.fulfilled");
+    })
+    .addCase(clearCartOnServer.rejected, (state, action) => {
+      console.log("clearCartOnServer.rejected");
     });
   },
 })

@@ -53,6 +53,14 @@ namespace ReactWithASP.Server.Controllers
     }
 
     [HttpPost]
+    [Route("clear")] // POST api/cart/clear
+    public ActionResult Clear()
+    {
+      // Send back response to client indicating success or failure.
+      return Ok(); // 200 ok
+    }
+
+    [HttpPost]
     [Route("update")] // POST api/cart/update  Accepts POST data with JSON in Request Body. Content-Type must be 'application/json'
     public ActionResult Update([FromBody] CartUpdateDTO cartUpdate, Nullable<Guid> guestId)
     {
