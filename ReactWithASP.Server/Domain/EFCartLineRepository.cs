@@ -29,7 +29,9 @@ namespace ReactWithASP.Server.Domain
         // create new record
         context.CartLines.Add(cartLine);
         InStockProduct ip = cartLine.InStockProduct;
-        context.Entry(ip).State = EntityState.Unchanged; // dont create the product. It already exists in database.
+        Guest g = cartLine.Guest;
+        context.Entry(ip).State = EntityState.Unchanged; // Dont create the product. It already exists in database
+        context.Entry(g).State = EntityState.Unchanged; // Dont create guest. It already exists in database.
         context.SaveChanges();
       }
     }
