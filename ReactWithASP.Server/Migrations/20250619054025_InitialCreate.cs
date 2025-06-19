@@ -37,17 +37,17 @@ namespace ReactWithASP.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Guest",
+                name: "Guests",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Guest", x => x.ID);
+                    table.PrimaryKey("PK_Guests", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,9 +93,9 @@ namespace ReactWithASP.Server.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Orders_Guest_GuestID",
+                        name: "FK_Orders_Guests_GuestID",
                         column: x => x.GuestID,
-                        principalTable: "Guest",
+                        principalTable: "Guests",
                         principalColumn: "ID");
                 });
 
@@ -106,9 +106,9 @@ namespace ReactWithASP.Server.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GuestID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    InStockProductID = table.Column<int>(type: "int", nullable: true)
+                    InStockProductID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,18 +117,18 @@ namespace ReactWithASP.Server.Migrations
                         name: "FK_CartLines_AppUser_UserID",
                         column: x => x.UserID,
                         principalTable: "AppUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CartLines_Guest_GuestID",
+                        name: "FK_CartLines_Guests_GuestID",
                         column: x => x.GuestID,
-                        principalTable: "Guest",
+                        principalTable: "Guests",
                         principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_CartLines_InStockProducts_InStockProductID",
                         column: x => x.InStockProductID,
                         principalTable: "InStockProducts",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,7 +239,7 @@ namespace ReactWithASP.Server.Migrations
                 name: "AppUser");
 
             migrationBuilder.DropTable(
-                name: "Guest");
+                name: "Guests");
         }
     }
 }

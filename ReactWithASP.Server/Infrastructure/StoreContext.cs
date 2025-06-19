@@ -24,6 +24,7 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<InStockProduct> InStockProducts { get; set; }
     public DbSet<CartLine> CartLines { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<Guest> Guests { get; set; }
 
     public StoreContext(IConfiguration c){ // receive the configuration object through DI
       _config = c;

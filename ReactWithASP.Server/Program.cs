@@ -32,6 +32,9 @@ builder.Services.AddSwaggerGen();
 
 // DI declarations
 builder.Services.AddScoped<IOrdersRepository, EFOrdersRepository>();
+builder.Services.AddScoped<ICartLineRepository, EFCartLineRepository>();
+builder.Services.AddScoped<IInStockRepository, EFInStockRepository>();
+builder.Services.AddScoped<IGuestRepository, EFGuestRepository>();
 builder.Services.AddScoped<StoreContext, StoreContext>();
 
 var app = builder.Build();

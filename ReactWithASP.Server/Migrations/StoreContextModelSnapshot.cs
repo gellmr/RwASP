@@ -33,14 +33,13 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<Guid?>("GuestID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("InStockProductID")
+                    b.Property<int>("InStockProductID")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<string>("UserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
@@ -61,20 +60,17 @@ namespace ReactWithASP.Server.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Guest");
+                    b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Domain.InStockProduct", b =>
@@ -265,13 +261,13 @@ namespace ReactWithASP.Server.Migrations
 
                     b.HasOne("ReactWithASP.Server.Domain.InStockProduct", "InStockProduct")
                         .WithMany()
-                        .HasForeignKey("InStockProductID");
+                        .HasForeignKey("InStockProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ReactWithASP.Server.Infrastructure.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("AppUser");
 

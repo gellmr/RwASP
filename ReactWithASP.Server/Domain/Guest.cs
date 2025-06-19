@@ -7,9 +7,9 @@ namespace ReactWithASP.Server.Domain
   {
     [Key]
     public Nullable<Guid> ID { get; set; }
-    public string Email { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string? Email { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
     public virtual IList<Order> Orders { get; set; }
 
     [NotMapped]
