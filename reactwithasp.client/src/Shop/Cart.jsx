@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { clearCart } from '@/features/cart/cartSlice.jsx'
 import CartProduct from "@/Shop/CartProduct";
 import CartBar from "@/Shop/CartBar";
 import CartSummaryLine from "@/Shop/CartSummaryLine";
@@ -7,7 +8,9 @@ import Col from 'react-bootstrap/Col'
 import ProceedCheckoutBtn from "@/Shop/ProceedCheckoutBtn";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-function Cart() {
+function Cart()
+{
+  const dispatch = useDispatch();
   const cartProducts = useSelector(state => state.cart.value); // array of products
 
   const gotItems = cartProducts.length > 0;
@@ -21,7 +24,7 @@ function Cart() {
       <h2 style={{ marginTop:"5px" }}>Your Cart:</h2>
       {showTopCheckoutBtn && <div className="proceedCheckoutBar">
         <ButtonGroup>
-          <Button variant="light" style={{fontSize:13, color:"#777777"}}><i className="bi bi-trash3"></i>&nbsp;Clear Cart</Button>
+          <Button variant="light" style={{ fontSize: 13, color: "#777777" }} onClick={() => { dispatch(clearCart()) }}><i className="bi bi-trash3"></i>&nbsp;Clear Cart</Button>
           <ProceedCheckoutBtn />
         </ButtonGroup>
       </div>}
