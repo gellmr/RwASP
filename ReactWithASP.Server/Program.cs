@@ -15,6 +15,7 @@ IHostEnvironment env = builder.Environment;
 builder.Configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StoreContext")));
+builder.Services.AddTransient<DataSeeder>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
        .AddEntityFrameworkStores<StoreContext>()
@@ -69,6 +70,11 @@ app.UseAuthorization();
 app.UseSession();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope()){
+  var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+  seeder.Seed();
+}
 
 app.MapFallbackToFile("/index.html");
 
