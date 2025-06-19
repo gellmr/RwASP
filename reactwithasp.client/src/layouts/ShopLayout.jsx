@@ -1,4 +1,7 @@
 import React from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux'
+import { setCart, clearCart } from '@/features/cart/cartSlice.jsx'
 
 import { NavLink } from "react-router";
 import { Outlet } from "react-router";
@@ -13,7 +16,25 @@ import MgNavBar from "@/main/MgNavBar";
 import CategoriesMenu from "@/Shop/CategoriesMenu";
 import CartBtn from "@/Shop/CartBtn";
 
-const ShopLayout = () => {
+const ShopLayout = () =>
+{
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  async function fetchCart() {
+    try {
+      const url = window.location.origin + "/api/cart";
+      const response = await fetch(url);
+      const data = await response.json();
+      dispatch(setCart(data));
+    } catch (err) {
+      dispatch(clearCart());
+    }
+  }
+
   return (
     <>
       <MgNavBar>
