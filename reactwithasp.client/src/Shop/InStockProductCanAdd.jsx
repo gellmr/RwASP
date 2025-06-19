@@ -12,16 +12,18 @@ function InStockProductCanAdd({ title, slug, productId, price })
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
 
   // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
-  //    name of local state const
+  //    Name of local state const
   //    |                             Redux internal state (eg the store)
   //    |                             |              Name of our slice
   //    |                             |              |
-  const inStockProducts = useSelector(state => state.inStock.value); // get the value of the state variable in our slice. An array.
-  const cartProducts    = useSelector(state => state.cart.value); // array of products
-  const product    = inStockProducts.find(p => p.id === productId); // Get the in stock product
-  const prodInCart = cartProducts.find(p => p.id === productId);
-  const qtyInCartInt = prodInCart === undefined ? 0 : prodInCart.qty;
-  const qtyInCartMarkup = prodInCart === undefined ? <span>&nbsp;&nbsp;</span> : prodInCart.qty;
+  const inStockProducts = useSelector(state => state.inStock.value);       // Get the value of the state variable in our slice. An array.
+  const cartProducts    = useSelector(state => state.cart.value);          // Array of products
+
+  const product         =   inStockProducts.find(p => p.id === productId); // Get the in stock product
+  const prodInCart      =      cartProducts.find(p => p.id === productId);
+
+  const qtyInCartInt    = (prodInCart === undefined) ? 0 : prodInCart.qty;
+  const qtyInCartMarkup = (prodInCart === undefined) ? <span>&nbsp;&nbsp;</span> : prodInCart.qty;
 
   return (
     <Row className="inStockProductCanAdd">
