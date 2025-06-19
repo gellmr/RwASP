@@ -4,17 +4,6 @@ using ReactWithASP.Server.Domain;
 
 namespace ReactWithASP.Server.Infrastructure
 {
-  /*
-  DbContext in EF Core allows us to...
-  ------------------------------------
-  Manage the database connection
-  Configure models & relationships
-  Query the database
-  Save data to the database
-  Configure change tracking
-  Caching
-  Transaction management
-  */
   public class StoreContext : DbContext
   {
     private IConfiguration _config;
