@@ -12,7 +12,7 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250615145634_InitialCreate")]
+    [Migration("20250619042951_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,38 @@ namespace ReactWithASP.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ReactWithASP.Server.Domain.CartLine", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<Guid?>("GuestID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("InStockProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("GuestID");
+
+                    b.HasIndex("InStockProductID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("CartLine");
+                });
 
             modelBuilder.Entity("ReactWithASP.Server.Domain.Guest", b =>
                 {
@@ -226,6 +258,29 @@ namespace ReactWithASP.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppUser");
+                });
+
+            modelBuilder.Entity("ReactWithASP.Server.Domain.CartLine", b =>
+                {
+                    b.HasOne("ReactWithASP.Server.Domain.Guest", "Guest")
+                        .WithMany()
+                        .HasForeignKey("GuestID");
+
+                    b.HasOne("ReactWithASP.Server.Domain.InStockProduct", "InStockProduct")
+                        .WithMany()
+                        .HasForeignKey("InStockProductID");
+
+                    b.HasOne("ReactWithASP.Server.Infrastructure.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("InStockProduct");
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Domain.Order", b =>

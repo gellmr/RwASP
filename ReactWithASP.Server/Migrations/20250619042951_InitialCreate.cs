@@ -100,6 +100,38 @@ namespace ReactWithASP.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CartLine",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GuestID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    InStockProductID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartLine", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_CartLine_AppUser_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AppUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartLine_Guest_GuestID",
+                        column: x => x.GuestID,
+                        principalTable: "Guest",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_CartLine_InStockProducts_InStockProductID",
+                        column: x => x.InStockProductID,
+                        principalTable: "InStockProducts",
+                        principalColumn: "ID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderedProducts",
                 columns: table => new
                 {
@@ -145,6 +177,21 @@ namespace ReactWithASP.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CartLine_GuestID",
+                table: "CartLine",
+                column: "GuestID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartLine_InStockProductID",
+                table: "CartLine",
+                column: "InStockProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartLine_UserID",
+                table: "CartLine",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderedProducts_InStockProductID",
                 table: "OrderedProducts",
                 column: "InStockProductID");
@@ -173,6 +220,9 @@ namespace ReactWithASP.Server.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CartLine");
+
             migrationBuilder.DropTable(
                 name: "OrderedProducts");
 
