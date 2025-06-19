@@ -4,6 +4,9 @@ using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
 
+// -------------------------------------------------------------
+// Add Services to the container
+
 var builder = WebApplication.CreateBuilder(args);
 
 IHostEnvironment env = builder.Environment;
@@ -36,6 +39,9 @@ builder.Services.AddScoped<ICartLineRepository, EFCartLineRepository>();
 builder.Services.AddScoped<IInStockRepository, EFInStockRepository>();
 builder.Services.AddScoped<IGuestRepository, EFGuestRepository>();
 builder.Services.AddScoped<StoreContext, StoreContext>();
+
+// -------------------------------------------------------------
+// Configure the HTTP Request pipeline
 
 var app = builder.Build();
 
