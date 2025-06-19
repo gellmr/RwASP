@@ -4,7 +4,12 @@ using ReactWithASP.Server.Domain.Abstract;
 
 namespace ReactWithASP.Server.Controllers
 {
-  public class CartUpdateDTO
+  public class CartResponseDTO
+  {
+    public Guid? guestID { get; set; }
+  }
+
+  public class CartUpdateDTO: CartResponseDTO
   {
     public Int32 ispID { get; set; }
     public Int32 qty { get; set; }
@@ -52,12 +57,28 @@ namespace ReactWithASP.Server.Controllers
       return Ok( items ); // Respond with 200 OK, and list of cartLine objects.
     }
 
+    private Guest EnsureGuest(Nullable<Guid> guestId)
+    {
+      Guest guest = null;
+      guest = (guestId == null) ? new Guest { ID = Guid.NewGuid() } : guestRepo.Guests.FirstOrDefault(g => g.ID == guestId);
+      guestRepo.SaveGuest(guest);
+      return guest;
+    }
+
     [HttpPost]
     [Route("clear")] // POST api/cart/clear
-    public ActionResult Clear()
+    public ActionResult Clear(Nullable<Guid> guestId)
     {
+      // Try to look up the guest. If no guest, create new guest.
+      Guest guest = EnsureGuest(guestId);
+      guestId = guest.ID;
+
+      // Remove all CartLine records for this Guest ID.
+      cartLineRepo.ClearCartLines(guestId);
+
       // Send back response to client indicating success or failure.
-      return Ok(); // 200 ok
+      CartResponseDTO cartResponse = new CartResponseDTO { guestID = guestId };
+      return Ok(cartResponse); // 200 ok
     }
 
     [HttpPost]
@@ -65,16 +86,13 @@ namespace ReactWithASP.Server.Controllers
     public ActionResult Update([FromBody] CartUpdateDTO cartUpdate, Nullable<Guid> guestId)
     {
       // Client cart has been updated with the given quantities.
-
       // TODO - Validate cartUpdate
-      
       // Update the user's cart in the database...
 
       // Try to look up the guest. If no guest, create new guest.
-      Guest guest = null;
-      guest = (guestId == null) ? new Guest { ID = Guid.NewGuid() } : guestRepo.Guests.FirstOrDefault(g => g.ID == guestId);
-      guestRepo.SaveGuest(guest);
-      
+      Guest guest = EnsureGuest(guestId);
+      guestId = guest.ID;
+
       // Look up (isp) product in database.
       InStockProduct isp = inStockRepo.InStockProducts.FirstOrDefault(record => record.ID == cartUpdate.ispID);
 
@@ -93,6 +111,7 @@ namespace ReactWithASP.Server.Controllers
       cartLineRepo.SaveCartLine(cartLine);
 
       // Prepare JSON for client
+      cartUpdate.guestID = guestId;
       cartUpdate.isp = new IspDTO
       {
          id = cartUpdate.ispID,

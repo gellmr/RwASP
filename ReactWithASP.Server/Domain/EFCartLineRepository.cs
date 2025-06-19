@@ -25,6 +25,15 @@ namespace ReactWithASP.Server.Domain
       }
     }
 
+    public void ClearCartLines(Nullable<Guid> guestID)
+    {
+      IEnumerable<CartLine> lines = context.CartLines.Where(line => line.Guest != null && (line.Guest.ID == guestID));
+      foreach (CartLine c in lines){
+        context.CartLines.Remove(c);
+      }
+      context.SaveChanges();
+    }
+
     public void SaveCartLine(CartLine cartLine)
     {
       bool exists = context.CartLines.Any(record => record.ID == cartLine.ID);
