@@ -3,14 +3,14 @@ import { NavLink } from "react-router";
 
 function CartBtn({ isSmall }){
   const cartProducts = useSelector(state => state.cart.value);
-  const cartTotalItems = cartProducts.reduce((total, item) => total + item.qty, 0);
+  const cartTotalItems = (cartProducts && cartProducts.length > 0) ? cartProducts.reduce((total, row) => total + row.qty, 0) : 0;
   const baseCss = "mgNavLinkBtn mgNavLinkCartBtn";
   const myCss = (isSmall === true) ? baseCss + " d-block d-sm-none lime" : baseCss + " d-none d-sm-block";
   return (
     <>
       <NavLink to="/cart" className={myCss}>
         <i className="bi bi-cart3" style={{marginRight:4}}></i>
-        Cart: {cartProducts && cartTotalItems} Items
+        Cart: {cartTotalItems} Items
       </NavLink>
     </>
   );

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { addToCart, removeFromCart } from '@/features/cart/cartSlice.jsx'
+import { setCartQuantity, removeFromCart } from '@/features/cart/cartSlice.jsx'
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -14,15 +14,16 @@ function CartProduct({ productId })
 
   const cartLoading = useSelector(state => state.cart.isLoading);
   const cart        = useSelector(state => state.cart.value);
-  const cartProduct = cart.find(p => p.id === productId);
+  const cartProduct = cart.find(p => p.ispID === productId); // isp is the InStockProduct
 
-  const title = cartProduct.product.title;
-  const slug  = cartProduct.product.description;
-  const price = cartProduct.product.price;
+  const title = cartProduct.isp.title;
+  const slug  = cartProduct.isp.description;
+  const price = cartProduct.isp.price;
   const qty   = cartProduct.qty;
+
   const subtot = price * qty;
 
-  const copyProduct = JSON.parse(JSON.stringify(cartProduct.product)); // ensure deep copy
+  const copyProduct = JSON.parse(JSON.stringify(cartProduct.isp)); // ensure deep copy
 
   return (
     <Row>
@@ -55,9 +56,17 @@ function CartProduct({ productId })
 
           <Col xs={12} className="inCartItemRemove">
             <ButtonGroup>
-              <Button variant="light btn-sm" style={{ fontSize: "12px", width: "60px" }} onClick={() => { dispatch(removeFromCart({ id: productId })) }}>Remove</Button>
-              <Button variant="light btn-sm" disabled={cartLoading} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty: -1 })) }}><i className="bi bi-dash" style={{ fontSize: "15px" }} ></i></Button>
-              <Button variant="light btn-sm" disabled={cartLoading} onClick={() => { dispatch(addToCart({ id: productId, product: copyProduct, qty:  1 })) }}><i className="bi bi-plus" style={{ fontSize: "15px" }} ></i></Button>
+              <Button variant="light btn-sm" style={{ fontSize: "12px", width: "60px" }} onClick={() => { dispatch(removeFromCart({ ispID:productId })) }}>Remove</Button>
+              <Button variant="light btn-sm" disabled={cartLoading} onClick={() => {
+                const newQty = qtyInCartInt - 1;
+                dispatch(setCartQuantity({    ispID:productId, qty:newQty, isp:copyProduct }));
+                dispatch(updateCartOnServer({ ispID:productId, qty:newQty }));
+              }}><i className="bi bi-dash" style={{ fontSize: "15px" }} ></i></Button>
+              <Button variant="light btn-sm" disabled={cartLoading} onClick={() => {
+                const newQty = qtyInCartInt + 1;
+                dispatch(setCartQuantity({    ispID:productId, qty:newQty, isp:copyProduct }));
+                dispatch(updateCartOnServer({ ispID:productId, qty:newQty }));
+              }}><i className="bi bi-plus" style={{ fontSize: "15px" }} ></i></Button>
             </ButtonGroup>
           </Col>
         </Row>

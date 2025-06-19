@@ -7,10 +7,13 @@ import Col from 'react-bootstrap/Col'
 import ProceedCheckoutBtn from "@/Shop/ProceedCheckoutBtn";
 function Cart() {
   const cartProducts = useSelector(state => state.cart.value); // array of products
+
   const gotItems = cartProducts.length > 0;
   const showTopCheckoutBtn = cartProducts.length > 5;
-  const totalQty = cartProducts.reduce((sum, prod) => sum + prod.qty, 0);
-  const totalPrice = cartProducts.reduce((sum, prod) => sum + (prod.product.price * prod.qty), 0);
+
+  const totalQty   = cartProducts.reduce((sum, row) => sum + row.qty, 0);
+  const totalPrice = cartProducts.reduce((sum, row) => sum + (row.isp.price * row.qty), 0);
+
   return (
     <>
       <h2 style={{ marginTop:"5px" }}>Your Cart:</h2>
@@ -20,8 +23,8 @@ function Cart() {
           <CartBar />
           <Col className="cartContents col-12 col-lg-8">
             {!cartProducts || cartProducts.length === 0 && <div className="fetchErr" style={{ textAlign: "center" }}>( Empty )</div>}
-            {cartProducts && cartProducts.map(prod => // when we add more of this product, we trigger re-render and the component below will disappear.
-              <CartProduct key={prod.id} productId={prod.id} />
+            {cartProducts && cartProducts.map(row =>
+              <CartProduct key={row.ispID} productId={row.ispID} />
             )}
             <CartSummaryLine totalQuantity={totalQty} totalPrice={totalPrice} />
           </Col>

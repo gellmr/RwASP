@@ -18,53 +18,53 @@ export const updateCartOnServer = createAsyncThunk( 'cart/updateCartOnServer',
 export const cartSlice = createSlice({
   name: 'cart', // Name of slice
   initialState: {
-    value: [], // Array of objects. Each object in the array is like...
+    value: [], // Array of objects. Each item (isp) is an InStockProduct...
     // {
-    //   id: 1,
-    //   product: { id: 1, title: 'River Kayak', description: 'Tame the wilderness.', price: 350, category: 3 },
+    //   ispID: 1,
+    //   isp: { id: 1, title: 'River Kayak', description: 'Tame the wilderness.', price: 350, category: 3 },
     //   qty: 5
     // }
     isLoading: false,
   },
   reducers: {
     setCart: (state, action) => {
-      state.value = action.payload; // Set products array.
+      const rowsFromServer = action.payload;
+      state.value = rowsFromServer; // Set products array.
     },
-    addToCart: (state, action) => {
+    setCartQuantity: (state, action) => {
       state.isLoading = true;
-      const cartIndex = state.value.findIndex(item => item.id === action.payload.id);
-      const payloadQty = action.payload.qty; // Can be a negative value
-      const isAddition = (payloadQty > 0);
-      if ((cartIndex === -1) && isAddition)
+      // Find the item (isp) in our array of InStockProducts
+      const cartIndex  = state.value.findIndex(item => item.ispID === action.payload.ispID); // -1 if not found in cart.
+      if ((cartIndex === -1))
       {
         // Doesnt exist. Add product to cart
-        const newEntry = JSON.parse(JSON.stringify(action.payload)); // Ensure deep copy
-        state.value.push(newEntry);
+        const payloadCopy = JSON.parse(JSON.stringify(action.payload)); // Ensure deep copy
+        state.value.push(payloadCopy);
       }
       else
       {
         // Already exists in cart...
-        const existingQty = state.value[cartIndex].qty;
-        const isSubtract = (payloadQty < 0);
-        const okSubtract = (existingQty + payloadQty) >= 0;
+        const currentIsp = state.value[cartIndex];
+        const qtyDifference = action.payload.qty - currentIsp.qty; // Eg -1 if we are subtracting.
+        const isAddition = (qtyDifference > 0);
+        const isSubtract = (qtyDifference < 0);
+        const okSubtract = (action.payload.qty) >= 0;
         if (isAddition || (isSubtract && okSubtract))
         {
           // Add or Subtract the qty...
-          const existingId = state.value[cartIndex].id;
-          const newQty = existingQty + action.payload.qty;
-          const newProd = JSON.parse(JSON.stringify(action.payload.product)); // Ensure deep copy
-          state.value = state.value.map((cProd) => {
-            if (cProd.id == existingId) {
-              return { id: existingId, qty: newQty, product: newProd }; // Return updated item.
+          const ispCopy = JSON.parse(JSON.stringify(action.payload.isp)); // Ensure deep copy of product
+          state.value = state.value.map((row) => {
+            if (row.ispID == currentIsp.ispID) {
+              return { ispID:currentIsp.ispID, qty:action.payload.qty, isp:ispCopy }; // Return updated item.
             }
-            return cProd; // Return unchanged item.
+            return row; // Return unchanged item.
           });
         }
       }
       state.isLoading = false;
     },
     removeFromCart: (state, action) => {
-      state.value = state.value.filter(prod => prod.id !== action.payload.id);
+      state.value = state.value.filter(row => row.ispID !== action.payload.ispID);
     },
     clearCart: (state, action) => {
       state.value = [];
@@ -82,5 +82,5 @@ export const cartSlice = createSlice({
   },
 })
 // Action creators are generated for each case reducer function
-export const { setCart, addToCart, removeFromCart, clearCart } = cartSlice.actions
+export const { setCart, setCartQuantity, removeFromCart, clearCart } = cartSlice.actions
 export default cartSlice.reducer

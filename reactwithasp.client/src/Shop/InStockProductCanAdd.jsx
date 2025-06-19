@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { addToCart, updateCartOnServer } from '@/features/cart/cartSlice.jsx'
+import { setCartQuantity, updateCartOnServer } from '@/features/cart/cartSlice.jsx'
 
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
@@ -19,11 +19,13 @@ function InStockProductCanAdd({ title, slug, productId, price })
   const inStockProducts = useSelector(state => state.inStock.value);       // Get the value of the state variable in our slice. An array.
   const cartProducts    = useSelector(state => state.cart.value);          // Array of products
 
-  const product         =   inStockProducts.find(p => p.id === productId); // Get the in stock product
-  const prodInCart      =      cartProducts.find(p => p.id === productId);
+  const storeProduct    =   inStockProducts.find(p => p.id === productId); // Get the in stock product
+  const prodInCart      =      cartProducts.find(p => p.ispID === productId);
 
   const qtyInCartInt    = (prodInCart === undefined) ? 0 : prodInCart.qty;
   const qtyInCartMarkup = (prodInCart === undefined) ? <span>&nbsp;&nbsp;</span> : prodInCart.qty;
+
+  const copyProduct = (storeProduct == undefined) ? undefined : JSON.parse(JSON.stringify(storeProduct)); // ensure deep copy
 
   return (
     <Row className="inStockProductCanAdd">
@@ -41,10 +43,17 @@ function InStockProductCanAdd({ title, slug, productId, price })
             <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px" }}>Add to Cart</span>
             <ButtonGroup className="addToCartBtnGroup">
               <Button disabled variant="success" className="currentlyAdded" style={{ borderRadius:"4px", fontSize:"14px", fontWeight:500}}>{qtyInCartMarkup}</Button>
-              <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => { if (qtyInCartMarkup > 0) { dispatch(addToCart({ id: productId, product: product, qty: -1 })) } }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
+              <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
+                if (qtyInCartMarkup > 0) {
+                  const newQty = qtyInCartInt - 1;
+                  dispatch(setCartQuantity({    ispID:productId, qty:newQty, isp:copyProduct }));
+                  dispatch(updateCartOnServer({ ispID:productId, qty:newQty }));
+                }
+              }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
               <Button variant="light" onClick={() => {
-                dispatch(addToCart({ id: productId, product: product, qty: 1 }));
-                dispatch(updateCartOnServer({ itemID:productId, itemQty:qtyInCartInt, adjust:1 }));
+                const newQty = qtyInCartInt + 1;
+                dispatch(setCartQuantity({     ispID:productId, qty:newQty, isp:copyProduct }));
+                dispatch(updateCartOnServer({  ispID:productId, qty:newQty }));
               }}><i className="bi bi-plus" style={{ fontSize: "15px" }}></i></Button>
             </ButtonGroup>
           </Col>
