@@ -14,6 +14,17 @@ namespace ReactWithASP.Server.Domain
       context = new StoreContext(_config);
     }
 
+    public IEnumerable<CartLine> CartLines{
+      get{
+        IEnumerable<CartLine> cartLines = context.CartLines.ToList();
+        foreach (CartLine c in cartLines){
+          // Load the entities associated with this CartLine.
+          c.InStockProduct = context.InStockProducts.FirstOrDefault(p => p.ID == c.InStockProductID);
+        }
+        return cartLines;
+      }
+    }
+
     public void SaveCartLine(CartLine cartLine)
     {
       bool exists = context.CartLines.Any(record => record.ID == cartLine.ID);
