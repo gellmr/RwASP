@@ -5,6 +5,8 @@ import CartSummaryLine from "@/Shop/CartSummaryLine";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import ProceedCheckoutBtn from "@/Shop/ProceedCheckoutBtn";
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 function Cart() {
   const cartProducts = useSelector(state => state.cart.value); // array of products
 
@@ -17,7 +19,12 @@ function Cart() {
   return (
     <>
       <h2 style={{ marginTop:"5px" }}>Your Cart:</h2>
-      {showTopCheckoutBtn && <div style={{ marginTop: "15px", marginBottom:"5px" }}><ProceedCheckoutBtn /></div>}
+      {showTopCheckoutBtn && <div className="proceedCheckoutBar">
+        <ButtonGroup>
+          <Button variant="light" style={{fontSize:13, color:"#777777"}}><i className="bi bi-trash3"></i>&nbsp;Clear Cart</Button>
+          <ProceedCheckoutBtn />
+        </ButtonGroup>
+      </div>}
       <div className="col-12">
         <Row>
           <CartBar />

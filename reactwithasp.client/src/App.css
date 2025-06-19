@@ -202,6 +202,13 @@ th, td {
 }
 
 /* CART STYLES */
+.proceedCheckoutBar{
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+.proceedCheckoutBar .btn {
+  font-size: 13px;
+}
 .cartContents {
   /*border: 1px solid red;*/
   border-radius: 5px;
@@ -300,7 +307,10 @@ th, td {
     /*border: 3px dashed purple;*/
     width: 100%;
   }
-
+  /* CART */
+  .proceedCheckoutBar .btn {
+    font-size: 15px;
+  }
   .cartQtyXs {
     /*color: orange;*/
     display: none !important;
