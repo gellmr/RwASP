@@ -12,7 +12,7 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250619042951_InitialCreate")]
+    [Migration("20250619044053_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,7 +54,7 @@ namespace ReactWithASP.Server.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("CartLine");
+                    b.ToTable("CartLines");
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Domain.Guest", b =>

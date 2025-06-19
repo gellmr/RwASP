@@ -51,7 +51,7 @@ namespace ReactWithASP.Server.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("CartLine");
+                    b.ToTable("CartLines");
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Domain.Guest", b =>
