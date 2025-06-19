@@ -19,9 +19,9 @@ function CartProduct({ productId })
   const title = cartProduct.isp.title;
   const slug  = cartProduct.isp.description;
   const price = cartProduct.isp.price;
-  const qty   = cartProduct.qty;
+  const qtyInCartInt = cartProduct.qty;
 
-  const subtot = price * qty;
+  const subtot = price * qtyInCartInt;
 
   const copyProduct = JSON.parse(JSON.stringify(cartProduct.isp)); // ensure deep copy
 
@@ -43,7 +43,7 @@ function CartProduct({ productId })
             <span className="cartQtyXs d-block d-sm-none" >Quantity:</span>
             <span className="d-none d-sm-block" >Quantity:</span>
             &nbsp;
-            <span style={{ fontWeight:"500" }}>{qty}</span>
+            <span style={{ fontWeight:"500" }}>{qtyInCartInt}</span>
           </Col>
 
           <Col xs={8} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
