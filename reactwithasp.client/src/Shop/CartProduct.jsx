@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { setCartQuantity, removeFromCart } from '@/features/cart/cartSlice.jsx'
+import { setCartQuantity, removeFromCart, updateCartOnServer } from '@/features/cart/cartSlice.jsx'
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
