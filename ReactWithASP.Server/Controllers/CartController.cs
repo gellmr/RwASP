@@ -31,8 +31,10 @@ namespace ReactWithASP.Server.Controllers
     public ActionResult Update([FromBody] CartUpdateDTO cartUpdate, Nullable<Guid> guestId)
     {
       // Client cart has been updated with the given quantities.
+
       // TODO - Validate cartUpdate
-      // TODO - Update the user's cart in the database
+      
+      // Update the user's cart in the database...
 
       // Try to look up the guest. If no guest, create new guest.
       Guest guest = null;
@@ -52,8 +54,6 @@ namespace ReactWithASP.Server.Controllers
         InStockProductID = cartUpdate.itemID,
         InStockProduct = cartProduct
       };
-
-      // NEED TO SEED PRODUCTS OR THE NEXT LINE WILL FAIL BECAUSE THERE ARE NO INSTOCKPRODUCTS IN THE DATABASE.
       cartLineRepo.SaveCartLine(cartLine);
 
       // Send back response to client indicating success or failure.
