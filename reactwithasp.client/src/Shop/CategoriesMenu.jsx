@@ -23,6 +23,7 @@ function CategoriesMenu()
       dispatch(setCategories(data));
     } catch (err) {
       dispatch(setNoCategories());
+      setTimeout(function () { location.reload() }, 1200); // Reload page in n milliseconds.
     }
   }
 
