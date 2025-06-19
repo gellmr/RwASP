@@ -8,6 +8,7 @@ namespace ReactWithASP.Server.Domain
   {
     private readonly IConfiguration _config;
     private StoreContext context;
+
     public EFOrdersRepository(IConfiguration c){
       _config = c;
       context = new StoreContext(_config);
