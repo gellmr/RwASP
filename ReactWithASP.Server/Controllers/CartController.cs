@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
-using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Controllers
 {
