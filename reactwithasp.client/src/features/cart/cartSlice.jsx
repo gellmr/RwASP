@@ -16,9 +16,9 @@ export const updateCartOnServer = createAsyncThunk( 'cart/updateCartOnServer',
 );
 
 export const cartSlice = createSlice({
-  name: 'cart', // name of slice
+  name: 'cart', // Name of slice
   initialState: {
-    value: [], // array of objects. Each object in the array is like...
+    value: [], // Array of objects. Each object in the array is like...
     // {
     //   id: 1,
     //   product: { id: 1, title: 'River Kayak', description: 'Tame the wilderness.', price: 350, category: 3 },
@@ -28,18 +28,17 @@ export const cartSlice = createSlice({
   },
   reducers: {
     setCart: (state, action) => {
-      state.value = action.payload; // set products array.
+      state.value = action.payload; // Set products array.
     },
     addToCart: (state, action) => {
-      //console.log("- - -");
       state.isLoading = true;
       const cartIndex = state.value.findIndex(item => item.id === action.payload.id);
-      const payloadQty = action.payload.qty; // can be a negative value
+      const payloadQty = action.payload.qty; // Can be a negative value
       const isAddition = (payloadQty > 0);
       if ((cartIndex === -1) && isAddition)
       {
         // Doesnt exist. Add product to cart
-        const newEntry = JSON.parse(JSON.stringify(action.payload)); // ensure deep copy
+        const newEntry = JSON.parse(JSON.stringify(action.payload)); // Ensure deep copy
         state.value.push(newEntry);
       }
       else
@@ -53,12 +52,12 @@ export const cartSlice = createSlice({
           // Add or Subtract the qty...
           const existingId = state.value[cartIndex].id;
           const newQty = existingQty + action.payload.qty;
-          const newProd = JSON.parse(JSON.stringify(action.payload.product)); // ensure deep copy
+          const newProd = JSON.parse(JSON.stringify(action.payload.product)); // Ensure deep copy
           state.value = state.value.map((cProd) => {
             if (cProd.id == existingId) {
-              return { id: existingId, qty: newQty, product: newProd }; // return updated item.
+              return { id: existingId, qty: newQty, product: newProd }; // Return updated item.
             }
-            return cProd; // return unchanged item.
+            return cProd; // Return unchanged item.
           });
         }
       }
@@ -75,8 +74,6 @@ export const cartSlice = createSlice({
     builder.addCase(updateCartOnServer.fulfilled, (state, action) => {
       console.log("updateCartOnServer.fulfilled");
       // Server indicates successful update, and has given us the finalised cart state.
-      // TODO - Dispatch an action to confirm the state change based on this data. This ensures consistency.
-      const finalCart = action.payload;
     })
     .addCase(updateCartOnServer.rejected, (state, action) => {
       console.log("updateCartOnServer.rejected");
