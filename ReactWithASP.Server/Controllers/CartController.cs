@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
+using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -57,11 +58,39 @@ namespace ReactWithASP.Server.Controllers
       return Ok( items ); // Respond with 200 OK, and list of cartLine objects.
     }
 
-    private Guest EnsureGuest(Nullable<Guid> guestId)
+    private Guest EnsureGuestIdFromCookie()
     {
+      // See if guest id cookie exists...
       Guest guest = null;
-      guest = (guestId == null) ? new Guest { ID = Guid.NewGuid() } : guestRepo.Guests.FirstOrDefault(g => g.ID == guestId);
-      guestRepo.SaveGuest(guest);
+      Nullable<Guid> guestId;
+      bool createGuest = false;
+      string cookieGuestId = Request.Cookies[MyExtensions.GuestCookieName];
+      if (string.IsNullOrEmpty(cookieGuestId))
+      {
+        // Cookie value is not available
+        createGuest = true;
+        guestId = Guid.NewGuid(); // Create guest ID for the first time.
+      }
+      else
+      {
+        // Cookie value is available...
+        guestId = cookieGuestId.ToNullableGuid();
+        guest = guestRepo.Guests.FirstOrDefault(g => g.ID == guestId); // Look up guest in database.
+        if (guest == null){
+          createGuest = true; // Record was not found in database.
+        }
+      }
+      
+      if (createGuest)
+      {
+        // Create guest record in database.
+        guest = new Guest { ID = guestId };
+        guestRepo.SaveGuest(guest);
+      }
+
+      // Store guest id in cookie...
+      HttpContext.Response.Cookies.Delete(MyExtensions.GuestCookieName);
+      Response.Cookies.Append(MyExtensions.GuestCookieName, guestId.ToString(), MyExtensions.GuestCookieOptions);
       return guest;
     }
 
@@ -70,7 +99,7 @@ namespace ReactWithASP.Server.Controllers
     public ActionResult Clear(Nullable<Guid> guestId)
     {
       // Try to look up the guest. If no guest, create new guest.
-      Guest guest = EnsureGuest(guestId);
+      Guest guest = EnsureGuestIdFromCookie();
       guestId = guest.ID;
 
       // Remove all CartLine records for this Guest ID.
@@ -86,11 +115,10 @@ namespace ReactWithASP.Server.Controllers
     public ActionResult Update([FromBody] CartUpdateDTO cartUpdate, Nullable<Guid> guestId)
     {
       // Client cart has been updated with the given quantities.
-      // TODO - Validate cartUpdate
       // Update the user's cart in the database...
 
       // Try to look up the guest. If no guest, create new guest.
-      Guest guest = EnsureGuest(guestId);
+      Guest guest = EnsureGuestIdFromCookie();
       guestId = guest.ID;
 
       // Look up (isp) product in database.

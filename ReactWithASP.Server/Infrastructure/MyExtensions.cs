@@ -58,6 +58,14 @@ namespace ReactWithASP.Server.Infrastructure
 
   public static class MyExtensions
   {
+    public static string SessionGuestID = "SessionGuestID";
+    public static string GuestCookieName = "ReactMikeGellDemo-GuestCookie";
+    public static CookieOptions GuestCookieOptions = new CookieOptions {
+      HttpOnly = true,
+      Secure = true,
+      Expires = DateTimeOffset.Now.AddDays(3)
+    };
+
     // Extend string for our convenience. Eg Guid? a = mystring.ToNullableGuid()
     // See
     // https://stackoverflow.com/questions/45030/how-to-parse-a-string-into-a-nullable-int

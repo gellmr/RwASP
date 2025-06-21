@@ -17,7 +17,7 @@ namespace ReactWithASP.Server.Domain
     {
       get
       {
-        IEnumerable<Guest> guests = context.Guests.Where(g => g.ID != null && !string.IsNullOrEmpty(g.Email));
+        IEnumerable<Guest> guests = context.Guests.Where(g => g.ID != null); // Email, FirstName and LastName are allowed to be null.
         return guests;
       }
     }
