@@ -36,22 +36,21 @@ namespace ReactWithASP.Server.Domain
 
     public void SaveCartLine(CartLine cartLine)
     {
-      bool exists = context.CartLines.Any(record => record.ID == cartLine.ID);
-      if (exists)
+      CartLine dbEntry = context.CartLines.FirstOrDefault(record => record.InStockProductID == cartLine.InStockProductID);
+      if( dbEntry != null )
       {
-        // update
-        CartLine dbEntry = context.CartLines.First(record => record.ID == cartLine.ID);
+        // Update
         dbEntry.Quantity = cartLine.Quantity;
         context.SaveChanges();
       }
       else
       {
-        // create new record
+        // Create new record
         context.CartLines.Add(cartLine);
-        InStockProduct ip = cartLine.InStockProduct;
-        Guest g = cartLine.Guest;
-        context.Entry(ip).State = EntityState.Unchanged; // Dont create the product. It already exists in database
-        context.Entry(g).State = EntityState.Unchanged; // Dont create guest. It already exists in database.
+        InStockProduct isp = cartLine.InStockProduct;
+        Guest? guest = cartLine.Guest;
+        context.Entry(isp).State = EntityState.Unchanged;   // Dont create the product. It already exists in database
+        context.Entry(guest).State = EntityState.Unchanged; // Dont create guest. It already exists in database.
         context.SaveChanges();
       }
     }
