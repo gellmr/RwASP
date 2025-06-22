@@ -95,7 +95,7 @@ export const cartSlice = createSlice({
       .filter(row => row.qty > 0 ) // Remove from cart if quantity is zero. Server has removed it from database.
       .map(row => {
         if (row.isp.id == action.payload.isp.id) {
-          return { cartLineID: action.payload.cartLineID, isp:ispCopy, qty:action.payload.qty };
+          return { cartLineID:action.payload.cartLineID, isp:ispCopy, qty:action.payload.qty };
         }
         return row;
       });
