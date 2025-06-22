@@ -56,11 +56,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-using (var scope = app.Services.CreateScope())
-{
+bool recreateAllTables = false;
+using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
   var context = services.GetRequiredService<StoreContext>();
-  //context.Database.EnsureDeleted();
+  if (recreateAllTables) {
+    context.Database.EnsureDeleted();
+  }
   context.Database.EnsureCreated(); // Create the database if it doesnt exist.
 }
 
@@ -73,8 +75,10 @@ app.UseSession();
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope()){
-  var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-  //seeder.Seed();
+  if (recreateAllTables){
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    seeder.Seed();
+  }
 }
 
 app.MapFallbackToFile("/index.html");
