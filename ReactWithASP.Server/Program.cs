@@ -60,7 +60,8 @@ using (var scope = app.Services.CreateScope())
 {
   var services = scope.ServiceProvider;
   var context = services.GetRequiredService<StoreContext>();
-  context.Database.EnsureCreated(); // create the database if it doesnt exist.
+  context.Database.EnsureDeleted();
+  context.Database.EnsureCreated(); // Create the database if it doesnt exist.
 }
 
 app.UseHttpsRedirection();
