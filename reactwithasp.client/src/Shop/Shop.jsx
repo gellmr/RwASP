@@ -16,7 +16,7 @@ function Shop()
   //    |                                |              Name of our slice
   //    |                                |              |
   const inStockProducts    = useSelector(state => state.inStock.value); // Get the value of the state variable in our slice. An array.
-  const cartProducts       = useSelector(state => state.cart.value);    // Array of products
+  const cartProducts       = useSelector(state => state.cart.cartLines);    // Array of products
   const search             = useSelector(state => state.search.value);
   const dispatch           = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
   const { page, category } = useParams();   // The page of products we are on, eg "2". Obtained from react route...  /index/2
@@ -32,7 +32,13 @@ function Shop()
   const pageIdx = (page === undefined) ? 0 : pageIntP - 1;              // eg (     page 0          page 1           page 2 )
   const startIdx = prodPerPage * pageIdx;                               // eg ( 4 * 0 == 0)   ( 4 * 1 == 4 )   ( 4 * 2 == 8 ) ...
   const endIdx = startIdx + prodPerPage;                                // eg            4 ...           8 ...            12  ...
-  const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx);
+  const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx).map(isp => {
+    const cartProd = cartProducts.find(c => c.isp.id == isp.id);
+    const cartLineID = cartProd === undefined ? null : cartProd.cartLineID;
+    return { id:isp.id, title:isp.title, description:isp.description, price:isp.price, category:isp.category,
+      cartLineID:cartLineID
+    };
+  });
 
   // The value of pageIntP should be 1 when we first visit the site, and have an initial page of products.
   // It may be 0 for a while during re-renders as the products are still being fetched.
@@ -63,7 +69,7 @@ function Shop()
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
       {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">( Search returned no results )</div>}
       {inStockProdThisPage && inStockProdThisPage.map(prod =>
-        <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} productId={prod.id} price={prod.price} />
+        <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} ispID={prod.id} price={prod.price} cartLineID={prod.cartLineID} />
       )}
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
       {gotItems && <div style={{ marginTop: "20px" }}><ProceedCartBtn /></div>}

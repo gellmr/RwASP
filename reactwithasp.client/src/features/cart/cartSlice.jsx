@@ -32,9 +32,9 @@ export const clearCartOnServer = createAsyncThunk('cart/clearCartOnServer',
 export const cartSlice = createSlice({
   name: 'cart', // Name of slice
   initialState: {
-    value: [], // Array of objects. Each item (isp) is an InStockProduct...
+    cartLines: [], // Array of objects. Each item (isp) is an InStockProduct...
     // {
-    //   ispID: 1,
+    //   cartLineID: 1,
     //   isp: { id: 1, title: 'River Kayak', description: 'Tame the wilderness.', price: 350, category: 3 },
     //   qty: 5
     // }
@@ -44,23 +44,23 @@ export const cartSlice = createSlice({
   reducers: {
     setCart: (state, action) => {
       const rowsFromServer = action.payload;
-      state.value = rowsFromServer; // Set products array.
+      state.cartLines = rowsFromServer; // Set products array.
     },
     setCartQuantity: (state, action) => {
       state.isLoading = true;
       // Find the item (isp) in our array of InStockProducts
-      const cartIndex  = state.value.findIndex(item => item.ispID === action.payload.ispID); // -1 if not found in cart.
+      const cartIndex  = state.cartLines.findIndex(item => item.cartLineID === action.payload.cartLineID); // -1 if not found in cart.
       if ((cartIndex === -1))
       {
         // Doesnt exist. Add product to cart
         const payloadCopy = JSON.parse(JSON.stringify(action.payload)); // Ensure deep copy
-        state.value.push(payloadCopy);
+        state.cartLines.push(payloadCopy);
       }
       else
       {
         // Already exists in cart...
-        const currentIsp = state.value[cartIndex];
-        const qtyDifference = action.payload.qty - currentIsp.qty; // Eg -1 if we are subtracting.
+        const currentCartLine = state.cartLines[cartIndex];
+        const qtyDifference = action.payload.qty - currentCartLine.qty; // Eg -1 if we are subtracting.
         const isAddition = (qtyDifference > 0);
         const isSubtract = (qtyDifference < 0);
         const okSubtract = (action.payload.qty) >= 0;
@@ -68,9 +68,9 @@ export const cartSlice = createSlice({
         {
           // Add or Subtract the qty...
           const ispCopy = JSON.parse(JSON.stringify(action.payload.isp)); // Ensure deep copy of product
-          state.value = state.value.map((row) => {
-            if (row.ispID == currentIsp.ispID) {
-              return { ispID:currentIsp.ispID, qty:action.payload.qty, isp:ispCopy }; // Return updated item.
+          state.cartLines = state.cartLines.map((row) => {
+            if (row.isp.id == currentCartLine.isp.id) {
+              return { cartLineID:row.cartLineID, qty:action.payload.qty, isp:ispCopy }; // Return updated item.
             }
             return row; // Return unchanged item.
           });
@@ -79,16 +79,24 @@ export const cartSlice = createSlice({
       state.isLoading = false;
     },
     removeFromCart: (state, action) => {
-      state.value = state.value.filter(row => row.ispID !== action.payload.ispID);
+      state.cartLines = state.cartLines.filter(row => row.cartLineID !== action.payload.cartLineID);
     },
     clearCart: (state, action) => {
-      state.value = [];
+      state.cartLines = [];
     }
   },
   extraReducers: (builder) => {
     builder.addCase(updateCartOnServer.fulfilled, (state, action) => {
       console.log("updateCartOnServer.fulfilled");
       state.guestID = action.payload.guestID; // Receive guest id from Server.
+      // Ensure local state matches our server.
+      const ispCopy = JSON.parse(JSON.stringify(action.payload.isp));
+      state.cartLines = state.cartLines.map((row) => {
+        if (row.isp.id == action.payload.isp.id) {
+          return { cartLineID: action.payload.cartLineID, isp:ispCopy, qty:action.payload.qty };
+        }
+        return row;
+      });
     })
     .addCase(updateCartOnServer.rejected, (state, action) => {
       console.log("updateCartOnServer.rejected");

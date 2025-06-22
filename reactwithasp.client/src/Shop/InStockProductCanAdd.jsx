@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "@/App.css";
 
-function InStockProductCanAdd({ title, slug, productId, price })
+function InStockProductCanAdd({ title, slug, ispID, price, cartLineID })
 {
   const dispatch = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
 
@@ -17,10 +17,10 @@ function InStockProductCanAdd({ title, slug, productId, price })
   //    |                             |              Name of our slice
   //    |                             |              |
   const inStockProducts = useSelector(state => state.inStock.value);       // Get the value of the state variable in our slice. An array.
-  const cartProducts    = useSelector(state => state.cart.value);          // Array of products
+  const cartProducts    = useSelector(state => state.cart.cartLines);          // Array of products
 
-  const storeProduct    =   inStockProducts.find(p => p.id === productId); // Get the in stock product
-  const prodInCart      =      cartProducts.find(p => p.ispID === productId);
+  const storeProduct = inStockProducts.find(p => p.id === ispID); // Get the in stock product
+  const prodInCart = cartProducts.find(row => row.isp.id === ispID);
 
   const qtyInCartInt    = (prodInCart === undefined) ? 0 : prodInCart.qty;
   const qtyInCartMarkup = (prodInCart === undefined) ? <span>&nbsp;&nbsp;</span> : prodInCart.qty;
@@ -46,14 +46,14 @@ function InStockProductCanAdd({ title, slug, productId, price })
               <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
                 if (qtyInCartMarkup > 0) {
                   const newQty = qtyInCartInt - 1;
-                  dispatch(setCartQuantity({    ispID:productId, qty:newQty, isp:copyProduct }));
-                  dispatch(updateCartOnServer({ ispID:productId, qty:newQty }));
+                  dispatch(setCartQuantity({    cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
+                  dispatch(updateCartOnServer({ cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
                 }
               }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
               <Button variant="light" onClick={() => {
                 const newQty = qtyInCartInt + 1;
-                dispatch(setCartQuantity({     ispID:productId, qty:newQty, isp:copyProduct }));
-                dispatch(updateCartOnServer({  ispID:productId, qty:newQty }));
+                dispatch(setCartQuantity({    cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
+                dispatch(updateCartOnServer({ cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
               }}><i className="bi bi-plus" style={{ fontSize: "15px" }}></i></Button>
             </ButtonGroup>
           </Col>

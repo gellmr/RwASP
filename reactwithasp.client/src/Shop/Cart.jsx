@@ -11,7 +11,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 function Cart()
 {
   const dispatch = useDispatch();
-  const cartProducts = useSelector(state => state.cart.value); // array of products
+  const cartProducts = useSelector(state => state.cart.cartLines); // array of products
 
   const gotItems = cartProducts.length > 0;
   const showTopCheckoutBtn = cartProducts.length > 5;
@@ -37,7 +37,7 @@ function Cart()
           <Col className="cartContents col-12 col-lg-8">
             {!cartProducts || cartProducts.length === 0 && <div className="fetchErr" style={{ textAlign: "center" }}>( Empty )</div>}
             {cartProducts && cartProducts.map(row =>
-              <CartProduct key={row.ispID} productId={row.ispID} />
+              <CartProduct key={row.cartLineID} cartLineID={row.cartLineID} />
             )}
             <CartSummaryLine totalQuantity={totalQty} totalPrice={totalPrice} />
           </Col>
