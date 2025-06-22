@@ -57,7 +57,9 @@ function CartProduct({ cartLineID })
 
           <Col xs={12} className="inCartItemRemove">
             <ButtonGroup>
-              <Button variant="light btn-sm" style={{ fontSize: "12px", width: "60px" }} onClick={() => { dispatch(removeFromCart({ cartLineID:cartLineID })) }}>Remove</Button>
+              <Button variant="light btn-sm" style={{ fontSize: "12px", width: "60px" }} onClick={() => {
+                dispatch(removeFromCart({ cartLineID:cartLineID }))
+              }}>Remove</Button>
               <Button variant="light btn-sm" disabled={cartLoading} onClick={() => {
                 const newQty = qtyInCartInt - 1;
                 dispatch(setCartQuantity({    cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
