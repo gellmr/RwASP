@@ -91,7 +91,9 @@ export const cartSlice = createSlice({
       state.guestID = action.payload.guestID; // Receive guest id from Server.
       // Ensure local state matches our server.
       const ispCopy = JSON.parse(JSON.stringify(action.payload.isp));
-      state.cartLines = state.cartLines.map((row) => {
+      state.cartLines = state.cartLines
+      .filter(row => row.qty > 0 ) // Remove from cart if quantity is zero. Server has removed it from database.
+      .map(row => {
         if (row.isp.id == action.payload.isp.id) {
           return { cartLineID: action.payload.cartLineID, isp:ispCopy, qty:action.payload.qty };
         }

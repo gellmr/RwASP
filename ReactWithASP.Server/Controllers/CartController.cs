@@ -139,7 +139,7 @@ namespace ReactWithASP.Server.Controllers
         Quantity = cartUpdate.qty,
         UserID = null
       };
-      cartLineRepo.SaveCartLine(cartLine);
+      Int32? saveResult = cartLineRepo.SaveCartLine(cartLine);
 
       // Prepare JSON for client
       cartUpdate.cartLineID = cartUpdate.cartLineID ?? (Int32)cartLine.ID;

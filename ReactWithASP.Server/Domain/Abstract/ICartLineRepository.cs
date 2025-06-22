@@ -2,7 +2,7 @@
 {
   public interface ICartLineRepository
   {
-    void SaveCartLine(CartLine cartLine);
+    Int32? SaveCartLine(CartLine cartLine);
     void ClearCartLines(Nullable<Guid> guestID);
     IEnumerable<CartLine> CartLines { get; }
   }

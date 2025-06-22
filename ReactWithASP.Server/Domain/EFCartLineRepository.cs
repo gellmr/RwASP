@@ -34,24 +34,39 @@ namespace ReactWithASP.Server.Domain
       context.SaveChanges();
     }
 
-    public void SaveCartLine(CartLine cartLine)
+    public Int32? SaveCartLine(CartLine cartLine)
     {
       CartLine dbEntry = context.CartLines.FirstOrDefault(record => record.InStockProductID == cartLine.InStockProductID);
       if( dbEntry != null )
       {
-        // Update
-        dbEntry.Quantity = cartLine.Quantity;
-        context.SaveChanges();
+        if (cartLine.Quantity == 0)
+        {
+          // Remove
+          context.CartLines.Remove(dbEntry);
+          context.SaveChanges();
+          return -1;
+        }
+        else
+        {
+          // Update
+          dbEntry.Quantity = cartLine.Quantity;
+          context.SaveChanges();
+          return dbEntry.ID;
+        }
       }
       else
       {
         // Create new record
         context.CartLines.Add(cartLine);
+
+        // Set Unchanged for associated entities
         InStockProduct isp = cartLine.InStockProduct;
         Guest? guest = cartLine.Guest;
-        context.Entry(isp).State = EntityState.Unchanged;   // Dont create the product. It already exists in database
-        context.Entry(guest).State = EntityState.Unchanged; // Dont create guest. It already exists in database.
+        context.Entry(isp).State = EntityState.Unchanged;   // Dont create InStockProduct. It already exists in database.
+        context.Entry(guest).State = EntityState.Unchanged; // Dont create Guest. It already exists in database.
+
         context.SaveChanges();
+        return cartLine.ID ?? null;
       }
     }
   }
