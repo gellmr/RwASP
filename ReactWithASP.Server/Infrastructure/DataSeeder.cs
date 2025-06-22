@@ -1,4 +1,5 @@
-﻿using ReactWithASP.Server.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using ReactWithASP.Server.Domain;
 
 namespace ReactWithASP.Server.Infrastructure
 {
@@ -26,13 +27,22 @@ namespace ReactWithASP.Server.Infrastructure
 
     public void Seed()
     {
-      inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductDTO>>();
-      
+      // We want to keep CartLine records, and Guest records. All other tables can be cleared.
+
+      // Delete all rows for the tables we are recreating...
+      //_context.AppUser.RemoveRange(_context.AppUser);
+      _context.InStockProducts.RemoveRange(_context.InStockProducts);
+      //_context.OrderedProducts.RemoveRange(_context.OrderedProducts);
+      //_context.OrderPayments.RemoveRange(_context.OrderPayments);
+      //_context.Orders.RemoveRange(_context.Orders);
+
       // Populate InStockProduct
+      inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductDTO>>();
       inStockProducts = new List<InStockProduct>();
       for ( int pIdx = 0; pIdx < 27; pIdx++ ){ SeedInStockProducts(pIdx); }
       _context.InStockProducts.AddRange(inStockProducts.ToArray());
 
+      // All done.
       _context.SaveChanges();
     }
 

@@ -60,7 +60,7 @@ using (var scope = app.Services.CreateScope())
 {
   var services = scope.ServiceProvider;
   var context = services.GetRequiredService<StoreContext>();
-  context.Database.EnsureDeleted();
+  //context.Database.EnsureDeleted();
   context.Database.EnsureCreated(); // Create the database if it doesnt exist.
 }
 
@@ -74,7 +74,7 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope()){
   var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-  seeder.Seed();
+  //seeder.Seed();
 }
 
 app.MapFallbackToFile("/index.html");
