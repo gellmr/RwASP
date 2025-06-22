@@ -124,6 +124,10 @@ namespace ReactWithASP.Server.Controllers
       // Look up (isp) product in database.
       InStockProduct isp = inStockRepo.InStockProducts.FirstOrDefault(record => record.ID == cartUpdate.ispID);
 
+      if (isp == null){
+        Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+        return new JsonResult(new { Message = "ispID" });
+      }
       // Create database entry for new CartLine, connected to user/guest and the existing InStockProduct.
       CartLine cartLine = new CartLine{
         AppUser = null,
