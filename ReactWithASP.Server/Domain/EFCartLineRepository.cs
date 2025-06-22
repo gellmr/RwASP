@@ -51,7 +51,8 @@ namespace ReactWithASP.Server.Domain
           // Update
           dbEntry.Quantity = cartLine.Quantity;
           context.SaveChanges();
-          return dbEntry.ID;
+          cartLine.ID = dbEntry.ID;
+          return cartLine.ID;
         }
       }
       else
