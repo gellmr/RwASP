@@ -2,8 +2,9 @@
 # Ignore the Debug folder, and contents...
 bin/Debug/**
 
-# Ignore the obj folder...
+# Ignore the obj and bin folder...
 obj/**
+bin/**
 
 # Dont track .pubxml files they can contain sensitive information
 *.pubxml
