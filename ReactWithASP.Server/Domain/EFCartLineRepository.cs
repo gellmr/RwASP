@@ -58,7 +58,7 @@ namespace ReactWithASP.Server.Domain
       else
       {
         // Create new record
-        context.CartLines.Add(cartLine);
+        context.CartLines.Add(cartLine); // The cartLine.ID must be null when we are creating, or the DB will complain.
 
         // Set Unchanged for associated entities
         InStockProduct isp = cartLine.InStockProduct;
