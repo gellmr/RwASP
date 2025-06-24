@@ -100,13 +100,16 @@ export const cartSlice = createSlice({
         return row;
       });
     })
+
     .addCase(updateCartOnServer.rejected, (state, action) => {
       console.log("updateCartOnServer.rejected");
     })
+
     .addCase(clearCartOnServer.fulfilled, (state, action) => {
       console.log("clearCartOnServer.fulfilled");
       state.guestID = action.payload.guestID; // Receive guest id from Server.
     })
+
     .addCase(clearCartOnServer.rejected, (state, action) => {
       console.log("clearCartOnServer.rejected");
     });
