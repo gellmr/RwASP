@@ -157,7 +157,7 @@ namespace ReactWithASP.Server.Controllers
       // Prepare JSON for client
       cartUpdate.cartLineID = cartUpdate.cartLineID ?? (Int32)updatedCartLine.ID;
       cartUpdate.guestID = guestId;
-      cartUpdate.isp = new IspDTO
+      cartUpdate.isp = (updatedCartLine == null) ? null : new IspDTO
       {
          id          = updatedCartLine.InStockProduct.ID,
          title       = updatedCartLine.InStockProduct.Title,

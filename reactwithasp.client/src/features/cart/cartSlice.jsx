@@ -90,14 +90,24 @@ export const cartSlice = createSlice({
       console.log("updateCartOnServer.fulfilled");
       state.guestID = action.payload.guestID; // Receive guest id from Server.
       // Ensure local state matches our server.
-      const ispCopy = JSON.parse(JSON.stringify(action.payload.isp));
-      state.cartLines = state.cartLines
-      .filter(row => row.qty > 0 ) // Remove from cart if quantity is zero. Server has removed it from database.
+      const ispCopy = (action.payload.isp == null) ? null : JSON.parse(JSON.stringify(action.payload.isp));
+            
+      // If payload quantity is zero, then we are removing a row, because the server has deleted it from the database. Keep - if not that row. #1
+      // In general, delete any rows found that have quantity zero. They were meant to have been deleted. But keep if quantity is above zero. #2
+      state.cartLines = state.cartLines.filter(row =>
+        !((action.payload.qty == 0) && (row.cartLineID == action.payload.cartLineID)) // #1
+        || (row.qty > 0) // #2
+      )
       .map(row => {
-        if (row.isp.id == action.payload.isp.id) {
-          return { cartLineID:action.payload.cartLineID, isp:ispCopy, qty:action.payload.qty };
+        if (row.cartLineID == action.payload.cartLineID && row.isp.id == action.payload.isp.id) {
+          // This row was updated.
+          return {
+            cartLineID: action.payload.cartLineID,
+            isp: ispCopy,
+            qty: action.payload.qty
+          };
         }
-        return row;
+        return row; // Unchanged row
       });
     })
 

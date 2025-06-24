@@ -35,65 +35,76 @@ namespace ReactWithASP.Server.Domain
       context.SaveChanges();
     }
 
+    private enum UpdateAction { Create, Update, Delete, None };
+    private enum UserType { AppUser, Guest, None }
 
     public CartLine? SaveCartLine(CartLine cartLine)
     {
       CartLine? existingCartLine = null;
+      UpdateAction action = UpdateAction.None;
+      UserType userType = (cartLine.UserID != null) ? UserType.AppUser : ((cartLine.GuestID != null) ? UserType.Guest : UserType.None);
 
-      // if (cartLine.UserID != null){
-      //   // AppUser account
-      //   existingCartLine = context.CartLines.FirstOrDefault(record =>
-      //     record.ID == cartLine.ID &&
-      //     record.UserID == cartLine.UserID &&
-      //     record.InStockProductID == cartLine.InStockProductID
-      //   );
-      // } else if
-      if (cartLine.GuestID != null)
-      {
-        // Guest account
-        existingCartLine = context.CartLines.FirstOrDefault(record =>
-          record.ID == cartLine.ID &&
-          record.GuestID == cartLine.GuestID &&
-          record.InStockProductID == cartLine.InStockProductID
-        );
-        // Load associated entities
-        existingCartLine.InStockProduct = context.InStockProducts.FirstOrDefault(isp => isp.ID == existingCartLine.InStockProductID );
-        existingCartLine.Guest = context.Guests.FirstOrDefault( g => g.ID == cartLine.GuestID );
-      }
-      
-      if (existingCartLine == null && (cartLine.ID == null))
-      {
-        // Create new record
-        context.CartLines.Add(cartLine); // The cartLine.ID must be null when we are creating, or the DB will complain.
-
-        // Set Unchanged for associated entities
-        InStockProduct isp = cartLine.InStockProduct;
-        Guest? guest = cartLine.Guest;
-        context.Entry(isp).State = EntityState.Unchanged;   // Dont create InStockProduct. It already exists in database.
-        context.Entry(guest).State = EntityState.Unchanged; // Dont create Guest. It already exists in database.
-
-        context.SaveChanges();
-        return cartLine; // Return the updated record.
+      if (cartLine.ID == null){
+        action = UpdateAction.Create;
       }
       else
       {
-        if (cartLine.Quantity == 0)
+        // Update / Delete
+
+        // Lookup the existing CartLine by (ID, InStockProductID, and Guest/AppUser)
+        switch (userType)
         {
-          // Remove
-          context.CartLines.Remove(existingCartLine);
-          context.SaveChanges();
-          return null; // CartLine was successfully deleted from database.
+          case UserType.AppUser:
+            existingCartLine = context.CartLines.FirstOrDefault(record =>
+              record.ID == cartLine.ID &&
+              record.UserID == cartLine.UserID &&
+              record.InStockProductID == cartLine.InStockProductID
+            );
+            break;
+          case UserType.Guest:
+            existingCartLine = context.CartLines.FirstOrDefault(record =>
+              record.ID == cartLine.ID &&
+              record.GuestID == cartLine.GuestID &&
+              record.InStockProductID == cartLine.InStockProductID
+            );
+            break;
+          case UserType.None:
+            throw new ArgumentException("Cannot look up CartLine. There is no GuestID / UserID");
+            break;
         }
-        else
+        if (existingCartLine != null)
         {
-          // Update
+          // Load associated entities
+          existingCartLine.InStockProduct = context.InStockProducts.FirstOrDefault(isp => isp.ID == existingCartLine.InStockProductID);
+          existingCartLine.Guest = context.Guests.FirstOrDefault(g => g.ID == cartLine.GuestID);
+        }
+        // Set the quantity to zero, to delete row from database.
+        action = (cartLine.Quantity == 0) ? UpdateAction.Delete : UpdateAction.Update;
+      }
+
+      switch (action)
+      {
+        case UpdateAction.Create:
+          context.CartLines.Add(cartLine); // The cartLine.ID must be null when we are creating, or the DB will complain.
+
+          // Set Unchanged for associated entities
+          InStockProduct isp = cartLine.InStockProduct;
+          Guest? guest = cartLine.Guest;
+          context.Entry(isp).State = EntityState.Unchanged;   // Dont create InStockProduct. It already exists in database.
+          context.Entry(guest).State = EntityState.Unchanged; // Dont create Guest. It already exists in database.
+
+          context.SaveChanges();
+          return cartLine; // Return the updated record.
+          break;
+
+        case UpdateAction.Update:
           existingCartLine.Quantity = cartLine.Quantity;
 
           Int32 updatedCartLineID = (Int32)existingCartLine.ID;        // The CartLine ID of the record we just updated.
           Int32 updatedIsp = (Int32)existingCartLine.InStockProductID; // The InStockProductID of the CartLine we just updated.
 
           // Remove any duplicate CartLines for this InStockProductID, which belong to the Guest.
-          IList<CartLine> duplicateIsps = context.CartLines.Where( line =>
+          IList<CartLine> duplicateIsps = context.CartLines.Where(line =>
             (line.ID != updatedCartLineID) &&
             (line.GuestID == cartLine.GuestID) &&
             (line.InStockProductID == updatedIsp)
@@ -102,8 +113,15 @@ namespace ReactWithASP.Server.Domain
 
           context.SaveChanges();
           return existingCartLine; // Return the updated record.
-        }
+          break;
+
+        case UpdateAction.Delete:
+          context.CartLines.Remove(existingCartLine);
+          context.SaveChanges();
+          return null; // The CartLine was successfully deleted from database.
+          break;
       }
+      throw new ArgumentException("Could not save CartLine");
     }
   }
 }
