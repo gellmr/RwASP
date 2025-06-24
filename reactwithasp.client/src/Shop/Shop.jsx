@@ -32,11 +32,18 @@ function Shop()
   const pageIdx = (page === undefined) ? 0 : pageIntP - 1;              // eg (     page 0          page 1           page 2 )
   const startIdx = prodPerPage * pageIdx;                               // eg ( 4 * 0 == 0)   ( 4 * 1 == 4 )   ( 4 * 2 == 8 ) ...
   const endIdx = startIdx + prodPerPage;                                // eg            4 ...           8 ...            12  ...
+
+  // Add the cartLineID to each product, if available.
   const inStockProdThisPage = inStockProducts.slice(startIdx, endIdx).map(isp => {
     const cartProd = cartProducts.find(c => c.isp.id == isp.id);
     const cartLineID = cartProd === undefined ? null : cartProd.cartLineID;
-    return { id:isp.id, title:isp.title, description:isp.description, price:isp.price, category:isp.category,
-      cartLineID:cartLineID
+    return {
+      id:          isp.id,
+      title:       isp.title,
+      description: isp.description,
+      price:       isp.price,
+      category:    isp.category,
+      cartLineID: cartLineID // Will be null, if the product is not in our cart.
     };
   });
 
@@ -69,7 +76,15 @@ function Shop()
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
       {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">( Search returned no results )</div>}
       {inStockProdThisPage && inStockProdThisPage.map(prod =>
-        <InStockProductCanAdd key={prod.id} title={prod.title} slug={prod.description} ispID={prod.id} price={prod.price} cartLineID={prod.cartLineID} />
+        <InStockProductCanAdd key={prod.id}
+          ispID={prod.id}
+          title={prod.title}
+          slug={prod.description}
+          price={prod.price}
+          category={prod.category}
+          cartLineID={prod.cartLineID}>
+          {/*<span style={{ backgroundColor: "red", color: "white" }}>&nbsp;{prod.cartLineID}</span>*/}
+        </InStockProductCanAdd>
       )}
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
       {gotItems && <div style={{ marginTop: "20px" }}><ProceedCartBtn /></div>}

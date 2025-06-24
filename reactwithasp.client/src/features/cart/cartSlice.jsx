@@ -89,26 +89,23 @@ export const cartSlice = createSlice({
     builder.addCase(updateCartOnServer.fulfilled, (state, action) => {
       console.log("updateCartOnServer.fulfilled");
       state.guestID = action.payload.guestID; // Receive guest id from Server.
-      // Ensure local state matches our server.
-      const ispCopy = (action.payload.isp == null) ? null : JSON.parse(JSON.stringify(action.payload.isp));
-            
-      // If payload quantity is zero, then we are removing a row, because the server has deleted it from the database. Keep - if not that row. #1
-      // In general, delete any rows found that have quantity zero. They were meant to have been deleted. But keep if quantity is above zero. #2
-      state.cartLines = state.cartLines.filter(row =>
-        !((action.payload.qty == 0) && (row.cartLineID == action.payload.cartLineID)) // #1
-        || (row.qty > 0) // #2
-      )
-      .map(row => {
-        if (row.cartLineID == action.payload.cartLineID && row.isp.id == action.payload.isp.id) {
-          // This row was updated.
-          return {
-            cartLineID: action.payload.cartLineID,
-            isp: ispCopy,
-            qty: action.payload.qty
-          };
-        }
-        return row; // Unchanged row
-      });
+      const ispCopy = (action.payload.isp === null) ? null : JSON.parse(JSON.stringify(action.payload.isp));
+      const removal = (action.payload.qty === 0) ? true : false;
+      if (removal) {
+        // Keep rows, if they are not the one we just deleted, and also they must have quantity > 0. Otherwise remove.
+        state.cartLines = state.cartLines.filter(row => (row.cartLineID != action.payload.cartLineID) && row.qty > 0); // Keep, if condition resolves as true.
+      } else {
+        // Added to Cart / Updating quantity
+        state.cartLines = state.cartLines.map(row =>
+        {
+          const added = (row.cartLineID === null && row.isp.id === action.payload.isp.id);
+          const updated = ((row.cartLineID === action.payload.cartLineID) && (row.isp.id === action.payload.isp.id));
+          if ( added || updated ) {
+            return { cartLineID: action.payload.cartLineID, isp: ispCopy, qty: action.payload.qty }; // Row was added / updated.
+          }
+          return row; // Unchanged row
+        }).filter(row => row.qty > 0); // Keep, if condition resolves as true.
+      }
     })
 
     .addCase(updateCartOnServer.rejected, (state, action) => {
