@@ -98,7 +98,7 @@ th, td {
   padding-top: 6px;
   padding-bottom: 6px;
   background-color: rgb(25, 135, 84);
-  border-color rgb(25, 135, 84);
+  border-color: rgb(25, 135, 84);
   border-radius: 6px;
 }
 .mgNavLinkBtn.mgNavLinkCartBtn:hover {
