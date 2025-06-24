@@ -11,7 +11,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 function Cart()
 {
   const dispatch = useDispatch();
-  const cartProducts = useSelector(state => state.cart.cartLines); // array of products
+  const cartProducts = useSelector(state => state.cart.cartLines); // Array of products
 
   const gotItems = cartProducts.length > 0;
   const showTopCheckoutBtn = cartProducts.length > 5;
@@ -21,7 +21,7 @@ function Cart()
 
   return (
     <>
-      <h2 style={{ marginTop:"5px" }}>Your Cart:</h2>
+      <h2 style={{ marginTop: "5px" }}>Your Cart: {cartProducts.length}</h2>
       {showTopCheckoutBtn && <div className="proceedCheckoutBar">
         <ButtonGroup>
           <Button variant="light" style={{ fontSize: 13, color: "#777777" }} onClick={() => {

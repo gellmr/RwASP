@@ -1,4 +1,5 @@
-﻿using ReactWithASP.Server.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using ReactWithASP.Server.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReactWithASP.Server.Controllers;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
 
@@ -34,28 +35,33 @@ namespace ReactWithASP.Server.Domain
       context.SaveChanges();
     }
 
-    public Int32? SaveCartLine(CartLine cartLine)
+
+    public CartLine? SaveCartLine(CartLine cartLine)
     {
-      CartLine dbEntry = context.CartLines.FirstOrDefault(record => record.InStockProductID == cartLine.InStockProductID);
-      if( dbEntry != null )
+      CartLine? existingCartLine = null;
+
+      // if (cartLine.UserID != null){
+      //   // AppUser account
+      //   existingCartLine = context.CartLines.FirstOrDefault(record =>
+      //     record.ID == cartLine.ID &&
+      //     record.UserID == cartLine.UserID &&
+      //     record.InStockProductID == cartLine.InStockProductID
+      //   );
+      // } else if
+      if (cartLine.GuestID != null)
       {
-        if (cartLine.Quantity == 0)
-        {
-          // Remove
-          context.CartLines.Remove(dbEntry);
-          context.SaveChanges();
-          return -1;
-        }
-        else
-        {
-          // Update
-          dbEntry.Quantity = cartLine.Quantity;
-          context.SaveChanges();
-          cartLine.ID = dbEntry.ID;
-          return cartLine.ID;
-        }
+        // Guest account
+        existingCartLine = context.CartLines.FirstOrDefault(record =>
+          record.ID == cartLine.ID &&
+          record.GuestID == cartLine.GuestID &&
+          record.InStockProductID == cartLine.InStockProductID
+        );
+        // Load associated entities
+        existingCartLine.InStockProduct = context.InStockProducts.FirstOrDefault(isp => isp.ID == existingCartLine.InStockProductID );
+        existingCartLine.Guest = context.Guests.FirstOrDefault( g => g.ID == cartLine.GuestID );
       }
-      else
+      
+      if (existingCartLine == null && (cartLine.ID == null))
       {
         // Create new record
         context.CartLines.Add(cartLine); // The cartLine.ID must be null when we are creating, or the DB will complain.
@@ -67,7 +73,36 @@ namespace ReactWithASP.Server.Domain
         context.Entry(guest).State = EntityState.Unchanged; // Dont create Guest. It already exists in database.
 
         context.SaveChanges();
-        return cartLine.ID ?? null;
+        return cartLine; // Return the updated record.
+      }
+      else
+      {
+        if (cartLine.Quantity == 0)
+        {
+          // Remove
+          context.CartLines.Remove(existingCartLine);
+          context.SaveChanges();
+          return null; // CartLine was successfully deleted from database.
+        }
+        else
+        {
+          // Update
+          existingCartLine.Quantity = cartLine.Quantity;
+
+          Int32 updatedCartLineID = (Int32)existingCartLine.ID;        // The CartLine ID of the record we just updated.
+          Int32 updatedIsp = (Int32)existingCartLine.InStockProductID; // The InStockProductID of the CartLine we just updated.
+
+          // Remove any duplicate CartLines for this InStockProductID, which belong to the Guest.
+          IList<CartLine> duplicateIsps = context.CartLines.Where( line =>
+            (line.ID != updatedCartLineID) &&
+            (line.GuestID == cartLine.GuestID) &&
+            (line.InStockProductID == updatedIsp)
+          ).ToList();
+          context.CartLines.RemoveRange(duplicateIsps);
+
+          context.SaveChanges();
+          return existingCartLine; // Return the updated record.
+        }
       }
     }
   }

@@ -48,9 +48,15 @@ namespace ReactWithASP.Server.Controllers
     }
 
     [HttpGet] // GET api/cart
-    public ActionResult Get(){
-      IEnumerable<CartLine> cartLines = cartLineRepo.CartLines;
-      IList<CartUpdateDTO> items = cartLines.Select(cartLine => new CartUpdateDTO{
+    public ActionResult Get()
+    {
+      Guest guest = EnsureGuestIdFromCookie();
+
+      // Get all CartLine rows for this Guest
+      IEnumerable<CartUpdateDTO> cartLinesDistinctByIsp = cartLineRepo.CartLines
+      .DistinctBy(line => line.InStockProductID)
+      .Select(cartLine => new CartUpdateDTO{
+        guestID = guest.ID,
         cartLineID = (Int32)cartLine.ID,
         qty        = (Int32)cartLine.Quantity,
         isp = new IspDTO{
@@ -61,7 +67,8 @@ namespace ReactWithASP.Server.Controllers
           category    = (Int32)cartLine.InStockProduct.Category
         }
       }).ToList();
-      return Ok( items ); // Respond with 200 OK, and list of cartLine objects.
+
+      return Ok( cartLinesDistinctByIsp ); // Respond with 200 OK, and list of cartLine objects.
     }
 
     private Guest EnsureGuestIdFromCookie()
@@ -133,30 +140,30 @@ namespace ReactWithASP.Server.Controllers
         Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
         return new JsonResult(new { Message = "InStockProduct not found" });
       }
+
       // Create database entry for new CartLine, connected to user/guest and the existing InStockProduct.
       CartLine cartLine = new CartLine{
-        AppUser = null,
-        Guest = guest,
+        ID = cartUpdate.cartLineID ?? null, // Must be null when we are creating or DB will complain.
         GuestID = guestId,
-        ID = cartUpdate.cartLineID ?? null, // Will the database let me set this, or force me to use its own generated id?
-        InStockProduct = isp,
+        Guest = guest,
         InStockProductID = isp.ID,
-        // PriceTotal is calculated (Not mapped)
+        InStockProduct = isp,
         Quantity = cartUpdate.qty,
-        UserID = null
+        UserID = null,
+        AppUser = null
       };
-      Int32? saveResult = cartLineRepo.SaveCartLine(cartLine);
+      CartLine? updatedCartLine = cartLineRepo.SaveCartLine(cartLine);
 
       // Prepare JSON for client
-      cartUpdate.cartLineID = cartUpdate.cartLineID ?? (Int32)cartLine.ID;
+      cartUpdate.cartLineID = cartUpdate.cartLineID ?? (Int32)updatedCartLine.ID;
       cartUpdate.guestID = guestId;
       cartUpdate.isp = new IspDTO
       {
-         id          = cartLine.InStockProduct.ID,
-         title       = cartLine.InStockProduct.Title,
-         description = cartLine.InStockProduct.Description,
-         price       = cartLine.InStockProduct.Price,
-         category    = (Int32)cartLine.InStockProduct.Category
+         id          = updatedCartLine.InStockProduct.ID,
+         title       = updatedCartLine.InStockProduct.Title,
+         description = updatedCartLine.InStockProduct.Description,
+         price       = updatedCartLine.InStockProduct.Price,
+         category    = (Int32)updatedCartLine.InStockProduct.Category
       };
 
       // Send back response to client indicating success or failure.
