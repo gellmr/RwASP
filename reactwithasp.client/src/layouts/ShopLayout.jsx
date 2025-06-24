@@ -15,6 +15,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import MgNavBar from "@/main/MgNavBar";
 import CategoriesMenu from "@/Shop/CategoriesMenu";
 import CartBtn from "@/Shop/CartBtn";
+import EnvName from "@/Shop/EnvName";
 
 const ShopLayout = () =>
 {
@@ -51,6 +52,8 @@ const ShopLayout = () =>
         </Row>
         <hr />
         Built with React and ASP, using .NET 8.0 and Vite
+        <br />
+        <EnvName />
       </Container>
     </>
   );

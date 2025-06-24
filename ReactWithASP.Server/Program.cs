@@ -40,6 +40,7 @@ builder.Services.AddScoped<ICartLineRepository, EFCartLineRepository>();
 builder.Services.AddScoped<IInStockRepository, EFInStockRepository>();
 builder.Services.AddScoped<IGuestRepository, EFGuestRepository>();
 builder.Services.AddScoped<StoreContext, StoreContext>();
+builder.Services.AddScoped<MyEnv, MyEnv>();
 
 // -------------------------------------------------------------
 // Configure the HTTP Request pipeline
@@ -56,14 +57,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-bool recreateAllTables = false;
+bool useSeed = false;
 using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
   var context = services.GetRequiredService<StoreContext>();
-  if (recreateAllTables) {
-    context.Database.EnsureDeleted();
-  }
-  context.Database.EnsureCreated(); // Create the database if it doesnt exist.
+  //context.Database.EnsureDeleted();
+  useSeed = context.Database.EnsureCreated(); // Create the database if it doesnt exist.
 }
 
 app.UseHttpsRedirection();
@@ -75,7 +74,7 @@ app.UseSession();
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope()){
-  if (recreateAllTables){
+  if(useSeed){
     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
     seeder.Seed();
   }
