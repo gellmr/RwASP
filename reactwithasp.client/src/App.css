@@ -290,7 +290,9 @@ th, td {
   padding-left:5px;
   margin-top:25px;
 }
-
+.checkoutSubmitBtnGroup .btn {
+  font-size:14px;
+}
 
 /* ================================================= */
 /* ========= OTHER BREAKPOINTS BELOW HERE ========== */
@@ -314,5 +316,9 @@ th, td {
   .cartQtyXs {
     /*color: orange;*/
     display: none !important;
+  }
+  /* CHECKOUT */
+  .checkoutSubmitBtnGroup .btn {
+    font-size: 18px;
   }
 }

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from "react-router";
 import { clearCart } from '@/features/cart/cartSlice.jsx'
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row'
@@ -50,6 +51,16 @@ function Checkout()
       console.error('Error:', error);
     }
   };
+
+  const autoFill = function (e) {
+    setFirstName("FirstName"); setLastName("LastName");
+    setShipLine1("Unit 10/150"); setShipLine2("Third Floor, 123 Streetname Bvd"); setShipLine3("The Tall Apartment Building (Inc)");
+    setShipCity("MySuburb");
+    setShipState("MyState");
+    setShipCountry("MyCountry");
+    setShipZip("6000");
+    setShipEmail("email@address.com");
+  }
 
   return (
     <>
@@ -112,6 +123,11 @@ function Checkout()
               </InputGroup>
 
               <Button variant="success" className={"btn btn-primary"} type="submit" >Complete Order</Button>
+              <ButtonGroup className="checkoutSubmitBtnGroup">
+                <Button variant="light" className={"btn"} onClick={autoFill} type="button"><i className="bi bi-list-check"></i>&nbsp;Autofill</Button>
+                <Button variant="success" className={"btn btn-primary"} type="submit" >Complete Order</Button>
+              </ButtonGroup>
+
             </Form>
 
           </Col>
