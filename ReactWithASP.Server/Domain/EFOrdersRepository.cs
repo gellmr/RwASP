@@ -14,12 +14,14 @@ namespace ReactWithASP.Server.Domain
       context = new StoreContext(_config);
     }
 
-    void IOrdersRepository.SaveOrder(Order order)
+    // Return true if saved successfully.
+    bool IOrdersRepository.SaveOrder(Order order)
     {
       bool exists = context.Orders.Any(o => o.ID == order.ID);
       if (exists)
       {
         context.SaveChanges();
+        return true;
       }
       else
       {
@@ -31,7 +33,9 @@ namespace ReactWithASP.Server.Domain
           context.OrderedProducts.Add(op);
         }
         context.SaveChanges();
+        return true;
       }
+      return false;
     }
   }
 }

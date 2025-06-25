@@ -10,11 +10,9 @@ namespace ReactWithASP.Server.Controllers
   public class CheckoutController: ShopController
   {
     private IOrdersRepository ordersRepo;
-    private IInStockRepository inStockRepo;
 
-    public CheckoutController(IGuestRepository gRepo, IOrdersRepository oRepo, IInStockRepository pRepo) : base(gRepo) {
+    public CheckoutController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IOrdersRepository oRepo) : base(rRepo, gRepo, pRepo) {
       ordersRepo = oRepo;
-      inStockRepo = pRepo;
     }
 
     [HttpPost("submit")] // POST api/checkout/submit.  Accepts application/json POST submissions containing stringified JSON data in request body.
@@ -23,6 +21,7 @@ namespace ReactWithASP.Server.Controllers
       if (!ModelState.IsValid){ return BadRequest(ModelState); }
       Guest guest = EnsureGuestIdFromCookie();
       Nullable<Guid> guestId = guest.ID;
+      bool savedOk = false;
       UserType userType = UserType.Guest;
       switch(userType){
         case UserType.Guest :
@@ -52,7 +51,10 @@ namespace ReactWithASP.Server.Controllers
             };
             order1.OrderedProducts.Add(op1);
           }
-          ordersRepo.SaveOrder(order1);
+          savedOk = ordersRepo.SaveOrder(order1);
+          if (savedOk) {
+            cartLineRepo.ClearCartLines(guestId); // Clear the cart of this user.
+          }
           break;
         case UserType.AppUser : break;
         case UserType.None : break;

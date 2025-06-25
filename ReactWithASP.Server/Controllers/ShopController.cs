@@ -10,9 +10,13 @@ namespace ReactWithASP.Server.Controllers
     protected enum UserType { Guest, AppUser, None };
 
     protected IGuestRepository guestRepo;
+    protected ICartLineRepository cartLineRepo;
+    protected IInStockRepository inStockRepo;
 
-    public ShopController( IGuestRepository gRepo ){
+    public ShopController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) {
       guestRepo = gRepo;
+      cartLineRepo = rRepo;
+      inStockRepo = pRepo;
     }
 
     protected Guest EnsureGuestIdFromCookie()

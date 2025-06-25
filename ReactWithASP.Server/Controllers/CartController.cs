@@ -9,13 +9,7 @@ namespace ReactWithASP.Server.Controllers
   [Route("api/[controller]")]
   public class CartController: ShopController
   {
-    private ICartLineRepository cartLineRepo;
-    private IInStockRepository inStockRepo;
-
-    public CartController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) : base(gRepo) {
-      cartLineRepo = rRepo;
-      inStockRepo = pRepo;
-    }
+    public CartController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) : base(rRepo, gRepo, pRepo){}
 
     [HttpGet] // GET api/cart
     public ActionResult Get()

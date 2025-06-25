@@ -2,6 +2,6 @@
 {
   public interface IOrdersRepository
   {
-    void SaveOrder(Order order);
+    bool SaveOrder(Order order);
   }
 }
