@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router";
 import { clearCart } from '@/features/cart/cartSlice.jsx'
 import Button from 'react-bootstrap/Button';
@@ -25,6 +25,9 @@ function Checkout()
   const [shipCountry,  setShipCountry] = useState('');
   const [shipZip,      setShipZip] = useState('');
   const [shipEmail, setShipEmail] = useState('');
+  const guestID = useSelector(state => state.cart.guestID);
+  const cart = useSelector(state => state.cart.cartLines);
+  const cartPayload = JSON.parse(JSON.stringify(cart));
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -37,7 +40,8 @@ function Checkout()
         body: JSON.stringify({ firstName, lastName,
           shipLine1, shipLine2, shipLine3,
           shipCity, shipState, shipCountry, shipZip,
-          shipEmail
+          shipEmail,
+          guestID: guestID, cart: cartPayload
         }),
       });
       if (!response.ok) {

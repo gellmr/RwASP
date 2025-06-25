@@ -55,6 +55,9 @@ namespace ReactWithASP.Server.Controllers
 
       [RegularExpression(@"^[a-zA-Z0-9\.\-]+@[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?){0,4}$", ErrorMessage = "Please provide a valid email address.")]
       public string? ShipEmail { get; set; }
+
+      public Guid? guestID {get; set;}
+      public List<CartSubmitLineDTO> cart {get; set;}
     }
   }
 }
