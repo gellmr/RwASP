@@ -7,7 +7,9 @@ namespace ReactWithASP.Server.Controllers
 {
   public abstract class ShopController : ControllerBase
   {
-    private IGuestRepository guestRepo;
+    protected enum UserType { Guest, AppUser, None };
+
+    protected IGuestRepository guestRepo;
 
     public ShopController( IGuestRepository gRepo ){
       guestRepo = gRepo;

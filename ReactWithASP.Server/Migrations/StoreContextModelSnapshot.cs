@@ -139,7 +139,6 @@ namespace ReactWithASP.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
@@ -284,9 +283,7 @@ namespace ReactWithASP.Server.Migrations
 
                     b.HasOne("ReactWithASP.Server.Infrastructure.AppUser", "AppUser")
                         .WithMany("MyOrders")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserID");
 
                     b.Navigation("AppUser");
 

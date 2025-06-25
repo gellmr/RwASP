@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Infrastructure;
+
 
 namespace ReactWithASP.Server.Domain
 {
@@ -24,7 +26,7 @@ namespace ReactWithASP.Server.Domain
     // AppUser 1-----* Order
     [ForeignKey("UserID")] // use the value of UserID as foreign key to the AspNetUsers table.
     public virtual AppUser AppUser { get; set; } // navigation property.
-    public string UserID { get; set; } // foreign key value to use, for AspNetUsers table.
+    public string? UserID { get; set; } // foreign key value to use, for AspNetUsers table.
 
 
     // Guest 1-----* Order
@@ -159,15 +161,15 @@ namespace ReactWithASP.Server.Domain
       }
     }
 
-    public static string ParseAddress(ShippingDetails shippingInfo)
+    public static string ParseAddress(CheckoutSubmitDTO shippingInfo)
     {
-      return shippingInfo.Line1 + " " +
-              shippingInfo.Line2 + " " +
-              shippingInfo.Line3 + " " +
-              shippingInfo.City + " " +
-              shippingInfo.State + " " +
-              shippingInfo.Country + " " +
-              shippingInfo.Zip;
+      return shippingInfo.ShipLine1 + " " +
+              shippingInfo.ShipLine2 + " " +
+              shippingInfo.ShipLine3 + " " +
+              shippingInfo.ShipCity + " " +
+              shippingInfo.ShipState + " " +
+              shippingInfo.ShipCountry + " " +
+              shippingInfo.ShipZip;
     }
 
     public static ShippingState ParseShippingState(string str)

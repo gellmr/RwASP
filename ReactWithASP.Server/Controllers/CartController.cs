@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
-using ReactWithASP.Server.Infrastructure;
-using System.ComponentModel.DataAnnotations;
+using ReactWithASP.Server.DTO;
 
 namespace ReactWithASP.Server.Controllers
 {

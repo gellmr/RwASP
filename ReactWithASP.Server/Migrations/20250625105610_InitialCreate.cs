@@ -72,7 +72,7 @@ namespace ReactWithASP.Server.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GuestID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     OrderPlacedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     PaymentReceivedDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -90,8 +90,7 @@ namespace ReactWithASP.Server.Migrations
                         name: "FK_Orders_AppUser_UserID",
                         column: x => x.UserID,
                         principalTable: "AppUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Guests_GuestID",
                         column: x => x.GuestID,

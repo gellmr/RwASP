@@ -19,18 +19,15 @@ namespace ReactWithASP.Server.Domain
       bool exists = context.Orders.Any(o => o.ID == order.ID);
       if (exists)
       {
-        // update
-        Order dbEntry = context.Orders.First(o => o.ID == order.ID);
-        dbEntry.OrderedProducts = order.OrderedProducts;
         context.SaveChanges();
       }
       else
       {
-        // create new record
+        // Create new record
         context.Orders.Add(order);
         foreach (OrderedProduct op in order.OrderedProducts){
           InStockProduct ip = op.InStockProduct;
-          context.Entry(ip).State = EntityState.Unchanged; // dont create the product. It already exists in database.
+          context.Entry(ip).State = EntityState.Unchanged; // Dont create the product. It already exists in database.
           context.OrderedProducts.Add(op);
         }
         context.SaveChanges();
