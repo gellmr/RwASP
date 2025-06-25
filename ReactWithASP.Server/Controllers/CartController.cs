@@ -8,15 +8,13 @@ namespace ReactWithASP.Server.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class CartController: ControllerBase
+  public class CartController: ShopController
   {
     private ICartLineRepository cartLineRepo;
-    private IGuestRepository guestRepo;
     private IInStockRepository inStockRepo;
 
-    public CartController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) {
+    public CartController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) : base(gRepo) {
       cartLineRepo = rRepo;
-      guestRepo = gRepo;
       inStockRepo = pRepo;
     }
 
@@ -42,42 +40,6 @@ namespace ReactWithASP.Server.Controllers
       }).ToList();
 
       return Ok( cartLinesDistinctByIsp ); // Respond with 200 OK, and list of cartLine objects.
-    }
-
-    private Guest EnsureGuestIdFromCookie()
-    {
-      // See if guest id cookie exists...
-      Guest guest = null;
-      Nullable<Guid> guestId;
-      bool createGuest = false;
-      string cookieGuestId = Request.Cookies[MyExtensions.GuestCookieName];
-      if (string.IsNullOrEmpty(cookieGuestId))
-      {
-        // Cookie value is not available
-        createGuest = true;
-        guestId = Guid.NewGuid(); // Create guest ID for the first time.
-      }
-      else
-      {
-        // Cookie value is available...
-        guestId = cookieGuestId.ToNullableGuid();
-        guest = guestRepo.Guests.FirstOrDefault(g => g.ID == guestId); // Look up guest in database.
-        if (guest == null){
-          createGuest = true; // Record was not found in database.
-        }
-      }
-      
-      if (createGuest)
-      {
-        // Create guest record in database.
-        guest = new Guest { ID = guestId };
-        guestRepo.SaveGuest(guest);
-      }
-
-      // Store guest id in cookie...
-      HttpContext.Response.Cookies.Delete(MyExtensions.GuestCookieName);
-      Response.Cookies.Append(MyExtensions.GuestCookieName, guestId.ToString(), MyExtensions.GuestCookieOptions);
-      return guest;
     }
 
     [HttpPost]

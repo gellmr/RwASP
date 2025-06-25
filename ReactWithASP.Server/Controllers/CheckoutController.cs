@@ -5,15 +5,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReactWithASP.Server.Controllers
 {
-
-
   [Route("api/[controller]")]
   [ApiController]
-  public class CheckoutController: ControllerBase
+  public class CheckoutController: ShopController
   {
     private IOrdersRepository ordersRepo;
 
-    public CheckoutController(IOrdersRepository oRepo) {
+    public CheckoutController(IGuestRepository gRepo, IOrdersRepository oRepo) : base(gRepo) {
       ordersRepo = oRepo;
     }
 
@@ -23,6 +21,9 @@ namespace ReactWithASP.Server.Controllers
       if (!ModelState.IsValid){
         return BadRequest(ModelState);
       }
+      Guest guest = EnsureGuestIdFromCookie();
+      Nullable<Guid> guestId = guest.ID;
+
       Order order = new Order();
       order.OrderedProducts = new List<OrderedProduct>();
       ordersRepo.SaveOrder(order);
