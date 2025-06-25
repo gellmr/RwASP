@@ -1,5 +1,7 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import { setCategories, setNoCategories } from '@/features/categories/categoriesSlice.jsx'
 import Col from 'react-bootstrap/Col'
 import { NavLink } from "react-router";
@@ -9,32 +11,48 @@ import "bootstrap/dist/css/bootstrap.css";
 
 function CategoriesMenu()
 {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const categories = useSelector(state => state.categories.value); // Array of categories
   const dispatch = useDispatch(); // Redux dispatch
+
+  // Configure this axios instance. 3 retries is about minimum for Vite load on my workstation.
+  axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
+  }});
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
   async function fetchCategories() {
-    try {
-      const response = await fetch('api/categories');
-      const data = await response.json();
-      dispatch(setCategories(data));
-    } catch (err) {
-      dispatch(setNoCategories());
-      //setTimeout(function () { location.reload() }, 1200); // Reload page in n milliseconds.
-    }
+    const url = 'api/categories';
+    console.log("Axios retry..." + url);
+    axios.get(url).then((response) => {
+      console.log('Data fetched:', response.data);
+      dispatch(setCategories(response.data)); // response.data is already JSON
+    })
+    .catch((error) => {
+      console.error('Request failed after retries:', error);
+      setError(error);
+      dispatch(setNoCategories()); // Failed to load categories
+    })
+    .finally(() => {
+      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      setIsLoading(false);
+    });
   }
 
-  const menuMarkup = (categories === undefined || categories.length === 0)
-    ? <div className="fetchErr">Loading...</div>
-    : categories && categories.map(cat =>
-      <NavLink to={"/category/" + cat.segment} key={crypto.randomUUID()} data-catid={cat.id} className={"btn btn-light"}>
-        <CatCaret />
-        {cat.title}
-      </NavLink>
-    );
+  const menuMarkup = (isLoading) ? <div className="fetchErr">Loading...</div> : (
+    (error) ? <div>Error: {error.message}</div> : (
+    categories && categories.map(cat =>
+    <NavLink to={"/category/" + cat.segment} key={crypto.randomUUID()} data-catid={cat.id} className={"btn btn-light"}>
+      <CatCaret />
+      {cat.title}
+    </NavLink>
+    )
+  ));
 
   return (
     <>
