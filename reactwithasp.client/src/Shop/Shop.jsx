@@ -91,8 +91,8 @@ function Shop()
   }
 
   const markup =
-    (isLoading) ? <div className="fetchErr">Loading...</div> : (
-    (error)     ? <div>Error: {error.message}</div>          : (
+    (isLoading) ? <div className="fetchErr">Loading...</div>             : (
+    (error)     ? <div className="fetchErr">Error: {error.message}</div> : (
     (!inStockProdThisPage || inStockProdThisPage.length === 0) ? <div className="fetchErr">( Search returned no results )</div> : (
     inStockProdThisPage && inStockProdThisPage.map(prod =>
       <InStockProductCanAdd key={prod.id}
