@@ -122,7 +122,6 @@ function Checkout()
                 <Form.Control id="shipEmail" name="shipEmail" type="text" value={shipEmail} onChange={(e) => setShipEmail(e.target.value)} />
               </InputGroup>
 
-              <Button variant="success" className={"btn btn-primary"} type="submit" >Complete Order</Button>
               <ButtonGroup className="checkoutSubmitBtnGroup">
                 <Button variant="light" className={"btn"} onClick={autoFill} type="button"><i className="bi bi-list-check"></i>&nbsp;Autofill</Button>
                 <Button variant="success" className={"btn btn-primary"} type="submit" >Complete Order</Button>
