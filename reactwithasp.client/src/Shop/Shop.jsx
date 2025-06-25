@@ -17,7 +17,7 @@ function Shop()
   const [error, setError] = useState(null);
 
   // Configure axios instance.
-  axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+  axiosRetry(axios, { retries: 7, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
       console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
   }});
 
