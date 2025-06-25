@@ -30,31 +30,41 @@ namespace ReactWithASP.Server.DTO
 
   public class CheckoutSubmitDTO
   {
+    [Required(ErrorMessage = "Please enter your First Name")]
     [RegularExpression(OkInputs.CheckoutName50, ErrorMessage = OkInputs.CheckoutName50Err)]
     public string? FirstName { get; set; }
 
+    [Required(ErrorMessage = "Please enter your Last Name")]
     [RegularExpression(OkInputs.CheckoutName50, ErrorMessage = OkInputs.CheckoutName50Err)]
     public string? LastName { get; set; }
 
+    [Required(ErrorMessage = "Please enter the first address line")]
     [RegularExpression(OkInputs.CheckoutShip100, ErrorMessage = OkInputs.CheckoutShip100Err)]
     public string? ShipLine1 { get; set; }
 
+    [RegularExpression(OkInputs.CheckoutShip100, ErrorMessage = OkInputs.CheckoutShip100Err)]
     public string? ShipLine2 { get; set; }
 
+    [RegularExpression(OkInputs.CheckoutShip100, ErrorMessage = OkInputs.CheckoutShip100Err)]
     public string? ShipLine3 { get; set; }
 
+    [Required(ErrorMessage = "Please enter a city name")]
     [RegularExpression(OkInputs.CheckoutDetail50, ErrorMessage = OkInputs.CheckoutDetail50Err)]
     public string? ShipCity { get; set; }
 
+    [Required(ErrorMessage = "Please enter a state name")]
     [RegularExpression(OkInputs.CheckoutDetail50, ErrorMessage = OkInputs.CheckoutDetail50Err)]
     public string? ShipState { get; set; }
 
+    [Required(ErrorMessage = "Please enter a country name")]
     [RegularExpression(OkInputs.CheckoutDetail50, ErrorMessage = OkInputs.CheckoutDetail50Err)]
     public string? ShipCountry { get; set; }
 
+    [Required(ErrorMessage = "Please enter your postcode")]
     [RegularExpression(OkInputs.CheckoutZip, ErrorMessage = OkInputs.CheckoutZipErr)]
     public string? ShipZip { get; set; }
 
+    [Required(ErrorMessage = "Email address is required")]
     [RegularExpression(OkInputs.Email, ErrorMessage = OkInputs.EmailErr)]
     public string? ShipEmail { get; set; }
 
