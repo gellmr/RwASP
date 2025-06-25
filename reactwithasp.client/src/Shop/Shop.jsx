@@ -1,7 +1,10 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setInStock, setNoStock } from '@/features/inStock/inStockSlice.jsx'
 import { useParams } from 'react-router';
+
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
 
 import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
@@ -10,6 +13,14 @@ import ProceedCartBtn from "@/Shop/ProceedCartBtn";
 
 function Shop()
 {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Configure axios instance.
+  axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+      console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
+  }});
+
   // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
   //    Name of local state const
   //    |                                Redux internal state (eg the store)
@@ -56,36 +67,52 @@ function Shop()
     fetchProducts();
   }, [category, search]);
 
-  async function fetchProducts() {
-    try {
-      // Get list of products from server. Get all products or search by category.
-      const cat = category !== undefined ? "/category/" + category : "";
-      const query = (search !== undefined && search !== "") ? "?search=" + search : "";
-      const url = window.location.origin + "/api/products" + cat + query;
-      const response = await fetch(url);            // Get list of inStock products from ASP.
-      const data = await response.json();           // Read json objects from stream.
-      dispatch(setInStock(data));                   // Dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
-    } catch (err) {
-      dispatch(setNoStock());
-    }
+  async function fetchProducts()
+  {
+    // Get list of products from server. Get all products or search by category.
+    const cat = category !== undefined ? "/category/" + category : "";
+    const query = (search !== undefined && search !== "") ? "?search=" + search : "";
+    const url = window.location.origin + "/api/products" + cat + query;
+
+    console.log("Axios retry..." + url);
+    axios.get(url).then((response) => {
+      console.log('Data fetched:', response.data); // response.data is already JSON
+      dispatch(setInStock(response.data)); // Dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
+    })
+    .catch((error) => {
+      console.error('Request failed after retries:', error);
+      setError(error);
+      dispatch(setNoStock()); // Failed to load products
+    })
+    .finally(() => {
+      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      setIsLoading(false);
+    });
   }
+
+  const markup =
+    (isLoading) ? <div className="fetchErr">Loading...</div> : (
+    (error)     ? <div>Error: {error.message}</div>          : (
+    (!inStockProdThisPage || inStockProdThisPage.length === 0) ? <div className="fetchErr">( Search returned no results )</div> : (
+    inStockProdThisPage && inStockProdThisPage.map(prod =>
+      <InStockProductCanAdd key={prod.id}
+        ispID={prod.id}
+        title={prod.title}
+        slug={prod.description}
+        price={prod.price}
+        category={prod.category}
+        cartLineID={prod.cartLineID}>
+        {/*<span style={{ backgroundColor: "red", color: "white" }}>&nbsp;{prod.cartLineID}</span>*/}
+      </InStockProductCanAdd>
+    )
+  )));
 
   return (
     <>
       <ProductSearchBox />
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
-      {!inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">( Search returned no results )</div>}
-      {inStockProdThisPage && inStockProdThisPage.map(prod =>
-        <InStockProductCanAdd key={prod.id}
-          ispID={prod.id}
-          title={prod.title}
-          slug={prod.description}
-          price={prod.price}
-          category={prod.category}
-          cartLineID={prod.cartLineID}>
-          {/*<span style={{ backgroundColor: "red", color: "white" }}>&nbsp;{prod.cartLineID}</span>*/}
-        </InStockProductCanAdd>
-      )}
+      {/* !inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">( Search returned no results )</div> */}
+      {markup}
       <PaginationLinks numPages={numPages} currPage={pageIntP} />
       {gotItems && <div style={{ marginTop: "20px" }}><ProceedCartBtn /></div>}
     </>
