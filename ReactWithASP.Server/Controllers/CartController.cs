@@ -66,7 +66,12 @@ namespace ReactWithASP.Server.Controllers
       InStockProduct isp = inStockRepo.InStockProducts.FirstOrDefault(record => record.ID == cartUpdate.isp.id);
       if (isp == null){
         Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
-        return new JsonResult(new { Message = "InStockProduct not found" });
+        cartLineRepo.RemoveById((Int32)cartUpdate.cartLineID); // Remove the offending cart row from database.
+        return new JsonResult(new {
+          message = "InStockProduct not found",
+          error = "ispRemove",
+          ispRemove = cartUpdate.isp.id
+        });
       }
 
       // Create database entry for new CartLine, connected to user/guest and the existing InStockProduct.

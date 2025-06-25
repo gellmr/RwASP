@@ -35,6 +35,15 @@ namespace ReactWithASP.Server.Domain
       context.SaveChanges();
     }
 
+    public void RemoveById(Int32 cartLineIdRem)
+    {
+      CartLine line = context.CartLines.FirstOrDefault(record => record.ID == cartLineIdRem);
+      if (line != null){
+        context.CartLines.Remove(line);
+        context.SaveChanges();
+      }
+    }
+
     private enum UpdateAction { Create, Update, Delete, None };
     private enum UserType { AppUser, Guest, None }
 

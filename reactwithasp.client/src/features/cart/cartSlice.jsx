@@ -110,6 +110,10 @@ export const cartSlice = createSlice({
 
     .addCase(updateCartOnServer.rejected, (state, action) => {
       console.log("updateCartOnServer.rejected");
+      if (action.payload.error == "ispRemove") {
+        // Stale cookie has outdated ispID. Remove row from cart...
+        state.cartLines = state.cartLines.filter(row => (row.isp.id != action.payload.ispRemove));
+      }
     })
 
     .addCase(clearCartOnServer.fulfilled, (state, action) => {
