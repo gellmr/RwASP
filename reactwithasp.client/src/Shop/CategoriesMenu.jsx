@@ -45,7 +45,7 @@ function CategoriesMenu()
   }
 
   const menuMarkup = (isLoading) ? <div className="fetchErr">Loading...</div> : (
-    (error) ? <div>Error: {error.message}</div> : (
+    (error) ? <div className="fetchErr">Error: {error.message}</div> : (
     categories && categories.map(cat =>
     <NavLink to={"/category/" + cat.segment} key={crypto.randomUUID()} data-catid={cat.id} className={"btn btn-light"}>
       <CatCaret />
