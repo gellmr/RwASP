@@ -17,7 +17,7 @@ function CartSummaryLine({ totalQuantity, totalPrice }) {
           <Col xs={5} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end" }}>
             <span style={{ fontSize: "14px", paddingTop: "1px", fontWeight: "500" }}>{totalQuantity}</span>
             &nbsp;
-            <span style={{ fontWeight: "400", fontSize:"14px" }}>Products</span>
+            <span style={{ fontWeight: "400", fontSize:"14px" }}>Items</span>
           </Col>
 
           <Col xs={7} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}></Col>

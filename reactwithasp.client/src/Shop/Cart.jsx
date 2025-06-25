@@ -19,9 +19,11 @@ function Cart()
   const totalQty   = cartProducts.reduce((sum, row) => sum + row.qty, 0);
   const totalPrice = cartProducts.reduce((sum, row) => sum + (row.isp.price * row.qty), 0);
 
+  const cartLen = totalQty > 0 ? "Your Cart:" : "Your Cart is Empty";
+
   return (
     <>
-      <h2 style={{ marginTop: "5px" }}>Your Cart: {cartProducts.length}</h2>
+      <h2 style={{ marginTop: "5px" }}>{cartLen}</h2>
       {showTopCheckoutBtn && <div className="proceedCheckoutBar">
         <ButtonGroup>
           <Button variant="light" style={{ fontSize: 13, color: "#777777" }} onClick={() => {
