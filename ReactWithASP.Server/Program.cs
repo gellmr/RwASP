@@ -18,7 +18,8 @@ builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(buil
 builder.Services.AddTransient<DataSeeder>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-       .AddEntityFrameworkStores<StoreContext>()
+       .AddEntityFrameworkStores<StoreContext>() // This adds UserStore and RoleStore. If you don't use it you have
+                                                 // to provide Stores yourself with AddUserStore and AddRoleStore.
        .AddDefaultTokenProviders();              // This adds token providers for features like password reset and email confirmation.
 
 
