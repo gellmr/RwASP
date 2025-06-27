@@ -3,8 +3,10 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 /*
-    I have defined a custom breakpoint to allow xxs for mg-category-menu-r. For this style, the default is xxs.
-    For all other styles the default breakpoint means xs.
+  I have defined a custom breakpoint to allow xxs for some items.
+  For these styles, the default is xxs.
+  For all other styles the default breakpoint means xs.
+  BEGINNING OF ABSOLUTE SMALLEST
 */
 .lime{
   /*background-color:lime!important;*/
@@ -25,7 +27,17 @@
   /*color: orange;*/
   display: none !important;
 }
+
+/* ADMIN LOGIN PAGE */
+.mg-admin-login-form .btn {
+  font-size: 12px;
+}
+.mg-admin-login-form input {
+  font-size: 12px;
+}
+
 @media (min-width: 370px) {
+  /* BEGINING OF INTERMEDIATE SIZE */
   .mg-category-menu-r {
     /*border: 3px dashed magenta;*/
     display:flex;
@@ -38,6 +50,14 @@
   .cartQtyXs {
     /*color: orange;*/
     display: block !important;
+  }
+
+  /* ADMIN LOGIN PAGE */
+  .mg-admin-login-form .btn {
+    font-size: 15px;
+  }
+  .mg-admin-login-form input {
+    font-size: 15px;
   }
 }
 
@@ -292,6 +312,13 @@ th, td {
 }
 .checkoutSubmitBtnGroup .btn {
   font-size:14px;
+}
+
+/* ADMIN LOGIN PAGE */
+.mg-admin-login-form {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  max-width: 600px;
 }
 
 /* ================================================= */

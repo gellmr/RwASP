@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ReactWithASP.Server.Domain;
@@ -32,6 +34,36 @@ builder.Services.AddSession(options => {
   options.Cookie.HttpOnly = true; // This makes the cookie readable only by our server. Client side javascript cannot read the cookie. Protects against XSS.
   options.Cookie.IsEssential = true;
 });
+
+// Enable Google login for .NET Identity.
+// Specify that we want to use cookie authentication. This means the session ID is maintained in a
+// cookie, to verify the user is logged in (without needing to re-authenticate on every page load).
+builder.Services.AddAuthentication(options =>
+{
+    // Here we are specifying that we want to use cookie authentication as the default authentication scheme.
+  // Eg when we decorate our Controllers with [Authorize] we are saying we want them to use cookie authentication.
+  options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+  // Specify that we want to create a cookie containing the user's identity, when they successfully sign in.
+  options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+  // When the user tries to access a resource that requires authorization (401 unauthorized) we Challenge them
+  // which takes them to login page and then redirects back to the resource they wanted.
+  // Specify that we should use cookie authentication in this situation.
+  options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+{
+  options.LoginPath = "/admin/login"; // Once a request to the LoginPath grants a new SignIn identity, the ReturnUrlParameter value
+                                      // is used to redirect the browser back to the original url.
+  options.ReturnUrlParameter = "onLoginSuccess"; // The name of the query string parameter which is appended by the handler during a Challenge
+})
+.AddGoogle(GoogleDefaults.AuthenticationScheme, options => {
+  // Get Google tokens from config...
+  options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+  options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+});
+builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -70,6 +102,7 @@ using (var scope = app.Services.CreateScope()){
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
