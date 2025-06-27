@@ -5,7 +5,7 @@ using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
 
 // -------------------------------------------------------------
-// Add Services to the container
+// Add Services to the DI container.
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +19,11 @@ builder.Services.AddTransient<DataSeeder>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
        .AddEntityFrameworkStores<StoreContext>()
-       .AddDefaultTokenProviders();
+       .AddDefaultTokenProviders();              // This adds token providers for features like password reset and email confirmation.
 
-builder.Services.AddControllers();
+
+
+builder.Services.AddControllers(); // In ASP.NET Core, you should call AddControllers() before AddAuthorization()
 
 // Enable Session
 builder.Services.AddDistributedMemoryCache();
