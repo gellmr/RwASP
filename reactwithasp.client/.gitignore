@@ -25,3 +25,4 @@ dist-ssr
 
 # Ignore VITE environment variables file.
 .env
+.env.production
