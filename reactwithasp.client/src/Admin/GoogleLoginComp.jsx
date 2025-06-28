@@ -5,12 +5,11 @@ const GoogleLoginComp = () =>
 {
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      debugger;
+      console.log("Success logging in with Google OAuth 2.0 Client. Received token...");
       console.log(tokenResponse);
     },
     onError: (error) => {
-      debugger;
-      console.log('Login Failed:', error);
+      console.log('Failed logging in with Google OAuth 2.0 Client. Error: ', error);
     }
   });
   return (
