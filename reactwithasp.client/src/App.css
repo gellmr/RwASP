@@ -35,6 +35,23 @@
 .mg-admin-login-form input {
   font-size: 12px;
 }
+.bi-wrench {
+  font-size: 20px;
+}
+.mg-construction-red {
+  font-size: 12px;
+  background-color: #ffcfcf;
+  height: 40px;
+  border: 2px solid #ffdccf;
+  border-right: none;
+  border-left: none;
+  display: flex;
+  flex-direction: row;
+  align-items: anchor-center;
+  justify-content: center;
+  color: #b33111;
+  background: repeating-linear-gradient( 45deg, #fffbef, #fffbef 10px, #ffebd7 10px, #ffebd7 20px );
+}
 
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
@@ -58,6 +75,12 @@
   }
   .mg-admin-login-form input {
     font-size: 15px;
+  }
+  .mg-construction-red {
+    font-size:16px;
+  }
+  .bi-wrench {
+    font-size: 24px;
   }
 }
 

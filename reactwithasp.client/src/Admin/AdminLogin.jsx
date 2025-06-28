@@ -10,6 +10,15 @@ function AdminLogin() {
   return (
     <>
       <h4>Admin Login</h4>
+      <h6 className="mg-construction-red">
+        <span style={{ position: "relative", top: -4 }}>
+          <i className="bi bi-wrench" style={{ position: 'relative', top:4 }}></i>
+          &nbsp;
+          (This page is Under Construction)
+          &nbsp;
+          &nbsp;
+        </span>
+      </h6>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Form className="mg-admin-login-form">
           <Row>
