@@ -157,9 +157,13 @@ th, td {
   background-color: #21de87;
   cursor: pointer;
 }
-
-
-
+.mgCurrUserNav {
+  color: white;
+  font-weight: 600;
+  padding-left: 12px;
+  flex-grow: 2;
+  text-align: right;
+}
 
 /* PRODUCT TITLE, SLUG, AND CART BUTTONS. HAS SOME PADDING */
 .inStockProductCanAdd {

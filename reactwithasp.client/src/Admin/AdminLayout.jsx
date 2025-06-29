@@ -10,6 +10,7 @@ import Col from 'react-bootstrap/Col'
 import "bootstrap/dist/css/bootstrap.css";
 
 import MgNavBar from "@/main/MgNavBar";
+import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
 
 
 const AdminLayout = () => {
@@ -18,6 +19,7 @@ const AdminLayout = () => {
       <MgNavBar showCart={false}>
         <NavLink to="/" className="mgNavLinkBtn" >Shop</NavLink>
         <NavLink to="/admin" className="mgNavLinkBtn" >Admin</NavLink>
+        <CurrUserNavLink />
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '' }}>
         <Row>
