@@ -52,17 +52,15 @@ builder.Services.AddAuthentication(options =>
   // Specify that we should use cookie authentication in this situation.
   options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-{
-  options.LoginPath = "/admin/login"; // Once a request to the LoginPath grants a new SignIn identity, the ReturnUrlParameter value
-                                      // is used to redirect the browser back to the original url.
-  options.ReturnUrlParameter = "onLoginSuccess"; // The name of the query string parameter which is appended by the handler during a Challenge
-})
-.AddGoogle(GoogleDefaults.AuthenticationScheme, options => {
-  // Get Google tokens from config...
-  options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-  options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-});
+.AddCookie()
+.AddGoogle(
+  options => {
+    // Get Google tokens from config...
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Use the same scheme as AddCookie
+  }
+);
 builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
