@@ -52,6 +52,36 @@
   color: #b33111;
   background: repeating-linear-gradient( 45deg, #fffbef, #fffbef 10px, #ffebd7 10px, #ffebd7 20px );
 }
+.mgNavLinkBtn {
+  text-decoration: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 12px;
+  font-size: 12px;
+}
+.mgNavLinkBtn.mgNavLinkCartBtn {
+  color: white;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background-color: rgb(25, 135, 84);
+  border-color: rgb(25, 135, 84);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.mgNavLinkBtn.mgNavLinkCartBtn:hover {
+  color: white;
+  background-color: rgb(21, 115, 71);
+}
+.mgCurrUserNav {
+  color: white;
+  font-weight: 600;
+  flex-grow: 2;
+  text-align: right;
+  font-size: 12px;
+  padding-left: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
 
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
@@ -81,6 +111,15 @@
   }
   .bi-wrench {
     font-size: 24px;
+  }
+  .mgNavLinkBtn {
+    font-size: 14px;
+  }
+  .mgNavLinkBtn.mgNavLinkCartBtn {
+    font-size: 14px;
+  }
+  .mgCurrUserNav {
+    font-size: 14px;
   }
 }
 
@@ -125,30 +164,7 @@ th, td {
     padding-left: 1rem;
     padding-right: 1rem;
 }
-.mgNavLinkBtn {
-  text-decoration: none;
-  box-sizing: border-box;
-  cursor: pointer;
-  padding: 12px;
-}
-.mgNavLinkBtn.mgNavLinkCartBtn {
-  /* I could not easily use Bootstrap button styling with a React Router NavLink,
-    so I have just copied the bootstrap button styling approximately here,
-    and applied it to the anchor element used with NavLink.
-  */
-  /*border: 1px dashed lime;*/
-  color: white;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  background-color: rgb(25, 135, 84);
-  border-color: rgb(25, 135, 84);
-  border-radius: 6px;
-}
-.mgNavLinkBtn.mgNavLinkCartBtn:hover {
-  /*border: 1px dashed white;*/
-  color:white;
-  background-color: rgb(21, 115, 71);
-}
+
 .searchXBtn:hover {
   background-color: #7bbb9d;
   cursor:pointer;
@@ -157,13 +173,7 @@ th, td {
   background-color: #21de87;
   cursor: pointer;
 }
-.mgCurrUserNav {
-  color: white;
-  font-weight: 600;
-  padding-left: 12px;
-  flex-grow: 2;
-  text-align: right;
-}
+
 
 /* PRODUCT TITLE, SLUG, AND CART BUTTONS. HAS SOME PADDING */
 .inStockProductCanAdd {
@@ -363,7 +373,6 @@ th, td {
     /*border: 3px dashed purple;*/
     width: 100%;
   }
-  /* CART */
   .proceedCheckoutBar .btn {
     font-size: 15px;
   }
@@ -371,8 +380,33 @@ th, td {
     /*color: orange;*/
     display: none !important;
   }
-  /* CHECKOUT */
   .checkoutSubmitBtnGroup .btn {
     font-size: 18px;
+  }
+  .mgNavLinkBtn {
+    font-size: 14px;
+  }
+  .mgNavLinkBtn.mgNavLinkCartBtn {
+    font-size: 14px;
+  }
+  .mgCurrUserNav {
+    font-size: 14px;
+  }
+}
+
+/* ================================================= */
+/* =========            MEDIUM            ========== */
+/* ================================================= */
+
+@media (min-width: 768px)
+{
+  .mgNavLinkBtn {
+    font-size: 16px;
+  }
+  .mgNavLinkBtn.mgNavLinkCartBtn {
+    font-size: 16px;
+  }
+  .mgCurrUserNav {
+    font-size: 16px;
   }
 }
