@@ -28,9 +28,8 @@ namespace ReactWithASP.Server.Controllers
       Nullable<Guid> guestId = guest.ID;
       UserType userType = UserType.Guest;
 
-      GoogleJsonWebSignature.Payload payload = await ValidateTokenAsync(tokenDTO);
-      bool isValid = false;
-      if (isValid){
+      GoogleJsonWebSignature.Payload? payload = await ValidateTokenAsync(tokenDTO);
+      if (payload != null){
         return Ok( new { resultMsg = "Success validating Google Login token." }); // Automatically cast object to JSON.
       }else{
         return BadRequest( new { resultMsg = "Could not validate Google Login token." });
