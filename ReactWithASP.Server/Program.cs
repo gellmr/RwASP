@@ -40,7 +40,7 @@ builder.Services.AddSession(options => {
 // cookie, to verify the user is logged in (without needing to re-authenticate on every page load).
 builder.Services.AddAuthentication(options =>
 {
-    // Here we are specifying that we want to use cookie authentication as the default authentication scheme.
+  // Here we are specifying that we want to use cookie authentication as the default authentication scheme.
   // Eg when we decorate our Controllers with [Authorize] we are saying we want them to use cookie authentication.
   options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
