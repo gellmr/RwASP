@@ -41,11 +41,9 @@ namespace ReactWithASP.Server.Controllers
         GoogleJsonWebSignature.ValidationSettings settings = new GoogleJsonWebSignature.ValidationSettings() {
           Audience = new List<string> { _clientId }
         };
-
         // The SignedToken() method within expects signedToken.Split('.') to produce 3 parts.
         // (Header, Payload, Signature) ...It throws if they are not found.
         string signedToken = tokenDTO.credential;
-
         GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(signedToken, settings);
         return payload;
       }
