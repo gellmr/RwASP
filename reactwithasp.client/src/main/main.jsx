@@ -11,6 +11,7 @@ import CheckoutSuccess from '../Shop/CheckoutSuccess.jsx'
 import store from '@/Shop/store.jsx'
 import AdminLogin from "@/Admin/AdminLogin.jsx";
 import AdminLayout from "@/Admin/AdminLayout.jsx";
+import AdminOrders from "@/Admin/AdminOrders.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Provider } from 'react-redux'
 
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')).render(
           <Routes>
             <Route element={<AdminLayout />}>
               <Route path="/admin" element={<AdminLogin />} />
+              <Route path="/admin/orders" element={<AdminOrders />} />
             </Route>
 
             <Route element={<ShopLayout />}>

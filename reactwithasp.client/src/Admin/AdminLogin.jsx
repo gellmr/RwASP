@@ -5,20 +5,13 @@ import GoogleLoginComp from "@/Admin/GoogleLoginComp.jsx";
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import ConstructionBanner from "@/main/ConstructionBanner.jsx";
 
 function AdminLogin() {  
   return (
     <>
       <h4>Admin Login</h4>
-      <h6 className="mg-construction-red">
-        <span style={{ position: "relative", top: -4 }}>
-          <i className="bi bi-wrench" style={{ position: 'relative', top:4 }}></i>
-          &nbsp;
-          (This page is Under Construction)
-          &nbsp;
-          &nbsp;
-        </span>
-      </h6>
+      <ConstructionBanner />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Form className="mg-admin-login-form">
           <Row>
