@@ -16,39 +16,47 @@ const GoogleLoginComp = () =>
 
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-      debugger;
       console.log("Success logging in with Google OAuth 2.0 Client. Received token...");
-      // confirmToken(tokenResponse); // Pass token to our backend server, for confirmation. I ALREADY HAVE THE TOKEN. IS THIS NEEDED ?
+      confirmToken(tokenResponse); // Pass token to our backend server, for confirmation.
     },
-    onError: (error) => {
-      console.log('Failed logging in with Google OAuth 2.0 Client. Error: ', error);
+    onError: (err) => {
+      console.log('Failed logging in with Google OAuth 2.0 Client. Error: ', err);
     }
   });
 
-  //async function confirmToken(tokenResponse)
-  //{
-  //  setIsLoading(true);
-  //  const url = window.location.origin + "/api/account/signin-google";
-  //  console.log("Axios retry..." + url);
-  //  axios.post(url, tokenResponse).then((response) => {
-  //    console.log('Data fetched:', response.data); // response.data is already JSON
-  //  })
-  //  .catch((error) => {
-  //    console.error('Request failed after retries:', error);
-  //    setError(error);
-  //  })
-  //  .finally(() => {
-  //    console.log('Request (and retries) completed. This runs regardless of success or failure.');
-  //    setIsLoading(false);
-  //  });
-  //}
+  async function confirmToken(tokenResponse)
+  {
+    setIsLoading(true);
+    const url = window.location.origin + "/api/validate-google-token";
+    console.log("Axios retry..." + url);
+    axios.post(url, tokenResponse).then((response) => {
+      console.log('Data fetched:', response.data); // response.data is already JSON
+    })
+    .catch((err) => {
+      console.error('Request failed after retries:', err);
+      setError(err.response.data.resultMsg);
+    })
+    .finally(() => {
+      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      setIsLoading(false);
+    });
+  }
+
+  const errMarkup = (
+    <>
+      <span className="d-block d-sm-none mgGoogleTokenErrSpan" >Error: {error} Try again?</span>
+      <span className="d-none d-sm-block mgGoogleTokenErrSpan" >Error: {error} Try again?</span>
+    </>
+  );
 
   const markup = (
-    (isLoading) ? <div className="fetchErr">Loading...</div>             : (
-    (error)     ? <div className="fetchErr">Error: {error.message}</div> : (
-      <Button variant="success" onClick={() => login()}>Sign in with Google</Button>
+    (isLoading) ? <div className="fetchErr">Loading...</div> : (
+      <>
+        {error && errMarkup}
+        <Button variant="success" onClick={() => login()}>Sign in with Google</Button>
+      </>
     )
-  ));
+  );
 
   return (
     <>{markup}</>

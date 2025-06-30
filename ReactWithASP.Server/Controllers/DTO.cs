@@ -71,4 +71,26 @@ namespace ReactWithASP.Server.DTO
     public Guid? guestID { get; set; }
     public List<CartSubmitLineDTO> cart { get; set; }
   }
+
+  public class ConfirmGoogleAuthDTO
+  {
+    [Required(ErrorMessage = "access_token is required")]
+    public string access_token { get; set; } // eg about 224 characters long "32clD5vhgx900BPLAg1BiN4RKA0177..."
+    
+    [Required(ErrorMessage = "authuser is required")]
+    public string authuser { get; set; }     // eg "0"
+    
+    [Required(ErrorMessage = "expires_in is required")]
+    public Int32 expires_in { get; set; }    // eg 3599
+    
+    [Required(ErrorMessage = "prompt is required")]
+    public string prompt { get; set; }       // eg "none"
+    
+    [Required(ErrorMessage = "scope is required")]
+    public string scope { get; set; }        // eg "email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid"
+    
+    [Required(ErrorMessage = "token_type is required")]
+    public string token_type { get; set; }   // eg "Bearer"
+
+  }
 }
