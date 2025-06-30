@@ -83,4 +83,13 @@ namespace ReactWithASP.Server.DTO
     [Required(ErrorMessage = "select_by is required")]
     public string select_by { get; set; } // eg about 3 characters long "btn"
   }
+
+  public class AdminLoginSubmitDTO
+  {
+    [Required(ErrorMessage = "username is required")]
+    public string username { get; set; }
+
+    [Required(ErrorMessage = "password is required")]
+    public string password { get; set; }
+  }
 }

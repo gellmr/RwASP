@@ -7,8 +7,65 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ConstructionBanner from "@/main/ConstructionBanner.jsx";
 
-function AdminLogin() {  
-  return (
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
+import { useState } from 'react';
+import { useNavigate } from "react-router";
+
+function AdminLogin()
+{
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const [vipUserName, setVipUserName] = useState("");
+  const [vipPassword, setVipPassword] = useState("");
+  
+  // Configure axios instance.
+  axiosRetry(axios, { retries: 7, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
+  }});
+
+  const loginClick = function () { 
+    // Try to login to Admin pages...
+    setIsLoading(true);
+    const url = window.location.origin + "/api/admin-login";
+    const jsonData = { username:vipUserName, password:vipPassword };
+    setError("");
+    console.log("Axios retry..." + url);
+    axios.post(url, jsonData).then((response) => {
+      console.log('Data fetched:', response.data); // response.data is already JSON
+      navigate('/admin/orders');
+    })
+    .catch((err) => {
+      setError(err.response.data.loginResult);
+    })
+    .finally(() => {
+      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      setIsLoading(false);
+    });
+  };
+
+  const errMarkup = (
+    <>
+      {error && <span>Error: {error}</span>}
+    </>
+  );
+
+  const loadingMarkup = (
+    <>
+      <div className="fetchErr">Loading...</div>
+    </>
+  );
+
+  const emailChange = function (e) {
+    setVipUserName(e.target.value);
+  }
+  const passwordChange = function (e) {
+    setVipPassword(e.target.value);
+  }
+
+  const pageMarkup = (
     <>
       <h4>Admin Login</h4>
       <ConstructionBanner />
@@ -18,18 +75,20 @@ function AdminLogin() {
             <Col xs={12} md={6}>
               <Form.Group className="mb-3" controlId="formGroupEmail" style={{ textAlign:"left"}}>
                 <Form.Label>&nbsp;&nbsp;Email address</Form.Label>
-                <Form.Control type="email" placeholder="Please enter your email address" />
+                <Form.Control type="email" placeholder="Please enter your email address" onChange={emailChange} />
               </Form.Group>
             </Col>
-            <Col xs={12} md={6} style={{marginBottom:40}}>
+            <Col xs={12} md={6}>
               <Form.Group className="mb-3" controlId="formGroupPassword" style={{ textAlign: "left" }}>
                 <Form.Label>&nbsp;&nbsp;Password</Form.Label>
                 <InputGroup>
-                  <Form.Control type="password" placeholder="Enter your password" />
-                  <Button variant="outline-primary" style={{minWidth:90}}>Login</Button>
+                  <Form.Control type="password" placeholder="Enter your password" onChange={passwordChange} />
+                  <Button variant="outline-primary" style={{ minWidth: 90 }} onClick={() => loginClick()}>Login</Button>
                 </InputGroup>
               </Form.Group>
             </Col>
+            {errMarkup}
+            <div style={{ marginBottom: 40 }}></div>
             <Stack direction="horizontal" gap={3} className="d-none d-sm-flex" style={{marginTop:10}}>
               <div className="me-auto">Other sign-in options:</div>
               <div className="vr" />
@@ -48,6 +107,13 @@ function AdminLogin() {
           </Row>
         </Form>
       </div>
+    </>
+  );
+
+  // {isLoading} ? {loadingMarkup} : ( {error} ? {errMarkup} : {pageMarkup} )
+  return (
+    <>
+      {pageMarkup}
     </>
   );
 }
