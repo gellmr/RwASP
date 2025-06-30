@@ -65,6 +65,13 @@ function AdminLogin()
     setVipPassword(e.target.value);
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      loginClick();
+    }
+  };
+
   const pageMarkup = (
     <>
       <h4>Admin Login</h4>
@@ -82,7 +89,7 @@ function AdminLogin()
               <Form.Group className="mb-3" controlId="formGroupPassword" style={{ textAlign: "left" }}>
                 <Form.Label>&nbsp;&nbsp;Password</Form.Label>
                 <InputGroup>
-                  <Form.Control type="password" placeholder="Enter your password" onChange={passwordChange} />
+                  <Form.Control type="password" placeholder="Enter your password" onChange={passwordChange} onKeyDown={handleKeyDown} />
                   <Button variant="outline-primary" style={{ minWidth: 90 }} onClick={() => loginClick()}>Login</Button>
                 </InputGroup>
               </Form.Group>
