@@ -1,8 +1,7 @@
-import { useGoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-import Button from 'react-bootstrap/Button';
 
 const GoogleLoginComp = () =>
 {
@@ -14,18 +13,10 @@ const GoogleLoginComp = () =>
     console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
   }});
 
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      console.log("Success logging in with Google OAuth 2.0 Client. Received token...");
-      confirmToken(tokenResponse); // Pass token to our backend server, for confirmation.
-    },
-    onError: (err) => {
-      console.log('Failed logging in with Google OAuth 2.0 Client. Error: ', err);
-    }
-  });
-
   async function confirmToken(tokenResponse)
   {
+    // Pass token to our backend server, for confirmation.
+    console.log("Success logging in with Google OAuth 2.0 Client. Received token...");
     setIsLoading(true);
     const url = window.location.origin + "/api/validate-google-token";
     console.log("Axios retry..." + url);
@@ -42,6 +33,8 @@ const GoogleLoginComp = () =>
     });
   }
 
+  const onError = (err) => { console.log('Failed logging in with Google OAuth 2.0 Client. Error: ', err); };
+
   const errMarkup = (
     <>
       <span className="d-block d-sm-none mgGoogleTokenErrSpan" >Error: {error} Try again?</span>
@@ -53,7 +46,7 @@ const GoogleLoginComp = () =>
     (isLoading) ? <div className="fetchErr">Loading...</div> : (
       <>
         {error && errMarkup}
-        <Button variant="success" onClick={() => login()}>Sign in with Google</Button>
+        <GoogleLogin onSuccess={confirmToken} onError={onError} />
       </>
     )
   );

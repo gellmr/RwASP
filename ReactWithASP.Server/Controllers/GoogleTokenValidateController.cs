@@ -12,11 +12,9 @@ namespace ReactWithASP.Server.Controllers
   public class GoogleTokenValidateController : ShopController
   {
     private readonly string? _clientId;
-    private readonly string? _clientSecret;
 
     public GoogleTokenValidateController(IConfiguration config, ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) : base(rRepo, gRepo, pRepo) {
       _clientId = config.GetSection("Authentication:Google:ClientId").Value;
-      _clientSecret = config.GetSection("Authentication:Google:ClientSecret").Value;
     }
 
     [HttpPost("validate-google-token")] // POST /api/validate-google-token.  Accepts application/json POST submissions containing stringified JSON data in request body.
@@ -40,12 +38,15 @@ namespace ReactWithASP.Server.Controllers
     {
       try
       {
-        string accessToken = tokenDTO.access_token;
         GoogleJsonWebSignature.ValidationSettings settings = new GoogleJsonWebSignature.ValidationSettings() {
           Audience = new List<string> { _clientId }
         };
-        // Throws if we pass Access Token instead of JWT ID Token
-        GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(accessToken, settings);
+
+        // The SignedToken() method within expects signedToken.Split('.') to produce 3 parts.
+        // (Header, Payload, Signature) ...It throws if they are not found.
+        string signedToken = tokenDTO.credential;
+
+        GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(signedToken, settings);
         return payload;
       }
       catch (InvalidJwtException)
