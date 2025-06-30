@@ -2,11 +2,13 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
+import { useNavigate } from "react-router";
 
 const GoogleLoginComp = () =>
 {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   // Configure axios instance.
   axiosRetry(axios, { retries: 7, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
@@ -22,6 +24,7 @@ const GoogleLoginComp = () =>
     console.log("Axios retry..." + url);
     axios.post(url, tokenResponse).then((response) => {
       console.log('Data fetched:', response.data); // response.data is already JSON
+      navigate('/admin/orders');
     })
     .catch((err) => {
       console.error('Request failed after retries:', err);
