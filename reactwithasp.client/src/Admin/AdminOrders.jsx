@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux'
+import { setAdminOrders } from '@/features/admin/orders/adminOrdersSlice.jsx'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
@@ -5,6 +7,7 @@ import ConstructionBanner from "@/main/ConstructionBanner.jsx";
 
 function AdminOrders()
 {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   
@@ -14,10 +17,10 @@ function AdminOrders()
   }});
 
   useEffect(() => {
-    fetchOrders();
+    fetchAdminOrders();
   }, []);
 
-  async function fetchOrders()
+  async function fetchAdminOrders()
   { 
     setError("");
     setIsLoading(true);
@@ -25,6 +28,7 @@ function AdminOrders()
     const jsonData = {};
     axios.get(url, jsonData).then((response) => {
       console.log('Data fetched:', response.data);
+      dispatch(setAdminOrders(response.data));
     })
     .catch((err) => {
       setError(err.response.data.loginResult);
