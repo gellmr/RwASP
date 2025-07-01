@@ -28,7 +28,9 @@ namespace ReactWithASP.Server.Controllers
 
       // Exchange the authorization code (tokenDTO.credential) for an access token (payload)
       GoogleJsonWebSignature.Payload? payload = await ValidateTokenAsync(tokenDTO);
-      if (payload != null){
+      if (payload != null)
+      {
+        // We can now use the access token (payload) to make API calls to Google, on the users behalf.
         return Ok( new { resultMsg = "Success validating Google Login token." }); // Automatically cast object to JSON.
       }else{
         return BadRequest( new { resultMsg = "Could not validate Google Login token." });
