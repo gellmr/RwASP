@@ -57,6 +57,7 @@ namespace ReactWithASP.Server.Controllers
           }
           break;
         case UserType.AppUser : break;
+        case UserType.GoogleAppUser: break;
         case UserType.None : break;
       }
       return Ok(checkoutSubmit); // Respond with 200 OK, and automatically cast object to JSON for the response.

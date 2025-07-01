@@ -7,7 +7,7 @@ namespace ReactWithASP.Server.Controllers
 {
   public abstract class ShopController : ControllerBase
   {
-    protected enum UserType { Guest, AppUser, None };
+    protected enum UserType { Guest, AppUser, GoogleAppUser, None };
 
     protected IGuestRepository guestRepo;
     protected ICartLineRepository cartLineRepo;

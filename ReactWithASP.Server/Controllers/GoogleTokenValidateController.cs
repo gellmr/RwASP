@@ -4,6 +4,7 @@ using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Domain.Abstract;
 
 using Google.Apis.Auth;
+using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -11,10 +12,12 @@ namespace ReactWithASP.Server.Controllers
   [Route("api")]
   public class GoogleTokenValidateController : ShopController
   {
+    protected IAppUserRepo appUserRepo;
     private readonly string? _clientId;
 
-    public GoogleTokenValidateController(IConfiguration config, ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) : base(rRepo, gRepo, pRepo) {
+    public GoogleTokenValidateController(IConfiguration config, ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IAppUserRepo aRepo) : base(rRepo, gRepo, pRepo) {
       _clientId = config.GetSection("Authentication:Google:ClientId").Value;
+      appUserRepo = aRepo;
     }
 
     [HttpPost("validate-google-token")] // POST /api/validate-google-token.  Accepts application/json POST submissions containing stringified JSON data in request body.
@@ -22,7 +25,7 @@ namespace ReactWithASP.Server.Controllers
     {
       // This action will be hit after Google authentication is complete.
       if (!ModelState.IsValid) { return BadRequest(ModelState); }
-      Guest guest = EnsureGuestIdFromCookie();
+      Guest? guest = EnsureGuestIdFromCookie();
       Nullable<Guid> guestId = guest.ID;
       UserType userType = UserType.Guest;
 
@@ -33,13 +36,23 @@ namespace ReactWithASP.Server.Controllers
         // We can now use the access token (payload) to make API calls to Google, on the users behalf.
 
         // Token is valid, extract user information
-        GoogleAppUserDTO userInfo = new GoogleAppUserDTO
+        GoogleAppUserDTO googleAppUser = new GoogleAppUserDTO
         {
           Subject = payload.Subject, // This is the unique Google user ID. String about 21 characters long.
           Email = payload.Email,
           GivenName = payload.GivenName,
           FamilyName = payload.FamilyName,
         };
+
+        // We can now log the user in, and create an AppUser object, and set the UserType to AppUser
+        // Save to database
+        AppUser? appUser = await appUserRepo.SaveGoogleAppUser(googleAppUser);
+        userType = UserType.GoogleAppUser;
+        guest = null;
+        guestId = null;
+
+        // Update the client so they can see they are logged in
+        // They will now have access to the restricted pages.
         return Ok( new { resultMsg = "Success validating Google Login token." }); // Automatically cast object to JSON.
       }else{
         return BadRequest( new { resultMsg = "Could not validate Google Login token." });
