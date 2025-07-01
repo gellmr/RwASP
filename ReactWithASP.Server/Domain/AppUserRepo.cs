@@ -24,9 +24,9 @@ namespace ReactWithASP.Server.Domain
       // Use the native .NET Core Identity classes to add record.
       AppUser? appUser = new AppUser {
         UserName = googleAppUser.Subject,
-        Email = googleAppUser.Email
+        Email = googleAppUser.Email,
       };
-      var result = await _userManager.CreateAsync(appUser); // Dont store password.
+      IdentityResult result = await _userManager.CreateAsync(appUser); // Dont store password.
       if (result.Succeeded){
         return appUser;
       }

@@ -23,7 +23,7 @@ const GoogleLoginComp = () =>
     const url = window.location.origin + "/api/validate-google-token";
     console.log("Axios retry..." + url);
     axios.post(url, tokenResponse).then((response) => {
-      console.log('Data fetched:', response.data); // response.data is already JSON
+      console.log(response.data.resultMsg);
       navigate('/admin/orders');
     })
     .catch((err) => {
