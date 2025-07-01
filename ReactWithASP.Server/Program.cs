@@ -72,6 +72,7 @@ builder.Services.AddScoped<IOrdersRepository, EFOrdersRepository>();
 builder.Services.AddScoped<ICartLineRepository, EFCartLineRepository>();
 builder.Services.AddScoped<IInStockRepository, EFInStockRepository>();
 builder.Services.AddScoped<IGuestRepository, EFGuestRepository>();
+builder.Services.AddScoped<IAppUserRepo, AppUserRepo>();
 builder.Services.AddScoped<StoreContext, StoreContext>();
 builder.Services.AddScoped<MyEnv, MyEnv>();
 
