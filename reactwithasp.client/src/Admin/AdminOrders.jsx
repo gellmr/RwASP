@@ -1,13 +1,16 @@
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { setAdminOrders } from '@/features/admin/orders/adminOrdersSlice.jsx'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import ConstructionBanner from "@/main/ConstructionBanner.jsx";
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 function AdminOrders()
 {
   const dispatch = useDispatch();
+  const adminOrders = useSelector(state => state.adminOrders.lines);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   
@@ -28,10 +31,10 @@ function AdminOrders()
     const jsonData = {};
     axios.get(url, jsonData).then((response) => {
       console.log('Data fetched:', response.data);
-      dispatch(setAdminOrders(response.data));
+      dispatch(setAdminOrders(response.data.orders));
     })
     .catch((err) => {
-      setError(err.response.data.loginResult);
+      setError(err.response.data.errMessage);
     })
     .finally(() => {
       console.log('Request (and retries) completed. This runs regardless of success or failure.');
@@ -41,19 +44,29 @@ function AdminOrders()
 
   const errMarkup = (
     <>
-      {error && <span>Error: {error}</span>}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        {error && <span>Error: {error}</span>}
+      </div>
     </>
   );
 
   const loadingMarkup = (
     <>
-      <div className="fetchErr">Loading...</div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="fetchErr">Loading...</div>
+      </div>
     </>
   );
 
   const pageMarkup = (
     <>
-      Orders will appear here.
+      <Row>
+        {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
+          <Col xs={12}>
+            {line}
+          </Col>
+        )}
+      </Row>
     </>
   );
 
@@ -61,9 +74,7 @@ function AdminOrders()
     <>
       <h4>Admin Orders</h4>
       <ConstructionBanner />
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        { isLoading ? loadingMarkup : ( error ? errMarkup : pageMarkup ) }
-      </div>
+      {isLoading ? loadingMarkup : (error ? errMarkup : pageMarkup)}
     </>
   );
 }

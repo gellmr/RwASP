@@ -14,7 +14,11 @@ namespace ReactWithASP.Server.Controllers
     public IActionResult GetOrders()
     {
       List<string> orders = new List<string> {"aaa", "bbb", "ccc"};
-      return Ok(new { orders = orders }); // Automatically cast object to JSON.
+      bool success = true;
+      if (success){
+        return Ok(new { orders = orders }); // Automatically cast object to JSON.
+      }
+      return BadRequest(new { errMessage="Something went wrong." });
     }
   }
 }
