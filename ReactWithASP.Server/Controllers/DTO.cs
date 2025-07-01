@@ -92,4 +92,19 @@ namespace ReactWithASP.Server.DTO
     [Required(ErrorMessage = "password is required")]
     public string password { get; set; }
   }
+
+  public class GoogleAppUserDTO
+  {
+    [Required(ErrorMessage = "Subject is required")]
+    public string Subject { get; set; }
+
+    [Required(ErrorMessage = "Email is required")]
+    public string Email { get; set; }
+
+    [Required(ErrorMessage = "GivenName is required")]
+    public string GivenName { get; set; }
+
+    [Required(ErrorMessage = "FamilyName is required")]
+    public string FamilyName { get; set; }
+  }
 }

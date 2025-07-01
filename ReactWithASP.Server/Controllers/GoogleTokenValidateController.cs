@@ -31,6 +31,15 @@ namespace ReactWithASP.Server.Controllers
       if (payload != null)
       {
         // We can now use the access token (payload) to make API calls to Google, on the users behalf.
+
+        // Token is valid, extract user information
+        GoogleAppUserDTO userInfo = new GoogleAppUserDTO
+        {
+          Subject = payload.Subject, // This is the unique Google user ID. String about 21 characters long.
+          Email = payload.Email,
+          GivenName = payload.GivenName,
+          FamilyName = payload.FamilyName,
+        };
         return Ok( new { resultMsg = "Success validating Google Login token." }); // Automatically cast object to JSON.
       }else{
         return BadRequest( new { resultMsg = "Could not validate Google Login token." });
