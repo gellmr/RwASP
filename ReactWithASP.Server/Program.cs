@@ -53,9 +53,7 @@ builder.Services.AddAuthentication(options =>
   options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
 .AddCookie()
-.AddGoogle(
-  options => {
-    // Get Google tokens from config...
+.AddGoogle( options => { // Get Google tokens from config...
     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Use the same scheme as AddCookie
