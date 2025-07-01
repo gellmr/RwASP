@@ -26,6 +26,7 @@ namespace ReactWithASP.Server.Controllers
       Nullable<Guid> guestId = guest.ID;
       UserType userType = UserType.Guest;
 
+      // Exchange the authorization code (tokenDTO.credential) for an access token (payload)
       GoogleJsonWebSignature.Payload? payload = await ValidateTokenAsync(tokenDTO);
       if (payload != null){
         return Ok( new { resultMsg = "Success validating Google Login token." }); // Automatically cast object to JSON.
