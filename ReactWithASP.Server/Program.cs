@@ -52,7 +52,7 @@ builder.Services.AddAuthentication(options =>
   // Specify that we should use cookie authentication in this situation.
   options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddCookie() // This is cookie authentication WITHOUT Identity? Might need to change this.
+.AddCookie()
 .AddGoogle( options => { // Get Google tokens from config...
     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
