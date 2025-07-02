@@ -74,6 +74,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Register custom authorization middleware handler with DI container
+//builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
+
 // DI declarations
 builder.Services.AddScoped<IOrdersRepository, EFOrdersRepository>();
 builder.Services.AddScoped<ICartLineRepository, EFCartLineRepository>();
