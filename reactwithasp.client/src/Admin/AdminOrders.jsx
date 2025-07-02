@@ -18,7 +18,9 @@ function AdminOrders()
   const navigate = useNavigate();
   
   // Configure axios instance.
-  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+  const axiosInstance = axios.create({
+  });
+  axiosRetry(axiosInstance, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
     console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
   }});
 
@@ -32,8 +34,7 @@ function AdminOrders()
     setError("");
     setIsLoading(true);
     const url = window.location.origin + "/api/admin-orders";
-    const jsonData = {};
-    axios.post(url, jsonData).then((response) => {
+    axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
       dispatch(setAdminOrders(response.data.orders));
     })

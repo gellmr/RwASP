@@ -7,7 +7,7 @@ using ReactWithASP.Server.DTO;
 
 namespace ReactWithASP.Server.Controllers
 {
-  [Authorize(AuthenticationSchemes = "Cookies, Google")] // This will initiate a request to Google API, from "https://localhost:5173/api/admin-orders" to try and confirm our token.
+  [Authorize(AuthenticationSchemes = "Cookies")]
   [ApiController]
   [Route("api")]
   public class AdminOrdersController : AdminBaseController
@@ -18,7 +18,7 @@ namespace ReactWithASP.Server.Controllers
       ordersRepo = oRepo;
     }
 
-    [HttpPost("admin-orders")] // POST "/api/admin-orders"
+    [HttpGet("admin-orders")]    // GET "/api/admin-orders"
     public IActionResult GetOrders()
     {
 
