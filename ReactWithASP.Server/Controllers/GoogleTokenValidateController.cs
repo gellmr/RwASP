@@ -48,6 +48,7 @@ namespace ReactWithASP.Server.Controllers
         // Save to database
         AppUser? appUser = await appUserRepo.SaveGoogleAppUser(googleAppUser);
         userType = UserType.GoogleAppUser;
+        SaveAppUserToCookie(appUser);
         guest = null;
         guestId = null;
 

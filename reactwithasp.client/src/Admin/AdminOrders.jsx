@@ -29,7 +29,7 @@ function AdminOrders()
     setIsLoading(true);
     const url = window.location.origin + "/api/admin-orders";
     const jsonData = {};
-    axios.get(url, jsonData).then((response) => {
+    axios.post(url, jsonData).then((response) => {
       console.log('Data fetched:', response.data);
       dispatch(setAdminOrders(response.data.orders));
     })
@@ -62,8 +62,10 @@ function AdminOrders()
     <>
       <Row>
         {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
-          <Col xs={12}>
-            {line}
+          <Col xs={12} style={{textAlign:"left"}}>
+            Order ID: {line.id} <br />
+            UserID: {line.userID} <br />
+            OrderPlacedDate: {line.orderPlacedDate} <br />
           </Col>
         )}
       </Row>

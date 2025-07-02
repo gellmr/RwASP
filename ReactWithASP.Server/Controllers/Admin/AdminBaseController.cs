@@ -2,7 +2,7 @@
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
-  public class AdminBaseController : ControllerBase
+  public class AdminBaseController : MyBaseController
   {
     public AdminBaseController() { }
   }

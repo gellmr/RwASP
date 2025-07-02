@@ -3,5 +3,6 @@
   public interface IOrdersRepository
   {
     bool SaveOrder(Order order);
+    IEnumerable<Order> Orders();
   }
 }

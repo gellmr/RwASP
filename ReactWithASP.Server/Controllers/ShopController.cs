@@ -5,7 +5,7 @@ using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Controllers
 {
-  public abstract class ShopController : ControllerBase
+  public abstract class ShopController : MyBaseController
   {
     protected enum UserType { Guest, AppUser, GoogleAppUser, None };
 
@@ -52,7 +52,7 @@ namespace ReactWithASP.Server.Controllers
 
       // Store guest id in cookie...
       HttpContext.Response.Cookies.Delete(MyExtensions.GuestCookieName);
-      Response.Cookies.Append(MyExtensions.GuestCookieName, guestId.ToString(), MyExtensions.GuestCookieOptions);
+      Response.Cookies.Append(MyExtensions.GuestCookieName, guestId.ToString(), MyExtensions.CookieOptions);
       return guest;
     }
   }

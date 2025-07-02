@@ -12,7 +12,7 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250625105610_InitialCreate")]
+    [Migration("20250702041407_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

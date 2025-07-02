@@ -32,5 +32,11 @@ namespace ReactWithASP.Server.Domain
       }
       return null;
     }
+
+    public async Task<AppUser?> FindAppUserById(string userId)
+    {
+      AppUser? user = await _userManager.FindByIdAsync(userId);
+      return user;
+    }
   }
 }

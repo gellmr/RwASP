@@ -63,7 +63,9 @@ namespace ReactWithASP.Server.Infrastructure
   {
     public static string SessionGuestID = "SessionGuestID";
     public static string GuestCookieName = "ReactMikeGellDemo-GuestCookie";
-    public static CookieOptions GuestCookieOptions = new CookieOptions {
+    public static string AppUserCookieName = "ReactMikeGellDemo-AppUserCookie";
+    
+    public static CookieOptions CookieOptions = new CookieOptions {
       HttpOnly = true,
       Secure = true,
       Expires = DateTimeOffset.Now.AddDays(3)

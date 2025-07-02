@@ -40,19 +40,27 @@ builder.Services.AddSession(options => {
 // cookie, to verify the user is logged in (without needing to re-authenticate on every page load).
 builder.Services.AddAuthentication(options =>
 {
-  // Here we are specifying that we want to use cookie authentication as the default authentication scheme.
-  // Eg when we decorate our Controllers with [Authorize] we are saying we want them to use cookie authentication.
+  // If you have two authentication schemes, "Cookies" and "JWT", and you configure DefaultAuthenticateScheme as "JWT",
+  // then requests that don't specify an authentication scheme will be authenticated (in the [Authorize] attribute) using the JWT scheme.
+  // If you ALSO configure DefaultScheme as "Cookies", then operations like signing in or signing out will default to the cookie scheme.
+  //   I want to use cookies as the default scheme for both, and optionally specify in my requests when I'm using Google sign in.
+  //   Here we are specifying that we want to use cookie authentication as the default authentication scheme.
+  //   Eg when we decorate our Controllers with [Authorize] we are saying we want them to use cookie authentication.
+  //   We are also specifying to use cookies as the default scheme for operations like signing in and out.
   options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+  options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
   // Specify that we want to create a cookie containing the user's identity, when they successfully sign in.
   options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
   // When the user tries to access a resource that requires authorization (401 unauthorized) we Challenge them
   // which takes them to login page and then redirects back to the resource they wanted.
-  // Specify that we should use cookie authentication in this situation.
+  // Specify that we should use cookie authentication as the default for this situation.
   options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+  //options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 })
-.AddCookie()
+.AddCookie( options => options.LoginPath = "/admin" )
 .AddGoogle( options => { // Get Google tokens from config...
     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];

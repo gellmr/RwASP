@@ -2,6 +2,7 @@
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.DTO;
+using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -10,12 +11,15 @@ namespace ReactWithASP.Server.Controllers
   public class AdminLoginController: ShopController
   {
     private IConfiguration _config;
-    public AdminLoginController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IConfiguration c) : base(rRepo, gRepo, pRepo){
+    protected IAppUserRepo appUserRepo;
+
+    public AdminLoginController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IAppUserRepo aRepo, IConfiguration c) : base(rRepo, gRepo, pRepo){
       _config = c;
+      appUserRepo = aRepo;
     }
 
     [HttpPost("admin-login")] // POST /api/admin-login.  Accepts application/json POST submissions containing stringified JSON data in request body.
-    public IActionResult AdminLogin([FromBody] AdminLoginSubmitDTO adminLoginSubmitDTO)
+    public async Task<IActionResult> AdminLogin([FromBody] AdminLoginSubmitDTO adminLoginSubmitDTO)
     {
       if (!ModelState.IsValid) { return BadRequest(ModelState); }
       Guest guest = EnsureGuestIdFromCookie();
@@ -25,10 +29,21 @@ namespace ReactWithASP.Server.Controllers
       string vipUserName = _config.GetSection("Authentication:VIP:UserName").Value;
       string vipPassword = _config.GetSection("Authentication:VIP:Password").Value;
 
+      AppUser? appUser;
       if (
         adminLoginSubmitDTO.username.Equals(vipUserName) &&
         adminLoginSubmitDTO.password.Equals(vipPassword)){
-        return Ok(new { loginResult = "Success" });
+
+        // Login as VIP user
+        string vipUserId = _config.GetSection("Authentication:VIP:Id").Value;
+        appUser = await appUserRepo.FindAppUserById(vipUserId);
+        if (appUser != null){
+          userType = UserType.AppUser;
+          SaveAppUserToCookie(appUser);
+          guest = null;
+          guestId = null;
+          return Ok(new { loginResult = "Success" });
+        }
       }
       return BadRequest(new { loginResult = "Incorrect username or password" });
     }

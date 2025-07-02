@@ -107,4 +107,11 @@ namespace ReactWithASP.Server.DTO
     [Required(ErrorMessage = "FamilyName is required")]
     public string FamilyName { get; set; }
   }
+
+  public class OrderSlugDTO
+  {
+    public string ID { get; set; }
+    public string? UserID { get; set; }
+    public DateTimeOffset? OrderPlacedDate { get; set; }
+  }
 }

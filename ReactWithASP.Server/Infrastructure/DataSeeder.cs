@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity; // Provides PasswordHasher.
 using ReactWithASP.Server.Domain;
 
 namespace ReactWithASP.Server.Infrastructure
@@ -35,6 +35,27 @@ namespace ReactWithASP.Server.Infrastructure
       //_context.OrderedProducts.RemoveRange(_context.OrderedProducts);
       //_context.OrderPayments.RemoveRange(_context.OrderPayments);
       //_context.Orders.RemoveRange(_context.Orders);
+
+      // Add the VIP AppUser
+      string vipUserName = _config.GetSection("Authentication:VIP:UserName").Value;
+      string vipPassword = _config.GetSection("Authentication:VIP:Password").Value;
+      IPasswordHasher hasher = new PasswordHasher();
+      string hashedVipPassword = hasher.HashPassword(vipPassword);
+
+      AppUser vipAppUser = new AppUser{
+        Id = _config.GetSection("Authentication:VIP:Id").Value,
+        UserName = vipUserName,
+        PasswordHash = hashedVipPassword,
+        Email = _config.GetSection("Authentication:VIP:Email").Value,
+        EmailConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:EmailConfirmed").Value),
+        SecurityStamp = _config.GetSection("Authentication:VIP:SecurityStamp").Value,
+        PhoneNumber = _config.GetSection("Authentication:VIP:PhoneNumber").Value,
+        PhoneNumberConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:PhoneNumberConfirmed").Value),
+        TwoFactorEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:TwoFactorEnabled").Value),
+        LockoutEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:LockoutEnabled").Value),
+        AccessFailedCount = Int32.Parse(_config.GetSection("Authentication:VIP:AccessFailedCount").Value),
+      };
+      _context.AppUser.Add(vipAppUser);
 
       // Populate InStockProduct
       inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductDTO>>();
