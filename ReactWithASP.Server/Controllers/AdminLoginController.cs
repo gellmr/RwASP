@@ -42,7 +42,7 @@ namespace ReactWithASP.Server.Controllers
           SaveAppUserToCookie(appUser);
           guest = null;
           guestId = null;
-          return Ok(new { loginResult = "Success" });
+          return Ok(new { loginResult = "Success", loginType = "VIP AppUser" });
         }
       }
       return BadRequest(new { loginResult = "Incorrect username or password" });

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using ReactWithASP.Server.Controllers.Admin;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
@@ -6,6 +7,7 @@ using ReactWithASP.Server.DTO;
 
 namespace ReactWithASP.Server.Controllers
 {
+  [Authorize(AuthenticationSchemes = "Cookies, Google")] // This will initiate a request to Google API, from "https://localhost:5173/api/admin-orders" to try and confirm our token.
   [ApiController]
   [Route("api")]
   public class AdminOrdersController : AdminBaseController

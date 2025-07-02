@@ -13,11 +13,12 @@ import ProceedCartBtn from "@/Shop/ProceedCartBtn";
 
 function Shop()
 {
+  const retryThisPage = 3; // 7
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Configure axios instance.
-  axiosRetry(axios, { retries: 7, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
       console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
   }});
 

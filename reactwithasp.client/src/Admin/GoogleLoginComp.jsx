@@ -6,12 +6,13 @@ import { useNavigate } from "react-router";
 
 const GoogleLoginComp = () =>
 {
+  const retryThisPage = 3;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   // Configure axios instance.
-  axiosRetry(axios, { retries: 7, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
     console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
   }});
 
@@ -23,12 +24,13 @@ const GoogleLoginComp = () =>
     const url = window.location.origin + "/api/validate-google-token";
     console.log("Axios retry..." + url);
     axios.post(url, tokenResponse).then((response) => {
-      console.log(response.data.resultMsg);
+      console.log("------------------------------");
+      console.log('Data fetched:', response.data); // response.data is already JSON
+      console.log("Navigate to /admin/orders...");
       navigate('/admin/orders');
     })
     .catch((err) => {
-      console.error('Request failed after retries:', err);
-      setError(err.response.data.resultMsg);
+      setError(err.response.data.loginResult);
     })
     .finally(() => {
       console.log('Request (and retries) completed. This runs regardless of success or failure.');

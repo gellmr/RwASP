@@ -54,9 +54,9 @@ namespace ReactWithASP.Server.Controllers
 
         // Update the client so they can see they are logged in
         // They will now have access to the restricted pages.
-        return Ok( new { resultMsg = "Success validating Google Login token." }); // Automatically cast object to JSON.
+        return Ok( new { loginResult = "Success validating Google Login token.", loginType = "Google Sign In" }); // Automatically cast object to JSON.
       }else{
-        return BadRequest( new { resultMsg = "Could not validate Google Login token." });
+        return BadRequest( new { loginResult = "Could not validate Google Login token." });
       }
     }
 

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
 
 function AdminLogin()
 {
+  const retryThisPage = 3;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function AdminLogin()
   const [vipPassword, setVipPassword] = useState("");
   
   // Configure axios instance.
-  axiosRetry(axios, { retries: 7, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
     console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
   }});
 
@@ -34,7 +35,9 @@ function AdminLogin()
     setError("");
     console.log("Axios retry..." + url);
     axios.post(url, jsonData).then((response) => {
+      console.log("------------------------------");
       console.log('Data fetched:', response.data); // response.data is already JSON
+      console.log("Navigate to /admin/orders...");
       navigate('/admin/orders');
     })
     .catch((err) => {

@@ -16,7 +16,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Provider } from 'react-redux'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  //<StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <Provider store={store}>
         <BrowserRouter>
@@ -40,5 +40,5 @@ createRoot(document.getElementById('root')).render(
         </BrowserRouter>
       </Provider>
     </GoogleOAuthProvider>
-  </StrictMode>
+  //</StrictMode>
 )

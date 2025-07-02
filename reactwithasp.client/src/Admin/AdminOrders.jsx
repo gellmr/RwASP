@@ -3,19 +3,22 @@ import { setAdminOrders } from '@/features/admin/orders/adminOrdersSlice.jsx'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
+import { useNavigate } from "react-router";
 import ConstructionBanner from "@/main/ConstructionBanner.jsx";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 function AdminOrders()
 {
+  const retryThisPage = 3;
   const dispatch = useDispatch();
   const adminOrders = useSelector(state => state.adminOrders.lines);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   
   // Configure axios instance.
-  axiosRetry(axios, { retries: 7, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
     console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
   }});
 
@@ -34,10 +37,20 @@ function AdminOrders()
       dispatch(setAdminOrders(response.data.orders));
     })
     .catch((err) => {
-      setError(err.response.data.errMessage);
+      if (err.status == 401) {
+        //console.log("User not logged in. Redirect to login page...");
+        //navigate('/admin');
+      } else {
+        if (err.response !== undefined) {
+          setError(err.response.data.errMessage);
+        } else {
+          setError("Something went wrong");
+        }
+      }
     })
     .finally(() => {
       console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      setError("Could not load records.");
       setIsLoading(false);
     });
   }
