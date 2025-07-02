@@ -33,10 +33,10 @@ function AdminLogin()
     const url = window.location.origin + "/api/admin-login";
     const jsonData = { username:vipUserName, password:vipPassword };
     setError("");
-    console.log("Axios retry..." + url);
+    console.log("Submit login details... " + url);
     axios.post(url, jsonData).then((response) => {
       console.log("------------------------------");
-      console.log('Data fetched:', response.data); // response.data is already JSON
+      console.log('Login success. Data fetched:', response.data); // response.data is already JSON
       console.log("Navigate to /admin/orders...");
       navigate('/admin/orders');
     })
@@ -44,7 +44,7 @@ function AdminLogin()
       setError(err.response.data.loginResult);
     })
     .finally(() => {
-      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      console.log('(loginClick) Request (and retries) completed. This runs regardless of success or failure.');
       setIsLoading(false);
     });
   };
