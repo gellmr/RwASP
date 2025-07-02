@@ -40,8 +40,8 @@ function AdminOrders()
     })
     .catch((err) => {
       if (err.status == 401) {
-        //console.log("User not logged in. Redirect to login page...");
-        //navigate('/admin');
+        console.log("User not logged in. Redirect to login page...");
+        navigate('/admin'); // const reactRoute = err.response.headers.location; navigate(reactRoute);
       } else {
         if (err.response !== undefined) {
           setError(err.response.data.errMessage);
@@ -52,7 +52,7 @@ function AdminOrders()
     })
     .finally(() => {
       console.log('Finished attempts to load records for /admin/orders page.');
-      setError("Could not load records.");
+      // setError("Could not load records.");
       setIsLoading(false);
     });
   }

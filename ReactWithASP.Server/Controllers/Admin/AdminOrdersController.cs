@@ -7,7 +7,7 @@ using ReactWithASP.Server.DTO;
 
 namespace ReactWithASP.Server.Controllers
 {
-  [Authorize(AuthenticationSchemes = "Cookies")]
+  [Authorize]
   [ApiController]
   [Route("api")]
   public class AdminOrdersController : AdminBaseController

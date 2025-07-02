@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 /*
+*/
 namespace ReactWithASP.Server.Infrastructure
 {
   // To customize the authorization failure response in .NET Core,
@@ -23,17 +24,16 @@ namespace ReactWithASP.Server.Infrastructure
     {
       int code = context.Response.StatusCode;
 
-      // Check what reason was the authorization failure?
-      //if (authorizeResult.Challenged == true)
-      //{
-      //  context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-      //  context.Response.Headers["Location"] = "/admin"; // Your desired login URL
-      //  return;
-      //}
+      // Check what reason was the authorization failure ?
+      if (authorizeResult.Challenged == true)
+      {
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        context.Response.Headers["Location"] = "/admin"; // Your desired login URL
+        return;
+      }
 
       // If not forbidden, let the default handler handle it. We don't need any custom logic.
       await defaultHandler.HandleAsync(next, context, policy, authorizeResult);
     }
   }
 }
-*/
