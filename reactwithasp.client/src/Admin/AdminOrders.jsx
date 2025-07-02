@@ -28,6 +28,7 @@ function AdminOrders()
 
   async function fetchAdminOrders()
   { 
+    console.log("Try to load Orders for /admin/orders page...");
     setError("");
     setIsLoading(true);
     const url = window.location.origin + "/api/admin-orders";
@@ -49,7 +50,7 @@ function AdminOrders()
       }
     })
     .finally(() => {
-      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      console.log('Finished attempts to load records for /admin/orders page.');
       setError("Could not load records.");
       setIsLoading(false);
     });

@@ -19,10 +19,10 @@ const GoogleLoginComp = () =>
   async function confirmToken(tokenResponse)
   {
     // Pass token to our backend server, for confirmation.
-    console.log("Success logging in with Google OAuth 2.0 Client. Received token...");
+    console.log("Success logging in with Google Sign In. received authorization code...");
     setIsLoading(true);
     const url = window.location.origin + "/api/validate-google-token";
-    console.log("Axios retry..." + url);
+    console.log("Try to get Access Token (from Google API) " + url);
     axios.post(url, tokenResponse).then((response) => {
       console.log("------------------------------");
       console.log('Data fetched:', response.data); // response.data is already JSON
