@@ -44,7 +44,7 @@ namespace ReactWithASP.Server.Controllers
           FamilyName = payload.FamilyName,
         };
 
-        // We can now log the user in, and create an AppUser object, and set the UserType to AppUser
+        // We can now log the user in, and create an AppUser object, and set the UserType to GoogleAppUser
         // Save to database
         AppUser? appUser = await appUserRepo.SaveGoogleAppUser(googleAppUser);
         userType = UserType.GoogleAppUser;
