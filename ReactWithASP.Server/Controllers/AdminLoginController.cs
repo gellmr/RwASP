@@ -22,7 +22,7 @@ namespace ReactWithASP.Server.Controllers
       SignInManager<AppUser> signInManager
     ): base(cartRepo, guestRepo, inStockRepo, config, userManager, signInManager){}
 
-    [HttpPost("admin-logout")] // POST /api/admin-logout
+    [HttpGet("admin-logout")] // GET /api/admin-logout
     public async Task<IActionResult> AdminLogout()
     {
       try{
