@@ -77,7 +77,7 @@ function AdminOrders()
     <>
       <Row>
         {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
-          <Col xs={12} style={{textAlign:"center", marginBottom:20, border:"1px solid grey"}}>
+          <Col key={line.id} xs={12} style={{ textAlign: "center", marginBottom: 20, border: "1px solid grey" }}>
             Order ID: {line.id} &nbsp;
             UserID: {line.userID} &nbsp;
             OrderPlacedDate: {line.orderPlacedDate} <br />
