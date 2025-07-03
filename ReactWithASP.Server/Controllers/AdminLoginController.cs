@@ -11,26 +11,16 @@ namespace ReactWithASP.Server.Controllers
 {
   [ApiController]
   [Route("api")]
-  public class AdminLoginController: ShopController
+  public class AdminLoginController: LoginController
   {
-    private SignInManager<AppUser> _signInManager;
-    private UserManager<AppUser> _userManager;
-
-    private IConfiguration _config;
-
     public AdminLoginController(
-      ICartLineRepository rRepo,
-      IGuestRepository gRepo,
-      IInStockRepository pRepo,
-      IConfiguration c,
+      ICartLineRepository cartRepo,
+      IGuestRepository guestRepo,
+      IInStockRepository inStockRepo,
+      IConfiguration config,
       UserManager<AppUser> userManager,
       SignInManager<AppUser> signInManager
-    ): base(rRepo, gRepo, pRepo)
-    {
-      _config = c;
-      _userManager = userManager;
-      _signInManager = signInManager;
-    }
+    ): base(cartRepo, guestRepo, inStockRepo, config, userManager, signInManager){}
 
     [HttpPost("admin-login")] // POST /api/admin-login.  Accepts application/json POST submissions containing stringified JSON data in request body.
     public async Task<IActionResult> AdminLogin([FromBody] AdminLoginSubmitDTO adminLoginSubmitDTO)

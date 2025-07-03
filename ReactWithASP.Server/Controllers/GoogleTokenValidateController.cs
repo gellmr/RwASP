@@ -5,16 +5,25 @@ using ReactWithASP.Server.Domain.Abstract;
 
 using Google.Apis.Auth;
 using ReactWithASP.Server.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace ReactWithASP.Server.Controllers
 {
   [ApiController]
   [Route("api")]
-  public class GoogleTokenValidateController : ShopController
+  public class GoogleTokenValidateController : LoginController
   {
     private readonly string? _clientId;
 
-    public GoogleTokenValidateController(IConfiguration config, ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) : base(rRepo, gRepo, pRepo) {
+    public GoogleTokenValidateController(
+      ICartLineRepository cartRepo,
+      IGuestRepository guestRepo,
+      IInStockRepository inStockRepo,
+      IConfiguration config,
+      UserManager<AppUser> userManager,
+      SignInManager<AppUser> signInManager
+    ) : base(cartRepo, guestRepo, inStockRepo, config, userManager, signInManager)
+    {
       _clientId = config.GetSection("Authentication:Google:ClientId").Value;
     }
 
