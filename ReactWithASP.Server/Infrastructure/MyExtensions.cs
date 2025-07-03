@@ -62,8 +62,8 @@ namespace ReactWithASP.Server.Infrastructure
   public static class MyExtensions
   {
     public static string SessionGuestID = "SessionGuestID";
-    public static string GuestCookieName = "ReactMikeGellDemo-GuestCookie";
-    public static string AppUserCookieName = "ReactMikeGellDemo-AppUserCookie";
+    public static string GuestCookieName = "ReactMikeGellDemo.GuestCookie";
+    public static string IdentityCookieName = "ReactMikeGellDemo.IdentityCookie";
     
     public static CookieOptions CookieOptions = new CookieOptions {
       HttpOnly = true,

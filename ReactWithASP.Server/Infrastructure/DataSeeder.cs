@@ -49,7 +49,7 @@ namespace ReactWithASP.Server.Infrastructure
         //IsGuest = _config.GetSection("Authentication:VIP:IsGuest").Value,
         Email = _config.GetSection("Authentication:VIP:Email").Value,
         EmailConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:EmailConfirmed").Value),
-        SecurityStamp = _config.GetSection("Authentication:VIP:SecurityStamp").Value,
+        //SecurityStamp = _config.GetSection("Authentication:VIP:SecurityStamp").Value, // Allow database to set this value.
         PhoneNumber = _config.GetSection("Authentication:VIP:PhoneNumber").Value,
         PhoneNumberConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:PhoneNumberConfirmed").Value),
         TwoFactorEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:TwoFactorEnabled").Value),

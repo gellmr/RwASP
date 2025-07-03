@@ -23,9 +23,18 @@ builder.Services.AddTransient<DataSeeder>();
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
        .AddEntityFrameworkStores<StoreContext>() // This adds UserStore and RoleStore. If you don't use it you have
                                                  // to provide Stores yourself with AddUserStore and AddRoleStore.
+       .AddSignInManager<SignInManager<AppUser>>()
        .AddDefaultTokenProviders();              // This adds token providers for features like password reset and email confirmation.
 
-
+builder.Services.ConfigureApplicationCookie(options =>
+{
+  options.Cookie.HttpOnly = true; // Prevents client-side script access
+  options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Cookie expiration time
+  options.LoginPath = "/admin";
+  options.AccessDeniedPath = "/admin";
+  options.SlidingExpiration = true; // Resets expiration time with each request
+  options.Cookie.Name = MyExtensions.IdentityCookieName; // Without this, the plain defaults create a cookie called ".ASPNetCore.Cookies"
+});
 
 builder.Services.AddControllers(); // In ASP.NET Core, you should call AddControllers() before AddAuthorization()
 
@@ -36,9 +45,18 @@ builder.Services.AddSession(options => {
   options.Cookie.IsEssential = true;
 });
 
-// Enable Google login for .NET Identity.
-// Specify that we want to use cookie authentication. This means the session ID is maintained in a
-// cookie, to verify the user is logged in (without needing to re-authenticate on every page load).
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddCookie(options => {
+  options.Cookie.Name = MyExtensions.IdentityCookieName;
+})
+.AddGoogle(options => {
+  // Get Google tokens from config...
+  options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+  options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+  options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Use the same scheme as AddCookie
+});
+
+/*
 builder.Services.AddAuthentication(options =>
 {
   // If you have two authentication schemes, "Cookies" and "JWT", and you configure DefaultAuthenticateScheme as "JWT",
@@ -68,6 +86,7 @@ builder.Services.AddAuthentication(options =>
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Use the same scheme as AddCookie
   }
 );
+*/
 builder.Services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
