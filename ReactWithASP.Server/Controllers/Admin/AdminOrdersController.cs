@@ -21,13 +21,14 @@ namespace ReactWithASP.Server.Controllers
     [HttpGet("admin-orders")]    // GET "/api/admin-orders"
     public IActionResult GetOrders()
     {
-
       OrderSlugDTO order1 = new OrderSlugDTO{
-        ID = "123",
+        ID = "101",
         OrderPlacedDate = DateTime.Now,
         UserID = "111"
       };
-      var orders = new List<OrderSlugDTO> { order1 };
+      OrderSlugDTO order2 = new OrderSlugDTO { ID = "102", OrderPlacedDate = DateTime.Now, UserID = "111" };
+      OrderSlugDTO order3 = new OrderSlugDTO { ID = "103", OrderPlacedDate = DateTime.Now, UserID = "111" };
+      var orders = new List<OrderSlugDTO> { order1, order2, order3 };
 
       bool success = true;
       if (success){
