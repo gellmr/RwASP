@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Google;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ReactWithASP.Server.Domain;
 
 namespace ReactWithASP.Server.Infrastructure
 {
-  public class StoreContext : DbContext
+  public class StoreContext : IdentityDbContext<AppUser>
   {
     private IConfiguration _config;
 
@@ -14,9 +16,8 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<CartLine> CartLines { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Guest> Guests { get; set; }
-    public DbSet<AppUser> AppUser { get; set; }
 
-    public StoreContext(IConfiguration c){ // receive the configuration object through DI
+    public StoreContext(IConfiguration c) : base(){
       _config = c;
     }
 

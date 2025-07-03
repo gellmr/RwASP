@@ -17,13 +17,11 @@ namespace ReactWithASP.Server.Controllers
     private UserManager<AppUser> _userManager;
 
     private IConfiguration _config;
-    protected IAppUserRepo appUserRepo;
 
     public AdminLoginController(
       ICartLineRepository rRepo,
       IGuestRepository gRepo,
       IInStockRepository pRepo,
-      IAppUserRepo aRepo,
       IConfiguration c,
       UserManager<AppUser> userManager,
       SignInManager<AppUser> signInManager
@@ -32,7 +30,6 @@ namespace ReactWithASP.Server.Controllers
       _config = c;
       _userManager = userManager;
       _signInManager = signInManager;
-      appUserRepo = aRepo;
     }
 
     [HttpPost("admin-login")] // POST /api/admin-login.  Accepts application/json POST submissions containing stringified JSON data in request body.

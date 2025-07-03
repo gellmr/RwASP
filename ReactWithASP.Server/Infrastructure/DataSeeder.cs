@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity; // Provides PasswordHasher.
+using Microsoft.AspNetCore.Identity;
 using ReactWithASP.Server.Domain;
 
 namespace ReactWithASP.Server.Infrastructure
@@ -17,15 +18,25 @@ namespace ReactWithASP.Server.Infrastructure
     private IConfiguration _config;
     private StoreContext _context;
 
+    private Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager;
+    private Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> _roleManager;
+
     public static List<InStockProductDTO> inStockDTOs;
     public static IList<InStockProduct> inStockProducts;
 
-    public DataSeeder(StoreContext ctx, IConfiguration config){
+    public DataSeeder(
+      StoreContext ctx,
+      IConfiguration config,
+      Microsoft.AspNetCore.Identity.UserManager<AppUser> um,
+      Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> rm
+    ){
       _context = ctx;
       _config = config;
+      _userManager = um;
+      _roleManager = rm;
     }
 
-    public void Seed()
+    public async Task Seed()
     {
       // We want to keep CartLine records, and Guest records. All other tables can be cleared.
 
@@ -42,6 +53,16 @@ namespace ReactWithASP.Server.Infrastructure
       IPasswordHasher hasher = new PasswordHasher();
       string hashedVipPassword = hasher.HashPassword(vipPassword);
 
+      // Seed Roles
+      string[] roleNames = { "Admin" };
+      foreach (var roleName in roleNames)
+      {
+        if (!await _roleManager.RoleExistsAsync(roleName)){
+          await _roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+      }
+
+      // Seed User
       AppUser vipAppUser = new AppUser{
         Id = _config.GetSection("Authentication:VIP:Id").Value,
         UserName = vipUserName,
@@ -57,7 +78,10 @@ namespace ReactWithASP.Server.Infrastructure
         LockoutEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:LockoutEnabled").Value),
         AccessFailedCount = Int32.Parse(_config.GetSection("Authentication:VIP:AccessFailedCount").Value),
       };
-      _context.AppUser.Add(vipAppUser);
+      if (await _userManager.FindByIdAsync(vipAppUser.Id) == null){
+        await _userManager.CreateAsync(vipAppUser);
+        await _userManager.AddToRoleAsync(vipAppUser, "Admin");
+      }
 
       // Populate InStockProduct
       inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductDTO>>();
@@ -66,7 +90,7 @@ namespace ReactWithASP.Server.Infrastructure
       _context.InStockProducts.AddRange(inStockProducts.ToArray());
 
       // All done.
-      _context.SaveChanges();
+      await _context.SaveChangesAsync();
     }
 
     private static void SeedInStockProducts(int idx){

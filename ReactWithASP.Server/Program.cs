@@ -101,7 +101,6 @@ builder.Services.AddScoped<IOrdersRepository, EFOrdersRepository>();
 builder.Services.AddScoped<ICartLineRepository, EFCartLineRepository>();
 builder.Services.AddScoped<IInStockRepository, EFInStockRepository>();
 builder.Services.AddScoped<IGuestRepository, EFGuestRepository>();
-builder.Services.AddScoped<IAppUserRepo, AppUserRepo>();
 builder.Services.AddScoped<StoreContext, StoreContext>();
 builder.Services.AddScoped<MyEnv, MyEnv>();
 
@@ -140,7 +139,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope()){
   if(useSeed){
     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-    seeder.Seed();
+    await seeder.Seed();
   }
 }
 

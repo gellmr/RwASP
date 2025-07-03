@@ -1,4 +1,5 @@
-﻿using ReactWithASP.Server.DTO;
+﻿/*
+using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Domain.Abstract
@@ -9,3 +10,4 @@ namespace ReactWithASP.Server.Domain.Abstract
     Task<AppUser?> FindAppUserById(string userName);
   }
 }
+ */

@@ -12,12 +12,10 @@ namespace ReactWithASP.Server.Controllers
   [Route("api")]
   public class GoogleTokenValidateController : ShopController
   {
-    protected IAppUserRepo appUserRepo;
     private readonly string? _clientId;
 
-    public GoogleTokenValidateController(IConfiguration config, ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IAppUserRepo aRepo) : base(rRepo, gRepo, pRepo) {
+    public GoogleTokenValidateController(IConfiguration config, ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) : base(rRepo, gRepo, pRepo) {
       _clientId = config.GetSection("Authentication:Google:ClientId").Value;
-      appUserRepo = aRepo;
     }
 
     [HttpPost("validate-google-token")] // POST /api/validate-google-token.  Accepts application/json POST submissions containing stringified JSON data in request body.
@@ -46,7 +44,7 @@ namespace ReactWithASP.Server.Controllers
 
         // We can now log the user in, and create an AppUser object, and set the UserType to GoogleAppUser
         // Save to database
-        AppUser? appUser = await appUserRepo.SaveGoogleAppUser(googleAppUser);
+        AppUser? appUser = null; // await appUserRepo.SaveGoogleAppUser(googleAppUser);
         userType = UserType.GoogleAppUser;
         //SaveAppUserToCookie(appUser); // TODO - use _userManager and _signInManager.
         guest = null;
