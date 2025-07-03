@@ -55,6 +55,7 @@ namespace ReactWithASP.Server.Infrastructure
 
       // Seed Roles
       string[] roleNames = { "Admin" };
+      //string[] roleNames = { "Admin", "User" }; // Other user types can be added here, eg "Customer"
       foreach (var roleName in roleNames)
       {
         if (!await _roleManager.RoleExistsAsync(roleName)){
@@ -82,6 +83,11 @@ namespace ReactWithASP.Server.Infrastructure
         await _userManager.CreateAsync(vipAppUser);
         await _userManager.AddToRoleAsync(vipAppUser, "Admin");
       }
+      //var regularUser = new IdentityUser { UserName = "user@example.com", Email = "user@example.com", EmailConfirmed = true };
+      //if (await userManager.FindByEmailAsync(regularUser.Email) == null){
+      //  await userManager.CreateAsync(regularUser);
+      //  await userManager.AddToRoleAsync(regularUser, "User");
+      //}
 
       // Populate InStockProduct
       inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductDTO>>();
