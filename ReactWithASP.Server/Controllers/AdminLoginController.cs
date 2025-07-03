@@ -65,7 +65,7 @@ namespace ReactWithASP.Server.Controllers
           identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, vipUserId));
           identity.AddClaim(new Claim(ClaimTypes.Name, vipUserName));
 
-          bool persistAfterBrowserClose = true;
+          bool persistAfterBrowserClose = false;
           bool lockoutOnFailure = false;
           var result = await _signInManager.PasswordSignInAsync(appUser, vipPassword, persistAfterBrowserClose, lockoutOnFailure);
 
