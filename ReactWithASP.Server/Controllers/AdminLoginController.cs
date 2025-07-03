@@ -22,6 +22,19 @@ namespace ReactWithASP.Server.Controllers
       SignInManager<AppUser> signInManager
     ): base(cartRepo, guestRepo, inStockRepo, config, userManager, signInManager){}
 
+    [HttpPost("admin-logout")] // POST /api/admin-logout
+    public async Task<IActionResult> AdminLogout()
+    {
+      try{
+        await _signInManager.SignOutAsync();
+        return this.StatusCode(StatusCodes.Status200OK, "Successfully logged out");
+      }
+      catch(Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+      }
+    }
+
     [HttpPost("admin-login")] // POST /api/admin-login.  Accepts application/json POST submissions containing stringified JSON data in request body.
     public async Task<IActionResult> AdminLogin([FromBody] AdminLoginSubmitDTO adminLoginSubmitDTO)
     {

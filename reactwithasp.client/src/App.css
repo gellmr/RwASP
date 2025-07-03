@@ -89,8 +89,10 @@
   flex-grow: 2;
   text-align: right;
   font-size: 12px;
-  padding:6px;
-  padding-left: 12px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:flex-start;
 }
 
 @media (min-width: 370px) {
@@ -401,6 +403,8 @@ th, td {
   }
   .mgCurrUserNav {
     font-size: 14px;
+    flex-direction: row;
+    justify-content:flex-end;
   }
 }
 
