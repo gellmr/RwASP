@@ -27,8 +27,8 @@ function Shop()
   //    |                                Redux internal state (eg the store)
   //    |                                |              Name of our slice
   //    |                                |              |
-  const inStockProducts    = useSelector(state => state.inStock.value); // Get the value of the state variable in our slice. An array.
-  const cartProducts       = useSelector(state => state.cart.cartLines);    // Array of products
+  const inStockProducts    = useSelector(state => state.inStock.value);  // Get the value of the state variable in our slice. An array.
+  const cartProducts       = useSelector(state => state.cart.cartLines); // Array of products
   const search             = useSelector(state => state.search.value);
   const dispatch           = useDispatch(); // We can dispatch actions to the Redux store, by targeting the reducer actions in our slice, by name.
   const { page, category } = useParams();   // The page of products we are on, eg "2". Obtained from react route...  /index/2
