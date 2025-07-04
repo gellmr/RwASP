@@ -15,7 +15,7 @@ function LogOutButton()
 
   const logoutClick = function () {
     const url = window.location.origin + "/api/admin-logout";
-    axios.get(url).then((response) => {
+    axios.post(url).then((response) => {
       console.log("------------------------------");
       console.log('Logout success. ', response.data);
       console.log("Navigate to /");
