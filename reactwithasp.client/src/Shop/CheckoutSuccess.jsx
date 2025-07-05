@@ -6,7 +6,7 @@ function CheckoutSuccess() {
       <h2 style={{ marginTop: "20px", marginBottom:"15px" }}>Thanks!</h2>
       <p className={"mb-4"}>Your order has been submitted. We'll ship your goods as soon as possible.</p>
 
-      <NavLink to={"/shop"} className={"btn btn-primary"}>Continue Shopping</NavLink>
+      <NavLink to={"/"} className={"btn btn-primary"}>Continue Shopping</NavLink>
     </>
   );
 }
