@@ -6,6 +6,8 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ConstructionBanner from "@/main/ConstructionBanner.jsx";
+import { useDispatch } from 'react-redux'
+import { setLogin } from '@/features/login/loginSlice.jsx'
 
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
@@ -16,6 +18,7 @@ function AdminLogin()
 {
   const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -37,6 +40,7 @@ function AdminLogin()
     axios.post(url, jsonData).then((response) => {
       console.log("------------------------------");
       console.log('Login success. Data fetched:', response.data); // response.data is already JSON
+      dispatch(setLogin(response.data.loginType));
       console.log("Navigate to /admin/orders...");
       navigate('/admin/orders');
     })

@@ -4,6 +4,7 @@ import categoriesReducer from '@/features/categories/categoriesSlice.jsx'
 import cartReducer    from '@/features/cart/cartSlice.jsx'
 import searchReducer  from '@/features/search/searchSlice.jsx'
 import adminOrdersReducer from '@/features/admin/orders/adminOrdersSlice.jsx'
+import loginReducer from '@/features/login/loginSlice.jsx'
 
 export default configureStore({
   reducer: {
@@ -13,5 +14,6 @@ export default configureStore({
     cart:               cartReducer,
     search:             searchReducer,
     adminOrders:        adminOrdersReducer,
+    login:              loginReducer,
   }
 })
