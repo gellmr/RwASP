@@ -99,7 +99,8 @@ function AdminLogin()
             </Col>
             {errMarkup}
             <div style={{ marginBottom: 40 }}></div>
-            <Stack direction="horizontal" gap={3} className="d-none d-sm-flex" style={{marginTop:10}}>
+            {/*
+            <Stack direction="horizontal" gap={3} className="d-none d-sm-flex" style={{ marginTop: 10 }}>
               <div className="me-auto">Other sign-in options:</div>
               <div className="vr" />
               <GoogleLoginComp />
@@ -114,6 +115,7 @@ function AdminLogin()
                 <GoogleLoginComp />
               </div>
             </Stack>
+            */}
           </Row>
         </Form>
       </div>
