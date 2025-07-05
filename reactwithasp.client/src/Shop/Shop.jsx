@@ -13,7 +13,7 @@ import ProceedCartBtn from "@/Shop/ProceedCartBtn";
 
 function Shop()
 {
-  const retryThisPage = 3; // 7
+  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 

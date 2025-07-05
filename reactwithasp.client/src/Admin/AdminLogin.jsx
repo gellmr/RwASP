@@ -14,7 +14,7 @@ import { useNavigate } from "react-router";
 
 function AdminLogin()
 {
-  const retryThisPage = 3;
+  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();

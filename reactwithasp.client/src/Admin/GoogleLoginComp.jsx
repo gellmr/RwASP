@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 
 const GoogleLoginComp = () =>
 {
-  const retryThisPage = 3;
+  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();

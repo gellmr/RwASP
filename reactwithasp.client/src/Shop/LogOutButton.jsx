@@ -5,7 +5,7 @@ import axiosRetry from 'axios-retry';
 
 function LogOutButton()
 {
-  const retryThisPage = 3;
+  const retryThisPage = 5;
   const navigate = useNavigate();
 
   // Configure axios instance.

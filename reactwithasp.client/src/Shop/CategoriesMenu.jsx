@@ -11,6 +11,7 @@ import "bootstrap/dist/css/bootstrap.css";
 
 function CategoriesMenu()
 {
+  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,7 +19,7 @@ function CategoriesMenu()
   const dispatch = useDispatch(); // Redux dispatch
 
   // Configure this axios instance. 3 retries is about minimum for Vite load on my workstation.
-  axiosRetry(axios, { retries: 7, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
+  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
     console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
   }});
 

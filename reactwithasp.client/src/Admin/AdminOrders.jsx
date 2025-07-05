@@ -10,7 +10,7 @@ import Col from 'react-bootstrap/Col'
 
 function AdminOrders()
 {
-  const retryThisPage = 3;
+  const retryThisPage = 5;
   const dispatch = useDispatch();
   const adminOrders = useSelector(state => state.adminOrders.lines);
   const [isLoading, setIsLoading] = useState(false);
