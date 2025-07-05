@@ -11,14 +11,16 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import MgNavBar from "@/main/MgNavBar";
 import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
+import AdminLink from "@/Admin/AdminLink";
 
 
-const AdminLayout = () => {
+const AdminLayout = () =>
+{
   return (
     <>
       <MgNavBar showCart={false}>
         <NavLink to="/" className="mgNavLinkBtn" >Shop</NavLink>
-        <NavLink to="/admin" className="mgNavLinkBtn" >Admin</NavLink>
+        <AdminLink />
         <CurrUserNavLink />
       </MgNavBar>
       <Container id="shopLayout" style={{ border: '' }}>

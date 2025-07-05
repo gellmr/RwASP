@@ -1,11 +1,14 @@
 import { NavLink } from "react-router";
 import { useNavigate } from "react-router";
+import { useDispatch } from 'react-redux'
+import { setLogin } from '@/features/login/loginSlice.jsx'
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 function LogOutButton()
 {
   const retryThisPage = 5;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Configure axios instance.
@@ -18,6 +21,7 @@ function LogOutButton()
     axios.post(url).then((response) => {
       console.log("------------------------------");
       console.log('Logout success. ', response.data);
+      dispatch(setLogin(""));
       console.log("Navigate to /");
       navigate('/');
     })

@@ -16,6 +16,7 @@ import MgNavBar from "@/main/MgNavBar";
 import CategoriesMenu from "@/Shop/CategoriesMenu";
 import CartBtn from "@/Shop/CartBtn";
 import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
+import AdminLink from '@/Admin/AdminLink';
 import EnvName from "@/Shop/EnvName";
 
 const ShopLayout = () =>
@@ -41,7 +42,7 @@ const ShopLayout = () =>
     <>
       <MgNavBar>
         <NavLink to="/" className="mgNavLinkBtn" >Shop</NavLink>
-        <NavLink to="/admin" className="mgNavLinkBtn" >Admin</NavLink>
+        <AdminLink />
         <CartBtn isSmall={false} />
         <CurrUserNavLink />
       </MgNavBar>
