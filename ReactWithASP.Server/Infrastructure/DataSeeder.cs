@@ -4,7 +4,7 @@ using ReactWithASP.Server.Domain;
 
 namespace ReactWithASP.Server.Infrastructure
 {
-  public class InStockProductDTO // Temporary class to help us populate our objects from JSON
+  public class InStockProductSeederDTO // Temporary class to help us populate our objects from JSON
   {
     public int? ID { get; set; }
     public string? Name { get; set; }
@@ -21,19 +21,31 @@ namespace ReactWithASP.Server.Infrastructure
     private Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager;
     private Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> _roleManager;
 
-    public static List<InStockProductDTO> inStockDTOs;
+    public static ILookupNormalizer _normalizer;
+    public static IPasswordHasher<AppUser> _hasher;
+
+    private static string? _hashedVipPassword;
+
+    public static List<AppUserSeederDTO> appUserDTOs;
+    public static IList<AppUser> appUsers;
+
+    public static List<InStockProductSeederDTO> inStockDTOs;
     public static IList<InStockProduct> inStockProducts;
+
 
     public DataSeeder(
       StoreContext ctx,
       IConfiguration config,
       Microsoft.AspNetCore.Identity.UserManager<AppUser> um,
-      Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> rm
-    ){
+      Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> rm,
+      ILookupNormalizer norm
+    )
+    {
       _context = ctx;
       _config = config;
       _userManager = um;
       _roleManager = rm;
+      _normalizer = norm;
     }
 
     public async Task Seed()
@@ -51,7 +63,7 @@ namespace ReactWithASP.Server.Infrastructure
       string vipUserName = _config.GetSection("Authentication:VIP:UserName").Value;
       string vipPassword = _config.GetSection("Authentication:VIP:Password").Value;
       IPasswordHasher hasher = new PasswordHasher();
-      string hashedVipPassword = hasher.HashPassword(vipPassword);
+      _hashedVipPassword = hasher.HashPassword(vipPassword);
 
       // Seed Roles
       string[] roleNames = { "Admin" };
@@ -67,7 +79,7 @@ namespace ReactWithASP.Server.Infrastructure
       AppUser vipAppUser = new AppUser{
         Id = _config.GetSection("Authentication:VIP:Id").Value,
         UserName = vipUserName,
-        PasswordHash = hashedVipPassword,
+        PasswordHash = _hashedVipPassword,
         //IsGuest = _config.GetSection("Authentication:VIP:IsGuest").Value,
         Email = _config.GetSection("Authentication:VIP:Email").Value,
         EmailConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:EmailConfirmed").Value),
@@ -89,15 +101,52 @@ namespace ReactWithASP.Server.Infrastructure
       //  await userManager.AddToRoleAsync(regularUser, "User");
       //}
 
+      // ------------------------------------------------------------
+
       // Populate InStockProduct
-      inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductDTO>>();
+      inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
       inStockProducts = new List<InStockProduct>();
       for ( int pIdx = 0; pIdx < 27; pIdx++ ){ SeedInStockProducts(pIdx); }
       _context.InStockProducts.AddRange(inStockProducts.ToArray());
 
+      //// Populate Users
+      appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
+      appUsers = new List<AppUser>();
+      for (int u = 1; u < 40; u++) { SeedAppUsers(u); }
+      _context.Users.AddRange(appUsers.ToArray());
+
       // All done.
       await _context.SaveChangesAsync();
     }
+    
+    private static void SeedAppUsers(int u)
+    {
+      try
+      {
+        AppUserSeederDTO dto = appUserDTOs[u];
+        string[] splitName = dto.UserName.Split(" ");
+        AppUser user = new AppUser
+        {
+          Id = dto.Id,
+          Email = dto.Email,
+          EmailConfirmed = dto.EmailConfirmed,
+          PasswordHash = _hashedVipPassword,
+          //SecurityStamp = dto.SecurityStamp, // Allow database to generate this.
+          PhoneNumber = dto.PhoneNumber,
+          PhoneNumberConfirmed = dto.PhoneNumberConfirmed,
+          TwoFactorEnabled = dto.TwoFactorEnabled,
+          LockoutEnd = dto.LockoutEndDateUtc,
+          LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
+          AccessFailedCount = dto.AccessFailedCount,
+          UserName = dto.UserName,
+          NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
+          NormalizedEmail = _normalizer.NormalizeEmail(dto.Email)
+        };
+        appUsers.Add(user);
+      }
+      catch (ArgumentOutOfRangeException rangeEx)
+      {
+        // did not have expected data in seed file
 
     private static void SeedInStockProducts(int idx){
       InStockProductDTO dto = inStockDTOs[idx];
@@ -110,5 +159,6 @@ namespace ReactWithASP.Server.Infrastructure
       };
       inStockProducts.Add(prod);
     }
+    
   }
 }
