@@ -38,33 +38,55 @@ namespace ReactWithASP.Server.Controllers
 
       // Exchange the authorization code (tokenDTO.credential) for an access token (payload)
       GoogleJsonWebSignature.Payload? payload = await ValidateTokenAsync(tokenDTO);
-      if (payload != null)
-      {
-        // We can now use the access token (payload) to make API calls to Google, on the users behalf.
+      if(payload == null){
+        return BadRequest(new { loginResult = "Could not validate Google Login token." });
+      }
 
-        // Token is valid, extract user information
-        GoogleAppUserDTO googleAppUser = new GoogleAppUserDTO
-        {
+      // The payload has a value... We can now use the access token (payload) to make API calls to Google, on the users behalf.
+      // Now that we already have the access token (payload) we dont need to use ExternalLoginInfo or GetExternalLoginInfoAsync
+
+      IdentityResult createResult;
+      AppUser? appUser;
+      bool persistAfterBrowserClose = false;
+
+      // Token is valid, extract user information
+      GoogleAppUserDTO googleAppUser = new GoogleAppUserDTO
+      {
           Subject = payload.Subject, // This is the unique Google user ID. String about 21 characters long.
           Email = payload.Email,
           GivenName = payload.GivenName,
           FamilyName = payload.FamilyName,
+      };
+
+      appUser = await _userManager.FindByIdAsync(googleAppUser.Subject); // See if the user already exists in our database...
+      if (appUser == null)
+      {
+        // There is no database record yet, for this GoogleSignIn user. Create new AppUser record in database...
+        appUser = new AppUser{
+          EmailConfirmed = true, // The user cannot sign in unless this is true.
+          AccessFailedCount = 0,
+          LockoutEnabled = false,
+          TwoFactorEnabled = false,
+          UserName = googleAppUser.GivenName + "-" + googleAppUser.FamilyName,
+          Email = googleAppUser.Email,
+          Id = googleAppUser.Subject,
         };
 
-        // We can now log the user in, and create an AppUser object, and set the UserType to GoogleAppUser
-        // Save to database
-        AppUser? appUser = null; // await appUserRepo.SaveGoogleAppUser(googleAppUser);
-        userType = UserType.GoogleAppUser;
-        //SaveAppUserToCookie(appUser); // TODO - use _userManager and _signInManager.
-        guest = null;
-        guestId = null;
+        createResult = await _userManager.CreateAsync(appUser);
 
-        // Update the client so they can see they are logged in
-        // They will now have access to the restricted pages.
-        return Ok( new { loginResult = "Success validating Google Login token.", loginType = "Google Sign In" }); // Automatically cast object to JSON.
-      }else{
-        return BadRequest( new { loginResult = "Could not validate Google Login token." });
+        if (!createResult.Succeeded){
+          return this.StatusCode(StatusCodes.Status400BadRequest, "Could not create AppUser record in our database for this GoogleSignIn.");
+        }
+        // Success creating AppUser...
       }
+      // AppUser record exists in our database...
+
+      // User successfully signed in.
+      await _signInManager.SignInAsync(appUser, isPersistent: persistAfterBrowserClose); // isPersistent: false means the cookie is session-based
+      guest = null;
+      guestId = null;
+      userType = UserType.GoogleAppUser;
+      return Ok(new { loginResult = "Success validating Google Login token.", loginType = "Google Sign In" });
     }
 
     private async Task<GoogleJsonWebSignature.Payload?> ValidateTokenAsync(ConfirmGoogleAuthDTO tokenDTO)

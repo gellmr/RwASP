@@ -45,7 +45,10 @@ builder.Services.AddSession(options => {
   options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options =>{
+  options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
+  options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
 .AddCookie(options => {
   options.Cookie.Name = MyExtensions.IdentityCookieName;
 })
@@ -53,7 +56,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
   // Get Google tokens from config...
   options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
   options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-  options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Use the same scheme as AddCookie
 });
 
 /*
