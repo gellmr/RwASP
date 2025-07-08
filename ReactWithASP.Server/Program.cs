@@ -20,11 +20,14 @@ builder.Configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", opt
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StoreContext")));
 builder.Services.AddTransient<DataSeeder>();
 
-builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-       .AddEntityFrameworkStores<StoreContext>() // This adds UserStore and RoleStore. If you don't use it you have
-                                                 // to provide Stores yourself with AddUserStore and AddRoleStore.
-       .AddSignInManager<SignInManager<AppUser>>()
-       .AddDefaultTokenProviders();              // This adds token providers for features like password reset and email confirmation.
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => { 
+  options.SignIn.RequireConfirmedAccount = true;
+  options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); // Default is 5 minutes
+  options.Lockout.AllowedForNewUsers = true; // "Opt in" to using the lockout functionality. True does not mean the user is locked out.
+})
+.AddEntityFrameworkStores<StoreContext>()    // This adds UserStore and RoleStore. If you don't use it you have to provide Stores yourself with AddUserStore and AddRoleStore.
+.AddSignInManager<SignInManager<AppUser>>()
+.AddDefaultTokenProviders();                 // This adds token providers for features like password reset and email confirmation.
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
