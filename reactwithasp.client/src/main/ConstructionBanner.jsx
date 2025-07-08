@@ -6,7 +6,8 @@ function ConstructionBanner() {
         <span style={{ position: "relative", top: -4 }}>
           <i className="bi bi-wrench" style={{ position: 'relative', top: 4 }}></i>
           &nbsp;
-          (This page is Under Construction)
+          <span className="d-none d-sm-inline-block">(This page is Under Construction)</span>
+          <span className="d-inline-block d-sm-none">(Page Under Construction)</span>
           &nbsp;
           &nbsp;
         </span>
