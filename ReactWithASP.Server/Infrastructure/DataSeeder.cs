@@ -13,6 +13,24 @@ namespace ReactWithASP.Server.Infrastructure
     public string? Category { get; set; }
   }
 
+  public class AppUserSeederDTO
+  {
+    public bool IsGuest { get; set; }
+
+    public string Id { get; set; }
+    public string? Email {get; set;}
+    public bool EmailConfirmed { get; set; }
+    //public string? PasswordHash { get; set; }
+    public string? SecurityStamp { get; set; }
+    public string? PhoneNumber { get; set; }
+    public bool PhoneNumberConfirmed {get; set; }
+    public bool TwoFactorEnabled { get; set; }
+    public DateTimeOffset? LockoutEndDateUtc { get; set; }
+    public bool LockoutEnabled { get; set; }
+    public Int32 AccessFailedCount { get; set; }
+    public string? UserName { get; set; }
+  }
+
   public class DataSeeder
   {
     private IConfiguration _config;
@@ -53,7 +71,7 @@ namespace ReactWithASP.Server.Infrastructure
       // We want to keep CartLine records, and Guest records. All other tables can be cleared.
 
       // Delete all rows for the tables we are recreating...
-      //_context.AppUser.RemoveRange(_context.AppUser);
+      _context.Users.RemoveRange(_context.Users);
       _context.InStockProducts.RemoveRange(_context.InStockProducts);
       //_context.OrderedProducts.RemoveRange(_context.OrderedProducts);
       //_context.OrderPayments.RemoveRange(_context.OrderPayments);
@@ -109,7 +127,7 @@ namespace ReactWithASP.Server.Infrastructure
       for ( int pIdx = 0; pIdx < 27; pIdx++ ){ SeedInStockProducts(pIdx); }
       _context.InStockProducts.AddRange(inStockProducts.ToArray());
 
-      //// Populate Users
+      // Populate Users
       appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
       appUsers = new List<AppUser>();
       for (int u = 1; u < 40; u++) { SeedAppUsers(u); }
@@ -147,9 +165,11 @@ namespace ReactWithASP.Server.Infrastructure
       catch (ArgumentOutOfRangeException rangeEx)
       {
         // did not have expected data in seed file
+      }
+    }
 
     private static void SeedInStockProducts(int idx){
-      InStockProductDTO dto = inStockDTOs[idx];
+      InStockProductSeederDTO dto = inStockDTOs[idx];
       InStockProduct prod = new InStockProduct{
         // Dont set the ID. Allow database to generate it for us.
         Title = dto.Name,
