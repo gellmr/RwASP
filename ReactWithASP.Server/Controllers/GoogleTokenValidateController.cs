@@ -52,10 +52,10 @@ namespace ReactWithASP.Server.Controllers
       // Token is valid, extract user information
       GoogleAppUserDTO googleAppUser = new GoogleAppUserDTO
       {
-          Subject = payload.Subject, // This is the unique Google user ID. String about 21 characters long.
-          Email = payload.Email,
-          GivenName = payload.GivenName,
-          FamilyName = payload.FamilyName,
+        Subject = payload.Subject, // This is the unique Google user ID. String about 21 characters long.
+        Email = payload.Email,
+        GivenName = payload.GivenName,
+        FamilyName = payload.FamilyName,
       };
 
       appUser = await _userManager.FindByIdAsync(googleAppUser.Subject); // See if the user already exists in our database...
