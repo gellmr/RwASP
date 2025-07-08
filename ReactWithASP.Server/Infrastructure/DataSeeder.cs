@@ -17,7 +17,8 @@ namespace ReactWithASP.Server.Infrastructure
   {
     public bool IsGuest { get; set; }
 
-    public string Id { get; set; }
+    public Int32? Id { get; set; }
+    public Guid? GuestID { get; set; }
     public string? Email {get; set;}
     public bool EmailConfirmed { get; set; }
     //public string? PasswordHash { get; set; }
@@ -25,10 +26,24 @@ namespace ReactWithASP.Server.Infrastructure
     public string? PhoneNumber { get; set; }
     public bool PhoneNumberConfirmed {get; set; }
     public bool TwoFactorEnabled { get; set; }
-    public DateTimeOffset? LockoutEndDateUtc { get; set; }
+    public Double? LockoutEndDateUtc { get; set; }
     public bool LockoutEnabled { get; set; }
     public Int32 AccessFailedCount { get; set; }
     public string? UserName { get; set; }
+  }
+
+  public class OrderSeederDTO
+  {
+    public Int32? UserID { get; set; }
+    public Int32? ID { get; set; }
+    public string OrderPlacedDate { get; set; }
+    public string PaymentReceivedDate { get; set; }
+    public string ReadyToShipDate { get; set; }
+    public string ShipDate { get; set; }
+    public string ReceivedDate { get; set; }
+    public string? BillingAddress { get; set; }
+    public string? ShippingAddress { get; set; }
+    public string? OrderStatus { get; set; }
   }
 
   public class DataSeeder
@@ -45,11 +60,15 @@ namespace ReactWithASP.Server.Infrastructure
     private static string? _hashedVipPassword;
 
     public static List<AppUserSeederDTO> appUserDTOs;
-    public static IList<AppUser> appUsers;
+    public static IList<AppUser> AppUsers;
+
+    public static IDictionary<string, Guest> Guests;
 
     public static List<InStockProductSeederDTO> inStockDTOs;
-    public static IList<InStockProduct> inStockProducts;
+    public static IList<InStockProduct> InStockProducts;
 
+    public static List<OrderSeederDTO> orderDTOs;
+    public static IList<Order> Orders;
 
     public DataSeeder(
       StoreContext ctx,
@@ -75,7 +94,9 @@ namespace ReactWithASP.Server.Infrastructure
       _context.InStockProducts.RemoveRange(_context.InStockProducts);
       //_context.OrderedProducts.RemoveRange(_context.OrderedProducts);
       //_context.OrderPayments.RemoveRange(_context.OrderPayments);
-      //_context.Orders.RemoveRange(_context.Orders);
+      _context.Orders.RemoveRange(_context.Orders);
+
+      Guests = new Dictionary<string, Guest>();
 
       // Add the VIP AppUser
       string vipUserName = _config.GetSection("Authentication:VIP:UserName").Value;
@@ -109,10 +130,12 @@ namespace ReactWithASP.Server.Infrastructure
         LockoutEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:LockoutEnabled").Value),
         AccessFailedCount = Int32.Parse(_config.GetSection("Authentication:VIP:AccessFailedCount").Value),
       };
+      /*
       if (await _userManager.FindByIdAsync(vipAppUser.Id) == null){
         await _userManager.CreateAsync(vipAppUser);
         await _userManager.AddToRoleAsync(vipAppUser, "Admin");
       }
+      */
       //var regularUser = new IdentityUser { UserName = "user@example.com", Email = "user@example.com", EmailConfirmed = true };
       //if (await userManager.FindByEmailAsync(regularUser.Email) == null){
       //  await userManager.CreateAsync(regularUser);
@@ -123,49 +146,64 @@ namespace ReactWithASP.Server.Infrastructure
 
       // Populate InStockProducts
       inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
-      inStockProducts = new List<InStockProduct>();
+      InStockProducts = new List<InStockProduct>();
       for ( int pIdx = 0; pIdx < 27; pIdx++ ){ SeedInStockProducts(pIdx); }
-      _context.InStockProducts.AddRange(inStockProducts.ToArray());
+      _context.InStockProducts.AddRange(InStockProducts.ToArray());
 
       // Populate Users
       appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
-      appUsers = new List<AppUser>();
+      AppUsers = new List<AppUser>{ vipAppUser };
       for (int u = 1; u < 40; u++) { SeedAppUsers(u); }
-      _context.Users.AddRange(appUsers.ToArray());
+      _context.Users.AddRange(AppUsers.ToArray());
+
+      // Populate Orders
+      orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
+      Orders = new List<Order>();
+      for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
+      _context.Orders.AddRange(Orders.ToArray());
 
       // All done.
       await _context.SaveChangesAsync();
     }
     
+    private static DateTimeOffset? GetLockoutUtcDaysFromNow(Double? days)
+    {
+      return (days == null) ? (DateTimeOffset?)null : (DateTimeOffset.UtcNow.AddDays(Double.Parse(days.ToString() ?? string.Empty)));
+    }
+
     private static void SeedAppUsers(int u)
     {
-      try
+      AppUserSeederDTO dto = appUserDTOs[u];
+      string[] splitName = dto.UserName.Split(" ");
+      AppUser user = new AppUser
       {
-        AppUserSeederDTO dto = appUserDTOs[u];
-        string[] splitName = dto.UserName.Split(" ");
-        AppUser user = new AppUser
+        Id = dto.Id.ToString() ?? string.Empty, // This will be ignored when we save to the database and a generated Id will be assigned.
+        GuestID = dto.GuestID,
+        Email = dto.Email,
+        EmailConfirmed = dto.EmailConfirmed,
+        PasswordHash = _hashedVipPassword,
+        //SecurityStamp = dto.SecurityStamp, // Allow database to generate this.
+        PhoneNumber = dto.PhoneNumber,
+        PhoneNumberConfirmed = dto.PhoneNumberConfirmed,
+        TwoFactorEnabled = dto.TwoFactorEnabled,
+        LockoutEnd = GetLockoutUtcDaysFromNow(dto.LockoutEndDateUtc),
+        LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
+        AccessFailedCount = dto.AccessFailedCount,
+        UserName = dto.UserName,
+        //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
+        //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email)
+      };
+      if (dto.IsGuest)
+      {
+        Guests.Add(dto.Id.ToString(), new Guest
         {
-          Id = dto.Id,
+          ID = dto.GuestID,
           Email = dto.Email,
-          EmailConfirmed = dto.EmailConfirmed,
-          PasswordHash = _hashedVipPassword,
-          //SecurityStamp = dto.SecurityStamp, // Allow database to generate this.
-          PhoneNumber = dto.PhoneNumber,
-          PhoneNumberConfirmed = dto.PhoneNumberConfirmed,
-          TwoFactorEnabled = dto.TwoFactorEnabled,
-          LockoutEnd = dto.LockoutEndDateUtc,
-          LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
-          AccessFailedCount = dto.AccessFailedCount,
-          UserName = dto.UserName,
-          NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
-          NormalizedEmail = _normalizer.NormalizeEmail(dto.Email)
-        };
-        appUsers.Add(user);
+          FirstName = splitName[0],
+          LastName = splitName[1]
+        });
       }
-      catch (ArgumentOutOfRangeException rangeEx)
-      {
-        // did not have expected data in seed file
-      }
+      AppUsers.Add(user);
     }
 
     private static void SeedInStockProducts(int idx){
@@ -177,8 +215,48 @@ namespace ReactWithASP.Server.Infrastructure
         Price = (decimal)dto.Price,
         Category = ProductCategory.ParseCat(dto.Category)
       };
-      inStockProducts.Add(prod);
+      InStockProducts.Add(prod);
     }
-    
+
+    private static Nullable<DateTimeOffset> GetOrderDateTime(string input){
+      try{
+        return (Nullable<DateTimeOffset>)DateTimeOffset.Parse(input);
+      }
+      catch (FormatException e){
+        return null;
+      }
+    }
+
+    private static void SeedOrders(int oidx)
+    {
+      OrderSeederDTO dto = orderDTOs[oidx];
+      
+      Int32? userId = dto.UserID;
+      AppUser user = AppUsers.First(u => Int32.Parse(u.Id) == userId);
+      Guest guest; Guests.TryGetValue(userId.ToString() ?? string.Empty, out guest);
+      Order order = new Order
+      {
+        //ID = dto.ID, // Allow database to assign a value
+        OrderPlacedDate = GetOrderDateTime(dto.OrderPlacedDate),
+        PaymentReceivedDate = GetOrderDateTime(dto.PaymentReceivedDate),
+        ReadyToShipDate = GetOrderDateTime(dto.ReadyToShipDate),
+        ShipDate = GetOrderDateTime(dto.ShipDate),
+        ReceivedDate = GetOrderDateTime(dto.ReceivedDate),
+        BillingAddress = dto.BillingAddress ?? string.Empty,
+        ShippingAddress = dto.ShippingAddress ?? string.Empty,
+        OrderStatus = dto.OrderStatus ?? string.Empty,
+      };
+      if (guest != null)
+      {
+        order.Guest = guest;
+        order.GuestID = guest.ID;
+      }
+      else
+      {
+        order.AppUser = user; // AppUsers.First(u => Int32.Parse(u.Id) == userId);
+        order.UserID = userId.ToString();
+      }
+      Orders.Add(order);
+    }
   }
 }
