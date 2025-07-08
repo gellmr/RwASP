@@ -121,7 +121,7 @@ namespace ReactWithASP.Server.Infrastructure
 
       // ------------------------------------------------------------
 
-      // Populate InStockProduct
+      // Populate InStockProducts
       inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
       inStockProducts = new List<InStockProduct>();
       for ( int pIdx = 0; pIdx < 27; pIdx++ ){ SeedInStockProducts(pIdx); }
