@@ -46,6 +46,14 @@ namespace ReactWithASP.Server.Infrastructure
     public string? OrderStatus { get; set; }
   }
 
+  public class OrderedProductSeederDTO
+  {
+    public Int32? ID { get; set; }
+    public Int32 Quantity { get; set; }
+    public Int32? OrderID { get; set; }
+    public Int32? InStockProductID { get; set; }
+  }
+
   public class DataSeeder
   {
     private IConfiguration _config;
@@ -69,6 +77,9 @@ namespace ReactWithASP.Server.Infrastructure
 
     public static List<OrderSeederDTO> orderDTOs;
     public static IList<Order> Orders;
+
+    public static List<OrderedProductSeederDTO> orderedProductDTOs;
+    public static IList<OrderedProduct> OrderedProducts;
 
     public DataSeeder(
       StoreContext ctx,
@@ -144,17 +155,21 @@ namespace ReactWithASP.Server.Infrastructure
 
       // ------------------------------------------------------------
 
+      // Populate Users
+      appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
+      AppUsers = new List<AppUser> { vipAppUser };
+      for (int u = 1; u < 40; u++) { SeedAppUsers(u); }
+      _context.Users.AddRange(AppUsers.ToArray());
+
+      await _context.SaveChangesAsync();
+
       // Populate InStockProducts
       inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
       InStockProducts = new List<InStockProduct>();
       for ( int pIdx = 0; pIdx < 27; pIdx++ ){ SeedInStockProducts(pIdx); }
       _context.InStockProducts.AddRange(InStockProducts.ToArray());
 
-      // Populate Users
-      appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
-      AppUsers = new List<AppUser>{ vipAppUser };
-      for (int u = 1; u < 40; u++) { SeedAppUsers(u); }
-      _context.Users.AddRange(AppUsers.ToArray());
+      await _context.SaveChangesAsync();
 
       // Populate Orders
       orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
@@ -162,10 +177,19 @@ namespace ReactWithASP.Server.Infrastructure
       for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
       _context.Orders.AddRange(Orders.ToArray());
 
+      await _context.SaveChangesAsync();
+
+      // Populate OrderedProducts
+      orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
+      OrderedProducts = new List<OrderedProduct>();
+      for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
+      _context.OrderedProducts.AddRange(OrderedProducts.ToArray());
+
       // All done.
       await _context.SaveChangesAsync();
     }
     
+
     private static DateTimeOffset? GetLockoutUtcDaysFromNow(Double? days)
     {
       return (days == null) ? (DateTimeOffset?)null : (DateTimeOffset.UtcNow.AddDays(Double.Parse(days.ToString() ?? string.Empty)));
@@ -209,7 +233,7 @@ namespace ReactWithASP.Server.Infrastructure
     private static void SeedInStockProducts(int idx){
       InStockProductSeederDTO dto = inStockDTOs[idx];
       InStockProduct prod = new InStockProduct{
-        // Dont set the ID. Allow database to generate it for us.
+        //ID = (Int32)dto.ID, // Allow database to assign a value.
         Title = dto.Name,
         Description = dto.Description,
         Price = (decimal)dto.Price,
@@ -257,6 +281,22 @@ namespace ReactWithASP.Server.Infrastructure
         order.UserID = userId.ToString();
       }
       Orders.Add(order);
+    }
+
+    private static void SeedOrderedProduct(int idx)
+    {
+      OrderedProductSeederDTO dto = orderedProductDTOs[idx];
+
+      InStockProduct isp = InStockProducts.FirstOrDefault(p => p.ID == dto.InStockProductID); // lookup navigation object
+      Order order = Orders.FirstOrDefault(o => o.ID == dto.OrderID);                          // lookup navigation object
+      OrderedProduct op = new OrderedProduct
+      {
+        //ID = dto.ID,
+        Order = order,        // OrderID = dto.OrderID,
+        InStockProduct = isp, // InStockProductID = dto.InStockProductID,
+        Quantity = dto.Quantity
+      };
+      OrderedProducts.Add(op);
     }
   }
 }
