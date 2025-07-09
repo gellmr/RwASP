@@ -34,6 +34,21 @@ namespace ReactWithASP.Server.Infrastructure
       .WithMany(u => u.Orders)
       .HasForeignKey(o => o.GuestID)
       .OnDelete(DeleteBehavior.Restrict);
+
+      modelBuilder.Entity<OrderedProduct>()
+      .HasOne(p => p.Order)
+      .WithMany(o => o.OrderedProducts)
+      .HasForeignKey(p => p.OrderID)
+      .OnDelete(DeleteBehavior.Restrict);
+
+      modelBuilder.Entity<OrderedProduct>()
+      .HasOne(o => o.InStockProduct);
+
+      modelBuilder.Entity<OrderPayment>()
+      .HasOne(p => p.Order)
+      .WithMany(o => o.OrderPayments)
+      .HasForeignKey(p => p.OrderID)
+      .OnDelete(DeleteBehavior.Restrict);
     }
     
     public StoreContext(IConfiguration c) : base(){

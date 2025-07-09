@@ -45,10 +45,12 @@ namespace ReactWithASP.Server.Domain
 
     public IEnumerable<Order> GetOrdersWithUsersAsync()
     {
-      // Eagerly load the AppUser and Guest for this Order...
+      // Eagerly load the associated records for this Order...
       IEnumerable<Order> orders = context.Orders
         .Include(o => o.AppUser)
-        .Include(o => o.Guest);
+        .Include(o => o.Guest)
+        .Include(o => o.OrderPayments)
+        .Include(o => o.OrderedProducts).ThenInclude(op => op.InStockProduct);
       return orders;
     }
   }

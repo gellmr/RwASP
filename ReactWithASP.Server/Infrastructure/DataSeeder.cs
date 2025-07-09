@@ -169,7 +169,7 @@ namespace ReactWithASP.Server.Infrastructure
       // Populate Users
       appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
       AppUsers = new List<AppUser> { vipAppUser };
-      for (int u = 1; u < 40; u++) { SeedAppUsers(u); }
+      for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
       _context.Users.AddRange(AppUsers.ToArray());
 
       await _context.SaveChangesAsync();
