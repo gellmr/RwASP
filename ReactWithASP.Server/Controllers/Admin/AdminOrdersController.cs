@@ -36,6 +36,7 @@ namespace ReactWithASP.Server.Controllers
           AccountType = order.AccountType,
           Email = order.UserOrGuestEmail,
           OrderPlacedDate = order.OrderPlacedDate.ToString(),
+          // Need to seed the payments table and Eager Load the associated records before the next line will work.
           PaymentReceivedAmount = "(order.PriceTotal - order.Outstanding).ToString()",
           Outstanding = "order.Outstanding.ToString()",
           ItemsOrdered = "order.QuantityTotal.ToString()",
