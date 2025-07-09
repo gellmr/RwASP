@@ -54,6 +54,14 @@ namespace ReactWithASP.Server.Infrastructure
     public Int32? InStockProductID { get; set; }
   }
 
+  public class OrderPaymentSeederDTO
+  {
+    public Int32? ID { get; set; }
+    public Int32? OrderID { get; set; }
+    public Decimal? Amount { get; set; }
+    public DateTimeOffset? Date { get; set; }
+  }
+
   public class DataSeeder
   {
     private IConfiguration _config;
@@ -80,6 +88,9 @@ namespace ReactWithASP.Server.Infrastructure
 
     public static List<OrderedProductSeederDTO> orderedProductDTOs;
     public static IList<OrderedProduct> OrderedProducts;
+
+    public static List<OrderPaymentSeederDTO> orderPaymentDTOs;
+    public static IList<OrderPayment> OrderPayments;
 
     public DataSeeder(
       StoreContext ctx,
@@ -184,6 +195,14 @@ namespace ReactWithASP.Server.Infrastructure
       OrderedProducts = new List<OrderedProduct>();
       for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
       _context.OrderedProducts.AddRange(OrderedProducts.ToArray());
+
+      await _context.SaveChangesAsync();
+
+      // Populate OrderPayments
+      orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
+      OrderPayments = new List<OrderPayment>();
+      for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
+      _context.OrderPayments.AddRange(OrderPayments.ToArray());
 
       // All done.
       await _context.SaveChangesAsync();
@@ -297,6 +316,22 @@ namespace ReactWithASP.Server.Infrastructure
         Quantity = dto.Quantity
       };
       OrderedProducts.Add(op);
+    }
+
+    private static void SeedOrderPayment(int idx)
+    {
+      OrderPaymentSeederDTO dto = orderPaymentDTOs[idx];
+
+      Order order = Orders.FirstOrDefault(o => o.ID == dto.OrderID); // lookup navigation object
+      OrderPayment payment = new OrderPayment
+      {
+        //ID = dto.ID,
+        Order = order,
+        OrderID = dto.OrderID,
+        Amount = dto.Amount,
+        Date = (DateTimeOffset)dto.Date
+      };
+      OrderPayments.Add(payment);
     }
   }
 }

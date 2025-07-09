@@ -210,12 +210,14 @@ namespace ReactWithASP.Server.Migrations
                         name: "FK_Orders_AspNetUsers_UserID",
                         column: x => x.UserID,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_Guests_GuestID",
                         column: x => x.GuestID,
                         principalTable: "Guests",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,7 +278,7 @@ namespace ReactWithASP.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderPayment",
+                name: "OrderPayments",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -287,9 +289,9 @@ namespace ReactWithASP.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderPayment", x => x.ID);
+                    table.PrimaryKey("PK_OrderPayments", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_OrderPayment_Orders_OrderID",
+                        name: "FK_OrderPayments_Orders_OrderID",
                         column: x => x.OrderID,
                         principalTable: "Orders",
                         principalColumn: "ID");
@@ -360,8 +362,8 @@ namespace ReactWithASP.Server.Migrations
                 column: "OrderID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderPayment_OrderID",
-                table: "OrderPayment",
+                name: "IX_OrderPayments_OrderID",
+                table: "OrderPayments",
                 column: "OrderID");
 
             migrationBuilder.CreateIndex(
@@ -400,7 +402,7 @@ namespace ReactWithASP.Server.Migrations
                 name: "OrderedProducts");
 
             migrationBuilder.DropTable(
-                name: "OrderPayment");
+                name: "OrderPayments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

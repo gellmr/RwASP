@@ -16,6 +16,7 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<CartLine> CartLines { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Guest> Guests { get; set; }
+    public DbSet<OrderPayment> OrderPayments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder){
       base.OnModelCreating(modelBuilder);

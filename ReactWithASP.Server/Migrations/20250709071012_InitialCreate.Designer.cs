@@ -12,7 +12,7 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250703083158_InitialCreate")]
+    [Migration("20250709071012_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -307,7 +307,7 @@ namespace ReactWithASP.Server.Migrations
 
                     b.HasIndex("OrderID");
 
-                    b.ToTable("OrderPayment");
+                    b.ToTable("OrderPayments");
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Domain.OrderedProduct", b =>
@@ -479,11 +479,13 @@ namespace ReactWithASP.Server.Migrations
                 {
                     b.HasOne("ReactWithASP.Server.Domain.Guest", "Guest")
                         .WithMany("Orders")
-                        .HasForeignKey("GuestID");
+                        .HasForeignKey("GuestID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("ReactWithASP.Server.Infrastructure.AppUser", "AppUser")
-                        .WithMany("MyOrders")
-                        .HasForeignKey("UserID");
+                        .WithMany("Orders")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AppUser");
 
@@ -528,7 +530,7 @@ namespace ReactWithASP.Server.Migrations
 
             modelBuilder.Entity("ReactWithASP.Server.Infrastructure.AppUser", b =>
                 {
-                    b.Navigation("MyOrders");
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
