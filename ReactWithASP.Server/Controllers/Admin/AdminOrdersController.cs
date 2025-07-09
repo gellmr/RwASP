@@ -33,12 +33,12 @@ namespace ReactWithASP.Server.Controllers
           ID = (order.ID == null) ? string.Empty : order.ID.ToString(),
           Username = order.UserOrGuestName,
           UserID = order.UserOrGuestId,
-          AccountType = "order.AccountType",
-          Email = "order.UserOrGuestEmail",
-          OrderPlacedDate = "order.OrderPlacedDate",
-          PaymentReceivedAmount = "(order.PriceTotal - order.Outstanding)",
-          Outstanding = "order.Outstanding",
-          ItemsOrdered = "order.QuantityTotal",
+          AccountType = order.AccountType,
+          Email = order.UserOrGuestEmail,
+          OrderPlacedDate = order.OrderPlacedDate.ToString(),
+          PaymentReceivedAmount = "(order.PriceTotal - order.Outstanding).ToString()",
+          Outstanding = "order.Outstanding.ToString()",
+          ItemsOrdered = "order.QuantityTotal.ToString()",
           Items = "order.ItemString",
           OrderStatus = order.OrderStatus
         }).ToList();
