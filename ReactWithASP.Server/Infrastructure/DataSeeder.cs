@@ -35,6 +35,7 @@ namespace ReactWithASP.Server.Infrastructure
   public class OrderSeederDTO
   {
     public Int32? UserID { get; set; }
+    public Guid? GuestID { get; set; }
     public Int32? ID { get; set; }
     public string OrderPlacedDate { get; set; }
     public string PaymentReceivedDate { get; set; }
@@ -166,55 +167,44 @@ namespace ReactWithASP.Server.Infrastructure
 
       // ------------------------------------------------------------
 
+      // To preserve the order in which records are created (so we may predict Primary Key values eg 111, 112, 113...)
+      // I had to call _context.SaveChanges() at every record, which is a performance hit - but this only runs once (each time we deploy).
+
       // Populate Users
+      AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
       appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
-      AppUsers = new List<AppUser> { vipAppUser };
       for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
-      _context.Users.AddRange(AppUsers.ToArray());
-
-      await _context.SaveChangesAsync();
-
-      // Populate InStockProducts
-      inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
-      InStockProducts = new List<InStockProduct>();
-      for ( int pIdx = 0; pIdx < 27; pIdx++ ){ SeedInStockProducts(pIdx); }
-      _context.InStockProducts.AddRange(InStockProducts.ToArray());
-
-      await _context.SaveChangesAsync();
 
       // Populate Orders
-      orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
       Orders = new List<Order>();
+      orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
       for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
-      _context.Orders.AddRange(Orders.ToArray());
 
-      await _context.SaveChangesAsync();
+      // Populate InStockProducts
+      InStockProducts = new List<InStockProduct>();
+      inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
+      for (int pIdx = 0; pIdx < 27; pIdx++) { SeedInStockProducts(pIdx); }
 
       // Populate OrderedProducts
-      orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
       OrderedProducts = new List<OrderedProduct>();
+      orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
       for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
-      _context.OrderedProducts.AddRange(OrderedProducts.ToArray());
-
-      await _context.SaveChangesAsync();
 
       // Populate OrderPayments
-      orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
       OrderPayments = new List<OrderPayment>();
+      orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
       for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
-      _context.OrderPayments.AddRange(OrderPayments.ToArray());
 
       // All done.
-      await _context.SaveChangesAsync();
     }
-    
+
 
     private static DateTimeOffset? GetLockoutUtcDaysFromNow(Double? days)
     {
       return (days == null) ? (DateTimeOffset?)null : (DateTimeOffset.UtcNow.AddDays(Double.Parse(days.ToString() ?? string.Empty)));
     }
 
-    private static void SeedAppUsers(int u)
+    private void SeedAppUsers(int u)
     {
       AppUserSeederDTO dto = appUserDTOs[u];
       string[] splitName = dto.UserName.Split(" ");
@@ -247,9 +237,11 @@ namespace ReactWithASP.Server.Infrastructure
         });
       }
       AppUsers.Add(user);
+      _context.Users.Add(user);
+      _context.SaveChanges();
     }
 
-    private static void SeedInStockProducts(int idx){
+    private void SeedInStockProducts(int idx){
       InStockProductSeederDTO dto = inStockDTOs[idx];
       InStockProduct prod = new InStockProduct{
         //ID = (Int32)dto.ID, // Allow database to assign a value.
@@ -259,6 +251,8 @@ namespace ReactWithASP.Server.Infrastructure
         Category = ProductCategory.ParseCat(dto.Category)
       };
       InStockProducts.Add(prod);
+      _context.InStockProducts.Add(prod);
+      _context.SaveChanges();
     }
 
     private static Nullable<DateTimeOffset> GetOrderDateTime(string input){
@@ -270,13 +264,16 @@ namespace ReactWithASP.Server.Infrastructure
       }
     }
 
-    private static void SeedOrders(int oidx)
+    private void SeedOrders(int oidx)
     {
       OrderSeederDTO dto = orderDTOs[oidx];
       
       Int32? userId = dto.UserID;
-      AppUser user = AppUsers.First(u => Int32.Parse(u.Id) == userId);
-      Guest guest; Guests.TryGetValue(userId.ToString() ?? string.Empty, out guest);
+      Guid? guestId = dto.GuestID;
+
+      AppUser? user = AppUsers.FirstOrDefault( u => (Int32.Parse(u.Id) == userId) || ((userId == null) && (u.GuestID == guestId)) );
+      Guest guest; Guests.TryGetValue(user.Id ?? string.Empty, out guest);
+
       Order order = new Order
       {
         //ID = dto.ID, // Allow database to assign a value
@@ -300,9 +297,11 @@ namespace ReactWithASP.Server.Infrastructure
         order.UserID = userId.ToString();
       }
       Orders.Add(order);
+      _context.Orders.Add(order);
+      _context.SaveChanges();
     }
 
-    private static void SeedOrderedProduct(int idx)
+    private void SeedOrderedProduct(int idx)
     {
       OrderedProductSeederDTO dto = orderedProductDTOs[idx];
 
@@ -316,9 +315,11 @@ namespace ReactWithASP.Server.Infrastructure
         Quantity = dto.Quantity
       };
       OrderedProducts.Add(op);
+      _context.OrderedProducts.Add(op);
+      _context.SaveChanges();
     }
 
-    private static void SeedOrderPayment(int idx)
+    private void SeedOrderPayment(int idx)
     {
       OrderPaymentSeederDTO dto = orderPaymentDTOs[idx];
 
@@ -332,6 +333,8 @@ namespace ReactWithASP.Server.Infrastructure
         Date = (DateTimeOffset)dto.Date
       };
       OrderPayments.Add(payment);
+      _context.OrderPayments.Add(payment);
+      _context.SaveChanges();
     }
   }
 }

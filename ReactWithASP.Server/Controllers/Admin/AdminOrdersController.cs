@@ -25,13 +25,24 @@ namespace ReactWithASP.Server.Controllers
 
       // If arguments missing, use ones from session.
 
+      // If this is the first time page has been requested and session + arguments are missing, initialise arguments to default.
+
       // Get list of orders
-      IEnumerable<Order> currentPageOrders = orderRepo.GetOrdersWithUsersAsync().OrderBy(order => order.UserID);
+      IEnumerable<Order> currentPageOrders = orderRepo.GetOrdersWithUsersAsync()
+        //.OrderBy(order => order.UserID);
+        .OrderBy(order => order.ID);
+
       IEnumerable<Order> guestOrders       = currentPageOrders.Where(ord => (ord.UserID == null) && (ord.GuestID != null)).OrderBy(order => order.UserID);
       IEnumerable<Order> appUserOrders     = currentPageOrders.Where(ord => (ord.UserID != null) && (ord.GuestID == null)).OrderBy(order => order.UserID);
 
       // If not specified, display Guest orders before AppUser orders.
-      List<Order> sorted = [.. guestOrders, .. appUserOrders];
+      //List<Order> sorted = [.. guestOrders, .. appUserOrders];
+
+      List<Order> sorted = currentPageOrders.ToList();
+
+      // Apply sorting here, according to what the user wants.
+
+      // Persist arguments to the session
 
       // Serve the sorted list as JSON
       IEnumerable<OrderSlugDTO> rows = new List<OrderSlugDTO>();
