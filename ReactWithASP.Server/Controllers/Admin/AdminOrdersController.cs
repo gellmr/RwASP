@@ -21,24 +21,35 @@ namespace ReactWithASP.Server.Controllers
     [HttpGet("admin-orders")]    // GET "/api/admin-orders"
     public IActionResult GetOrders()
     {
-      OrderSlugDTO order1 = new OrderSlugDTO {
-        ID = "1111",
-        Username = "Mike",
-        UserID = "2222",
-        AccountType = "Guest",
-        Email = "order.UserOrGuestEmail",
-        OrderPlacedDate = DateTime.Now,
-        PaymentReceivedAmount = 100.0M,
-        Outstanding = 50.0M,
-        ItemsOrdered = 10,
-        Items = "Some Items",
-        OrderStatus = "OrderPlaced"
-      };
-      var slugs = new List<OrderSlugDTO> { order1 };
+      IEnumerable<Order> currentPageOrders = orderRepo.GetOrdersWithUsersAsync(); // Gets all orders. TODO: add pagination
+
+      //currentPageOrders = currentPageOrders.OrderBy(order => order.ID); // Sort by ID
+
+      IEnumerable<OrderSlugDTO> rows = new List<OrderSlugDTO>();
+      try
+      {
+        rows = currentPageOrders.Select(order => new OrderSlugDTO
+        {
+          ID = (order.ID == null) ? string.Empty : order.ID.ToString(),
+          Username = order.UserOrGuestName,
+          UserID = order.UserOrGuestId,
+          AccountType = "order.AccountType",
+          Email = "order.UserOrGuestEmail",
+          OrderPlacedDate = "order.OrderPlacedDate",
+          PaymentReceivedAmount = "(order.PriceTotal - order.Outstanding)",
+          Outstanding = "order.Outstanding",
+          ItemsOrdered = "order.QuantityTotal",
+          Items = "order.ItemString",
+          OrderStatus = order.OrderStatus
+        }).ToList();
+      }catch(Exception ex)
+      {
+        int a = 1;
+      }
 
       bool success = true;
       if (success){
-        return Ok(new { orders = slugs }); // Automatically cast object to JSON.
+        return Ok(new { orders = rows }); // Automatically cast object to JSON.
       }
       return BadRequest(new { errMessage="Something went wrong." });
     }

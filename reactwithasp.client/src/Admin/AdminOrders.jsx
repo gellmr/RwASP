@@ -76,7 +76,7 @@ function AdminOrders()
 
   const pageMarkup = (
     <>
-      <Table striped bordered hover responsive>
+      <Table striped bordered hover responsive style={{fontSize:8}}>
         <thead>
           <tr>
             <th>OrderID</th>

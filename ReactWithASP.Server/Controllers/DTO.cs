@@ -110,16 +110,28 @@ namespace ReactWithASP.Server.DTO
 
   public class OrderSlugDTO // Used to render rows on the Admin Orders page.
   {
-    public string ID { get; set; }
+    public string? ID { get; set; }
     public string? Username { get; set; }
     public string? UserID { get; set; }
     public string? AccountType { get; set; }
     public string? Email { get; set; }
-    public DateTimeOffset? OrderPlacedDate { get; set; }
-    public decimal? PaymentReceivedAmount { get; set; }
-    public decimal? Outstanding { get; set; }
-    public decimal? ItemsOrdered { get; set; }
+    public string? OrderPlacedDate { get; set; }
+    public string? PaymentReceivedAmount { get; set; }
+    public string? Outstanding { get; set; }
+    public string? ItemsOrdered { get; set; }
     public string? Items { get; set; }
     public string? OrderStatus { get; set; }
+
+    //public string ID { get; set; }
+    //public string? Username { get; set; }
+    //public string? UserID { get; set; }
+    //public string? AccountType { get; set; }
+    //public string? Email { get; set; }
+    //public DateTimeOffset? OrderPlacedDate { get; set; }
+    //public decimal? PaymentReceivedAmount { get; set; }
+    //public decimal? Outstanding { get; set; }
+    //public decimal? ItemsOrdered { get; set; }
+    //public string? Items { get; set; }
+    //public string? OrderStatus { get; set; }
   }
 }

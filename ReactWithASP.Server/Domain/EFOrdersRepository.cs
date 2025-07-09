@@ -43,8 +43,13 @@ namespace ReactWithASP.Server.Domain
       return false;
     }
 
-    public IEnumerable<Order> Orders{
-      get { return context.Orders; }
+    public IEnumerable<Order> GetOrdersWithUsersAsync()
+    {
+      // Eagerly load the AppUser and Guest for this Order...
+      IEnumerable<Order> orders = context.Orders
+        .Include(o => o.AppUser)
+        .Include(o => o.Guest);
+      return orders;
     }
   }
 }

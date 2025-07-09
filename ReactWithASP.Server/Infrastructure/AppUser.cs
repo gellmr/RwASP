@@ -6,7 +6,7 @@ namespace ReactWithASP.Server.Infrastructure
 {
   public class AppUser: IdentityUser
   {
-    public virtual ICollection<Order> MyOrders { get; set; }
+    public virtual ICollection<Order> Orders { get; set; }
     
     [NotMapped]
     public Guid? GuestID { get; set; }

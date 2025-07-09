@@ -17,6 +17,24 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<Order> Orders { get; set; }
     public DbSet<Guest> Guests { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder){
+      base.OnModelCreating(modelBuilder);
+      // Define relationships here to enable Eager Loading of associated records...
+
+      // Configure the relationship between Order and AppUser
+      modelBuilder.Entity<Order>()
+      .HasOne(o => o.AppUser)             // An Order has one User
+      .WithMany(u => u.Orders)            // AppUser can have many Orders
+      .HasForeignKey(o => o.UserID)       // The foreign key is UserID in Order
+      .OnDelete(DeleteBehavior.Restrict); // Or .Cascade, depending on your needs. Restrict is often safer to prevent accidental deletions
+
+      modelBuilder.Entity<Order>()
+      .HasOne(o => o.Guest)
+      .WithMany(u => u.Orders)
+      .HasForeignKey(o => o.GuestID)
+      .OnDelete(DeleteBehavior.Restrict);
+    }
+    
     public StoreContext(IConfiguration c) : base(){
       _config = c;
     }
