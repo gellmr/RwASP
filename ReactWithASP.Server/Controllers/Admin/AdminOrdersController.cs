@@ -12,27 +12,33 @@ namespace ReactWithASP.Server.Controllers
   [Route("api")]
   public class AdminOrdersController : AdminBaseController
   {
-    private IOrdersRepository ordersRepo;
+    private IOrdersRepository orderRepo;
 
     public AdminOrdersController(IOrdersRepository oRepo) : base(){
-      ordersRepo = oRepo;
+      orderRepo = oRepo;
     }
 
     [HttpGet("admin-orders")]    // GET "/api/admin-orders"
     public IActionResult GetOrders()
     {
-      OrderSlugDTO order1 = new OrderSlugDTO{
-        ID = "101",
+      OrderSlugDTO order1 = new OrderSlugDTO {
+        ID = "1111",
+        Username = "Mike",
+        UserID = "2222",
+        AccountType = "Guest",
+        Email = "order.UserOrGuestEmail",
         OrderPlacedDate = DateTime.Now,
-        UserID = "111"
+        PaymentReceivedAmount = 100.0M,
+        Outstanding = 50.0M,
+        ItemsOrdered = 10,
+        Items = "Some Items",
+        OrderStatus = "OrderPlaced"
       };
-      OrderSlugDTO order2 = new OrderSlugDTO { ID = "102", OrderPlacedDate = DateTime.Now, UserID = "111" };
-      OrderSlugDTO order3 = new OrderSlugDTO { ID = "103", OrderPlacedDate = DateTime.Now, UserID = "111" };
-      var orders = new List<OrderSlugDTO> { order1, order2, order3 };
+      var slugs = new List<OrderSlugDTO> { order1 };
 
       bool success = true;
       if (success){
-        return Ok(new { orders = orders }); // Automatically cast object to JSON.
+        return Ok(new { orders = slugs }); // Automatically cast object to JSON.
       }
       return BadRequest(new { errMessage="Something went wrong." });
     }

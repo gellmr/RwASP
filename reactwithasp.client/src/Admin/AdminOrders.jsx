@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import ConstructionBanner from "@/main/ConstructionBanner.jsx";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Table from 'react-bootstrap/Table'
 
 function AdminOrders()
 {
@@ -75,23 +76,46 @@ function AdminOrders()
 
   const pageMarkup = (
     <>
-      <Row style={{marginTop:20}}>
-        {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
-          <Col key={line.id} xs={12} className="mgAdminOrderListing" style={{ }}>
-            <div>
-              Order ID: {line.id} &nbsp;
-              UserID: {line.userID} &nbsp;
-              OrderPlacedDate: {line.orderPlacedDate} <br />
-            </div>
-          </Col>
-        )}
-      </Row>
+      <Table striped bordered hover responsive>
+        <thead>
+          <tr>
+            <th>OrderID</th>
+            <th>Username</th>
+            <th>UserID</th>
+            <th>AccountType</th>
+            <th>Email</th>
+            <th>OrderPlaced</th>
+            <th>PaymentReceived</th>
+            <th>Outstanding</th>
+            <th>ItemsOrdered</th>
+            <th>Items</th>
+            <th>OrderStatus</th>
+          </tr>
+        </thead>
+        <tbody>
+          {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
+            <tr>
+              <td>{line.id}</td>
+              <td>{line.username}</td>
+              <td>{line.userID}</td>
+              <td>{line.accountType}</td>
+              <td>{line.email}</td>
+              <td>{line.orderPlacedDate}</td>
+              <td>{line.paymentReceivedAmount}</td>
+              <td>{line.outstanding}</td>
+              <td>{line.itemsOrdered}</td>
+              <td>{line.items}</td>
+              <td>{line.orderStatus}</td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
     </>
   );
 
   return (
     <>
-      <h4>Admin Orders</h4>
+      <h4>Orders Backlog</h4>
       <ConstructionBanner />
       {isLoading ? loadingMarkup : (error ? errMarkup : pageMarkup)}
     </>

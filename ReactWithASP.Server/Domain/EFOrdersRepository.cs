@@ -43,8 +43,8 @@ namespace ReactWithASP.Server.Domain
       return false;
     }
 
-    public IEnumerable<Order> Orders() {
-      return context.Orders;
+    public IEnumerable<Order> Orders{
+      get { return context.Orders; }
     }
   }
 }
