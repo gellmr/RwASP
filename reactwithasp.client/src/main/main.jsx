@@ -12,6 +12,7 @@ import store from '@/Shop/store.jsx'
 import AdminLogin from "@/Admin/AdminLogin.jsx";
 import AdminLayout from "@/Admin/AdminLayout.jsx";
 import AdminOrders from "@/Admin/AdminOrders.jsx";
+import LoginLayout from "@/layouts/LoginLayout.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Provider } from 'react-redux'
 
@@ -21,8 +22,11 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route element={<AdminLayout />}>
+          <Route element={<LoginLayout />}>
             <Route path="/admin" element={<AdminLogin />} />
+          </Route>
+
+          <Route element={<AdminLayout />}>
             <Route path="/admin/orders" element={<AdminOrders />} />
           </Route>
 
