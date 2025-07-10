@@ -27,12 +27,14 @@ const AdminLayout = () =>
     <>
       <Container id="adminLayout" style={{ border: '' }} fluid>
         <Row>
-          <MgNavBar showCart={false} useFluid={true}>
-            <ShopButton withBackArrow={showBackArrow} />
-            <VL />
-            <AdminLink />
-            <CurrUserNavLink />
-          </MgNavBar>
+          <Col>
+            <MgNavBar showCart={false} useFluid={true}>
+              <ShopButton withBackArrow={showBackArrow} />
+              <VL />
+              <AdminLink />
+              <CurrUserNavLink />
+            </MgNavBar>
+          </Col>
         </Row>
 
         <Row>
