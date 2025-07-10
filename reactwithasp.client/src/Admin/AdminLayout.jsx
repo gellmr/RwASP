@@ -19,7 +19,10 @@ const AdminLayout = () =>
   return (
     <>
       <MgNavBar showCart={false}>
-        <NavLink to="/" className="mgNavLinkBtn" >Shop</NavLink>
+        <NavLink to="/" className="mgNavLinkBtn" >
+          <i className="bi bi-arrow-left-short"></i>
+          Back to Shop
+        </NavLink>
         <AdminLink />
         <CurrUserNavLink />
       </MgNavBar>
