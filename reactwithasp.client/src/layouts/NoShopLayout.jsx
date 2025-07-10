@@ -13,16 +13,17 @@ import VL from "@/Shop/VL";
 const NoShopLayout = () => {
   return (
     <>
-      <MgNavBar>
-        <ShopButton withBackArrow={false} />
-        <VL />
-        <AdminLink />
-        <CurrUserNavLink />
-      </MgNavBar>
-
       <Container id="noShopLayout" style={{ border: '' }}>
         <Row>
-          
+          <MgNavBar>
+            <ShopButton withBackArrow={false} />
+            <VL />
+            <AdminLink />
+            <CurrUserNavLink />
+          </MgNavBar>
+        </Row>
+
+        <Row>
           <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>
             <Outlet /> {/* This will be either Shop or Cart... */}
           </Col>

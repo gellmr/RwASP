@@ -42,15 +42,17 @@ const ShopLayout = () =>
 
   return (
     <>
-      <MgNavBar>
-        <ShopButton withBackArrow={false} />
-        <VL />
-        <AdminLink />
-        <CartBtn isSmall={false} />
-        <CurrUserNavLink />
-      </MgNavBar>
-
       <Container id="shopLayout" style={{ border: '' }}>
+        <Row>
+          <MgNavBar>
+            <ShopButton withBackArrow={false} />
+            <VL />
+            <AdminLink />
+            <CartBtn isSmall={false} />
+            <CurrUserNavLink />
+          </MgNavBar>
+        </Row>
+
         <Row>
           <CategoriesMenu />
           <Col sm={12} md={9} style={{ border:"", paddingTop:"15px", paddingBottom:"12px"}}>

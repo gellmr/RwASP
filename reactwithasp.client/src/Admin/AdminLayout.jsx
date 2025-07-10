@@ -25,14 +25,16 @@ const AdminLayout = () =>
 
   return (
     <>
-      <MgNavBar showCart={false}>
-        <ShopButton withBackArrow={showBackArrow} />
-        <VL />
-        <AdminLink />
-        <CurrUserNavLink />
-      </MgNavBar>
-
       <Container fluid id="adminLayout" style={{ border: '' }}>
+        <Row>
+          <MgNavBar showCart={false}>
+            <ShopButton withBackArrow={showBackArrow} />
+            <VL />
+            <AdminLink />
+            <CurrUserNavLink />
+          </MgNavBar>
+        </Row>
+
         <Row>
           <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>
             <Outlet /> {/* This will be either Shop or Cart... */}
