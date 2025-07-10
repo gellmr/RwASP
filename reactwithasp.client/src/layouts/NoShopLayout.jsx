@@ -16,7 +16,7 @@ const NoShopLayout = () => {
         <NavLink to="/admin" className="mgNavLinkBtn" >Admin</NavLink>
         <CartBtn isSmall={false} />
       </MgNavBar>
-      <Container id="shopLayout" style={{ border: '' }}>
+      <Container id="noShopLayout" style={{ border: '' }}>
         <Row>
           
           <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>
