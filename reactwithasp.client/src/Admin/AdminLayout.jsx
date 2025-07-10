@@ -12,20 +12,24 @@ import "bootstrap/dist/css/bootstrap.css";
 import MgNavBar from "@/main/MgNavBar";
 import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
 import AdminLink from "@/Admin/AdminLink";
+import ShopButton from "@/Shop/ShopButton";
 
+import { useLocation } from 'react-router';
 
 const AdminLayout = () =>
 {
+  const location = useLocation();
+  const isLogin = (location.pathname == "/admin")
+  const showBackArrow = !(isLogin);
+
   return (
     <>
       <MgNavBar showCart={false}>
-        <NavLink to="/" className="mgNavLinkBtn" >
-          <i className="bi bi-arrow-left-short"></i>
-          Back to Shop
-        </NavLink>
+        <ShopButton withBackArrow={showBackArrow} />
         <AdminLink />
         <CurrUserNavLink />
       </MgNavBar>
+
       <Container id="adminLayout" style={{ border: '' }}>
         <Row>
           <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>

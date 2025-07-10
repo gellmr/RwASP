@@ -1,21 +1,23 @@
 import React from 'react';
-import { NavLink } from "react-router";
 import { Outlet } from "react-router";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import "bootstrap/dist/css/bootstrap.css";
 import MgNavBar from "@/main/MgNavBar";
-import CartBtn from "@/Shop/CartBtn";
+import ShopButton from "@/Shop/ShopButton";
+import AdminLink from "@/Admin/AdminLink";
+import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
 
 const NoShopLayout = () => {
   return (
     <>
       <MgNavBar>
-        <NavLink to="/" className="mgNavLinkBtn" >Shop</NavLink>
-        <NavLink to="/admin" className="mgNavLinkBtn" >Admin</NavLink>
-        <CartBtn isSmall={false} />
+        <ShopButton withBackArrow={false} />
+        <AdminLink />
+        <CurrUserNavLink />
       </MgNavBar>
+
       <Container id="noShopLayout" style={{ border: '' }}>
         <Row>
           
