@@ -76,7 +76,7 @@ function AdminOrders()
 
   const pageMarkup = (
     <>
-      <Table striped bordered hover responsive>
+      <Table hover responsive>
         <thead>
           <tr>
             <th>OrderID</th>
@@ -115,7 +115,10 @@ function AdminOrders()
 
   return (
     <>
-      <h4>Orders Backlog</h4>
+      <div style={{ textAlign: "center", paddingLeft: 15, paddingBottom: 5 }}>
+        <h4 style={{ display: "inline-block", marginRight: 10 }}>Orders Backlog</h4>
+        <span className="d-inline-block d-lg-none d-xl-none responsiveScrollsRight">( Responsive table scrolls right )&nbsp;<i className="bi bi-arrow-right"></i></span>
+      </div>
       <ConstructionBanner />
       {isLoading ? loadingMarkup : (error ? errMarkup : pageMarkup)}
     </>
