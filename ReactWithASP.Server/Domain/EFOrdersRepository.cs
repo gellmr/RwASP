@@ -17,7 +17,7 @@ namespace ReactWithASP.Server.Domain
     // Return true if saved successfully.
     bool IOrdersRepository.SaveOrder(Order order)
     {
-      bool exists = context.Orders.Any(o => o.ID == order.ID);
+      bool exists = (order.ID != null) && context.Orders.Any(o => o.ID == order.ID);
       if (exists)
       {
         // Update
@@ -36,6 +36,9 @@ namespace ReactWithASP.Server.Domain
           InStockProduct ip = op.InStockProduct;
           context.Entry(ip).State = EntityState.Unchanged; // Dont create the product. It already exists in database.
           context.OrderedProducts.Add(op);
+        }
+        if (order.Guest != null){
+          context.Entry(order.Guest).State = EntityState.Unchanged; // Dont create the guest.
         }
         context.SaveChanges();
         return true;

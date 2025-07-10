@@ -32,7 +32,7 @@ namespace ReactWithASP.Server.Controllers
     {
       // This action will be hit after Google authentication is complete.
       if (!ModelState.IsValid) { return BadRequest(ModelState); }
-      Guest? guest = EnsureGuestIdFromCookie();
+      Guest? guest = EnsureGuestFromCookieAndDb(null);
       Nullable<Guid> guestId = guest.ID;
       UserType userType = UserType.Guest;
 

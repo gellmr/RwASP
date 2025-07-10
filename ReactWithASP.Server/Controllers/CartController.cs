@@ -14,7 +14,7 @@ namespace ReactWithASP.Server.Controllers
     [HttpGet] // GET api/cart
     public ActionResult Get()
     {
-      Guest guest = EnsureGuestIdFromCookie();
+      Guest guest = EnsureGuestFromCookieAndDb(null);
 
       // Get all CartLine rows for this Guest
       IEnumerable<CartUpdateDTO> cartLinesDistinctByIsp = cartLineRepo.CartLines
@@ -40,7 +40,7 @@ namespace ReactWithASP.Server.Controllers
     public ActionResult Clear(Nullable<Guid> guestId)
     {
       // Try to look up the guest. If no guest, create new guest.
-      Guest guest = EnsureGuestIdFromCookie();
+      Guest guest = EnsureGuestFromCookieAndDb(null);
       guestId = guest.ID;
 
       // Remove all CartLine records for this Guest ID.
@@ -59,7 +59,7 @@ namespace ReactWithASP.Server.Controllers
       // Update the user's cart in the database...
 
       // Try to look up the guest. If no guest, create new guest.
-      Guest guest = EnsureGuestIdFromCookie();
+      Guest guest = EnsureGuestFromCookieAndDb(null);
       guestId = guest.ID;
 
       // Look up (isp) product in database.

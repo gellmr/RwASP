@@ -39,7 +39,7 @@ namespace ReactWithASP.Server.Controllers
     public async Task<IActionResult> AdminLogin([FromBody] AdminLoginSubmitDTO adminLoginSubmitDTO)
     {
       if (!ModelState.IsValid) { return BadRequest(ModelState); }
-      Guest guest = EnsureGuestIdFromCookie();
+      Guest guest = EnsureGuestFromCookieAndDb(null);
       Nullable<Guid> guestId = guest.ID;
       UserType userType = UserType.Guest;
 
