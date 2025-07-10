@@ -32,7 +32,7 @@ const AdminLayout = () =>
         <CurrUserNavLink />
       </MgNavBar>
 
-      <Container id="adminLayout" style={{ border: '' }}>
+      <Container fluid id="adminLayout" style={{ border: '' }}>
         <Row>
           <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>
             <Outlet /> {/* This will be either Shop or Cart... */}
