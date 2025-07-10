@@ -180,6 +180,9 @@
 }
 #adminLayout td{
   padding:1px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  white-space: nowrap;
 }
 
 .mg-nav-items {
