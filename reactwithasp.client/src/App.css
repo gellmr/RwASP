@@ -8,6 +8,13 @@
   For all other styles the default breakpoint means xs.
   BEGINNING OF ABSOLUTE SMALLEST
 */
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .lime{
   /*background-color:lime!important;*/
 }
@@ -155,13 +162,6 @@
   /*border:3px dashed magenta;*/
   align-items: flex-start;
   width: 100%;
-}
-
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 tr:nth-child(even) {
