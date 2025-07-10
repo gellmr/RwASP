@@ -3,7 +3,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 
 const TimerProgressBar = () =>
 {
-  const TOTAL_SECONDS = 30;
+  const TOTAL_SECONDS = 25;
   const [timeLeft, setTimeLeft] = useState(TOTAL_SECONDS);
   const [isRunning, setIsRunning] = useState(true);
 
@@ -38,7 +38,7 @@ const TimerProgressBar = () =>
   const progress = ((TOTAL_SECONDS - timeLeft) / TOTAL_SECONDS) * 100;
 
   return (
-    <ProgressBar now={progress} label={`${timeLeft}s`} animated={isRunning} />
+    <ProgressBar now={progress} label={`${timeLeft} seconds`} animated={isRunning} />
   );
 };
 
