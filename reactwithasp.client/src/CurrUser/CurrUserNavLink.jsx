@@ -1,13 +1,14 @@
+import LogInButton from "@/Shop/LogInButton";
 import LogOutButton from "@/Shop/LogOutButton";
 import { useSelector } from 'react-redux'
-import { NavLink } from "react-router";
+//import { NavLink } from "react-router";
 
 function CurrUserNavLink()
 {
   const login = useSelector(state => state.login.value);
 
   const loginOutBtn = function () {
-    const markup = (login === "") ? <NavLink to="/admin" className="mgNavLinkBtn" >Login</NavLink> : <LogOutButton />;
+    const markup = (login === "") ? <LogInButton /> : <LogOutButton />;
     return (
       <>
         {markup}
