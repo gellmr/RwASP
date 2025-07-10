@@ -162,6 +162,11 @@
   margin-top: -4px;
 }
 
+#adminLayout nav{
+  padding-left:20px;
+  padding-right:10px;
+}
+
 #adminLayout {
   padding-left: 1px;
   padding-right: 1px;
