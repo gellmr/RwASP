@@ -8,6 +8,7 @@ import ConstructionBanner from "@/main/ConstructionBanner.jsx";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
+import TimerProgressBar from "@/Shop/ProgressTimer.jsx";
 
 function AdminOrders()
 {
@@ -71,6 +72,7 @@ function AdminOrders()
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div className="fetchErr">Loading...</div>
       </div>
+      <TimerProgressBar />
     </>
   );
 
