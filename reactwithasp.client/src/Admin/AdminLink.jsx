@@ -7,8 +7,8 @@ const AdminLink = () => {
   const login = useSelector(state => state.login.value);
 
   const adminLink = function () {
-    const path = (login === "") ? "/admin" : "/admin/orders";
-    const linkText = (login === "") ? "Admin" : "Orders";
+    const path     = (login === "") ? "/admin" : "/admin/orders";
+    const linkText = (login === "") ?  "Admin"  : "Orders";
     return (<NavLink to={path} className="mgNavLinkBtn" >{linkText}</NavLink>);
   }
 
