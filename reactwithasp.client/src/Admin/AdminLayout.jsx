@@ -25,7 +25,7 @@ const AdminLayout = () =>
 
   return (
     <>
-      <Container fluid id="adminLayout" style={{ border: '' }}>
+      <Container id="adminLayout" style={{ border: '' }} fluid>
         <Row>
           <MgNavBar showCart={false}>
             <ShopButton withBackArrow={showBackArrow} />
