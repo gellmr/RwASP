@@ -1,7 +1,6 @@
 import LogInButton from "@/Shop/LogInButton";
 import LogOutButton from "@/Shop/LogOutButton";
 import { useSelector } from 'react-redux'
-//import { NavLink } from "react-router";
 
 function CurrUserNavLink()
 {
