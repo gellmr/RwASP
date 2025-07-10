@@ -13,6 +13,7 @@ import MgNavBar from "@/main/MgNavBar";
 import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
 import AdminLink from "@/Admin/AdminLink";
 import ShopButton from "@/Shop/ShopButton";
+import VL from "@/Shop/VL";
 
 import { useLocation } from 'react-router';
 
@@ -26,6 +27,7 @@ const AdminLayout = () =>
     <>
       <MgNavBar showCart={false}>
         <ShopButton withBackArrow={showBackArrow} />
+        <VL />
         <AdminLink />
         <CurrUserNavLink />
       </MgNavBar>

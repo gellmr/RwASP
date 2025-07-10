@@ -18,6 +18,10 @@
 .lime{
   /*background-color:lime!important;*/
 }
+
+.vl {
+  display: none;
+}
 .mg-category-menu-r.btn-group-vertical a {
   text-align: left;
   border-radius: 0px;
@@ -377,6 +381,15 @@ th, td {
 /* Small devices (landscape phones, 576px and up) */
 
 @media (min-width: 576px) {
+
+  .vl {
+    border-left: 1px solid rgb(65 93 135);
+    display: inline-block;
+    margin-left: 3px;
+    /*background-color: darkslategrey;*/
+    width: 2px;
+  }
+
   .mg-nav-items {
     /*border: 3px dashed purple;*/
     align-items: center;

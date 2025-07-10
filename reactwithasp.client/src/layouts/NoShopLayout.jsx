@@ -8,12 +8,14 @@ import MgNavBar from "@/main/MgNavBar";
 import ShopButton from "@/Shop/ShopButton";
 import AdminLink from "@/Admin/AdminLink";
 import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
+import VL from "@/Shop/VL";
 
 const NoShopLayout = () => {
   return (
     <>
       <MgNavBar>
         <ShopButton withBackArrow={false} />
+        <VL />
         <AdminLink />
         <CurrUserNavLink />
       </MgNavBar>
