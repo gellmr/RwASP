@@ -162,6 +162,17 @@
   margin-top: -4px;
 }
 
+#adminLayout {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+#adminLayout table{
+  font-size:12px;
+}
+#adminLayout td{
+  padding:1px;
+}
+
 .mg-nav-items {
   /*border:3px dashed magenta;*/
   align-items: flex-start;
