@@ -17,28 +17,28 @@ import { Provider } from 'react-redux'
 
 createRoot(document.getElementById('root')).render(
   //<StrictMode>
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<AdminLayout />}>
-              <Route path="/admin" element={<AdminLogin />} />
-              <Route path="/admin/orders" element={<AdminOrders />} />
-            </Route>
+  <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
+          </Route>
 
-            <Route element={<ShopLayout />}>
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/:page?" element={<Shop />} />
-              <Route path="/category/:category/:page?" element={<Shop />} />
-            </Route>
+          <Route element={<ShopLayout />}>
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/:page?" element={<Shop />} />
+            <Route path="/category/:category/:page?" element={<Shop />} />
+          </Route>
 
-            <Route element={<NoShopLayout />}>
-              <Route path="/checkoutsuccess" element={<CheckoutSuccess />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </Provider>
-    </GoogleOAuthProvider>
+          <Route element={<NoShopLayout />}>
+            <Route path="/checkoutsuccess" element={<CheckoutSuccess />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  </GoogleOAuthProvider>
   //</StrictMode>
 )
