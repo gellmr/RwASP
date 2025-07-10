@@ -166,15 +166,16 @@
   color: #505050;
 }
 
+#adminLayout {  /* This must be at least 12px or we get a funny overscroll behaviour on the right hand side, for Admin Orders page. */
+                padding-left: 12px; padding-right: 12px; }
+/* On mobile, the margins encroach a tiny bit more than browser desktop. Ensure there is enough container padding to avoid any loss, on small screens. */
+#loginLayout  { padding-left: 18px; padding-right: 15px; }
+#shopLayout   { padding-left: 18px; padding-right: 15px; }
+#noShopLayout { padding-left: 18px; padding-right: 15px; }
+
 #adminLayout nav{
   padding-left:20px;
   padding-right:10px;
-}
-
-#adminLayout {
-  /* This must be at least 12px or we get a funny overscroll behaviour on the right hand side, for Admin Orders page. */
-  padding-left: 12px;
-  padding-right: 12px;
 }
 #adminLayout table{
   font-size:12px;
