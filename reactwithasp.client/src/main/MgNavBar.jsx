@@ -6,12 +6,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from "react-router";
 import CartBtn from "@/Shop/CartBtn";
 
-const MgNavBar = ({ children, showCart=true }) => {
+const MgNavBar = ({ children, showCart=true, useFluid=false }) => {
   const CartButtonMarkup = showCart && <CartBtn isSmall={true} />;
   return (
     <>
       <Navbar expand="sm" className="bg-body-tertiary bg-dark" id="navBar" data-bs-theme="dark">
-        <Container>
+        <Container fluid={useFluid}>
           <NavLink to="/" className="storeBrand">SPORTS STORE</NavLink>
           {CartButtonMarkup}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
