@@ -38,9 +38,11 @@ namespace ReactWithASP.Server.Controllers
       // If not specified, display Guest orders before AppUser orders.
       //List<Order> sorted = [.. guestOrders, .. appUserOrders];
 
-      List<Order> sorted = currentPageOrders.ToList();
-
       // Apply sorting here, according to what the user wants.
+
+      List<Order> sorted = currentPageOrders
+        .OrderBy(o => o.OrderPlacedDate).Reverse()
+        .ToList();
 
       // Persist arguments to the session
 
