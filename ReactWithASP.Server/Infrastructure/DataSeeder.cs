@@ -208,10 +208,23 @@ namespace ReactWithASP.Server.Infrastructure
     {
       AppUserSeederDTO dto = appUserDTOs[u];
       string[] splitName = dto.UserName.Split(" ");
+      Guest? guest = null;
+      if (dto.IsGuest)
+      {
+        guest = new Guest
+        {
+          ID = dto.GuestID,
+          Email = dto.Email,
+          FirstName = splitName[0],
+          LastName = splitName[1]
+        };
+        Guests.Add(dto.Id.ToString(), guest);
+      }
       AppUser user = new AppUser
       {
         Id = dto.Id.ToString() ?? string.Empty, // This will be ignored when we save to the database and a generated Id will be assigned.
         GuestID = dto.GuestID,
+        Guest = guest,
         Email = dto.Email,
         EmailConfirmed = dto.EmailConfirmed,
         PasswordHash = _hashedVipPassword,
@@ -226,16 +239,6 @@ namespace ReactWithASP.Server.Infrastructure
         //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
         //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email)
       };
-      if (dto.IsGuest)
-      {
-        Guests.Add(dto.Id.ToString(), new Guest
-        {
-          ID = dto.GuestID,
-          Email = dto.Email,
-          FirstName = splitName[0],
-          LastName = splitName[1]
-        });
-      }
       AppUsers.Add(user);
       _context.Users.Add(user);
       _context.SaveChanges();

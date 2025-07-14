@@ -12,7 +12,7 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250709071012_InitialCreate")]
+    [Migration("20250714144751_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -355,6 +355,9 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("GuestID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -389,6 +392,8 @@ namespace ReactWithASP.Server.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GuestID");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -496,7 +501,8 @@ namespace ReactWithASP.Server.Migrations
                 {
                     b.HasOne("ReactWithASP.Server.Domain.Order", "Order")
                         .WithMany("OrderPayments")
-                        .HasForeignKey("OrderID");
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Order");
                 });
@@ -509,11 +515,21 @@ namespace ReactWithASP.Server.Migrations
 
                     b.HasOne("ReactWithASP.Server.Domain.Order", "Order")
                         .WithMany("OrderedProducts")
-                        .HasForeignKey("OrderID");
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("InStockProduct");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ReactWithASP.Server.Infrastructure.AppUser", b =>
+                {
+                    b.HasOne("ReactWithASP.Server.Domain.Guest", "Guest")
+                        .WithMany()
+                        .HasForeignKey("GuestID");
+
+                    b.Navigation("Guest");
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Domain.Guest", b =>
