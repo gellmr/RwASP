@@ -136,13 +136,13 @@
     font-size: 24px;
   }
   .mgNavLinkBtn {
-    font-size: 14px;
+    font-size: 12px;
   }
   .mgNavLinkBtn.mgNavLinkCartBtn {
-    font-size: 14px;
+    font-size: 12px;
   }
   .mgCurrUserNav {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
@@ -434,13 +434,13 @@ th, td {
     font-size: 18px;
   }
   .mgNavLinkBtn {
-    font-size: 14px;
+    font-size: 12px;
   }
   .mgNavLinkBtn.mgNavLinkCartBtn {
-    font-size: 14px;
+    font-size: 12px;
   }
   .mgCurrUserNav {
-    font-size: 14px;
+    font-size: 12px;
     flex-direction: row;
     justify-content:flex-end;
   }
@@ -451,6 +451,23 @@ th, td {
 /* ================================================= */
 
 @media (min-width: 768px)
+{
+  .mgNavLinkBtn {
+    font-size: 13px;
+  }
+  .mgNavLinkBtn.mgNavLinkCartBtn {
+    font-size: 13px;
+  }
+  .mgCurrUserNav {
+    font-size: 13px;
+  }
+}
+
+/* ================================================= */
+/* =========             LARGE            ========== */
+/* ================================================= */
+
+@media (min-width: 992px)
 {
   .mgNavLinkBtn {
     font-size: 16px;
