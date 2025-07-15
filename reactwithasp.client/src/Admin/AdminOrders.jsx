@@ -127,6 +127,9 @@ function AdminOrders()
           )}
         </tbody>
       </Table>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
+      </div>
     </>
   );
 
