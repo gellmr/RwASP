@@ -15,6 +15,20 @@
   text-align: center;
 }
 
+.soccerBg {
+  background-image: url("soccer-bg.jpg");
+}
+.soccerBg2 {
+  background-image: url("soccer-bg2.jpg");
+}
+.chessBg {
+  background-image: url("chess-bg.jpg");
+}
+.kayakBg {
+  background-image: url("kayak-bg5.jpg");
+  height: 750px;
+}
+
 .lime{
   /*background-color:lime!important;*/
 }

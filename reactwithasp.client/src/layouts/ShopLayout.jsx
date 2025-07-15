@@ -20,12 +20,20 @@ import AdminLink from '@/Admin/AdminLink';
 import EnvName from "@/Shop/EnvName";
 import ShopButton from "@/Shop/ShopButton";
 import VL from "@/Shop/VL";
+import { useParams } from 'react-router';
 
 const ShopLayout = () =>
 {
   const dispatch = useDispatch();
+  const { category } = useParams();
 
-  const bgImage = "url(soccer-bg.jpg)";
+  let bgCss = "soccerBg";
+  switch (category) {
+    case 'soccer':     bgCss = "soccerBg2"; break;
+    case 'chess':      bgCss = "chessBg"; break;
+    case 'waterSport': bgCss = "kayakBg"; break;
+  }
+  const bgClass = bgCss;
 
   useEffect(() => {
     fetchCart();
@@ -55,9 +63,9 @@ const ShopLayout = () =>
           </MgNavBar>
         </Row>
 
-        <Row style={{ backgroundImage:bgImage }}>
+        <Row className={bgClass}>
           <CategoriesMenu />
-          <Col sm={12} md={9} style={{ border: "", paddingTop: "15px", paddingBottom: "12px", backgroundColor:"#ffffffc4"}}>
+          <Col sm={12} md={9} style={{ border: "", paddingTop: "15px", paddingBottom: "12px", backgroundColor:"#ffffffe6"}}>
             <Outlet /> {/* This will be either Shop or Cart... */}
           </Col>
         </Row>
