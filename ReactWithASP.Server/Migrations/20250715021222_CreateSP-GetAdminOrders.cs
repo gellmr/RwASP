@@ -19,39 +19,65 @@ namespace ReactWithASP.Server.Migrations
             CASE WHEN guest.ID IS NOT NULL THEN 'Guest' ELSE 'User' END AS AccountType,
             CASE WHEN guest.ID IS NOT NULL THEN (guest.Email) ELSE (usr.Email) END AS 'Email',
             ord.[OrderPlacedDate] as 'OrderPlaced',
-            ordWPay.PaymentReceived, (rpay.InvoiceTot - ordWPay.PaymentReceived) as 'Outstanding', ordWPay.ItemsOrdered,
+            CASE WHEN ordWPay.PaymentReceived IS NULL THEN 0 ELSE ordWPay.PaymentReceived END AS 'PaymentReceived',
+            CASE WHEN ordWPay.PaymentReceived IS NULL THEN rpay.InvoiceTot ELSE (rpay.InvoiceTot - ordWPay.PaymentReceived) END AS 'Outstanding',
+            CASE WHEN opQty.ItemsOrdered IS NULL THEN 0 ELSE opQty.ItemsOrdered END AS 'ItemsOrdered',
             ispTitles.Items as Items,
             ord.OrderStatus
           FROM [RwaspDatabase].[dbo].Orders as ord
-          INNER JOIN (
+
+          LEFT JOIN (
+            -- {ord#, ItemsOrdered}    70 rows ~ aggregated op quantity for all 70 orders.
+            --  1     322        
+            --  2     21        
+            SELECT ord.ID as 'ord#', SUM(op.Quantity) AS 'ItemsOrdered' FROM [RwaspDatabase].[dbo].Orders ord LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID GROUP BY ord.ID
+          ) as opQty on ord.ID = opQty.[ord#]
+
+          LEFT JOIN (
+            -- {ord#, InvoiceTot}    70 rows ~ aggregated price and quantity for all 70 orders.
+            --  1     5153        
+            --  2     1052        
             SELECT ord.ID as 'ord#', SUM(isp.Price * op.Quantity) as 'InvoiceTot'--
-            FROM [RwaspDatabase].[dbo].Orders ord
+            FROM [RwaspDatabase].[dbo].Orders as ord
             LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID
             LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
             GROUP BY ord.ID
           ) as rpay on ord.ID = rpay.[ord#]
+
           LEFT JOIN (
-            SELECT mto.ID as 'OrderID', SUM(sub.[pay.Amount]) as 'PaymentReceived', sub.ItemsOrdered
+            -- {OrderID, PaymentReceived}   19 rows ~ aggregated payment values, for orders with payments received.
+            --  1        3000             
+            --  2         552             
+            SELECT mto.ID as 'OrderID', SUM(sub.[pay.Amount]) as 'PaymentReceived'
             FROM [RwaspDatabase].[dbo].Orders as mto
             INNER JOIN (
-              SELECT ord.ID as 'OrderID', pay.ID AS 'pay.ID', pay.Amount as 'pay.Amount', SUM(op.Quantity) AS 'ItemsOrdered'
+              -- {OrderID, pay.ID, pay.Amount}   46 rows ~ unaggregated payment data.
+              --  2        1       250         
+              --  2        1       250         
+              --  2        1        52         
+              SELECT ord.ID as 'OrderID', pay.ID AS 'pay.ID', pay.Amount as 'pay.Amount'
               FROM [RwaspDatabase].[dbo].[OrderPayments] as pay
-              LEFT JOIN [RwaspDatabase].[dbo].Orders ord on pay.OrderID = ord.ID
-              LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID
-              LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
-              GROUP BY ord.ID, pay.ID,  pay.Amount
+            LEFT JOIN [RwaspDatabase].[dbo].Orders as ord on pay.OrderID = ord.ID
+              GROUP BY ord.ID, pay.ID, pay.Amount
             )
             as sub ON mto.ID = sub.OrderID
-            GROUP BY mto.ID, sub.ItemsOrdered
+            GROUP BY mto.ID
           ) AS ordWPay ON ord.ID = ordWPay.OrderID
+
           LEFT JOIN [RwaspDatabase].[dbo].[AspNetUsers] AS usr ON ord.UserID = usr.Id
+
           LEFT JOIN [RwaspDatabase].[dbo].[Guests] AS guest ON ord.GuestID = guest.ID
+
           LEFT JOIN(
+            -- {ord#, Items}    70 rows ~ string aggregated product titles, for each order.
+            --  1    ""Life Jacket, Camping Towel, Waterproof Equipment Bag ...""
+            --  2    ""Speed Chess Timer, Thinking Cap, Hydralite, Soccer Ball...""
             SELECT ord.ID as 'ord#', STRING_AGG ( isp.Title, ', ' ) as 'Items' FROM [RwaspDatabase].[dbo].Orders ord
             LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
             GROUP BY ord.ID
           ) As ispTitles ON ispTitles.[ord#] = ord.ID
-          ORDER BY ord.OrderPlacedDate DESC;
+
+          ORDER BY ord.OrderPlacedDate DESC, ord.UserID ASC, ord.ID DESC;
         END;
       ");
     }
