@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { setAdminOrders } from '@/features/admin/orders/adminOrdersSlice.jsx'
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { useNavigate } from "react-router";
@@ -9,6 +10,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
 import TimerProgressBar from "@/Shop/ProgressTimer.jsx";
+import PaginationLinks from "@/Shop/PaginationLinks";
 
 function AdminOrders()
 {
@@ -18,7 +20,12 @@ function AdminOrders()
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  
+
+  const { page } = useParams();
+  const numPages = 2;
+  const pageIntP = 1; // 1 = first page
+  const myRoute = "/admin/orders/";
+
   // Configure axios instance.
   const axiosInstance = axios.create({
   });
@@ -82,6 +89,9 @@ function AdminOrders()
 
   const pageMarkup = (
     <>
+      <div style={{ display:"flex", justifyContent:"center" }}>
+        <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
+      </div>
       <Table hover responsive>
         <thead>
           <tr>
