@@ -75,14 +75,19 @@ function AdminOrders()
     </>
   );
 
-  const loadingMarkup = (
-    <>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div className="fetchErr">Loading...</div>
-      </div>
-      <TimerProgressBar />
-    </>
-  );
+  const loadingMarkup = function () {
+    if (adminOrders && adminOrders.length > 0) {
+      return pageMarkup; // Render the current page while we are waiting for the new one to load...
+    }
+    return (
+      <>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="fetchErr">Loading...</div>
+        </div>
+        <TimerProgressBar />
+      </>
+    )
+  };
 
   const responsiveMessage = (
     <span className="d-inline-block d-lg-none d-xl-none responsiveScrollsRight">( Responsive table scrolls right )&nbsp;<i className="bi bi-arrow-right"></i></span>
@@ -140,7 +145,7 @@ function AdminOrders()
         {isLoading ? <></> : responsiveMessage}
       </div>
       <ConstructionBanner />
-      {isLoading ? loadingMarkup : (error ? errMarkup : pageMarkup)}
+      {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
     </>
   );
 }
