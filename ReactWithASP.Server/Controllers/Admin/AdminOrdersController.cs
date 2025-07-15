@@ -19,8 +19,8 @@ namespace ReactWithASP.Server.Controllers
       orderRepo = oRepo;
     }
 
-    [HttpGet("admin-orders")]    // GET "/api/admin-orders"
-    public async Task<IActionResult> GetOrders()
+    [HttpGet("admin-orders/{pageNum}")]    // GET "/api/admin-orders"
+    public async Task<IActionResult> GetOrders(Int32 pageNum = 1)
     {
       try
       {

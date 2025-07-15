@@ -42,7 +42,8 @@ function AdminOrders()
     console.log("Try to load Orders for /admin/orders page...");
     setError("");
     setIsLoading(true);
-    const url = window.location.origin + "/api/admin-orders";
+    const query = (pageIntP !== undefined) ? "/" + pageIntP : "";
+    const url = window.location.origin + "/api/admin-orders" + query;
     axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
       dispatch(setAdminOrders(response.data.orders));
