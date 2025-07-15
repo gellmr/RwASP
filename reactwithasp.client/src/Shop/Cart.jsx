@@ -22,7 +22,7 @@ function Cart()
   const cartLen = totalQty > 0 ? "Your Cart:" : "Your Cart is Empty";
 
   return (
-    <>
+    <div style={{minHeight:780}}>
       <h2 style={{ marginTop: "5px" }}>{cartLen}</h2>
       {showTopCheckoutBtn && <div className="proceedCheckoutBar">
         <ButtonGroup>
@@ -47,7 +47,7 @@ function Cart()
         </Row>
       </div>
       {gotItems && <div style={{ marginTop: "5px" }}><ProceedCheckoutBtn /></div>}
-    </>
+    </div>
   );
 }
 export default Cart;
