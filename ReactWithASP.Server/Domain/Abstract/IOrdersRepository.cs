@@ -1,8 +1,10 @@
-﻿namespace ReactWithASP.Server.Domain.Abstract
+﻿using ReactWithASP.Server.Domain.StoredProc;
+
+namespace ReactWithASP.Server.Domain.Abstract
 {
   public interface IOrdersRepository
   {
     bool SaveOrder(Order order);
-    IEnumerable<Order> GetOrdersWithUsersAsync();
+    Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync();
   }
 }

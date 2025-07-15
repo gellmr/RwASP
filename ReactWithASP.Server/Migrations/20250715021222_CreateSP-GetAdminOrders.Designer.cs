@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactWithASP.Server.Infrastructure;
 
@@ -11,9 +12,11 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20250715021222_CreateSP-GetAdminOrders")]
+    partial class CreateSPGetAdminOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,6 +334,47 @@ namespace ReactWithASP.Server.Migrations
                     b.HasIndex("OrderID");
 
                     b.ToTable("OrderedProducts");
+                });
+
+            modelBuilder.Entity("ReactWithASP.Server.Domain.StoredProc.AdminOrderRow", b =>
+                {
+                    b.Property<string>("AccountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Items")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ItemsOrdered")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("OrderPlaced")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Outstanding")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PaymentReceived")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("AdminOrderRows");
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Infrastructure.AppUser", b =>

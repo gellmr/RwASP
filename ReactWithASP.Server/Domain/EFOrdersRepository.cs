@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReactWithASP.Server.Domain.Abstract;
+using ReactWithASP.Server.Domain.StoredProc;
 using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Domain
@@ -46,15 +47,17 @@ namespace ReactWithASP.Server.Domain
       return false;
     }
 
-    public IEnumerable<Order> GetOrdersWithUsersAsync()
+    public async Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync()
     {
-      // Eagerly load the associated records for this Order...
-      IEnumerable<Order> orders = context.Orders
-        .Include(o => o.AppUser)
-        .Include(o => o.Guest)
-        .Include(o => o.OrderPayments)
-        .Include(o => o.OrderedProducts).ThenInclude(op => op.InStockProduct);
-      return orders;
+      IEnumerable<AdminOrderRow> rows = await context.AdminOrderRows.FromSqlRaw("EXEC GetAdminOrders").ToListAsync();
+      return rows;
+      //// Eagerly load the associated records for this Order...
+      //IEnumerable<Order> orders = context.Orders
+      //  .Include(o => o.AppUser)
+      //  .Include(o => o.Guest)
+      //  .Include(o => o.OrderPayments)
+      //  .Include(o => o.OrderedProducts).ThenInclude(op => op.InStockProduct);
+      //return orders;
     }
   }
 }

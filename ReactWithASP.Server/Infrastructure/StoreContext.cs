@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ReactWithASP.Server.Domain;
+using ReactWithASP.Server.Domain.StoredProc;
 
 namespace ReactWithASP.Server.Infrastructure
 {
@@ -17,6 +18,7 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<Order> Orders { get; set; }
     public DbSet<Guest> Guests { get; set; }
     public DbSet<OrderPayment> OrderPayments { get; set; }
+    public DbSet<AdminOrderRow> AdminOrderRows { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder){
       base.OnModelCreating(modelBuilder);
@@ -49,6 +51,9 @@ namespace ReactWithASP.Server.Infrastructure
       .WithMany(o => o.OrderPayments)
       .HasForeignKey(p => p.OrderID)
       .OnDelete(DeleteBehavior.Restrict);
+
+      modelBuilder.Entity<AdminOrderRow>()
+      .HasNoKey();
     }
     
     public StoreContext(IConfiguration c) : base(){

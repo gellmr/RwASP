@@ -4,6 +4,7 @@ using ReactWithASP.Server.Controllers.Admin;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.DTO;
+using ReactWithASP.Server.Domain.StoredProc;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -19,55 +20,48 @@ namespace ReactWithASP.Server.Controllers
     }
 
     [HttpGet("admin-orders")]    // GET "/api/admin-orders"
-    public IActionResult GetOrders()
+    public async Task<IActionResult> GetOrders()
     {
-      // Validate controller arguments
+      try
+      {
+        // Validate controller arguments
 
-      // If arguments missing, use ones from session.
+        // If arguments missing, use ones from session.
 
-      // If this is the first time page has been requested and session + arguments are missing, initialise arguments to default.
+        // If this is the first time page has been requested and session + arguments are missing, initialise arguments to default.
 
-      // Get list of orders
-      IEnumerable<Order> currentPageOrders = orderRepo.GetOrdersWithUsersAsync()
-        //.OrderBy(order => order.UserID);
-        .OrderBy(order => order.ID);
+        IEnumerable<AdminOrderRow> rows = await orderRepo.GetOrdersWithUsersAsync();
+        if (rows == null || !rows.Any()){
+          BadRequest(new { errMessage = "Something went wrong. Records not found." });
+        }
 
-      IEnumerable<Order> guestOrders       = currentPageOrders.Where(ord => (ord.UserID == null) && (ord.GuestID != null)).OrderBy(order => order.UserID);
-      IEnumerable<Order> appUserOrders     = currentPageOrders.Where(ord => (ord.UserID != null) && (ord.GuestID == null)).OrderBy(order => order.UserID);
+        /*
+        // Get list of orders
+        IEnumerable<Order> currentPageOrders = orderRepo.GetOrdersWithUsersAsync()
+          //.OrderBy(order => order.UserID);
+          .OrderBy(order => order.ID);
 
-      // If not specified, display Guest orders before AppUser orders.
-      //List<Order> sorted = [.. guestOrders, .. appUserOrders];
+        IEnumerable<Order> guestOrders       = currentPageOrders.Where(ord => (ord.UserID == null) && (ord.GuestID != null)).OrderBy(order => order.UserID);
+        IEnumerable<Order> appUserOrders     = currentPageOrders.Where(ord => (ord.UserID != null) && (ord.GuestID == null)).OrderBy(order => order.UserID);
+        */
 
-      // Apply sorting here, according to what the user wants.
+        // If not specified, display Guest orders before AppUser orders.
+        //List<Order> sorted = [.. guestOrders, .. appUserOrders];
 
-      List<Order> sorted = currentPageOrders
-        .OrderBy(o => o.OrderPlacedDate).Reverse()
-        .ToList();
+        // Persist arguments to the session
 
-      // Persist arguments to the session
-
-      // Serve the sorted list as JSON
-      IEnumerable<OrderSlugDTO> rows = new List<OrderSlugDTO>();
-      try{
-        rows = sorted.Select(order => new OrderSlugDTO{
-          ID = (order.ID == null) ? string.Empty : order.ID.ToString(),
-          Username = order.UserOrGuestName,
-          UserID = order.UserOrGuestId,
-          AccountType = order.AccountType,
-          Email = order.UserOrGuestEmail,
-          OrderPlacedDate = order.OrderPlacedDate.ToString(),
-          PaymentReceivedAmount = order.OrderPaymentsReceived.ToString(),
-          Outstanding = order.Outstanding.ToString(),
-          ItemsOrdered = order.QuantityTotal.ToString(),
-          Items = order.ItemString,
-          OrderStatus = order.OrderStatus
-        }).ToList();
-      }catch(Exception ex){
-        int a = 1;
+        // Apply sorting here, according to what the user wants.
+        List<OrderSlugDTO> sorted = rows
+          .OrderBy(o => o.OrderPlaced).Reverse()
+          .Select(order => order.OrderSlug)
+          .ToList();
+        bool success = true;
+        if (success){
+          return Ok(new { orders = sorted }); // Automatically cast object to JSON.
+        }
       }
-      bool success = true;
-      if (success){
-        return Ok(new { orders = rows }); // Automatically cast object to JSON.
+      catch(Exception ex){
+        int a = 1;
       }
       return BadRequest(new { errMessage="Something went wrong." });
     }

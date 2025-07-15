@@ -124,14 +124,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-bool useSeed = false;
-using (var scope = app.Services.CreateScope()){
-  var services = scope.ServiceProvider;
-  var context = services.GetRequiredService<StoreContext>();
-  context.Database.EnsureDeleted();
-  useSeed = context.Database.EnsureCreated(); // Create the database if it doesnt exist.
-}
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -141,10 +133,18 @@ app.UseSession();
 
 app.MapControllers();
 
+// Create database if does not exist, and apply pending migrations. Run seed data.
 using (var scope = app.Services.CreateScope()){
-  if(useSeed){
+  var services = scope.ServiceProvider;
+  try{
+    var context = services.GetRequiredService<StoreContext>();
+    context.Database.Migrate();
     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
     await seeder.Seed();
+  }
+  catch (Exception ex){
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "An error occurred while migrating the database.");
   }
 }
 
