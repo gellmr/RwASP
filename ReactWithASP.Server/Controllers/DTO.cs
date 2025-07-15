@@ -113,6 +113,7 @@ namespace ReactWithASP.Server.DTO
     public string? ID { get; set; }
     public string? Username { get; set; }
     public string? UserID { get; set; }
+    public string? UserIDshort { get; set; }
     public string? AccountType { get; set; }
     public string? Email { get; set; }
     public string? OrderPlacedDate { get; set; }

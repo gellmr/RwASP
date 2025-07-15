@@ -103,7 +103,7 @@ function AdminOrders()
             <tr>
               <td>{line.id}</td>
               <td>{line.username}</td>
-              <td>{line.userID}</td>
+              <td>{line.userIDshort}</td>
               <td>{line.accountType}</td>
               <td>{line.email}</td>
               <td>{line.orderPlacedDate}</td>
