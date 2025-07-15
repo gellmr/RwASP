@@ -11,7 +11,7 @@ function CartBtn({ isSmall }){
       <NavLink to="/cart" className={myCss} style={{textWrapMode: "nowrap"}} >
         <i className="bi bi-cart3" style={{ marginRight: 4, display: "inline-block" }}></i>
         Cart:&nbsp;{cartTotalItems}
-        <span className="d-none d-sm-none d-md-inline-block">
+        <span className="d-inline-block d-sm-none d-md-inline-block">
           &nbsp;Items
         </span>
       </NavLink>
