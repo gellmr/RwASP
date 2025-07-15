@@ -22,8 +22,8 @@ function AdminOrders()
   const navigate = useNavigate();
 
   const { page } = useParams();
-  const numPages = 2;
-  const pageIntP = 1; // 1 = first page
+  const numPages = 4;
+  const pageIntP = (page !== undefined) ? page : 1; // 1 = first page
   const myRoute = "/admin/orders/";
 
   // Configure axios instance.
@@ -35,7 +35,7 @@ function AdminOrders()
 
   useEffect(() => {
     fetchAdminOrders();
-  }, []);
+  }, [page]);
 
   async function fetchAdminOrders()
   { 
@@ -96,12 +96,12 @@ function AdminOrders()
       <Table hover responsive>
         <thead>
           <tr>
+            <th>OrderPlaced</th>
             <th>OrderID</th>
             <th>Username</th>
             <th>UserID</th>
             <th>AccountType</th>
             <th>Email</th>
-            <th>OrderPlaced</th>
             <th>PaymentReceived</th>
             <th>Outstanding</th>
             <th>ItemsOrdered</th>
@@ -112,12 +112,12 @@ function AdminOrders()
         <tbody>
           {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
             <tr>
+              <td>{line.orderPlacedDate}</td>
               <td>{line.id}</td>
               <td>{line.username}</td>
               <td>{line.userIDshort}</td>
               <td>{line.accountType}</td>
               <td>{line.email}</td>
-              <td>{line.orderPlacedDate}</td>
               <td>{line.paymentReceivedAmount}</td>
               <td>{line.outstanding}</td>
               <td>{line.itemsOrdered}</td>

@@ -27,7 +27,7 @@ createRoot(document.getElementById('root')).render(
           </Route>
 
           <Route element={<AdminLayout />}>
-            <Route path="/admin/orders" element={<AdminOrders />} />
+            <Route path="/admin/orders/:page?" element={<AdminOrders />} />
           </Route>
 
           <Route element={<ShopLayout />}>

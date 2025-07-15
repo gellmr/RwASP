@@ -30,7 +30,7 @@ namespace ReactWithASP.Server.Controllers
 
         // If this is the first time page has been requested and session + arguments are missing, initialise arguments to default.
 
-        IEnumerable<AdminOrderRow> rows = await orderRepo.GetOrdersWithUsersAsync();
+        IEnumerable<AdminOrderRow> rows = await orderRepo.GetOrdersWithUsersAsync(pageNum);
         if (rows == null || !rows.Any()){
           BadRequest(new { errMessage = "Something went wrong. Records not found." });
         }
