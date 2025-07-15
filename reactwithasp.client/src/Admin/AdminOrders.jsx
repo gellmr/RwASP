@@ -94,7 +94,7 @@ function AdminOrders()
             <th>PaymentReceived</th>
             <th>Outstanding</th>
             <th>ItemsOrdered</th>
-            <th>Items</th>
+            <th style={{textAlign:"left"}}>Items</th>
             <th>OrderStatus</th>
           </tr>
         </thead>
@@ -110,7 +110,7 @@ function AdminOrders()
               <td>{line.paymentReceivedAmount}</td>
               <td>{line.outstanding}</td>
               <td>{line.itemsOrdered}</td>
-              <td>{line.items}</td>
+              <td style={{textAlign:"left"}}>{line.items}</td>
               <td>{line.orderStatus}</td>
             </tr>
           )}
