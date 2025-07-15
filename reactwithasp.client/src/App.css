@@ -17,16 +17,20 @@
 
 .soccerBg {
   background-image: url("soccer-bg.jpg");
+  min-height: 871px;
+  background-repeat: no-repeat;
 }
 .soccerBg2 {
   background-image: url("soccer-bg2.jpg");
+  min-height: 750px;
 }
 .chessBg {
   background-image: url("chess-bg.jpg");
+  min-height: 750px;
 }
 .kayakBg {
   background-image: url("kayak-bg5.jpg");
-  height: 750px;
+  min-height: 750px;
 }
 
 .lime{

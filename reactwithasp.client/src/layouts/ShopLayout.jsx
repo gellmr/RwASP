@@ -65,7 +65,8 @@ const ShopLayout = () =>
 
         <Row className={bgClass}>
           <CategoriesMenu />
-          <Col sm={12} md={9} style={{ border: "", paddingTop: "15px", paddingBottom: "12px", backgroundColor:"#ffffffe6"}}>
+          <Col xs={1} className="d-none d-md-block"></Col>
+          <Col sm={12} md={8} style={{ border: "", paddingTop: "15px", paddingBottom: "12px", backgroundColor:"#ffffffe6"}}>
             <Outlet /> {/* This will be either Shop or Cart... */}
           </Col>
         </Row>
