@@ -5,12 +5,12 @@ import { useParams } from 'react-router';
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { useNavigate } from "react-router";
-import ConstructionBanner from "@/main/ConstructionBanner.jsx";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
 import TimerProgressBar from "@/Shop/ProgressTimer.jsx";
 import PaginationLinks from "@/Shop/PaginationLinks";
+import AdminTitleBar from "@/Admin/AdminTitleBar";
 
 function AdminOrders()
 {
@@ -140,11 +140,10 @@ function AdminOrders()
 
   return (
     <>
-      <div style={{ textAlign: "center", paddingLeft: 15, paddingBottom: 5 }}>
-        <h4 style={{ display: "inline-block", marginRight: 10 }}>Orders Backlog</h4>
-        {isLoading ? <></> : responsiveMessage}
-      </div>
-      <ConstructionBanner />
+      <AdminTitleBar titleText="Orders Backlog">
+        {responsiveMessage}
+      </AdminTitleBar>
+
       {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
     </>
   );

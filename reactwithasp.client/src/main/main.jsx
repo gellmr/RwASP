@@ -4,14 +4,17 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import '@/main/main.css'
 import ShopLayout from "@/layouts/ShopLayout";
 import NoShopLayout from "@/layouts/NoShopLayout";
-import Shop from '../Shop/Shop.jsx'
-import Cart from '../Shop/Cart.jsx'
-import Checkout from '../Shop/Checkout.jsx'
-import CheckoutSuccess from '../Shop/CheckoutSuccess.jsx'
+import Shop from '@/Shop/Shop.jsx'
+import Cart from '@/Shop/Cart.jsx'
+import Myorders from '@/Shop/Myorders.jsx'
+import Checkout from '@/Shop/Checkout.jsx'
+import CheckoutSuccess from '@/Shop/CheckoutSuccess.jsx'
 import store from '@/Shop/store.jsx'
 import AdminLogin from "@/Admin/AdminLogin.jsx";
 import AdminLayout from "@/Admin/AdminLayout.jsx";
 import AdminOrders from "@/Admin/AdminOrders.jsx";
+import AdminProducts from "@/Admin/AdminProducts.jsx";
+import AdminUserAccounts from "@/Admin/AdminUserAccounts.jsx";
 import LoginLayout from "@/layouts/LoginLayout.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Provider } from 'react-redux'
@@ -28,6 +31,8 @@ createRoot(document.getElementById('root')).render(
 
           <Route element={<AdminLayout />}>
             <Route path="/admin/orders/:page?" element={<AdminOrders />} />
+            <Route path="/admin/products" element={<AdminProducts />} />
+            <Route path="/admin/useraccounts" element={<AdminUserAccounts />} />
           </Route>
 
           <Route element={<ShopLayout />}>
@@ -35,6 +40,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/:page?" element={<Shop />} />
             <Route path="/category/:category/:page?" element={<Shop />} />
+            <Route path="/myorders" element={<Myorders />} />
           </Route>
 
           <Route element={<NoShopLayout />}>

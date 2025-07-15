@@ -5,7 +5,7 @@ function LogInButton() {
   return (
     <>
       <NavLink to="/admin" className="mgNavLinkBtn">
-        Login
+        Admin Login
       </NavLink>
     </>
   );
