@@ -49,7 +49,9 @@ namespace ReactWithASP.Server.Domain
 
     public async Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync()
     {
-      IEnumerable<AdminOrderRow> rows = await context.AdminOrderRows.FromSqlRaw("EXEC GetAdminOrders").ToListAsync();
+      IEnumerable<AdminOrderRow> rows = await context.AdminOrderRows
+        .FromSqlInterpolated($"EXEC GetAdminOrders {1}, {20}")
+        .ToListAsync();
       return rows;
       //// Eagerly load the associated records for this Order...
       //IEnumerable<Order> orders = context.Orders

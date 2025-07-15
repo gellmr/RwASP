@@ -11,8 +11,10 @@ namespace ReactWithASP.Server.Migrations
     {
       migrationBuilder.Sql(@"
         CREATE PROCEDURE GetAdminOrders
+          @PageNumber INT, @PageSize INT
         AS
         BEGIN
+          DECLARE @skip INT = (@PageNumber - 1) * @PageSize;
           SELECT ord.ID as 'OrderID',
             CASE WHEN usr.UserName IS NOT NULL THEN (usr.UserName) ELSE (guest.FirstName + ' ' + guest.LastName) END AS 'Username',
             CASE WHEN guest.ID IS NOT NULL THEN convert(nvarchar(50), guest.ID) ELSE (usr.Id) END AS 'UserID',
@@ -77,7 +79,10 @@ namespace ReactWithASP.Server.Migrations
             GROUP BY ord.ID
           ) As ispTitles ON ispTitles.[ord#] = ord.ID
 
-          ORDER BY ord.OrderPlacedDate DESC, ord.UserID ASC, ord.ID DESC;
+          ORDER BY ord.OrderPlacedDate DESC, ord.UserID ASC, ord.ID DESC
+
+          OFFSET @skip ROWS
+          FETCH NEXT @PageSize ROWS ONLY;
         END;
       ");
     }
