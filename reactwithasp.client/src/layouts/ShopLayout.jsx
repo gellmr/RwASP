@@ -25,6 +25,8 @@ const ShopLayout = () =>
 {
   const dispatch = useDispatch();
 
+  const bgImage = "url(soccer-bg.jpg)";
+
   useEffect(() => {
     fetchCart();
   }, []);
@@ -53,9 +55,9 @@ const ShopLayout = () =>
           </MgNavBar>
         </Row>
 
-        <Row>
+        <Row style={{ backgroundImage:bgImage }}>
           <CategoriesMenu />
-          <Col sm={12} md={9} style={{ border:"", paddingTop:"15px", paddingBottom:"12px"}}>
+          <Col sm={12} md={9} style={{ border: "", paddingTop: "15px", paddingBottom: "12px", backgroundColor:"#ffffffc4"}}>
             <Outlet /> {/* This will be either Shop or Cart... */}
           </Col>
         </Row>
