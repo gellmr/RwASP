@@ -108,13 +108,16 @@ function Shop()
     )
   )));
 
+  const catSeg = category !== undefined ? "category/" + category + "/" : "";
+  const myRoute = "/" + catSeg;
+
   return (
     <>
       <ProductSearchBox />
-      <PaginationLinks numPages={numPages} currPage={pageIntP} />
+      <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
       {/* !inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">( Search returned no results )</div> */}
       {markup}
-      <PaginationLinks numPages={numPages} currPage={pageIntP} />
+      <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
       {gotItems && <div style={{ marginTop: "20px" }}><ProceedCartBtn /></div>}
     </>
   );
