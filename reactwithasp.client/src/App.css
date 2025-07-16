@@ -16,20 +16,20 @@
 }
 
 .soccerBg {
-  background-image: url("soccer-bg.jpg");
+  background-image: url("/bg/soccer-bg.jpg");
   /*min-height: 871px;*/
   background-repeat: no-repeat;
 }
 .soccerBg2 {
-  background-image: url("soccer-bg2.jpg");
+  background-image: url("/bg/soccer-bg2.jpg");
   /*min-height: 750px;*/
 }
 .chessBg {
-  background-image: url("chess-bg.jpg");
+  background-image: url("/bg/chess-bg.jpg");
   /*min-height: 750px;*/
 }
 .kayakBg {
-  background-image: url("kayak-bg5.jpg");
+  background-image: url("/bg/kayak-bg5.jpg");
   /*min-height: 750px;*/
 }
 
