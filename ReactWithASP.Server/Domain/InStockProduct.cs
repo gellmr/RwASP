@@ -22,5 +22,7 @@ namespace ReactWithASP.Server.Domain
 
     [Required(ErrorMessage = "Please specify a category")]
     public Cat Category { get; set; }
+
+    public string? Image {get; set; }
   }
 }

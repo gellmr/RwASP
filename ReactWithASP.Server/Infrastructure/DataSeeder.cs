@@ -11,6 +11,7 @@ namespace ReactWithASP.Server.Infrastructure
     public string? Description { get; set; }
     public decimal? Price { get; set; }
     public string? Category { get; set; }
+    public string? Image {get; set; }
   }
 
   public class AppUserSeederDTO
@@ -260,7 +261,8 @@ namespace ReactWithASP.Server.Infrastructure
         Title = dto.Name,
         Description = dto.Description,
         Price = (decimal)dto.Price,
-        Category = ProductCategory.ParseCat(dto.Category)
+        Category = ProductCategory.ParseCat(dto.Category),
+        Image = dto.Image
       };
       InStockProducts.Add(prod);
       _context.InStockProducts.Add(prod);
