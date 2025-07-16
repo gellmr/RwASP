@@ -110,6 +110,8 @@ namespace ReactWithASP.Server.Infrastructure
 
     public async Task Seed()
     {
+      try
+      {
       // We want to keep CartLine records, and Guest records. All other tables can be cleared.
 
       // Delete all rows for the tables we are recreating...
@@ -196,6 +198,11 @@ namespace ReactWithASP.Server.Infrastructure
       for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
 
       // All done.
+      }
+      catch (Exception ex)
+      {
+        int a = 1;
+      }
     }
 
 
