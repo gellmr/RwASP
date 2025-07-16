@@ -115,11 +115,13 @@ namespace ReactWithASP.Server.Infrastructure
       // We want to keep CartLine records, and Guest records. All other tables can be cleared.
 
       // Delete all rows for the tables we are recreating...
-      _context.Users.RemoveRange(_context.Users);
+      _context.OrderPayments.RemoveRange(_context.OrderPayments);
+      _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
       _context.InStockProducts.RemoveRange(_context.InStockProducts);
-      //_context.OrderedProducts.RemoveRange(_context.OrderedProducts);
-      //_context.OrderPayments.RemoveRange(_context.OrderPayments);
       _context.Orders.RemoveRange(_context.Orders);
+      _context.Users.RemoveRange(_context.Users);
+      _context.Guests.RemoveRange(_context.Guests);
+      _context.SaveChanges();
 
       Guests = new Dictionary<string, Guest>();
 
