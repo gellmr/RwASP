@@ -35,15 +35,15 @@ function Cart()
       </div>}
       <div className="col-12">
         <Row>
-          <CartBar />
-          <Col className="cartContents col-12 col-lg-8">
+          {/* <CartBar /> */}
+          <Col className="cartContents col-12">
             {!cartProducts || cartProducts.length === 0 && <div className="fetchErr" style={{ textAlign: "center" }}>( Empty )</div>}
             {cartProducts && cartProducts.map(row =>
               <CartProduct key={row.cartLineID} cartLineID={row.cartLineID} />
             )}
             <CartSummaryLine totalQuantity={totalQty} totalPrice={totalPrice} />
           </Col>
-          <CartBar />
+          {/* <CartBar /> */}
         </Row>
       </div>
       {gotItems && <div style={{ marginTop: "5px" }}><ProceedCheckoutBtn /></div>}

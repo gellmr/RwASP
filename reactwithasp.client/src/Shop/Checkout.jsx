@@ -71,7 +71,7 @@ function Checkout()
       <h2 style={{ marginTop: "5px" }}>Checkout</h2>
       <div className="col-12">
         <Row>
-          <CartBar />
+          {/* <CartBar /> */}
           <Col className="checkoutLines">
 
             <div className="shipHeading">Please provide your details below, and we'll ship your goods right away.</div>
@@ -134,7 +134,7 @@ function Checkout()
             </Form>
 
           </Col>
-          <CartBar />
+          {/* <CartBar /> */}
         </Row>
       </div>
     </>

@@ -33,13 +33,16 @@ function InStockProductCanAdd({ ispID, title, slug, price, category, cartLineID,
       <Col xs={12} className="productDetailsFlex">
 
         <Row>
-          <Col xs={12} sm={9}>
+          <Col xs={4} md={3} lg={4} className="mgImgThumb">
+            <img src={copyProduct.image} />
+          </Col>
+          <Col xs={8} md={9} lg={8}>
             <div className="productDetails">
               <h5>{title}&nbsp;<span className="inStockPrice">${price}</span></h5>
               <span>{slug}{children}</span>
             </div>
           </Col>
-          <Col xs={12} sm={3} className="flexContAddToCart">
+          <Col xs={12} className="flexContAddToCart">
             <span className="d-none d-sm-block" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px", marginLeft: "0px" }}>Add to Cart</span>
             <span className="d-block d-sm-none" style={{ textAlign: "right", fontSize: "13px", paddingRight: "7px" }}>Add to Cart</span>
             <ButtonGroup className="addToCartBtnGroup">

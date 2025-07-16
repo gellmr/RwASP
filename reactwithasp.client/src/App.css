@@ -16,21 +16,41 @@
 }
 
 .soccerBg {
-  background-image: url("/bg/soccer-bg.jpg");
+  background-image: url("/bg/soccer-bgtallrev.jpg");
   /*min-height: 871px;*/
   background-repeat: no-repeat;
+  /*background-position-x: center;*/
+  background-size: contain;
 }
 .soccerBg2 {
   background-image: url("/bg/soccer-bg2.jpg");
   /*min-height: 750px;*/
+  background-repeat: no-repeat;
+  background-position-x: center;
 }
 .chessBg {
-  background-image: url("/bg/chess-bg.jpg");
+  background-image: url("/bg/chess-bgrev.jpg");
   /*min-height: 750px;*/
+  background-repeat: no-repeat;
+  background-position-x: center;
 }
 .kayakBg {
-  background-image: url("/bg/kayak-bg5.jpg");
+  background-image: url("/bg/kayak-bg5rev.jpg");
   /*min-height: 750px;*/
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
+.mgImgThumb{
+  overflow-x: clip;
+}
+.mgImgThumb img {
+  border-radius: 7px;
+  /*width: 20vw;*/
+  width: 100%;
+  height: auto;
+  min-width: 90px;
+  max-width: 150px;
+  /*border: 1px solid gainsboro;*/
 }
 
 .lime{
@@ -203,6 +223,12 @@
   padding-top: 6px;
   padding-bottom: 6px;
   white-space: nowrap;
+}
+
+.shopLayoutTransparent {
+  padding-top: 15px;
+  padding-bottom: 12px;
+  background-color: #ffffffe6;
 }
 
 .mg-nav-items {
@@ -400,11 +426,15 @@ th, td {
 
 
 /* CHECKOUT STYLES */
-.checkoutLines .shipHeading{
+.checkoutLines {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.checkoutLines .shipHeading {
   width: 100%;
-  text-align:left;
-  padding-left:5px;
-  margin-top:25px;
+  text-align: left;
+  padding-left: 5px;
+  margin-top: 25px;
 }
 .checkoutSubmitBtnGroup .btn {
   font-size:14px;
