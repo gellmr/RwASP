@@ -112,94 +112,94 @@ namespace ReactWithASP.Server.Infrastructure
     {
       try
       {
-      // We want to keep CartLine records, and Guest records. All other tables can be cleared.
+        // We want to keep CartLine records, and Guest records. All other tables can be cleared.
 
-      // Delete all rows for the tables we are recreating...
-      _context.OrderPayments.RemoveRange(_context.OrderPayments);
-      _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
-      _context.InStockProducts.RemoveRange(_context.InStockProducts);
-      _context.Orders.RemoveRange(_context.Orders);
-      _context.Users.RemoveRange(_context.Users);
-      _context.Guests.RemoveRange(_context.Guests);
-      _context.SaveChanges();
+        // Delete all rows for the tables we are recreating...
+        _context.OrderPayments.RemoveRange(_context.OrderPayments);
+        _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
+        _context.InStockProducts.RemoveRange(_context.InStockProducts);
+        _context.Orders.RemoveRange(_context.Orders);
+        _context.Users.RemoveRange(_context.Users);
+        _context.Guests.RemoveRange(_context.Guests);
+        _context.SaveChanges();
 
-      Guests = new Dictionary<string, Guest>();
+        Guests = new Dictionary<string, Guest>();
 
-      // Add the VIP AppUser
-      string vipUserName = _config.GetSection("Authentication:VIP:UserName").Value;
-      string vipPassword = _config.GetSection("Authentication:VIP:Password").Value;
-      IPasswordHasher hasher = new PasswordHasher();
-      _hashedVipPassword = hasher.HashPassword(vipPassword);
+        // Add the VIP AppUser
+        string vipUserName = _config.GetSection("Authentication:VIP:UserName").Value;
+        string vipPassword = _config.GetSection("Authentication:VIP:Password").Value;
+        IPasswordHasher hasher = new PasswordHasher();
+        _hashedVipPassword = hasher.HashPassword(vipPassword);
 
-      // Seed Roles
-      string[] roleNames = { "Admin" };
-      //string[] roleNames = { "Admin", "User" }; // Other user types can be added here, eg "Customer"
-      foreach (var roleName in roleNames)
-      {
-        if (!await _roleManager.RoleExistsAsync(roleName)){
-          await _roleManager.CreateAsync(new IdentityRole(roleName));
+        // Seed Roles
+        string[] roleNames = { "Admin" };
+        //string[] roleNames = { "Admin", "User" }; // Other user types can be added here, eg "Customer"
+        foreach (var roleName in roleNames)
+        {
+          if (!await _roleManager.RoleExistsAsync(roleName)){
+            await _roleManager.CreateAsync(new IdentityRole(roleName));
+          }
         }
-      }
 
-      // Seed User
-      AppUser vipAppUser = new AppUser{
-        Id = _config.GetSection("Authentication:VIP:Id").Value,
-        UserName = vipUserName,
-        PasswordHash = _hashedVipPassword,
-        //IsGuest = _config.GetSection("Authentication:VIP:IsGuest").Value,
-        Email = _config.GetSection("Authentication:VIP:Email").Value,
-        EmailConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:EmailConfirmed").Value),
-        //SecurityStamp = _config.GetSection("Authentication:VIP:SecurityStamp").Value, // Allow database to set this value.
-        PhoneNumber = _config.GetSection("Authentication:VIP:PhoneNumber").Value,
-        PhoneNumberConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:PhoneNumberConfirmed").Value),
-        TwoFactorEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:TwoFactorEnabled").Value),
-        //LockoutEndDateUtc = _config.GetSection("Authentication:VIP:LockoutEndDateUtc").Value,
-        LockoutEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:LockoutEnabled").Value),
-        AccessFailedCount = Int32.Parse(_config.GetSection("Authentication:VIP:AccessFailedCount").Value),
-      };
-      /*
-      if (await _userManager.FindByIdAsync(vipAppUser.Id) == null){
-        await _userManager.CreateAsync(vipAppUser);
-        await _userManager.AddToRoleAsync(vipAppUser, "Admin");
-      }
-      */
-      //var regularUser = new IdentityUser { UserName = "user@example.com", Email = "user@example.com", EmailConfirmed = true };
-      //if (await userManager.FindByEmailAsync(regularUser.Email) == null){
-      //  await userManager.CreateAsync(regularUser);
-      //  await userManager.AddToRoleAsync(regularUser, "User");
-      //}
+        // Seed User
+        AppUser vipAppUser = new AppUser{
+          Id = _config.GetSection("Authentication:VIP:Id").Value,
+          UserName = vipUserName,
+          PasswordHash = _hashedVipPassword,
+          //IsGuest = _config.GetSection("Authentication:VIP:IsGuest").Value,
+          Email = _config.GetSection("Authentication:VIP:Email").Value,
+          EmailConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:EmailConfirmed").Value),
+          //SecurityStamp = _config.GetSection("Authentication:VIP:SecurityStamp").Value, // Allow database to set this value.
+          PhoneNumber = _config.GetSection("Authentication:VIP:PhoneNumber").Value,
+          PhoneNumberConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:PhoneNumberConfirmed").Value),
+          TwoFactorEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:TwoFactorEnabled").Value),
+          //LockoutEndDateUtc = _config.GetSection("Authentication:VIP:LockoutEndDateUtc").Value,
+          LockoutEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:LockoutEnabled").Value),
+          AccessFailedCount = Int32.Parse(_config.GetSection("Authentication:VIP:AccessFailedCount").Value),
+        };
+        /*
+        if (await _userManager.FindByIdAsync(vipAppUser.Id) == null){
+          await _userManager.CreateAsync(vipAppUser);
+          await _userManager.AddToRoleAsync(vipAppUser, "Admin");
+        }
+        */
+        //var regularUser = new IdentityUser { UserName = "user@example.com", Email = "user@example.com", EmailConfirmed = true };
+        //if (await userManager.FindByEmailAsync(regularUser.Email) == null){
+        //  await userManager.CreateAsync(regularUser);
+        //  await userManager.AddToRoleAsync(regularUser, "User");
+        //}
 
-      // ------------------------------------------------------------
+        // ------------------------------------------------------------
 
-      // To preserve the order in which records are created (so we may predict Primary Key values eg 111, 112, 113...)
-      // I had to call _context.SaveChanges() at every record, which is a performance hit - but this only runs once (each time we deploy).
+        // To preserve the order in which records are created (so we may predict Primary Key values eg 111, 112, 113...)
+        // I had to call _context.SaveChanges() at every record, which is a performance hit - but this only runs once (each time we deploy).
 
-      // Populate Users
-      AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
-      appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
-      for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
+        // Populate Users
+        AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
+        appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
+        for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
 
-      // Populate Orders
-      Orders = new List<Order>();
-      orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
-      for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
+        // Populate Orders
+        Orders = new List<Order>();
+        orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
+        for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
 
-      // Populate InStockProducts
-      InStockProducts = new List<InStockProduct>();
-      inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
-      for (int pIdx = 0; pIdx < 27; pIdx++) { SeedInStockProducts(pIdx); }
+        // Populate InStockProducts
+        InStockProducts = new List<InStockProduct>();
+        inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
+        for (int pIdx = 0; pIdx < 27; pIdx++) { SeedInStockProducts(pIdx); }
 
-      // Populate OrderedProducts
-      OrderedProducts = new List<OrderedProduct>();
-      orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
-      for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
+        // Populate OrderedProducts
+        OrderedProducts = new List<OrderedProduct>();
+        orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
+        for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
 
-      // Populate OrderPayments
-      OrderPayments = new List<OrderPayment>();
-      orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
-      for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
+        // Populate OrderPayments
+        OrderPayments = new List<OrderPayment>();
+        orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
+        for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
 
-      // All done.
+        // All done.
       }
       catch (Exception ex)
       {
