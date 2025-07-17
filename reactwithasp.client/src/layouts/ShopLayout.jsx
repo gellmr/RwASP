@@ -65,11 +65,15 @@ const ShopLayout = () =>
 
         <Row className={bgClass}>
           <CategoriesMenu />
-          <Col xs={0}  md={1}               className="d-none d-md-block">LSPACE</Col>
-          <Col xs={12} md={8} lg={6}        className="shopLayoutTransparent">
+          <Col xs={0}  md={1}        className="d-none d-md-block">
+            {/* LSPACE */}
+          </Col>
+          <Col xs={12} md={8} lg={6} className="shopLayoutTransparent">
             <Outlet /> {/* This will be either Shop or Cart... */}
           </Col>
-          <Col xs={0} lg={2}                className="d-none d-lg-block">RSPACE</Col>
+          <Col xs={0} lg={2}         className="d-none d-lg-block">
+            {/* RSPACE */}
+          </Col>
         </Row>
         <hr />
         Built with React and ASP, using .NET 8.0 and Vite
