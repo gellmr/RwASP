@@ -50,7 +50,7 @@ const ShopLayout = () =>
   }
 
   return (
-    <>
+    <div className={bgClass}>
       <Container id="shopLayout" style={{ border: '' }}>
         <Row>
           <MgNavBar>
@@ -61,7 +61,7 @@ const ShopLayout = () =>
           </MgNavBar>
         </Row>
 
-        <Row className={bgClass}>
+        <Row >
           <CategoriesMenu />
           <Col xs={0}  md={1}        className="d-none d-md-block">
             {/* LSPACE */}
@@ -78,7 +78,7 @@ const ShopLayout = () =>
         <br />
         {/*<EnvName />*/}
       </Container>
-    </>
+    </div>
   );
 }
 
