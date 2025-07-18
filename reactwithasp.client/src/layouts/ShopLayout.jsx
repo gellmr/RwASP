@@ -32,7 +32,7 @@ const ShopLayout = () =>
     case 'chess':      bgCss = "chessBg"; break;
     case 'waterSport': bgCss = "kayakBg"; break;
   }
-  const bgClass = bgCss;
+  const bgClass = "soccerBaseBg " + bgCss;
 
   useEffect(() => {
     fetchCart();
@@ -50,8 +50,8 @@ const ShopLayout = () =>
   }
 
   return (
-    <div className={bgClass}>
-      <Container id="shopLayout" style={{ border: '' }}>
+    <div >
+      <Container id="shopLayout" className={bgClass}  style={{ border: '' }}>
         <Row>
           <MgNavBar>
             <ShopButton withBackArrow={false} />

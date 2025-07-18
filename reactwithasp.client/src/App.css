@@ -15,29 +15,25 @@
   text-align: center;
 }
 
+.soccerBaseBg {
+  background-repeat: no-repeat;
+}
 .soccerBg {
   background-image: url("/bg/soccer-bgtallrev.jpg");
-  /*min-height: 871px;*/
-  background-repeat: no-repeat;
-  /*background-position-x: center;*/
   background-size: contain;
+  max-width: 1070px;
 }
 .soccerBg2 {
-  background-image: url("/bg/soccer-bg2.jpg");
-  /*min-height: 750px;*/
-  background-repeat: no-repeat;
-  background-position-x: center;
+  background-image: url("/bg/soccer-bg2.3.jpg");
+  /*background-size: contain;*/
+  max-width: 1070px;
 }
 .chessBg {
   background-image: url("/bg/chess-bgrev.jpg");
-  /*min-height: 750px;*/
-  background-repeat: no-repeat;
   background-position-x: center;
 }
 .kayakBg {
   background-image: url("/bg/kayak-bg5rev.jpg");
-  /*min-height: 750px;*/
-  background-repeat: no-repeat;
   background-position-x: center;
 }
 .mgImgThumb{
