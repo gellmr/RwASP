@@ -8,7 +8,7 @@ function CartBtn({ isSmall }){
   const myCss = (isSmall === true) ? baseCss + " d-block d-sm-none lime" : baseCss + " d-none d-sm-block";
   return (
     <>
-      <NavLink to="/cart" className={myCss} style={{textWrapMode: "nowrap"}} >
+      <NavLink to="/cart" className={myCss} style={{textWrapMode: "nowrap", marginRight: 10}} >
         <i className="bi bi-cart3" style={{ marginRight: 4, display: "inline-block" }}></i>
         Cart:&nbsp;{cartTotalItems}
         <span className="xxsCartBtn">

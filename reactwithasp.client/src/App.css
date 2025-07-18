@@ -222,6 +222,8 @@
   color: white;
   padding-right: 15px;
   margin-top: -4px;
+  flex-grow: 1;
+  text-align: left;
 }
 .responsiveScrollsRight {
   font-size: 12px;
