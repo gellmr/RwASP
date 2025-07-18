@@ -29,8 +29,8 @@
   max-width: 1070px;
 }
 .chessBg {
-  background-image: url("/bg/chess-bgrev.jpg");
-  background-position-x: center;
+  background-image: url("/bg/chess-bg8.jpg");
+  max-width: 1070px;
 }
 .kayakBg {
   background-image: url("/bg/kayak-bg5rev.jpg");
@@ -63,6 +63,12 @@
 .mg-category-menu-r {
   /*border: 3px dashed cyan;*/
   width: 100%;
+}
+.mg-category-menu-r .btn{
+  background-color:rgba(248, 249, 250, 0.95);
+}
+.mg-category-menu-r .btn:hover{
+  background-color:rgba(211, 212, 213, 0.95);
 }
 .cartQtyXXs{
   /*color:red;*/
@@ -502,6 +508,9 @@ th, td {
 
 @media (min-width: 768px)
 {
+  .chessBg {
+    background-image: url("/bg/chess-bg8.2.jpg");
+  }
   .mgNavLinkBtn {
     font-size: 13px;
   }
