@@ -16,6 +16,7 @@ const AdminLink = () => {
       <NavLink to="/admin/products" className="mgNavLinkBtn mgAdminNavLinks" >Products</NavLink><VL />
       <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" >Orders</NavLink><VL />
       <NavLink to="/admin/useraccounts" className="mgNavLinkBtn mgAdminNavLinks" ><span className="mgAdminNavHideMD">User&nbsp;</span>Accounts</NavLink>
+      <span className="d-sm-block d-md-none"><VL /></span>
     </>
   );
 
