@@ -544,7 +544,7 @@ th, td {
 /* ======= Custom Breakpoint - MD-INERMEDIATE ====== */
 /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
 
-@media (min-width: 701px) {
+@media (min-width: 708px) {
   /* Hide the "User" word in "User Accounts on navbar at md-intermediate size */
   .mgAdminNavHideMD {
     display: inline-block;
