@@ -5,9 +5,7 @@ function ShopButton({ withBackArrow })
   const backToShopMarkup = function (text) {
     return (
       <>
-        <span className="mgAdminNavHideMD">Back to</span>
-        &nbsp;
-        Shop
+        <span className="mgAdminNavHideMD">Back to</span>&nbsp;Shop
       </>
     );
   }
@@ -18,7 +16,7 @@ function ShopButton({ withBackArrow })
   return (
     <>
       <NavLink to="/" className="mgNavLinkBtn">
-        <span style={{ minWidth:45}}>
+        <span style={{ minWidth: 45, display: "inline-block" }}>
           {iconElement}
           {linkText}
         </span>
