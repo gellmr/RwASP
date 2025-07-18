@@ -35,7 +35,7 @@ function LogOutButton()
 
   return (
     <>
-      <NavLink to="/admin-logout" className="mgNavLinkBtn mgAdminNavLinks" onClick={logoutClick}>
+      <NavLink to="/admin-logout" className="mgNavLinkBtn mgAdminNavLinks" onClick={logoutClick} style={{ textWrapMode:"nowrap" }}>
         Logout
         <span className="mgAdminNavHideMD">&nbsp;Admin</span>
       </NavLink>

@@ -19,7 +19,7 @@
 }
 .mgAdminNavHideMD {
   display: inline-block;
-  color: red;
+  /*color: red;*/
 }
 
 .navbar-toggler {
@@ -503,7 +503,7 @@ th, td {
   }
   .mgAdminNavHideMD {
     display: none;
-    color: yellow;
+    /*color: yellow;*/
   }
   .mg-nav-items {
     /*border: 3px dashed purple;*/
@@ -548,7 +548,7 @@ th, td {
   /* Hide the "User" word in "User Accounts on navbar at md-intermediate size */
   .mgAdminNavHideMD {
     display: inline-block;
-    color: lime;
+    /*color: lime;*/
   }
 }
 

@@ -14,8 +14,11 @@ const AdminLink = () => {
   const adminLinks = (
     <>
       <NavLink to="/admin/products" className="mgNavLinkBtn mgAdminNavLinks" >Products</NavLink><VL />
-      <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" >Orders</NavLink><VL />
-      <NavLink to="/admin/useraccounts" className="mgNavLinkBtn mgAdminNavLinks" ><span className="mgAdminNavHideMD">User&nbsp;</span>Accounts</NavLink>
+      <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" >Backlog</NavLink><VL />
+      <NavLink to="/admin/useraccounts" className="mgNavLinkBtn mgAdminNavLinks" style={{ textWrapMode:"nowrap" }}>
+        <span className="mgAdminNavHideMD">User&nbsp;</span>
+        Accounts
+      </NavLink>
       <span className="d-sm-block d-md-none"><VL /></span>
     </>
   );
@@ -28,15 +31,21 @@ const AdminLink = () => {
     } else if (isLoggedIn) { // Logged in but not on the admin pages
       return (
         <>
-          <NavLink to="/myorders" className="mgNavLinkBtn" >My Orders</NavLink>
+          <NavLink to="/myorders" className="mgNavLinkBtn" style={{ textWrapMode:"nowrap" }}>
+            <span className="mgAdminNavHideMD">My&nbsp;</span>
+            Orders
+          </NavLink>
           <CartBtn isSmall={false} />
-          <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" >Admin Pages</NavLink>
+          <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" style={{ textWrapMode: "nowrap" }}>
+            Admin
+            <span className="mgAdminNavHideMD">&nbsp;Pages</span>
+          </NavLink>
         </>
       );
     }
     return ( // Not logged in
       <>
-        <NavLink to="/myorders" className="mgNavLinkBtn" >My Orders</NavLink>
+        <NavLink to="/myorders" className="mgNavLinkBtn" style={{ textWrapMode:"nowrap"}} >My Orders</NavLink>
         <CartBtn isSmall={false} />
       </>
     );

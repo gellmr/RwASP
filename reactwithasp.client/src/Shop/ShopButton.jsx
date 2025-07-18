@@ -15,8 +15,8 @@ function ShopButton({ withBackArrow })
 
   return (
     <>
-      <NavLink to="/" className="mgNavLinkBtn">
-        <span style={{ minWidth: 45, display: "inline-block" }}>
+      <NavLink to="/" className="mgNavLinkBtn" style={{ textWrapMode: "nowrap" }}>
+        <span style={{ minWidth:45, display: "inline-block", textAlign:"left" }}>
           {iconElement}
           {linkText}
         </span>

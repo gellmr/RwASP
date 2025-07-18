@@ -11,8 +11,8 @@ const MgNavBar = ({ children, showCart=true, useFluid=false, brandText="SPORTS S
   return (
     <>
       <Navbar expand="sm" className="bg-body-tertiary bg-dark" id="navBar" data-bs-theme="dark">
-        <Container fluid={useFluid}>
-          <NavLink to="/" className="storeBrand">{brandText}</NavLink>
+        <Container fluid={useFluid} style={{ maxWidth:"100%"}}>
+          <NavLink to="/" className="storeBrand" style={{ textWrapMode: "nowrap"}}>{brandText}</NavLink>
 
           {/* xs screen render cart button here also */}
           {CartButtonMarkup}
