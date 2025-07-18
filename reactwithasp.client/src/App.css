@@ -14,6 +14,9 @@
   margin: 0 auto;
   text-align: center;
 }
+.xxsCartBtn{
+  display:none;
+}
 
 .navbar-toggler {
   max-width: 45px;
@@ -164,6 +167,9 @@
 
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
+  .xxsCartBtn {
+    display: inline-block;
+  }
   .mg-category-menu-r {
     /*border: 3px dashed magenta;*/
     display:flex;
