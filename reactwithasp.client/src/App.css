@@ -112,6 +112,9 @@
   color: #b33111;
   background: repeating-linear-gradient( 45deg, #fffbef, #fffbef 10px, #ffebd7 10px, #ffebd7 20px );
 }
+.mgAdminNavLinks {
+  color: #d2dfff;
+}
 .mgNavLinkBtn {
   text-decoration: none;
   box-sizing: border-box;

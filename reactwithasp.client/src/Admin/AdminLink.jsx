@@ -12,9 +12,9 @@ const AdminLink = () => {
 
   const adminLinks = (
     <>
-      <NavLink to="/admin/products" className="mgNavLinkBtn" >Products</NavLink><VL />
-      <NavLink to="/admin/orders" className="mgNavLinkBtn" >Orders</NavLink><VL />
-      <NavLink to="/admin/useraccounts" className="mgNavLinkBtn" >User Accounts</NavLink>
+      <NavLink to="/admin/products" className="mgNavLinkBtn mgAdminNavLinks" >Products</NavLink><VL />
+      <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" >Orders</NavLink><VL />
+      <NavLink to="/admin/useraccounts" className="mgNavLinkBtn mgAdminNavLinks" >User Accounts</NavLink>
     </>
   );
 
