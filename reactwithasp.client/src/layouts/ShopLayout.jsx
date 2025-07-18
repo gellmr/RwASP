@@ -74,8 +74,7 @@ const ShopLayout = () =>
           </Col>
         </Row>
         <hr />
-        Built with React and ASP, using .NET 8.0 and Vite
-        <br />
+        <div style={{ backgroundColor:"#ffffffb3", paddingBottom:90}}>Built with React and ASP, using .NET 8.0 and Vite</div>
         {/*<EnvName />*/}
       </Container>
     </div>
