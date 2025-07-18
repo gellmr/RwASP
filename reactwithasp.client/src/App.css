@@ -17,6 +17,10 @@
 .xxsCartBtn{
   display:none;
 }
+.mgAdminNavHideMD {
+  display: inline-block;
+  color: red;
+}
 
 .navbar-toggler {
   max-width: 45px;
@@ -497,7 +501,10 @@ th, td {
     /*background-color: darkslategrey;*/
     width: 2px;
   }
-
+  .mgAdminNavHideMD {
+    display: none;
+    color: yellow;
+  }
   .mg-nav-items {
     /*border: 3px dashed purple;*/
     align-items: center;
@@ -532,6 +539,19 @@ th, td {
     justify-content:flex-end;
   }
 }
+
+/* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
+/* ======= Custom Breakpoint - MD-INERMEDIATE ====== */
+/* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
+
+@media (min-width: 701px) {
+  /* Hide the "User" word in "User Accounts on navbar at md-intermediate size */
+  .mgAdminNavHideMD {
+    display: inline-block;
+    color: lime;
+  }
+}
+
 
 /* ================================================= */
 /* =========            MEDIUM            ========== */
