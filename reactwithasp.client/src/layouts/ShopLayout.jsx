@@ -26,7 +26,7 @@ const ShopLayout = () =>
   const dispatch = useDispatch();
   const { category } = useParams();
 
-  let bgCss = "soccerBg";
+  let bgCss = "soccerBg1";
   switch (category) {
     case 'soccer':     bgCss = "soccerBg2"; break;
     case 'chess':      bgCss = "chessBg"; break;

@@ -17,20 +17,16 @@
 
 .soccerBaseBg {
   background-repeat: no-repeat;
-}
-.soccerBg {
-  background-image: url("/bg/soccer-bgtallrev.jpg");
-  background-size: contain;
   max-width: 1070px;
+}
+.soccerBg1 {
+  background-image: url("/bg/soccer-bgtallrev.jpg");
 }
 .soccerBg2 {
   background-image: url("/bg/soccer-bg2.3.jpg");
-  /*background-size: contain;*/
-  max-width: 1070px;
 }
 .chessBg {
   background-image: url("/bg/chess-bg8.jpg");
-  max-width: 1070px;
 }
 .kayakBg {
   background-image: url("/bg/kayak-bg5revXsShort.jpg");
@@ -462,6 +458,9 @@ th, td {
 /* Small devices (landscape phones, 576px and up) */
 
 @media (min-width: 576px) {
+  .soccerBg1 {
+    background-size: contain;
+  }
   .kayakBg {
     background-image: url("/bg/kayak-bg5revXsTall.jpg");
   }
