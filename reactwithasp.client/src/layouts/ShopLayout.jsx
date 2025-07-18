@@ -14,7 +14,6 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import MgNavBar from "@/main/MgNavBar";
 import CategoriesMenu from "@/Shop/CategoriesMenu";
-import CartBtn from "@/Shop/CartBtn";
 import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
 import AdminLink from '@/Admin/AdminLink';
 import EnvName from "@/Shop/EnvName";
@@ -58,7 +57,6 @@ const ShopLayout = () =>
             <ShopButton withBackArrow={false} />
             <VL />
             <AdminLink />
-            <CartBtn isSmall={false} />
             <CurrUserNavLink />
           </MgNavBar>
         </Row>

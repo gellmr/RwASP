@@ -115,6 +115,9 @@
 .mgAdminNavLinks {
   color: #d2dfff;
 }
+.mgAdminNavLinks:hover {
+  color: #a5afca;
+}
 .mgNavLinkBtn {
   text-decoration: none;
   box-sizing: border-box;

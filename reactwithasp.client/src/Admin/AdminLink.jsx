@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { NavLink } from "react-router";
 import VL from "@/Shop/VL";
 import { useLocation } from 'react-router';
+import CartBtn from "@/Shop/CartBtn";
 
 const AdminLink = () => {
   const location = useLocation();
@@ -18,31 +19,31 @@ const AdminLink = () => {
     </>
   );
 
-  const adminLink = function () {
+  const markup = function () {
     if (isLoggedIn && withinAdmin) {
       return ( // Logged in and currently on the admin pages
-        <>
-          {adminLinks}
-        </>
+        <>{adminLinks}</>
       );
     } else if (isLoggedIn) { // Logged in but not on the admin pages
       return (
         <>
-          <NavLink to="/myorders" className="mgNavLinkBtn" >My Orders</NavLink><VL />
-          {adminLinks}
+          <NavLink to="/myorders" className="mgNavLinkBtn" >My Orders</NavLink>
+          <CartBtn isSmall={false} />
+          <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" >Admin Pages</NavLink>
         </>
       );
     }
     return ( // Not logged in
       <>
         <NavLink to="/myorders" className="mgNavLinkBtn" >My Orders</NavLink>
+        <CartBtn isSmall={false} />
       </>
     );
   }
 
   return (
     <>
-      {adminLink()}
+      {markup()}
     </>
   );
 }

@@ -35,7 +35,7 @@ function LogOutButton()
 
   return (
     <>
-      <NavLink to="/admin-logout" className="mgNavLinkBtn" onClick={logoutClick}>Logout Admin</NavLink>
+      <NavLink to="/admin-logout" className="mgNavLinkBtn mgAdminNavLinks" onClick={logoutClick}>Logout Admin</NavLink>
     </>
   );
 }

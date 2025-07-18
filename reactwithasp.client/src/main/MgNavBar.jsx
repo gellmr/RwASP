@@ -13,7 +13,10 @@ const MgNavBar = ({ children, showCart=true, useFluid=false, brandText="SPORTS S
       <Navbar expand="sm" className="bg-body-tertiary bg-dark" id="navBar" data-bs-theme="dark">
         <Container fluid={useFluid}>
           <NavLink to="/" className="storeBrand">{brandText}</NavLink>
+
+          {/* xs screen render cart button here also */}
           {CartButtonMarkup}
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto mg-nav-items">
