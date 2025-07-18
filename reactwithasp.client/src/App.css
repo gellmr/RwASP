@@ -60,11 +60,18 @@
   /*border: 3px dashed cyan;*/
   width: 100%;
 }
+.mg-category-menu-r .active{
+  font-weight:600;
+}
 .mg-category-menu-r .btn{
   background-color:rgba(248, 249, 250, 0.95);
 }
 .mg-category-menu-r .btn:hover{
   background-color:rgba(211, 212, 213, 0.95);
+}
+.mg-category-menu-r .btn.active{
+  border: none;
+  background-image: linear-gradient(90deg, #afafaf2b, #afafaf24, transparent);
 }
 .cartQtyXXs{
   /*color:red;*/
@@ -482,6 +489,10 @@ th, td {
   .mg-category-menu-r {
     /*border: 3px dashed purple;*/
     width: 100%;
+  }
+  .mg-category-menu-r .btn.active {
+    background-image: unset;
+    background-color: #e3e3e3;
   }
   .proceedCheckoutBar .btn {
     font-size: 15px;

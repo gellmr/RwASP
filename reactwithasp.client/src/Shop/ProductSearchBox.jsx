@@ -11,7 +11,7 @@ function ProductSearchBox()
   const categories = useSelector(state => state.categories.value);
   const search = useSelector(state => state.search.value);
   const dispatch = useDispatch(); // Redux dispatch
-  const storeCat = categories.find((cat) => cat.segment === category);
+  const storeCat = (categories !== undefined && categories.length > 0) ? categories.find((cat) => cat.segment === category) : undefined;
   const displayCat = (category === undefined || storeCat === undefined) ? "All" : storeCat.title;
 
   const handleInputChange = (e) => {
@@ -25,7 +25,6 @@ function ProductSearchBox()
 
   return (
     <div>
-      <h6 style={{color:'grey', textAlign:"left"}}>Category: {displayCat}</h6>
 
       <InputGroup className="mb-3">
         <InputGroup.Text id="basic-addon1">
