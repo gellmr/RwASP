@@ -66,7 +66,7 @@ const MyOrders = () =>
 
   return (
     <>
-      <Row style={{height:650}}>
+      <Row style={{minHeight:180}}>
         <Col xs={12}>
           <AdminTitleBar titleText="My Orders" />
         </Col>
