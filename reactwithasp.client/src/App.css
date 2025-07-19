@@ -63,6 +63,16 @@
   /*background-color:lime!important;*/
 }
 
+.myOrdersTable {
+  margin-top: 10px;
+  border-radius:10px;
+  border: 1px solid gainsboro;
+  background-color: #ffffffd6;
+}
+.myOrdersTable table, .myOrdersTable tr, .myOrdersTable td{
+  background-color: transparent !important;
+}
+
 .vl {
   display: none;
 }

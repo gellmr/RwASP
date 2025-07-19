@@ -59,7 +59,22 @@ const MyOrders = () =>
     (ordersThisPage.length === 0) ? noOrdersMarkup() : (
     ordersThisPage && ordersThisPage.map(ord =>
       <Col xs={12} key={ord.id}>
-        <div>Order #{ord.id}</div>
+        <div className="myOrdersTable">
+          <table style={{ width: "100%", textAlign:"left" }}>
+            <tr>
+              <td>Order Number</td>
+              <td>{ord.id}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{ord.orderStatus}</td>
+            </tr>
+            <tr>
+              <td>Placed Date</td>
+              <td>{ord.orderPlacedDate}</td>
+            </tr>
+          </table>
+        </div>
       </Col>
     )
   ))));
