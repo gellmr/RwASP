@@ -73,6 +73,10 @@ const MyOrders = () =>
               <td>Placed Date</td>
               <td>{ord.orderPlacedDate}</td>
             </tr>
+            <tr>
+              <td>Items</td>
+              <td>{ord.itemString}</td>
+            </tr>
           </table>
         </div>
       </Col>
