@@ -90,20 +90,32 @@ namespace ReactWithASP.Server.Domain
     {
       get
       {
-        int sentenceMax = 40;
-        List<OrderedProduct> orderedProds = OrderedProducts.ToList();
-        StringBuilder builder = new StringBuilder();
-        if (orderedProds.Count > 0)
+        try
         {
-          int c = orderedProds.Count;
-          for (int i = 0; i < c; i++)
-          {
-            string productName = orderedProds[i].InStockProduct.Title;
-            builder.Append(productName + ((i < c - 1) ? ", " : "")); // "Life Jacket, "
+          if (OrderedProducts == null || OrderedProducts.Count == 0){
+            return string.Empty;
           }
+          int sentenceMax = 40;
+          List<OrderedProduct> orderedProds = OrderedProducts.ToList();
+          StringBuilder builder = new StringBuilder();
+          if (orderedProds.Count > 0)
+          {
+            int c = orderedProds.Count;
+            for (int i = 0; i < c; i++)
+            {
+              string productName = orderedProds[i].InStockProduct.Title;
+              Int32 qty = orderedProds[i].Quantity;
+              string qtyString = " (x" + qty.ToString() + ") ";
+              builder.Append(productName + qtyString + ((i < c - 1) ? ", " : "")); // "Life Jacket (x2), "
+            }
+          }
+          string productList = MyExtensions.Truncate(builder.ToString(), sentenceMax);
+          return productList; // eg "Kayak (x2), Life Jacket (x2), Polycarbon Injection M..."
         }
-        string productList = MyExtensions.Truncate(builder.ToString(), sentenceMax);
-        return productList; // eg "Kayak, Life Jacket, Polycarbon Injection M..."
+        catch(Exception e)
+        {
+          return string.Empty;
+        }
       }
     }
 

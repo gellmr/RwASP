@@ -64,8 +64,21 @@ namespace ReactWithASP.Server.Domain
 
     public IEnumerable<Order> GetMyOrders(Guid? guestID)
     {
-      
       IEnumerable<Order> rows = context.Orders.Where(o => o.GuestID == guestID);
+      foreach (Order order in rows){
+        order.OrderedProducts = context.OrderedProducts.Where(op => op.OrderID == order.ID).
+          Select(op => new OrderedProduct
+          {
+            // Load everything that we might need for display on the My Orders page...
+            ID = op.ID,
+            Quantity = op.Quantity,
+            Order = null,   // Avoid cycle of loading objects. We already have the Order.
+            OrderID = null,
+            InStockProduct = op.InStockProduct,
+            InStockProductID = op.InStockProductID,
+          })
+          .ToList();
+      }
       return rows;
     }
   }
