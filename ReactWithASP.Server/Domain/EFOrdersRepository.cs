@@ -61,5 +61,11 @@ namespace ReactWithASP.Server.Domain
       //  .Include(o => o.OrderedProducts).ThenInclude(op => op.InStockProduct);
       //return orders;
     }
+
+    public IEnumerable<Order> GetMyOrders()
+    {
+      IEnumerable<Order> rows = context.Orders;
+      return rows;
+    }
   }
 }
