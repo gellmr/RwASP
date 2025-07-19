@@ -5,6 +5,7 @@ import cartReducer    from '@/features/cart/cartSlice.jsx'
 import searchReducer  from '@/features/search/searchSlice.jsx'
 import adminOrdersReducer from '@/features/admin/orders/adminOrdersSlice.jsx'
 import loginReducer from '@/features/login/loginSlice.jsx'
+import myOrdersReducer from '@/features/myOrders/myOrdersSlice.jsx'
 
 export default configureStore({
   reducer: {
@@ -15,5 +16,6 @@ export default configureStore({
     search:             searchReducer,
     adminOrders:        adminOrdersReducer,
     login:              loginReducer,
+    myOrders:           myOrdersReducer,
   }
 })

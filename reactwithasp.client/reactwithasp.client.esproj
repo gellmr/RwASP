@@ -11,5 +11,6 @@
   <ItemGroup>
     <Folder Include="src\features\inStock\" />
     <Folder Include="src\CurrUser\" />
+    <Folder Include="src\features\myOrders\" />
   </ItemGroup>
 </Project>
