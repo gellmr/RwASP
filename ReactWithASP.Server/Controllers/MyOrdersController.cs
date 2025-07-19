@@ -21,10 +21,13 @@ namespace ReactWithASP.Server.Controllers
     [HttpGet]
     public async Task<ActionResult> Get()
     {
-      try{
-        IList<Order> orders = ordersRepo.GetMyOrders().ToList();
+      try
+      {
         // Look up associated records, to display on the My Orders page.
-        foreach (Order order in orders){
+        Guest? guest = EnsureGuestFromCookieAndDb(null);
+        IList<Order> orders = ordersRepo.GetMyOrders(guest.ID).ToList();
+        foreach (Order order in orders)
+        {
           if (order.GuestID != null){
             order.Guest = guestRepo.Guests.FirstOrDefault(g => g.ID == order.GuestID);
           }

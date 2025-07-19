@@ -62,9 +62,10 @@ namespace ReactWithASP.Server.Domain
       //return orders;
     }
 
-    public IEnumerable<Order> GetMyOrders()
+    public IEnumerable<Order> GetMyOrders(Guid? guestID)
     {
-      IEnumerable<Order> rows = context.Orders;
+      
+      IEnumerable<Order> rows = context.Orders.Where(o => o.GuestID == guestID);
       return rows;
     }
   }

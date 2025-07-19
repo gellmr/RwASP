@@ -6,6 +6,6 @@ namespace ReactWithASP.Server.Domain.Abstract
   {
     bool SaveOrder(Order order);
     Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum);
-    IEnumerable<Order> GetMyOrders();
+    IEnumerable<Order> GetMyOrders(Guid? guestID);
   }
 }

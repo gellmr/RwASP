@@ -46,16 +46,23 @@ const MyOrders = () =>
     });
   }
 
+  const noOrdersMarkup = () => (
+    <>
+      <h5>(None at the moment)</h5>
+    </>
+  );
+
   const rowsMarkup =
     (isLoading) ? <div className="fetchErr">Loading...</div> : (
     (error) ? <div className="fetchErr">Error: {error.message}</div> : (
-    (!ordersThisPage || ordersThisPage.length === 0) ? <div className="fetchErr">( Could not find any Orders! )</div> : (
+    (!ordersThisPage) ? <div className="fetchErr">( Could not find any Orders! )</div> : (
+    (ordersThisPage.length === 0) ? noOrdersMarkup() : (
     ordersThisPage && ordersThisPage.map(ord =>
       <Col xs={12} key={ord.id}>
         <div>Order #{ord.id}</div>
       </Col>
     )
-  )));
+  ))));
 
   return (
     <>
