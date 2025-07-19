@@ -63,7 +63,17 @@ namespace ReactWithASP.Server.Domain
     [NotMapped]
     public string UserOrGuestName
     {
-      get { return string.IsNullOrEmpty(UserID) ? Guest.FullName : AppUser.UserName; }
+      get {
+        if (!string.IsNullOrEmpty(UserID)){
+          return AppUser.UserName;
+        }
+        else if (GuestID != null){
+          return Guest.FullName;
+        }
+        else {
+          return string.Empty;
+        }
+      }
     }
     [NotMapped]
     public string AccountType
@@ -119,6 +129,10 @@ namespace ReactWithASP.Server.Domain
       get
       {
         Decimal sum = 0;
+        if (OrderPayments == null || OrderPayments.Count == 0)
+        {
+          return 0;
+        }
         foreach (OrderPayment payment in OrderPayments)
         {
           sum += (payment.Amount ?? 0);
