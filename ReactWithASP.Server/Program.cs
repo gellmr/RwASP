@@ -25,26 +25,26 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
   options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); // Default is 5 minutes
   options.Lockout.AllowedForNewUsers = true; // "Opt in" to using the lockout functionality. True does not mean the user is locked out.
 })
-.AddEntityFrameworkStores<StoreContext>()    // This adds UserStore and RoleStore. If you don't use it you have to provide Stores yourself with AddUserStore and AddRoleStore.
+.AddEntityFrameworkStores<StoreContext>()
 .AddSignInManager<SignInManager<AppUser>>()
-.AddDefaultTokenProviders();                 // This adds token providers for features like password reset and email confirmation.
+.AddDefaultTokenProviders();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-  options.Cookie.HttpOnly = true; // Prevents client-side script access
-  options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Cookie expiration time
-  options.LoginPath = "/admin";
-  options.AccessDeniedPath = "/admin";
-  options.SlidingExpiration = true; // Resets expiration time with each request
-  options.Cookie.Name = MyExtensions.IdentityCookieName; // Without this, the plain defaults create a cookie called ".ASPNetCore.Cookies"
+  options.Cookie.HttpOnly   = true; // Prevents client-side script access
+  options.ExpireTimeSpan    = TimeSpan.FromMinutes(60);
+  options.LoginPath         = "/admin";
+  options.AccessDeniedPath  = "/admin";
+  options.SlidingExpiration = true;
+  options.Cookie.Name = MyExtensions.IdentityCookieName;
 });
 
-builder.Services.AddControllers(); // In ASP.NET Core, you should call AddControllers() before AddAuthorization()
+builder.Services.AddControllers();
 
 // Enable Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
-  options.Cookie.HttpOnly = true; // This makes the cookie readable only by our server. Client side javascript cannot read the cookie. Protects against XSS.
+  options.Cookie.HttpOnly    = true;
   options.Cookie.IsEssential = true;
 });
 
@@ -62,8 +62,6 @@ builder.Services.AddAuthentication(options =>{
 });
 
 builder.Services.AddAuthorization();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -87,19 +85,15 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()){
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseSession();
-
 app.MapControllers();
 
 // Create database if does not exist, and apply pending migrations. Run seed data.
@@ -118,5 +112,4 @@ using (var scope = app.Services.CreateScope()){
 }
 
 app.MapFallbackToFile("/index.html");
-
 app.Run();
