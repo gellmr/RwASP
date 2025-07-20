@@ -67,6 +67,7 @@
   border: 1px solid gainsboro;
   border-radius: 10px;
   margin-bottom: 12px;
+  font-size: 11px;
 }
 
 .myOrdersTable {
@@ -554,6 +555,9 @@ th, td {
     flex-direction: row;
     justify-content:flex-end;
   }
+  .adminProductRow {
+    font-size: 14px;
+  }
 }
 
 /* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
@@ -586,6 +590,9 @@ th, td {
   }
   .mgCurrUserNav {
     font-size: 13px;
+  }
+  .adminProductRow {
+    font-size: 17px;
   }
 }
 
