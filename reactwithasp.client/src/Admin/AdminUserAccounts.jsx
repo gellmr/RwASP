@@ -6,6 +6,7 @@ import axiosRetry from 'axios-retry';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Image from 'react-bootstrap/Image';
 
 const AdminUserAccounts = () =>
 {
@@ -45,9 +46,22 @@ const AdminUserAccounts = () =>
   }
 
   const userRowMarkup = (user) => (
-    <div key={user.id}>
-      {user.id}
-    </div>
+    <Row className="adminUserAccRow" key={user.id}>
+      <Col xs={4} className="adminUserAccCell d-none d-sm-block adminUserAccImage">
+        <Image src={user.image ? user.image : 'none'} rounded />
+      </Col>
+      <Col xs={12} sm={8}>
+        <Row className="adminUserAccDetailsBox">
+          <Col className="adminUserAccCell" xs={4}>User ID</Col>   <Col xs={8} className="adminUserAccCell">{user.id}</Col>
+          <Col className="adminUserAccCell" xs={4}>UserName</Col>  <Col xs={8} className="adminUserAccCell">{user.userName}</Col>
+          <Col className="adminUserAccCell" xs={4}>Phone</Col>     <Col xs={8} className="adminUserAccCell">{user.phoneNumber}</Col>
+          <Col className="adminUserAccCell" xs={4}>Email</Col>     <Col xs={8} className="adminUserAccCell">{user.email}</Col>
+        </Row>
+      </Col>
+      <Col xs={12} className="adminUserAccCell d-sm-none adminUserAccImage">
+        <Image src={user.image ? user.image : 'none'} rounded />
+      </Col>
+    </Row>
   );
 
   const userTableMarkup = () => (
