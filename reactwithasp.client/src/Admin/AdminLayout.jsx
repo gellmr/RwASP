@@ -38,7 +38,7 @@ const AdminLayout = () =>
         </Row>
 
         <Row>
-          <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>
+          <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px", overflowX:'clip' }}>
             <Outlet />
           </Col>
         </Row>

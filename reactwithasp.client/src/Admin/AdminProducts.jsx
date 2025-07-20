@@ -45,22 +45,34 @@ const AdminProducts = () =>
   }
 
   const prodRowMarkup = ( prod ) => (
-    <Col xs={12} key={prod.id}>
-      <table style={{ width: "100%", textAlign: "left" }}>
-        <tbody>
-          <tr>
-            <td>Product ID</td>
-            <td>{prod.id}</td>
-          </tr>
-        </tbody>
-      </table>
-    </Col>
+    <table key={prod.id} style={{  }}>
+      <tbody>
+        <tr>
+          <td>Product ID</td><td>{prod.id}</td>
+        </tr>
+        <tr>
+          <td>Title</td><td>{prod.title}</td>
+        </tr>
+        <tr>
+          <td>Price</td><td>{prod.price}</td>
+        </tr>
+        <tr>
+          <td>Image</td><td>{prod.image}</td>
+        </tr>
+        <tr>
+          <td>Description</td><td>{prod.description}</td>
+        </tr>
+        <tr>
+          <td>Category</td><td>{prod.category}</td>
+        </tr>
+      </tbody>
+    </table>
   );
 
-  const prodTableMarkup = (prod) => (
-    <Row>
+  const prodTableMarkup = () => (
+    <>
       {adminProducts.map(prod => prodRowMarkup(prod))}
-    </Row>
+    </>
   );
 
   const markup = (isLoading) ? <div className="fetchErr">Loading...</div>             : (
