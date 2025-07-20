@@ -39,7 +39,7 @@ const AdminLayout = () =>
 
         <Row>
           <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>
-            <Outlet /> {/* This will be either Shop or Cart... */}
+            <Outlet />
           </Col>
         </Row>
         <hr />
