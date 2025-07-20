@@ -51,7 +51,7 @@ const AdminProducts = () =>
         <Image src={prod.image} rounded />
       </Col>
       <Col xs={12} sm={8}>
-        <Row>
+        <Row className="adminProductDetailsBox">
           <Col className="adminProductCell" xs={4}>Product ID</Col>  <Col xs={8} className="adminProductCell">{prod.id}</Col>
           <Col className="adminProductCell" xs={4}>Title</Col>       <Col xs={8} className="adminProductCell">{prod.title}</Col>
           <Col className="adminProductCell" xs={4}>Category</Col>    <Col xs={8} className="adminProductCell">{prod.category}</Col>
