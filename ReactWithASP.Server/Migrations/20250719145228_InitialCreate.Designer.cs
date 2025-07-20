@@ -12,7 +12,7 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250714144751_InitialCreate")]
+    [Migration("20250719145228_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -224,6 +224,9 @@ namespace ReactWithASP.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -334,6 +337,47 @@ namespace ReactWithASP.Server.Migrations
                     b.HasIndex("OrderID");
 
                     b.ToTable("OrderedProducts");
+                });
+
+            modelBuilder.Entity("ReactWithASP.Server.Domain.StoredProc.AdminOrderRow", b =>
+                {
+                    b.Property<string>("AccountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Items")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ItemsOrdered")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("OrderPlaced")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Outstanding")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("PaymentReceived")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("AdminOrderRows");
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Infrastructure.AppUser", b =>

@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactWithASP.Server.Infrastructure;
 
@@ -12,11 +11,9 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250715021222_CreateSP-GetAdminOrders")]
-    partial class CreateSPGetAdminOrders
+    partial class StoreContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,6 +221,9 @@ namespace ReactWithASP.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -348,7 +348,7 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<string>("Items")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ItemsOrdered")
+                    b.Property<int?>("ItemsOrdered")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderID")
@@ -361,11 +361,11 @@ namespace ReactWithASP.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Outstanding")
-                        .HasColumnType("float");
+                    b.Property<decimal?>("Outstanding")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<double>("PaymentReceived")
-                        .HasColumnType("float");
+                    b.Property<decimal?>("PaymentReceived")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserID")
                         .IsRequired()
