@@ -88,33 +88,35 @@ const MyOrders = () =>
     ordersThisPage && ordersThisPage.map(ord =>
       <Col xs={12} key={ord.id}>
         <div className="myOrdersTable">
-          <table style={{ width: "100%", textAlign:"left" }}>
-            <tr>
-              <td>Order Number</td>
-              <td>{ord.id}</td>
-            </tr>
-            <tr>
-              <td>Status</td>
-              <td>{ord.orderStatus}</td>
-            </tr>
-            <tr>
-              <td>Placed Date</td>
-              <td>
-                {displayDate(ord.orderPlacedDate)}
-              </td>
-            </tr>
-            <tr>
-              <td>Items</td>
-              <td>{ord.itemString}</td>
-            </tr>
-            <tr>
-              <td>Total Items</td>
-              <td>{ord.quantityTotal}</td>
-            </tr>
-            <tr>
-              <td>Price Total</td>
-              <td>$ {ord.priceTotal}</td>
-            </tr>
+          <table style={{ width: "100%", textAlign: "left" }}>
+            <tbody>
+              <tr>
+                <td>Order Number</td>
+                <td>{ord.id}</td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>{ord.orderStatus}</td>
+              </tr>
+              <tr>
+                <td>Placed Date</td>
+                <td>
+                  {displayDate(ord.orderPlacedDate)}
+                </td>
+              </tr>
+              <tr>
+                <td>Items</td>
+                <td>{ord.itemString}</td>
+              </tr>
+              <tr>
+                <td>Total Items</td>
+                <td>{ord.quantityTotal}</td>
+              </tr>
+              <tr>
+                <td>Price Total</td>
+                <td>$ {ord.priceTotal}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </Col>
