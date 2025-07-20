@@ -68,6 +68,15 @@
   border-radius: 10px;
   margin-bottom: 12px;
   font-size: 11px;
+  text-align: left;
+  padding-left: 10px;
+}
+.adminProductRow .row {
+  padding-top: 8px;
+  padding-bottom: 4px;
+}
+.adminProductCell {
+  padding-bottom: 5px;
 }
 
 .myOrdersTable {

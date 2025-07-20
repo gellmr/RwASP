@@ -47,19 +47,29 @@ const AdminProducts = () =>
   const prodRowMarkup = (prod) => (
     <Col xs={12} className="adminProductRow" key={prod.id}>
       <Row>
-        <Col xs={4}>Product ID</Col>  <Col xs={8}>{prod.id}</Col>
-        <Col xs={4}>Title</Col>       <Col xs={8}>{prod.title}</Col>
-        <Col xs={4}>Price</Col>       <Col xs={8}>{prod.price}</Col>
-        <Col xs={4}>Image</Col>       <Col xs={8}>{prod.image}</Col>
-        <Col xs={4}>Description</Col> <Col xs={8}>{prod.description}</Col>
-        <Col xs={4}>Category</Col>    <Col xs={8}>{prod.category}</Col>
+        <Col className="adminProductCell" xs={4}>Product ID</Col>  <Col xs={8} className="adminProductCell">{prod.id}</Col>
+        <Col className="adminProductCell" xs={4}>Title</Col>       <Col xs={8} className="adminProductCell">{prod.title}</Col>
+        <Col className="adminProductCell" xs={4}>Price</Col>       <Col xs={8} className="adminProductCell">{prod.price}</Col>
+        <Col className="adminProductCell" xs={4}>Image</Col>       <Col xs={8} className="adminProductCell">{prod.image}</Col>
+        <Col className="adminProductCell" xs={4}>Description</Col> <Col xs={8} className="adminProductCell">{prod.description}</Col>
+        <Col className="adminProductCell" xs={4}>Category</Col>    <Col xs={8} className="adminProductCell">{prod.category}</Col>
       </Row>
     </Col>
   );
 
   const prodTableMarkup = () => (
     <>
-      {adminProducts.map(prod => prodRowMarkup(prod))}
+      <Row>
+        <Col xs={0} lg={2}>
+          {/*LSPACE*/}
+        </Col>
+        <Col xs={12} lg={8}>
+          {adminProducts.map(prod => prodRowMarkup(prod))}
+        </Col>
+        <Col xs={0} lg={2}>
+          {/*RSPACE*/}
+        </Col>
+      </Row>
     </>
   );
 
@@ -70,8 +80,14 @@ const AdminProducts = () =>
 
   return (
     <>
-      <AdminTitleBar titleText="Products" />
-      {markup}
+      <Row>
+        <Col xs={12}>
+          <AdminTitleBar titleText="Products" />
+        </Col>
+        <Col xs={12}>
+          {markup}
+        </Col>
+      </Row>
     </>
   );
 }
