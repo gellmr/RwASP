@@ -4,6 +4,8 @@ import { setAdminProducts } from '@/features/admin/products/adminProductsSlice.j
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 const AdminProducts = () =>
 {
@@ -43,16 +45,27 @@ const AdminProducts = () =>
   }
 
   const prodRowMarkup = ( prod ) => (
-    <>
-      <div>{prod.id}</div>
-    </>
+    <Col xs={12} key={prod.id}>
+      <table style={{ width: "100%", textAlign: "left" }}>
+        <tbody>
+          <tr>
+            <td>Product ID</td>
+            <td>{prod.id}</td>
+          </tr>
+        </tbody>
+      </table>
+    </Col>
+  );
+
+  const prodTableMarkup = (prod) => (
+    <Row>
+      {adminProducts.map(prod => prodRowMarkup(prod))}
+    </Row>
   );
 
   const markup = (isLoading) ? <div className="fetchErr">Loading...</div>             : (
     (error)                  ? <div className="fetchErr">Error: {error.message}</div> : (
-    adminProducts && adminProducts.map(prod =>
-      prodRowMarkup(prod)
-    )
+    prodTableMarkup()
   ));
 
   return (
