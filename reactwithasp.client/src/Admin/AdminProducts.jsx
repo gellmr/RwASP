@@ -46,8 +46,7 @@ const AdminProducts = () =>
   }
 
   const prodRowMarkup = (prod) => (
-    <Col xs={12} className="adminProductRow" key={prod.id}>
-      <Row>
+      <Row className="adminProductRow" key={prod.id}>
         <Col xs={4} className="adminProductCell d-none d-sm-block adminProdImage">
           <Image src={prod.image} rounded />
         </Col>
@@ -64,7 +63,6 @@ const AdminProducts = () =>
           <Image src={prod.image} rounded />
         </Col>
       </Row>
-    </Col>
   );
 
   const prodTableMarkup = () => (
