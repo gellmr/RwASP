@@ -44,29 +44,31 @@ const AdminProducts = () =>
     });
   }
 
-  const prodRowMarkup = ( prod ) => (
-    <table key={prod.id} style={{  }}>
-      <tbody>
-        <tr>
-          <td>Product ID</td><td>{prod.id}</td>
-        </tr>
-        <tr>
-          <td>Title</td><td>{prod.title}</td>
-        </tr>
-        <tr>
-          <td>Price</td><td>{prod.price}</td>
-        </tr>
-        <tr>
-          <td>Image</td><td>{prod.image}</td>
-        </tr>
-        <tr>
-          <td>Description</td><td>{prod.description}</td>
-        </tr>
-        <tr>
-          <td>Category</td><td>{prod.category}</td>
-        </tr>
-      </tbody>
-    </table>
+  const prodRowMarkup = (prod) => (
+    <Col xs={12} className="adminProductRow">
+      <table key={prod.id}>
+        <tbody>
+          <tr>
+            <td>Product ID</td><td>{prod.id}</td>
+          </tr>
+          <tr>
+            <td>Title</td><td>{prod.title}</td>
+          </tr>
+          <tr>
+            <td>Price</td><td>{prod.price}</td>
+          </tr>
+          <tr>
+            <td>Image</td><td>{prod.image}</td>
+          </tr>
+          <tr>
+            <td>Description</td><td>{prod.description}</td>
+          </tr>
+          <tr style={{marginBottom:'120px'}}>
+            <td>Category</td><td>{prod.category}</td>
+          </tr>
+        </tbody>
+      </table>
+    </Col>
   );
 
   const prodTableMarkup = () => (

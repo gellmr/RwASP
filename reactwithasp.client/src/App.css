@@ -63,6 +63,23 @@
   /*background-color:lime!important;*/
 }
 
+.adminProductRow {
+  border-radius: 10px;
+  border: 1px solid gainsboro;
+  margin-bottom: 12px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.adminProductRow table{
+  text-align: left;
+  width: 100%;
+}
+.adminProductRow tr{
+  background:transparent !important;
+}
+.adminProductRow td{
+  padding-left:10px !important;
+}
 .myOrdersTable {
   margin-top: 10px;
   border-radius:10px;
