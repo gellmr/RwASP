@@ -46,23 +46,23 @@ const AdminProducts = () =>
   }
 
   const prodRowMarkup = (prod) => (
-      <Row className="adminProductRow" key={prod.id}>
-        <Col xs={4} className="adminProductCell d-none d-sm-block adminProdImage">
-          <Image src={prod.image} rounded />
-        </Col>
-        <Col xs={12} sm={8}>
-          <Row>
-            <Col className="adminProductCell" xs={4}>Product ID</Col>  <Col xs={8} className="adminProductCell">{prod.id}</Col>
-            <Col className="adminProductCell" xs={4}>Title</Col>       <Col xs={8} className="adminProductCell">{prod.title}</Col>
-            <Col className="adminProductCell" xs={4}>Category</Col>    <Col xs={8} className="adminProductCell">{prod.category}</Col>
-            <Col className="adminProductCell" xs={4}>Price</Col>       <Col xs={8} className="adminProductCell">{(prod.price).toFixed(2)}</Col>
-            <Col className="adminProductCell" xs={4}>Description</Col> <Col xs={8} className="adminProductCell">{prod.description}</Col>
-          </Row>
-        </Col>
-        <Col xs={12} className="adminProductCell d-sm-none adminProdImage">
-          <Image src={prod.image} rounded />
-        </Col>
-      </Row>
+    <Row className="adminProductRow" key={prod.id}>
+      <Col xs={4} className="adminProductCell d-none d-sm-block adminProdImage">
+        <Image src={prod.image} rounded />
+      </Col>
+      <Col xs={12} sm={8}>
+        <Row>
+          <Col className="adminProductCell" xs={4}>Product ID</Col>  <Col xs={8} className="adminProductCell">{prod.id}</Col>
+          <Col className="adminProductCell" xs={4}>Title</Col>       <Col xs={8} className="adminProductCell">{prod.title}</Col>
+          <Col className="adminProductCell" xs={4}>Category</Col>    <Col xs={8} className="adminProductCell">{prod.category}</Col>
+          <Col className="adminProductCell" xs={4}>Price</Col>       <Col xs={8} className="adminProductCell">{(prod.price).toFixed(2)}</Col>
+          <Col className="adminProductCell" xs={4}>Description</Col> <Col xs={8} className="adminProductCell">{prod.description}</Col>
+        </Row>
+      </Col>
+      <Col xs={12} className="adminProductCell d-sm-none adminProdImage">
+        <Image src={prod.image} rounded />
+      </Col>
+    </Row>
   );
 
   const prodTableMarkup = () => (
