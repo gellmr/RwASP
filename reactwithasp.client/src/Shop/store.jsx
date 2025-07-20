@@ -5,6 +5,7 @@ import cartReducer    from '@/features/cart/cartSlice.jsx'
 import searchReducer  from '@/features/search/searchSlice.jsx'
 import adminOrdersReducer from '@/features/admin/orders/adminOrdersSlice.jsx'
 import adminProductsReducer from '@/features/admin/products/adminProductsSlice.jsx'
+import adminUserAccountsReducer from '@/features/admin/useraccounts/adminUserAccountsSlice.jsx'
 import loginReducer from '@/features/login/loginSlice.jsx'
 import myOrdersReducer from '@/features/myOrders/myOrdersSlice.jsx'
 
@@ -17,6 +18,7 @@ export default configureStore({
     search:             searchReducer,
     adminOrders:        adminOrdersReducer,
     adminProducts:      adminProductsReducer,
+    adminUserAccounts:  adminUserAccountsReducer,
     login:              loginReducer,
     myOrders:           myOrdersReducer,
   }

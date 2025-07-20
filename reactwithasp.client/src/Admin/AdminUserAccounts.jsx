@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { setAdminUserAccounts } from '@/features/admin/useraccounts/adminUserAccountsSlice.jsx'
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
 
 const AdminUserAccounts = () =>
 {
   const retryThisPage = 5;
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const userAccounts = useSelector(state => state.adminUserAccounts.users);
 
   const axiosInstance = axios.create({});
   axiosRetry(axiosInstance, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
@@ -26,12 +31,12 @@ const AdminUserAccounts = () =>
     const url = window.location.origin + "/api/admin-useraccounts";
     axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
-      //dispatch(setAdminUserAccounts(response.data));
+      dispatch(setAdminUserAccounts(response.data));
     })
     .catch((error) => {
       console.error('Request failed after retries:', error);
       setError(error);
-      //dispatch(setAdminUserAccounts([]));
+      dispatch(setAdminUserAccounts([]));
     })
     .finally(() => {
       console.log('Request (and retries) completed. This runs regardless of success or failure.');
@@ -40,9 +45,9 @@ const AdminUserAccounts = () =>
   }
 
   const userRowMarkup = (user) => (
-    <>
-      <div>{user.id}</div>
-    </>
+    <div key={user.id}>
+      {user.id}
+    </div>
   );
 
   const userTableMarkup = () => (
@@ -52,10 +57,7 @@ const AdminUserAccounts = () =>
           {/*LSPACE*/}
         </Col>
         <Col xs={12} lg={8}>
-          { /*
-            userAccounts.map(user => userRowMarkup(user))
-            */
-          }
+          { userAccounts.map(user => userRowMarkup(user)) }
         </Col>
         <Col xs={0} lg={2}>
           {/*RSPACE*/}
