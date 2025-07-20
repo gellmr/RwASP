@@ -45,29 +45,15 @@ const AdminProducts = () =>
   }
 
   const prodRowMarkup = (prod) => (
-    <Col xs={12} className="adminProductRow">
-      <table key={prod.id}>
-        <tbody>
-          <tr>
-            <td>Product ID</td><td>{prod.id}</td>
-          </tr>
-          <tr>
-            <td>Title</td><td>{prod.title}</td>
-          </tr>
-          <tr>
-            <td>Price</td><td>{prod.price}</td>
-          </tr>
-          <tr>
-            <td>Image</td><td>{prod.image}</td>
-          </tr>
-          <tr>
-            <td>Description</td><td>{prod.description}</td>
-          </tr>
-          <tr style={{marginBottom:'120px'}}>
-            <td>Category</td><td>{prod.category}</td>
-          </tr>
-        </tbody>
-      </table>
+    <Col xs={12} className="adminProductRow" key={prod.id}>
+      <Row>
+        <Col xs={4}>Product ID</Col>  <Col xs={8}>{prod.id}</Col>
+        <Col xs={4}>Title</Col>       <Col xs={8}>{prod.title}</Col>
+        <Col xs={4}>Price</Col>       <Col xs={8}>{prod.price}</Col>
+        <Col xs={4}>Image</Col>       <Col xs={8}>{prod.image}</Col>
+        <Col xs={4}>Description</Col> <Col xs={8}>{prod.description}</Col>
+        <Col xs={4}>Category</Col>    <Col xs={8}>{prod.category}</Col>
+      </Row>
     </Col>
   );
 
