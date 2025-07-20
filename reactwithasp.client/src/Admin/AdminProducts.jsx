@@ -42,10 +42,16 @@ const AdminProducts = () =>
     });
   }
 
+  const prodRowMarkup = ( prod ) => (
+    <>
+      <div>{prod.id}</div>
+    </>
+  );
+
   const markup = (isLoading) ? <div className="fetchErr">Loading...</div>             : (
     (error)                  ? <div className="fetchErr">Error: {error.message}</div> : (
     adminProducts && adminProducts.map(prod =>
-      <div>{prod.id}</div>
+      prodRowMarkup(prod)
     )
   ));
 
