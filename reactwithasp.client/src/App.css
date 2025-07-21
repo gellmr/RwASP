@@ -136,6 +136,10 @@
   /*border: 3px dashed cyan;*/
   width: 100%;
 }
+.mg-category-menu-r a:last-child{
+  border-bottom-left-radius:2px;
+  border-bottom-right-radius:2px;
+}
 .mg-category-menu-r .active{
   font-weight:600;
 }
