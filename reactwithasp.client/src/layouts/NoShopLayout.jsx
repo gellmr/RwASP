@@ -9,6 +9,7 @@ import ShopButton from "@/Shop/ShopButton";
 import AdminLink from "@/Admin/AdminLink";
 import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
 import VL from "@/Shop/VL";
+import Footer from "@/Shop/Footer";
 
 const NoShopLayout = () => {
   return (
@@ -29,7 +30,7 @@ const NoShopLayout = () => {
           </Col>
         </Row>
         <hr />
-        Built with React and ASP, using .NET 8.0 and Vite
+        <Footer />
       </Container>
     </>
   );

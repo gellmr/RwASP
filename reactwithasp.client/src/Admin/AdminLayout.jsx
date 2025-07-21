@@ -14,7 +14,7 @@ import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
 import AdminLink from "@/Admin/AdminLink";
 import ShopButton from "@/Shop/ShopButton";
 import VL from "@/Shop/VL";
-
+import Footer from "@/Shop/Footer";
 import { useLocation } from 'react-router';
 
 const AdminLayout = () =>
@@ -43,7 +43,7 @@ const AdminLayout = () =>
           </Col>
         </Row>
         <hr />
-        Built with React and ASP, using .NET 8.0 and Vite
+        <Footer />
       </Container>
     </>
   );
