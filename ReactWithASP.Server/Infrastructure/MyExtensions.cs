@@ -81,6 +81,13 @@ namespace ReactWithASP.Server.Infrastructure
       return null;
     }
 
+    public static Guid ToGuid(this string s)
+    {
+      Guid g;
+      if (Guid.TryParse(s, out g)) return g;
+      throw new ArgumentException("Could not parse to Guid");
+    }
+
     // https://stackoverflow.com/questions/2776673/how-do-i-truncate-a-net-string
     public static string Truncate(this string value, int maxLength){
       if (string.IsNullOrEmpty(value)) return value;

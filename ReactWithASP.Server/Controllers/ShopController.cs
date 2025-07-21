@@ -39,7 +39,7 @@ namespace ReactWithASP.Server.Controllers
       }
       else{  
         // Got an ID from the cookie...
-        guest.ID = cookieGuestId.ToNullableGuid();
+        guest.ID = cookieGuestId.ToGuid();
       }
 
       // Do we need to generate the ID for the first time ?

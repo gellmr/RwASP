@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNet.Identity; // Provides PasswordHasher.
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using ReactWithASP.Server.Domain;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace ReactWithASP.Server.Infrastructure
 {
@@ -18,7 +22,7 @@ namespace ReactWithASP.Server.Infrastructure
   {
     public bool IsGuest { get; set; }
 
-    public Int32? Id { get; set; }
+    public Guid? Id { get; set; }
     public Guid? GuestID { get; set; }
     public string? Email {get; set;}
     public bool EmailConfirmed { get; set; }
@@ -35,7 +39,7 @@ namespace ReactWithASP.Server.Infrastructure
 
   public class OrderSeederDTO
   {
-    public Int32? UserID { get; set; }
+    public Guid? UserID { get; set; }
     public Guid? GuestID { get; set; }
     public Int32? ID { get; set; }
     public string OrderPlacedDate { get; set; }
@@ -109,103 +113,135 @@ namespace ReactWithASP.Server.Infrastructure
       _normalizer = norm;
     }
 
-    public async Task Seed()
+    public async Task Execute()
     {
+      Console.WriteLine("Begin transaction for data seeding...");
+      await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
       try
       {
-        // We want to keep CartLine records, and Guest records. All other tables can be cleared.
-
-        // Delete all rows for the tables we are recreating...
-        _context.OrderPayments.RemoveRange(_context.OrderPayments);
-        _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
-        _context.InStockProducts.RemoveRange(_context.InStockProducts);
-        _context.Orders.RemoveRange(_context.Orders);
-        _context.Users.RemoveRange(_context.Users);
-        _context.Guests.RemoveRange(_context.Guests);
-        _context.SaveChanges();
-
-        Guests = new Dictionary<string, Guest>();
-
-        // Add the VIP AppUser
-        string vipUserName = _config.GetSection("Authentication:VIP:UserName").Value;
-        string vipPassword = _config.GetSection("Authentication:VIP:Password").Value;
-        IPasswordHasher hasher = new PasswordHasher();
-        _hashedVipPassword = hasher.HashPassword(vipPassword);
-
-        // Seed Roles
-        string[] roleNames = { "Admin" };
-        //string[] roleNames = { "Admin", "User" }; // Other user types can be added here, eg "Customer"
-        foreach (var roleName in roleNames)
-        {
-          if (!await _roleManager.RoleExistsAsync(roleName)){
-            await _roleManager.CreateAsync(new IdentityRole(roleName));
-          }
-        }
-
-        // Seed User
-        AppUser vipAppUser = new AppUser{
-          Id = _config.GetSection("Authentication:VIP:Id").Value,
-          UserName = vipUserName,
-          PasswordHash = _hashedVipPassword,
-          //IsGuest = _config.GetSection("Authentication:VIP:IsGuest").Value,
-          Email = _config.GetSection("Authentication:VIP:Email").Value,
-          EmailConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:EmailConfirmed").Value),
-          //SecurityStamp = _config.GetSection("Authentication:VIP:SecurityStamp").Value, // Allow database to set this value.
-          PhoneNumber = _config.GetSection("Authentication:VIP:PhoneNumber").Value,
-          PhoneNumberConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:PhoneNumberConfirmed").Value),
-          TwoFactorEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:TwoFactorEnabled").Value),
-          //LockoutEndDateUtc = _config.GetSection("Authentication:VIP:LockoutEndDateUtc").Value,
-          LockoutEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:LockoutEnabled").Value),
-          AccessFailedCount = Int32.Parse(_config.GetSection("Authentication:VIP:AccessFailedCount").Value),
-        };
-        /*
-        if (await _userManager.FindByIdAsync(vipAppUser.Id) == null){
-          await _userManager.CreateAsync(vipAppUser);
-          await _userManager.AddToRoleAsync(vipAppUser, "Admin");
-        }
-        */
-        //var regularUser = new IdentityUser { UserName = "user@example.com", Email = "user@example.com", EmailConfirmed = true };
-        //if (await userManager.FindByEmailAsync(regularUser.Email) == null){
-        //  await userManager.CreateAsync(regularUser);
-        //  await userManager.AddToRoleAsync(regularUser, "User");
-        //}
-
-        // ------------------------------------------------------------
-
-        // To preserve the order in which records are created (so we may predict Primary Key values eg 111, 112, 113...)
-        // I had to call _context.SaveChanges() at every record, which is a performance hit - but this only runs once (each time we deploy).
-
-        // Populate Users
-        AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
-        appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
-        for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
-
-        // Populate Orders
-        Orders = new List<Order>();
-        orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
-        for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
-
-        // Populate InStockProducts
-        InStockProducts = new List<InStockProduct>();
-        inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
-        for (int pIdx = 0; pIdx < 27; pIdx++) { SeedInStockProducts(pIdx); }
-
-        // Populate OrderedProducts
-        OrderedProducts = new List<OrderedProduct>();
-        orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
-        for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
-
-        // Populate OrderPayments
-        OrderPayments = new List<OrderPayment>();
-        orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
-        for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
-
-        // All done.
+        await Seed();
+        await transaction.CommitAsync();
+        Console.WriteLine("Data seeded successfully within a transaction.");
       }
       catch (Exception ex)
       {
-        int a = 1;
+        await transaction.RollbackAsync();
+        Console.WriteLine($"Error seeding data: {ex.Message}");
       }
+    }
+
+    private async Task Seed()
+    {
+      // We want to keep CartLine records, and Guest records. All other tables can be cleared.
+        
+      // Delete all rows for the tables we are recreating...
+      _context.OrderPayments.RemoveRange(_context.OrderPayments);
+      _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
+      _context.InStockProducts.RemoveRange(_context.InStockProducts);
+      _context.Orders.RemoveRange(_context.Orders);
+      _context.Users.RemoveRange(_context.Users);
+      _context.Guests.RemoveRange(_context.Guests);
+      _context.SaveChanges();
+
+      Guests = new Dictionary<string, Guest>();
+
+      // Add the VIP AppUser
+      string vipUserName = _config.GetSection("Authentication:VIP:UserName").Value;
+      string vipPassword = _config.GetSection("Authentication:VIP:Password").Value;
+      IPasswordHasher hasher = new PasswordHasher();
+      _hashedVipPassword = hasher.HashPassword(vipPassword);
+
+      // Seed Roles
+      string[] roleNames = { "Admin" };
+      //string[] roleNames = { "Admin", "User" }; // Other user types can be added here, eg "Customer"
+      foreach (var roleName in roleNames)
+      {
+        if (!await _roleManager.RoleExistsAsync(roleName)){
+          await _roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+      }
+
+      // Seed User
+      AppUser vipAppUser = new AppUser{
+        Id = _config.GetSection("Authentication:VIP:Id").Value,
+        UserName = vipUserName,
+        PasswordHash = _hashedVipPassword,
+        //IsGuest = _config.GetSection("Authentication:VIP:IsGuest").Value,
+        Email = _config.GetSection("Authentication:VIP:Email").Value,
+        EmailConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:EmailConfirmed").Value),
+        //SecurityStamp = _config.GetSection("Authentication:VIP:SecurityStamp").Value, // Allow database to set this value.
+        PhoneNumber = _config.GetSection("Authentication:VIP:PhoneNumber").Value,
+        PhoneNumberConfirmed = Boolean.Parse(_config.GetSection("Authentication:VIP:PhoneNumberConfirmed").Value),
+        TwoFactorEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:TwoFactorEnabled").Value),
+        //LockoutEndDateUtc = _config.GetSection("Authentication:VIP:LockoutEndDateUtc").Value,
+        LockoutEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:LockoutEnabled").Value),
+        AccessFailedCount = Int32.Parse(_config.GetSection("Authentication:VIP:AccessFailedCount").Value),
+      };
+      
+      // Populate Users
+      // [RwaspDatabase].[dbo].[AspNetUsers] does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
+      // [RwaspDatabase].[dbo].[Guests]      does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
+      AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
+      appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
+      for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
+
+      // Populate Orders
+      try
+      {
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[Orders] ON;");
+        Orders = new List<Order>();
+        orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
+        for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[Orders] OFF;");
+      }
+      catch(Exception ex)
+      {
+        Debug.WriteLine(ex.Message);
+      }
+
+      // Populate InStockProducts
+      try
+      {
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[InStockProducts] ON;");
+        InStockProducts = new List<InStockProduct>();
+        inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
+        for (int pIdx = 0; pIdx < 27; pIdx++) { SeedInStockProducts(pIdx); }
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[InStockProducts] OFF;");
+      }
+      catch (Exception ex)
+      {
+        Debug.WriteLine(ex.Message);
+      }
+
+      // Populate OrderedProducts
+      try
+      {
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[OrderedProducts] ON;");
+        OrderedProducts = new List<OrderedProduct>();
+        orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
+        for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[OrderedProducts] OFF;");
+      }
+      catch (Exception ex)
+      {
+        Debug.WriteLine(ex.Message);
+      }
+
+      // Populate OrderPayments
+      try
+      {
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[OrderPayments] ON;");
+        OrderPayments = new List<OrderPayment>();
+        orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
+        for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[OrderPayments] OFF;");
+      }
+      catch (Exception ex)
+      {
+        Debug.WriteLine(ex.Message);
+      }
+
+      // Finished adding records.
     }
 
 
@@ -219,20 +255,9 @@ namespace ReactWithASP.Server.Infrastructure
       AppUserSeederDTO dto = appUserDTOs[u];
       string[] splitName = dto.UserName.Split(" ");
       Guest? guest = null;
-      if (dto.IsGuest)
-      {
-        guest = new Guest
-        {
-          ID = dto.GuestID,
-          Email = dto.Email,
-          FirstName = splitName[0],
-          LastName = splitName[1]
-        };
-        Guests.Add(dto.Id.ToString(), guest);
-      }
       AppUser user = new AppUser
       {
-        Id = dto.Id.ToString() ?? string.Empty, // This will be ignored when we save to the database and a generated Id will be assigned.
+        Id = dto.Id.ToString() ?? string.Empty,
         GuestID = dto.GuestID,
         Guest = guest,
         Email = dto.Email,
@@ -249,6 +274,18 @@ namespace ReactWithASP.Server.Infrastructure
         //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
         //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email)
       };
+      if (dto.IsGuest)
+      {
+        guest = new Guest
+        {
+          ID = (Guid)dto.GuestID,
+          Email = dto.Email,
+          FirstName = splitName[0],
+          LastName = splitName[1]
+        };
+        Guests.Add(user.Id.ToString(), guest);
+        _context.Guests.Add(guest);
+      }
       AppUsers.Add(user);
       _context.Users.Add(user);
       _context.SaveChanges();
@@ -257,7 +294,7 @@ namespace ReactWithASP.Server.Infrastructure
     private void SeedInStockProducts(int idx){
       InStockProductSeederDTO dto = inStockDTOs[idx];
       InStockProduct prod = new InStockProduct{
-        //ID = (Int32)dto.ID, // Allow database to assign a value.
+        ID = (Int32)dto.ID,
         Title = dto.Name,
         Description = dto.Description,
         Price = (decimal)dto.Price,
@@ -281,16 +318,16 @@ namespace ReactWithASP.Server.Infrastructure
     private void SeedOrders(int oidx)
     {
       OrderSeederDTO dto = orderDTOs[oidx];
-      
-      Int32? userId = dto.UserID;
+
+      Guid? userId = dto.UserID;
       Guid? guestId = dto.GuestID;
 
-      AppUser? user = AppUsers.FirstOrDefault( u => (Int32.Parse(u.Id) == userId) || ((userId == null) && (u.GuestID == guestId)) );
+      AppUser? user = AppUsers.FirstOrDefault( u => (Guid.Parse(u.Id) == userId) || ((userId == null) && (u.GuestID == guestId)) );
       Guest guest; Guests.TryGetValue(user.Id ?? string.Empty, out guest);
 
       Order order = new Order
       {
-        //ID = dto.ID, // Allow database to assign a value
+        ID = dto.ID,
         OrderPlacedDate = GetOrderDateTime(dto.OrderPlacedDate),
         PaymentReceivedDate = GetOrderDateTime(dto.PaymentReceivedDate),
         ReadyToShipDate = GetOrderDateTime(dto.ReadyToShipDate),
@@ -323,7 +360,7 @@ namespace ReactWithASP.Server.Infrastructure
       Order order = Orders.FirstOrDefault(o => o.ID == dto.OrderID);                          // lookup navigation object
       OrderedProduct op = new OrderedProduct
       {
-        //ID = dto.ID,
+        ID = dto.ID,
         Order = order,        // OrderID = dto.OrderID,
         InStockProduct = isp, // InStockProductID = dto.InStockProductID,
         Quantity = dto.Quantity
@@ -340,7 +377,7 @@ namespace ReactWithASP.Server.Infrastructure
       Order order = Orders.FirstOrDefault(o => o.ID == dto.OrderID); // lookup navigation object
       OrderPayment payment = new OrderPayment
       {
-        //ID = dto.ID,
+        ID = dto.ID,
         Order = order,
         OrderID = dto.OrderID,
         Amount = dto.Amount,

@@ -101,9 +101,10 @@ using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
   try{
     var context = services.GetRequiredService<StoreContext>();
-    context.Database.Migrate();
+    //    context.Database.Migrate();
+    await context.Database.MigrateAsync();
     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-    await seeder.Seed();
+    await seeder.Execute();
   }
   catch (Exception ex){
     var logger = services.GetRequiredService<ILogger<Program>>();
