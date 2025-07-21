@@ -90,7 +90,7 @@ const AdminProducts = () =>
     <>
       <Row>
         <Col xs={12}>
-          <AdminTitleBar titleText="Products" />
+          <AdminTitleBar titleText="Products" construction={false} />
         </Col>
         <Col xs={12}>
           {markup}
