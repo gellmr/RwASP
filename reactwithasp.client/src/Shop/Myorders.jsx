@@ -76,7 +76,7 @@ const MyOrders = () =>
 
   const noOrdersMarkup = () => (
     <>
-      <h5>(None at the moment)</h5>
+      <h5 style={{ marginTop:12 }}>(None at the moment)</h5>
     </>
   );
 
@@ -125,9 +125,9 @@ const MyOrders = () =>
 
   return (
     <>
-      <Row style={{minHeight:180}}>
+      <Row>
         <Col xs={12}>
-          <AdminTitleBar titleText="My Orders" />
+          <AdminTitleBar titleText="My Orders" construction={false} />
         </Col>
         {rowsMarkup}
       </Row>
