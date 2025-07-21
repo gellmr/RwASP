@@ -18,6 +18,7 @@ import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
 import AdminLink from '@/Admin/AdminLink';
 import EnvName from "@/Shop/EnvName";
 import ShopButton from "@/Shop/ShopButton";
+import Footer from "@/Shop/Footer";
 import VL from "@/Shop/VL";
 import { useParams } from 'react-router';
 
@@ -74,7 +75,7 @@ const ShopLayout = () =>
           </Col>
         </Row>
         <hr />
-        <div style={{ backgroundColor:"#ffffffb3", paddingBottom:90}}>Built with React and ASP, using .NET 8.0 and Vite</div>
+        <Footer />
         {/*<EnvName />*/}
       </Container>
     </div>
