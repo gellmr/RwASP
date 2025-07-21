@@ -6,9 +6,9 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import { useNavigate } from "react-router";
 import Table from 'react-bootstrap/Table'
-import TimerProgressBar from "@/Shop/ProgressTimer.jsx";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
+import Spinner from 'react-bootstrap/Spinner';
 
 function AdminOrders()
 {
@@ -20,7 +20,7 @@ function AdminOrders()
   const navigate = useNavigate();
 
   const { page } = useParams();
-  const numPages = 4;
+  const numPages = 6;
   const pageIntP = (page !== undefined) ? page : 1; // 1 = first page
   const myRoute = "/admin/orders/";
 
@@ -49,7 +49,7 @@ function AdminOrders()
     .catch((err) => {
       if (err.status == 401) {
         console.log("User not logged in. Redirect to login page...");
-        navigate('/admin'); // const reactRoute = err.response.headers.location; navigate(reactRoute);
+        navigate('/admin');
       } else {
         if (err.response !== undefined) {
           setError(err.response.data.errMessage);
@@ -80,9 +80,12 @@ function AdminOrders()
     return (
       <>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <div className="fetchErr">Loading...</div>
+          <div className="fetchErr">
+            <Spinner animation="border" size="sm" />
+            &nbsp;
+            Loading
+          </div>
         </div>
-        <TimerProgressBar />
       </>
     )
   };
@@ -138,7 +141,7 @@ function AdminOrders()
 
   return (
     <>
-      <AdminTitleBar titleText="Orders Backlog">
+      <AdminTitleBar titleText="Orders Backlog" construction={false}>
         {responsiveMessage}
       </AdminTitleBar>
 
