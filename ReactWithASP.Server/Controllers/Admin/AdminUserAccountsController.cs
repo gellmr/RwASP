@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using ReactWithASP.Server.DTO.RandomUserme;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
@@ -11,18 +12,22 @@ namespace ReactWithASP.Server.Controllers.Admin
   public class AdminUserAccountsController : AdminBaseController
   {
     protected UserManager<AppUser> _userManager;
+    protected RandomUserMeApiClient _userMeService;
 
-    public AdminUserAccountsController(UserManager<AppUser> userManager){
+    public AdminUserAccountsController(UserManager<AppUser> userManager, RandomUserMeApiClient userMeService)
+    {
       _userManager = userManager;
+      _userMeService = userMeService;
     }
 
     [HttpGet("admin-useraccounts")]
-    public ActionResult GetUserAccounts()
+    public async Task<ActionResult> GetUserAccounts()
     {
       try
       {
-        IEnumerable<AppUser> users = _userManager.Users.ToList();
-        return Ok(users);
+        List<UserDTO> usermeUsers = await _userMeService.GetUsersAsync();
+        //IEnumerable<AppUser> users = _userManager.Users.ToList();
+        return Ok(usermeUsers);
       }
       catch (Exception ex)
       {

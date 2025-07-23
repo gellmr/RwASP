@@ -68,6 +68,12 @@ builder.Services.AddSwaggerGen();
 // Register custom authorization middleware handler with DI container
 builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
 
+// Random User Generator API to fetch a list of (generated) user data for development projects. Use seed to ensure same results.
+builder.Services.AddHttpClient<RandomUserMeApiClient>(client =>{
+  client.BaseAddress = new Uri(RandomUserMeApiClient.BaseAddress);
+  client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 // DI declarations
 builder.Services.AddScoped<IOrdersRepository, EFOrdersRepository>();
 builder.Services.AddScoped<ICartLineRepository, EFCartLineRepository>();

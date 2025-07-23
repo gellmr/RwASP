@@ -1,5 +1,6 @@
 ﻿using ReactWithASP.Server.Infrastructure;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ReactWithASP.Server.DTO
 {
@@ -134,5 +135,54 @@ namespace ReactWithASP.Server.DTO
     //public decimal? ItemsOrdered { get; set; }
     //public string? Items { get; set; }
     //public string? OrderStatus { get; set; }
+  }
+
+
+  namespace RandomUserme
+  {
+    public class NameDTO{
+      public string? Title{ get; set; } public string? First { get; set; } public string? Last { get; set; }
+    }
+    public class StreetDTO {
+      public Int32? Number { get; set; } public string? Name { get; set; }
+    }
+    public class PictureDTO{
+      public string? Large { get; set; } public string? Medium { get; set; } public string? Thumbnail { get; set; }
+    }
+    public class CoordsDTO{
+      public string? Latitude { get; set; } public string? Longitude { get; set; }
+    }
+    public class TimeZoneDTO{
+      public string? Offset { get; set; } public string? Description { get; set; }
+    }
+    public class  LocationDTO{
+      public StreetDTO? Street { get; set; }
+      public string? City { get; set; }
+      public string? State { get; set; }
+      public string? Country { get; set; }
+      public Int32? PostCode { get; set; }
+      public CoordsDTO? Coordinates { get; set; }
+      public TimeZoneDTO? TimeZone {get; set; }
+    }
+    public class UserDTO{
+      public string? Gender { get; set; }
+      public NameDTO? Name { get; set; }
+      public LocationDTO? Location { get; set; }
+      public string? Email { get; set; }
+      public string? Phone { get; set; }
+      public PictureDTO? Picture { get; set; }
+    }
+    public class InfoDTO
+    {
+      public string? Seed {get; set;}
+      public Int32? Results { get; set; }
+      public Int32? Page { get; set; }
+      public string? Version { get; set; }
+    }
+    public class ResponseDTO
+    {
+      public List<UserDTO>? Results { get; set; }
+      public InfoDTO? Info { get; set; }
+      }
   }
 }
