@@ -107,8 +107,9 @@ using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
   try{
     var context = services.GetRequiredService<StoreContext>();
-    //    context.Database.Migrate();
+    //if (env.EnvironmentName == "Development"){
     await context.Database.MigrateAsync();
+    //}
     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
     await seeder.Execute();
   }
