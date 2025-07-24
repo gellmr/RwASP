@@ -10,11 +10,13 @@ namespace ReactWithASP.Server.Infrastructure
     // Fetch a list of generated user data from Random User Generator API. Use seed to ensure same results.  https://randomuser.me/documentation
     public static string BaseAddress = "https://randomuser.me/api/1.4/";
 
+    //public static string Seed = "?seed=0AA44gzzghf2a9v";
+    public static string Seed = "?seed=0AA1z7ee344gf23zzgh62";
     public static string NumRecords = "&results=50";
     public static string Nationality = "&nat=au";
     public static string Includes = "&inc=gender,name,location,email,phone,picture";
     public static string Excludes = string.Empty;
-    public static string GetUsersUri = BaseAddress + "?seed=0AA4^4gzzg^hf*2a^9v" + NumRecords + Nationality + Includes + Excludes;
+    public static string GetUsersUri = BaseAddress + Seed + NumRecords + Nationality + Includes + Excludes;
 
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _deserializeOptions;
