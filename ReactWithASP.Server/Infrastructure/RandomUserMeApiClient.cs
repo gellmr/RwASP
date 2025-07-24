@@ -14,7 +14,7 @@ namespace ReactWithASP.Server.Infrastructure
     public static string Nationality = "&nat=au";
     public static string Includes = "&inc=gender,name,location,email,phone,picture";
     public static string Excludes = string.Empty;
-    public static string GetUsersUri = BaseAddress + "?seed=0AA44gg^^hf*2a^9v" + NumRecords + Nationality + Includes + Excludes;
+    public static string GetUsersUri = BaseAddress + "?seed=0AA44gzzg^^hf*2a^9v" + NumRecords + Nationality + Includes + Excludes;
 
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _deserializeOptions;
