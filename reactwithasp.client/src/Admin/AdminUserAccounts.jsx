@@ -94,7 +94,7 @@ const AdminUserAccounts = () =>
     <>
       <Row>
         <Col xs={12}>
-          <AdminTitleBar titleText="User Accounts" />
+          <AdminTitleBar titleText="User Accounts" construction={false} />
         </Col>
         <Col xs={12}>
           {markup}
