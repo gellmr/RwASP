@@ -10,11 +10,11 @@ namespace ReactWithASP.Server.Infrastructure
     // Fetch a list of generated user data from Random User Generator API. Use seed to ensure same results.  https://randomuser.me/documentation
     public static string BaseAddress = "https://randomuser.me/api/1.4/";
 
-    public static string NumRecords = "&results=44";
+    public static string NumRecords = "&results=50";
     public static string Nationality = "&nat=au";
     public static string Includes = "&inc=gender,name,location,email,phone,picture";
     public static string Excludes = string.Empty;
-    public static string GetUsersUri = BaseAddress + "?seed=0AA44gzzg^^hf*2a^9v" + NumRecords + Nationality + Includes + Excludes;
+    public static string GetUsersUri = BaseAddress + "?seed=0AA4^4gzzg^hf*2a^9v" + NumRecords + Nationality + Includes + Excludes;
 
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _deserializeOptions;
@@ -50,6 +50,10 @@ namespace ReactWithASP.Server.Infrastructure
             .Select(group => group.First())          // From each group, take only the first user encountered
             .Take(40)                                // Take the first 40 distinct users (based on picture)
             .ToList();
+
+        if (distinctUsers.Count < 40){
+          throw new Exception("Not enough seed users found");
+        }
 
         return distinctUsers;
       }

@@ -27,7 +27,7 @@ namespace ReactWithASP.Server.Controllers.Admin
       {
         IEnumerable<AppUser> users = _userManager.Users
           .ToList()
-          .OrderBy(user => user.UserName);
+          .OrderBy(user => user.PhoneNumber);
 
         return Ok(users);
       }
