@@ -303,9 +303,9 @@ namespace ReactWithASP.Server.Infrastructure
         guest = new Guest
         {
           ID = (Guid)dto.GuestID,
-          Email = dto.Email,
-          FirstName = splitName[0],
-          LastName = splitName[1]
+          Email = user.Email,
+          FirstName = usermeDto.Name.First,
+          LastName = usermeDto.Name.Last
         };
         Guests.Add(user.Id.ToString(), guest);
         _context.Guests.Add(guest);
