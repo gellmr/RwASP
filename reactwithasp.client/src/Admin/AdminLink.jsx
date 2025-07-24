@@ -16,7 +16,7 @@ const AdminLink = () => {
       <NavLink to="/admin/products" className="mgNavLinkBtn mgAdminNavLinks" >Products</NavLink><VL />
       <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" >Backlog</NavLink><VL />
       <NavLink to="/admin/useraccounts" className="mgNavLinkBtn mgAdminNavLinks" style={{ textWrapMode:"nowrap" }}>
-        <span className="mgAdminNavHideMD">User&nbsp;</span>
+        <span className="mgAdminNavHideMD">Customer&nbsp;</span>
         Accounts
       </NavLink>
       <span className="d-sm-block d-md-none"><VL /></span>
