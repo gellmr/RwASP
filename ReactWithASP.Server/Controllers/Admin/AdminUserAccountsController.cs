@@ -25,7 +25,10 @@ namespace ReactWithASP.Server.Controllers.Admin
     {
       try
       {
-        IEnumerable<AppUser> users = _userManager.Users.ToList();
+        IEnumerable<AppUser> users = _userManager.Users
+          .ToList()
+          .OrderBy(user => user.UserName);
+
         return Ok(users);
       }
       catch (Exception ex)
