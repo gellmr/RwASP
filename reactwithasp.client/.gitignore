@@ -26,3 +26,6 @@ dist-ssr
 # Ignore VITE environment variables file.
 .env
 .env.production
+
+# Thumbs db file
+public/thumbs/Thumbs.db
