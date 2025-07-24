@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.StoredProc;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactWithASP.Server.Infrastructure
 {
@@ -18,7 +19,7 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<Order> Orders { get; set; }
     public DbSet<Guest> Guests { get; set; }
     public DbSet<OrderPayment> OrderPayments { get; set; }
-    public DbSet<AdminOrderRow> AdminOrderRows { get; set; }
+    public DbSet<AdminOrderRow> AdminOrderRows { get; set; } // Keyless (Stored Procedure)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder){
       base.OnModelCreating(modelBuilder);
@@ -53,9 +54,10 @@ namespace ReactWithASP.Server.Infrastructure
       .OnDelete(DeleteBehavior.Restrict);
 
       modelBuilder.Entity<AdminOrderRow>()
-      .HasNoKey();
+      .HasNoKey()
+      .ToTable("AdminOrderRows", t => t.ExcludeFromMigrations());
     }
-    
+
     public StoreContext(IConfiguration c) : base(){
       _config = c;
     }

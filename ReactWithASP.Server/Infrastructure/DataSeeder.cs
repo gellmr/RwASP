@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using ReactWithASP.Server.Domain;
+using ReactWithASP.Server.DTO.RandomUserme;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -76,6 +77,9 @@ namespace ReactWithASP.Server.Infrastructure
     private Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager;
     private Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> _roleManager;
 
+    protected RandomUserMeApiClient _userMeService;
+    public static List<UserDTO> usermeDTOs;
+
     public static ILookupNormalizer _normalizer;
     public static IPasswordHasher<AppUser> _hasher;
 
@@ -103,7 +107,8 @@ namespace ReactWithASP.Server.Infrastructure
       IConfiguration config,
       Microsoft.AspNetCore.Identity.UserManager<AppUser> um,
       Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> rm,
-      ILookupNormalizer norm
+      ILookupNormalizer norm,
+      RandomUserMeApiClient userMeService
     )
     {
       _context = ctx;
@@ -111,10 +116,13 @@ namespace ReactWithASP.Server.Infrastructure
       _userManager = um;
       _roleManager = rm;
       _normalizer = norm;
+      _userMeService = userMeService;
     }
 
     public async Task Execute()
     {
+      usermeDTOs = await _userMeService.GetUsersAsync();
+
       Console.WriteLine("Begin transaction for data seeding...");
       await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
       try
@@ -177,13 +185,20 @@ namespace ReactWithASP.Server.Infrastructure
         LockoutEnabled = Boolean.Parse(_config.GetSection("Authentication:VIP:LockoutEnabled").Value),
         AccessFailedCount = Int32.Parse(_config.GetSection("Authentication:VIP:AccessFailedCount").Value),
       };
-      
-      // Populate Users
-      // [RwaspDatabase].[dbo].[AspNetUsers] does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
-      // [RwaspDatabase].[dbo].[Guests]      does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
-      AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
-      appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
-      for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
+
+      try
+      {
+        // Populate Users
+        // [RwaspDatabase].[dbo].[AspNetUsers] does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
+        // [RwaspDatabase].[dbo].[Guests]      does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
+        AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
+        appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
+        for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
+      }
+      catch (Exception ex)
+      {
+        Debug.WriteLine(ex.Message);
+      }
 
       // Populate Orders
       try
@@ -250,9 +265,17 @@ namespace ReactWithASP.Server.Infrastructure
       return (days == null) ? (DateTimeOffset?)null : (DateTimeOffset.UtcNow.AddDays(Double.Parse(days.ToString() ?? string.Empty)));
     }
 
+    private string? SpliceUsermeEmail(string thisName, string intoThisAddy)
+    {
+      string? name = thisName.Split('@')[0];
+      string? email = intoThisAddy.Split('@')[1];
+      return name + "@" + email;
+    }
+
     private void SeedAppUsers(int u)
     {
       AppUserSeederDTO dto = appUserDTOs[u];
+      UserDTO usermeDto = usermeDTOs[u];
       string[] splitName = dto.UserName.Split(" ");
       Guest? guest = null;
       AppUser user = new AppUser
@@ -260,7 +283,7 @@ namespace ReactWithASP.Server.Infrastructure
         Id = dto.Id.ToString() ?? string.Empty,
         GuestID = dto.GuestID,
         Guest = guest,
-        Email = dto.Email,
+        Email = SpliceUsermeEmail(usermeDto.Email, dto.Email),
         EmailConfirmed = dto.EmailConfirmed,
         PasswordHash = _hashedVipPassword,
         //SecurityStamp = dto.SecurityStamp, // Allow database to generate this.
@@ -270,9 +293,10 @@ namespace ReactWithASP.Server.Infrastructure
         LockoutEnd = GetLockoutUtcDaysFromNow(dto.LockoutEndDateUtc),
         LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
         AccessFailedCount = dto.AccessFailedCount,
-        UserName = dto.UserName,
+        UserName = usermeDto.Name.First + " " + usermeDto.Name.Last,
         //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
-        //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email)
+        //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email),
+        Picture = (usermeDto.Picture == null) ? string.Empty : usermeDto.Picture.Thumbnail
       };
       if (dto.IsGuest)
       {

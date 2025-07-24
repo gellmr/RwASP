@@ -11,26 +11,6 @@ namespace ReactWithASP.Server.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.CreateTable(
-            //    name: "AdminOrderRows",  // This is the name of the Stored Procedure... we dont want a table!
-            //    columns: table => new
-            //    {
-            //        OrderID = table.Column<int>(type: "int", nullable: false),
-            //        Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        UserID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        OrderPlaced = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-            //        PaymentReceived = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-            //        Outstanding = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-            //        ItemsOrdered = table.Column<int>(type: "int", nullable: true),
-            //        Items = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        OrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //    });
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -103,6 +83,7 @@ namespace ReactWithASP.Server.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GuestID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -414,9 +395,6 @@ namespace ReactWithASP.Server.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.DropTable(
-            //    name: "AdminOrderRows"); // This is the name of the Stored Procedure... we dont want a table!
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 

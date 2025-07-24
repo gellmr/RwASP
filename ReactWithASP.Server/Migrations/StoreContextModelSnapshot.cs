@@ -374,7 +374,10 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("AdminOrderRows");
+                    b.ToTable("AdminOrderRows", null, t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Infrastructure.AppUser", b =>
@@ -421,6 +424,9 @@ namespace ReactWithASP.Server.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

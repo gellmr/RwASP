@@ -1,10 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ReactWithASP.Server.DTO;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactWithASP.Server.Domain.StoredProc
 {
-  [NotMapped]
+  [Keyless]
   public class AdminOrderRow
   {
     private static Int32 maxLenItemsDisplay = 30;

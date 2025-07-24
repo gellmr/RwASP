@@ -12,7 +12,7 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250719150552_CreateSP-GetAdminOrders")]
+    [Migration("20250724052400_CreateSPGetAdminOrders")]
     partial class CreateSPGetAdminOrders
     {
         /// <inheritdoc />
@@ -377,7 +377,10 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("AdminOrderRows");
+                    b.ToTable("AdminOrderRows", null, t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("ReactWithASP.Server.Infrastructure.AppUser", b =>
@@ -424,6 +427,9 @@ namespace ReactWithASP.Server.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

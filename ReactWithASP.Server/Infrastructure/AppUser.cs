@@ -11,5 +11,7 @@ namespace ReactWithASP.Server.Infrastructure
     [ForeignKey("GuestID")]
     public virtual Guest Guest { get; set; } // Navigation property.
     public Guid? GuestID { get; set; }
+
+    public string? Picture { get; set; } // Fetched from randomuser.me during seed on start
   }
 }

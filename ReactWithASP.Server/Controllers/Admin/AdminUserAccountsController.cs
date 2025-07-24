@@ -25,9 +25,8 @@ namespace ReactWithASP.Server.Controllers.Admin
     {
       try
       {
-        List<UserDTO> usermeUsers = await _userMeService.GetUsersAsync();
-        //IEnumerable<AppUser> users = _userManager.Users.ToList();
-        return Ok(usermeUsers);
+        IEnumerable<AppUser> users = _userManager.Users.ToList();
+        return Ok(users);
       }
       catch (Exception ex)
       {
