@@ -113,11 +113,20 @@
 }
 .adminUserAccImage img {
   margin-top: 5px;
+  width: 120px;
+  height: 120px;
+}
+.adminUserAccLarge {
+  /*border: 2px dashed red;*/
+  padding-top: 10px;
+ }
+.adminUserAccSmall {
+  /*border: 2px dashed green;*/
 }
 
 .myOrdersTable {
   margin-top: 10px;
-  border-radius:10px;
+  border-radius: 10px;
   border: 1px solid gainsboro;
   background-color: #ffffffd6;
 }

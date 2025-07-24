@@ -296,7 +296,7 @@ namespace ReactWithASP.Server.Infrastructure
         UserName = usermeDto.Name.First + " " + usermeDto.Name.Last,
         //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
         //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email),
-        Picture = (usermeDto.Picture == null) ? string.Empty : usermeDto.Picture.Thumbnail
+        Picture = (usermeDto.Picture == null) ? string.Empty : usermeDto.Picture.Large
       };
       if (dto.IsGuest)
       {

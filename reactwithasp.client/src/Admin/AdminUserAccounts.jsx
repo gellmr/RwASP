@@ -47,9 +47,12 @@ const AdminUserAccounts = () =>
   
   const userRowMarkup = (user) => (
     <Row className="adminUserAccRow" key={user.id}>
-      <Col xs={4} className="adminUserAccCell d-none d-sm-block adminUserAccImage">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile.png' : user.picture} rounded />
+
+      {/*large*/}
+      <Col xs={4} className="adminUserAccCell d-none d-sm-block adminUserAccImage adminUserAccLarge">
+        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded />
       </Col>
+
       <Col xs={12} sm={8}>
         <Row className="adminUserAccDetailsBox">
           <Col className="adminUserAccCell" xs={4}>User ID</Col>   <Col xs={8} className="adminUserAccCell">{user.id}</Col>
@@ -58,8 +61,10 @@ const AdminUserAccounts = () =>
           <Col className="adminUserAccCell" xs={4}>Email</Col>     <Col xs={8} className="adminUserAccCell">{user.email}</Col>
         </Row>
       </Col>
-      <Col xs={12} className="adminUserAccCell d-sm-none adminUserAccImage">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile.png' : user.picture} rounded />
+
+      {/*small*/}
+      <Col xs={12} className="adminUserAccCell d-sm-none adminUserAccImage adminUserAccSmall">
+        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded />
       </Col>
     </Row>
   );
