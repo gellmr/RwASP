@@ -1,5 +1,6 @@
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { NavLink } from "react-router";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -95,7 +96,7 @@ const MyOrders = () =>
             <tbody>
               <tr>
                 <td>Order Number</td>
-                <td>{ord.id}</td>
+                <td style={{ fontWeight:600 }}>{ord.id}</td>
               </tr>
               <tr>
                 <td>Status</td>
@@ -118,6 +119,14 @@ const MyOrders = () =>
               <tr>
                 <td>Price Total</td>
                 <td>$ {ord.priceTotal}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td style={{ textAlign: 'right', paddingBottom:15 }}>
+                  <NavLink to={"/myorders/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+                    View Details <i className="bi bi-arrow-right-short"></i>
+                  </NavLink>
+                </td>
               </tr>
             </tbody>
           </table>
