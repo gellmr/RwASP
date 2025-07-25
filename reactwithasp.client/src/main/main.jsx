@@ -7,6 +7,7 @@ import NoShopLayout from "@/layouts/NoShopLayout";
 import Shop from '@/Shop/Shop.jsx'
 import Cart from '@/Shop/Cart.jsx'
 import MyOrders from '@/Shop/MyOrders.jsx'
+import MyOrderDetail from '@/Shop/MyOrderDetail.jsx'
 import Checkout from '@/Shop/Checkout.jsx'
 import CheckoutSuccess from '@/Shop/CheckoutSuccess.jsx'
 import store from '@/Shop/store.jsx'
@@ -41,6 +42,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/:page?" element={<Shop />} />
             <Route path="/category/:category/:page?" element={<Shop />} />
             <Route path="/myorders" element={<MyOrders />} />
+            <Route path="/myorders/:orderid" element={<MyOrderDetail />} />
           </Route>
 
           <Route element={<NoShopLayout />}>
