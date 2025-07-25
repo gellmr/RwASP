@@ -1,8 +1,8 @@
 import { useParams } from 'react-router';
 import { useSelector } from 'react-redux'
-import { NavLink } from "react-router";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Image from 'react-bootstrap/Image';
 
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
@@ -21,8 +21,8 @@ function MyOrderDetail()
 
   const { orderid } = useParams();
   const orders = useSelector(state => state.myOrders.value);
-  const ord = (orders && orders.length > 0) && orders[0];
-
+  const ord = (orders && orders.length > 0) && orders.find(o => o.id.toString() === orderid);
+  
   const noOrderMarkup = () => (
     <>
       <h5 style={{ marginTop: 12 }}>(No Order ID)</h5>
@@ -53,7 +53,13 @@ function MyOrderDetail()
             </tr>
             <tr>
               <td>Items</td>
-              <td>{ord.itemString}</td>
+              <td>
+                {ord.orderedProducts.map(op => 
+                  <div key={op.id} style={{display:'inline', marginRight:15}}>
+                    <Image src={op.inStockProduct.image} rounded style={{width:50}} />
+                  </div>
+                )}
+              </td>
             </tr>
             <tr>
               <td>Total Items</td>
@@ -62,14 +68,6 @@ function MyOrderDetail()
             <tr>
               <td>Price Total</td>
               <td>$ {ord.priceTotal}</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td style={{ textAlign: 'right', paddingBottom: 15 }}>
-                <NavLink to={"/myorders/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
-                  View Details <i className="bi bi-arrow-right-short"></i>
-                </NavLink>
-              </td>
             </tr>
           </tbody>
         </table>
