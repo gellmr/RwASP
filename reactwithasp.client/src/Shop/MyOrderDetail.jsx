@@ -34,7 +34,7 @@ function MyOrderDetail()
 
   const markup = (ord === undefined) ? noOrderMarkup() : (
     <Col xs={12} key={ord.id}>
-      <div className="myOrdersTable">
+      <div className="myOrdersTable myOrdDetailImageHead">
 
         <Row>
           <Col>
