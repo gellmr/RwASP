@@ -12,6 +12,8 @@ import AdminTitleBar from "@/Admin/AdminTitleBar";
 
 import displayDate from '@/Shop/displayDate.jsx'
 
+import '@/MyOrders.css'
+
 const MyOrders = () =>
 {
   const retryThisPage = 5;
