@@ -10,6 +10,8 @@ import axiosRetry from 'axios-retry';
 import displayDate from '@/Shop/displayDate.jsx'
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 
+import '@/MyOrderDetail.css'
+
 function MyOrderDetail()
 {
   const retryThisPage = 5;
@@ -34,8 +36,8 @@ function MyOrderDetail()
 
   const markup = (ord === undefined) ? noOrderMarkup() : (
     <Col xs={12} key={ord.id}>
-      <div className="myOrdersTable myOrdDetailImageHead">
 
+      <div className="myOrdDetailImageHead">
         <Row>
           <Col>
             <table style={{ width: "100%", textAlign: "left" }}>
@@ -49,7 +51,7 @@ function MyOrderDetail()
                   <td>{ord.orderStatus}</td>
                 </tr>
                 <tr>
-                  <td>Placed Date</td>
+                  <td style={{ verticalAlign:'top' }}>Placed Date</td>
                   <td>
                     {displayDate(ord.orderPlacedDate)}
                   </td>
@@ -66,13 +68,16 @@ function MyOrderDetail()
             </table>
           </Col>
         </Row>
-        <hr />
+      </div>
 
-        <Row>
-          <Col xs={12} style={{marginBottom:10}}>
-            <Row className='myOrdDetailImageRows'>
+      <Row>
+        <Col xs={12}  style={{paddingBottom:10, paddingTop:10}}>
+
+          <div className='myOrdDetailImageBody'>
+
+            <Row className='myOrdDetailImageRow'>
               <Col xs={4} className='myOrdDetailImageCell'>
-                <b>Title</b>
+                <b>Item</b>
               </Col>
               <Col xs={2} className='myOrdDetailImageCell'>
                 <b>Qty</b>
@@ -84,13 +89,10 @@ function MyOrderDetail()
                 {/*Image*/}
               </Col>
             </Row>
-          </Col>
-        </Row>
+            <hr />
 
-        <Row>
-          <Col xs={12}>
             {ord.orderedProducts && ord.orderedProducts.map(op =>
-              <Row className='myOrdDetailImageRows'>
+              <Row className='myOrdDetailImageRow'>
                 <Col xs={4} className='myOrdDetailImageCell'>
                   <b>{op.inStockProduct.title}</b>
                 </Col>
@@ -109,18 +111,19 @@ function MyOrderDetail()
                 </Col>
               </Row>
             )}
-          </Col>
-        </Row>
 
-      </div>
+          </div>
+        </Col>
+      </Row>
+
     </Col>
   );
 
   return (
     <>
-      <Row>
+      <Row id="myOrdDetailPage">
         <Col xs={12}>
-          <AdminTitleBar titleText={"Order Number: " + orderid} construction={false} />
+          <AdminTitleBar titleText={"Order #" + orderid} construction={false} />
         </Col>
         {markup}
       </Row>
