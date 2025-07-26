@@ -52,22 +52,36 @@ function MyOrderDetail()
               </td>
             </tr>
             <tr>
-              <td>Items</td>
-              <td>
-                {ord.orderedProducts.map(op => 
-                  <div key={op.id} style={{display:'inline', marginRight:15}}>
-                    <Image src={op.inStockProduct.image} rounded style={{width:50}} />
-                  </div>
-                )}
-              </td>
+              <td>Price Total</td>
+              <td>$ {ord.priceTotal}</td>
             </tr>
             <tr>
               <td>Total Items</td>
               <td>{ord.quantityTotal}</td>
             </tr>
-            <tr>
-              <td>Price Total</td>
-              <td>$ {ord.priceTotal}</td>
+            <tr style={{ verticalAlign:'top', borderTop:'1px solid gainsboro' }}>
+              <td>Items</td>
+              <td>
+                {ord.orderedProducts && ord.orderedProducts.map(op => 
+                  <div key={op.id} className="myOrdDetailImageCell">
+
+                    <div style={{ display: 'inline-block', width: '40%', border: '1px solid red' }} >
+                      <b>{op.inStockProduct.title}</b>
+                      &nbsp;${op.inStockProduct.price}
+                    </div>
+
+                    <div style={{ color: 'grey', width: '30%', border: '1px solid orange' }}>
+                      &nbsp;Qty:&nbsp;{op.quantity}<br />
+                      &nbsp;Total:&nbsp;${op.inStockProduct.price * op.quantity}
+                    </div>
+
+                    <div style={{ display: 'inline-block', width: '30%', textAlign: 'center', border: '1px solid yellow' }} >
+                      <Image src={op.inStockProduct.image} rounded style={{ width: 35 }} /> &nbsp;
+                    </div>
+
+                  </div>
+                )}
+              </td>
             </tr>
           </tbody>
         </table>
