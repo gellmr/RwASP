@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { setCart, clearCart } from '@/features/cart/cartSlice.jsx'
 
@@ -21,19 +21,25 @@ import ShopButton from "@/Shop/ShopButton";
 import Footer from "@/Shop/Footer";
 import VL from "@/Shop/VL";
 import { useParams } from 'react-router';
+import { useLocation } from 'react-router';
 
 const ShopLayout = () =>
 {
   const dispatch = useDispatch();
   const { category } = useParams();
 
-  let bgCss = "soccerBg1";
-  switch (category) {
-    case 'soccer':     bgCss = "soccerBg2"; break;
-    case 'chess':      bgCss = "chessBg"; break;
-    case 'waterSport': bgCss = "kayakBg"; break;
-  }
-  const bgClass = "soccerBaseBg " + bgCss;
+  const location = useLocation();
+  const [backCss, setBackCss] = useState('');
+
+  useEffect(() => {
+    let css = "soccerBg1";
+    switch (category) {
+      case 'soccer': css = "soccerBg2"; break;
+      case 'chess': css = "chessBg"; break;
+      case 'waterSport': css = "kayakBg"; break;
+    }
+    setBackCss("soccerBaseBg " + css);
+  }, [location]);
 
   useEffect(() => {
     fetchCart();
@@ -52,7 +58,7 @@ const ShopLayout = () =>
 
   return (
     <div >
-      <Container id="shopLayout" className={bgClass}  style={{ border: '' }}>
+      <Container id="shopLayout" className={backCss} style={{ border: '' }}>
         <Row>
           <MgNavBar>
             <ShopButton withBackArrow={false} />
