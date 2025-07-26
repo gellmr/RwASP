@@ -140,11 +140,29 @@
   padding-top: 10px;
   /*border:3px solid green;*/
 }
-.myOrdersTable .myOrdDetailImageCell{
-  border: 2px dashed blue;
+.myOrdersTable .myOrdDetailImageRows{
+  /*border: 2px dashed blue;*/
   display: flex;
   justify-content: space-between;
   font-size:12px;
+  text-align:left;
+  margin-bottom:10px;
+}
+.myOrdDetailImageCell b {
+  font-weight: 600;
+}
+.myOrdDetailImageCell .mgLight {
+  font-weight: 400;
+  color: #616161;
+}
+.myOrdDetailImageCell:first-child {
+  /*border: 2px dashed red;*/
+  padding-left: 25px;
+  font-weight: 600;
+}
+.myOrdDetailImageCell:last-child {
+  /*border: 2px dashed magenta;*/
+  padding-left: 0px;
 }
 
 .vl {

@@ -35,56 +35,83 @@ function MyOrderDetail()
   const markup = (ord === undefined) ? noOrderMarkup() : (
     <Col xs={12} key={ord.id}>
       <div className="myOrdersTable">
-        <table style={{ width: "100%", textAlign: "left" }}>
-          <tbody>
-            <tr>
-              <td>Order Number</td>
-              <td style={{ fontWeight: 600 }}>{ord.id}</td>
-            </tr>
-            <tr>
-              <td>Status</td>
-              <td>{ord.orderStatus}</td>
-            </tr>
-            <tr>
-              <td>Placed Date</td>
-              <td>
-                {displayDate(ord.orderPlacedDate)}
-              </td>
-            </tr>
-            <tr>
-              <td>Price Total</td>
-              <td>$ {ord.priceTotal}</td>
-            </tr>
-            <tr>
-              <td>Total Items</td>
-              <td>{ord.quantityTotal}</td>
-            </tr>
-            <tr style={{ verticalAlign:'top', borderTop:'1px solid gainsboro' }}>
-              <td>Items</td>
-              <td>
-                {ord.orderedProducts && ord.orderedProducts.map(op => 
-                  <div key={op.id} className="myOrdDetailImageCell">
 
-                    <div style={{ display: 'inline-block', width: '40%', border: '1px solid red' }} >
-                      <b>{op.inStockProduct.title}</b>
-                      &nbsp;${op.inStockProduct.price}
-                    </div>
+        <Row>
+          <Col>
+            <table style={{ width: "100%", textAlign: "left" }}>
+              <tbody>
+                <tr>
+                  <td>Order Number</td>
+                  <td style={{ fontWeight: 600 }}>{ord.id}</td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>{ord.orderStatus}</td>
+                </tr>
+                <tr>
+                  <td>Placed Date</td>
+                  <td>
+                    {displayDate(ord.orderPlacedDate)}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Price Total</td>
+                  <td>$ {ord.priceTotal}</td>
+                </tr>
+                <tr>
+                  <td>Total Items</td>
+                  <td>{ord.quantityTotal}</td>
+                </tr>
+              </tbody>
+            </table>
+          </Col>
+        </Row>
+        <hr />
 
-                    <div style={{ color: 'grey', width: '30%', border: '1px solid orange' }}>
-                      &nbsp;Qty:&nbsp;{op.quantity}<br />
-                      &nbsp;Total:&nbsp;${op.inStockProduct.price * op.quantity}
-                    </div>
+        <Row>
+          <Col xs={12} style={{marginBottom:10}}>
+            <Row className='myOrdDetailImageRows'>
+              <Col xs={4} className='myOrdDetailImageCell'>
+                <b>Title</b>
+              </Col>
+              <Col xs={2} className='myOrdDetailImageCell'>
+                <b>Qty</b>
+              </Col>
+              <Col xs={2} className='myOrdDetailImageCell'>
+                <b>Total</b>
+              </Col>
+              <Col xs={3} className='myOrdDetailImageCell' style={{ textAlign: 'center' }}>
+                {/*Image*/}
+              </Col>
+            </Row>
+          </Col>
+        </Row>
 
-                    <div style={{ display: 'inline-block', width: '30%', textAlign: 'center', border: '1px solid yellow' }} >
-                      <Image src={op.inStockProduct.image} rounded style={{ width: 35 }} /> &nbsp;
-                    </div>
+        <Row>
+          <Col xs={12}>
+            {ord.orderedProducts && ord.orderedProducts.map(op =>
+              <Row className='myOrdDetailImageRows'>
+                <Col xs={4} className='myOrdDetailImageCell'>
+                  <b>{op.inStockProduct.title}</b>
+                </Col>
 
-                  </div>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <Col xs={2} className='myOrdDetailImageCell'>
+                  <span className='mgLight'>{op.quantity}</span>
+                  <br />
+                </Col>
+
+                <Col xs={2} className='myOrdDetailImageCell'>
+                  <span className='mgLight'>${op.inStockProduct.price * op.quantity}</span>
+                </Col>
+
+                <Col xs={3} className='myOrdDetailImageCell' style={{ textAlign:'center' }}>
+                  <Image src={op.inStockProduct.image} rounded style={{ width: 35 }} /> &nbsp;
+                </Col>
+              </Row>
+            )}
+          </Col>
+        </Row>
+
       </div>
     </Col>
   );
