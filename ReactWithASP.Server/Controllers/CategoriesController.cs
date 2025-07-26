@@ -14,8 +14,8 @@ namespace ReactWithASP.Server.Controllers
       new ProductCategory { ID=3, Title="Water Sport", Segment="waterSport"}
     };
 
-    [HttpGet(Name = "GetCategories")]
-    public IEnumerable<ProductCategory> Get()
+    [HttpGet] // GET api/categories
+    public IEnumerable<ProductCategory> GetCategories()
     {
       return Cats.ToArray();
     }
