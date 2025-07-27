@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.DTO.RandomUserme;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace ReactWithASP.Server.Infrastructure
@@ -30,8 +33,8 @@ namespace ReactWithASP.Server.Infrastructure
       };
     }
 
-    // --- GET Request ---
-    public async Task<List<UserDTO>?> GetUsersAsync()
+    [NonAction]
+    private async Task<List<UserDTO>?> GetFromApi()
     {
       try
       {
@@ -68,6 +71,23 @@ namespace ReactWithASP.Server.Infrastructure
       {
         Console.WriteLine($"JSON deserialization error: {ex.Message}"); // Handle JSON deserialization errors
         return null;
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"An unexpected error occurred: {ex.Message}"); // Catch any other unexpected errors
+        return null;
+      }
+    }
+
+    // --- GET Request ---
+    [HttpGet]
+    public async Task<List<UserDTO>?> GetUsersAsync()
+    {
+      try
+      {
+        List<UserDTO> distinctUsers = await GetFromApi();
+
+        return distinctUsers;
       }
       catch (Exception ex)
       {
