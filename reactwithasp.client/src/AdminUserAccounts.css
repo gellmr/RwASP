@@ -1,0 +1,75 @@
+
+/* ======================================================== */
+/* =============     SMALLER THAN xs      ================= */
+/* ======================================================== */
+
+.freepikattrib {
+  font-size: 11px;
+}
+
+.freepikBanner {
+  color: white;
+  background-color: #8ea5ad;
+  height: 40px;
+  padding-top: 12px !important;
+  font-weight: 400;
+  margin-bottom: 9px;
+}
+
+.freepikSection a {
+  text-decoration: none;
+  font-weight: 400;
+  color: #90c1d1;
+  margin-bottom: 15px;
+}
+
+.freepikSection div {
+  margin-bottom: 6px;
+}
+
+@media (min-width: 370px) {
+  /* BEGINING OF INTERMEDIATE SIZE */
+}
+
+/* ======================================================== */
+/* =============    DEFAULT BREAKPOINT: xs  =============== */
+/* ======================================================== */
+/* xs */
+/* Extra small devices (portrait phones, less than 576px) */
+/* No media query for `xs` since this is the default in Bootstrap */
+
+/* ================================================= */
+/* ========= OTHER BREAKPOINTS BELOW HERE ========== */
+/* ================================================= */
+/* sm */
+/* Small devices (landscape phones, 576px and up) */
+
+@media (min-width: 576px) {
+}
+
+/* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
+/* ======= Custom Breakpoint - MD-INERMEDIATE ====== */
+/* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
+
+@media (min-width: 708px) {
+}
+
+/* ================================================= */
+/* =========            MEDIUM            ========== */
+/* ================================================= */
+
+@media (min-width: 768px) {
+  .freepikattrib {
+    font-size: 14px;
+  }
+  .freepikBanner {
+    padding-top: 8px !important;
+  }
+}
+
+/* ================================================= */
+/* =========             LARGE            ========== */
+/* ================================================= */
+
+@media (min-width: 992px) {
+}

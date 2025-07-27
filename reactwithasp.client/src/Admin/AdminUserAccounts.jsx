@@ -8,6 +8,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 
+import '@/AdminUserAccounts.css'
+
 const AdminUserAccounts = () =>
 {
   const retryThisPage = 5;
@@ -90,6 +92,34 @@ const AdminUserAccounts = () =>
     userTableMarkup()
   ));
 
+  const attributions = (
+    <>
+      <hr />
+      <Row>
+        <Col className="freepikattrib freepikSection">
+          <div className="freepikattrib freepikBanner">
+            People Avatar Icons created by Freepik / Flaticon.com
+          </div>
+          <div>
+            <a href="https://www.flaticon.com/free-icons/ginger" title="ginger icons">Ginger icons created by Freepik - Flaticon</a>
+          </div>
+          <div>
+            <a href="https://www.flaticon.com/free-icons/modern" title="modern icons">Modern icons created by Freepik - Flaticon</a>
+          </div>
+          <div>
+            <a href="https://www.flaticon.com/free-icons/young" title="young icons">Young icons created by Freepik - Flaticon</a>
+          </div>
+          <div>
+            <a href="https://www.flaticon.com/free-icons/man" title="man icons">Man icons created by Freepik - Flaticon</a>
+          </div>
+          <div>
+            <a href="https://www.flaticon.com/free-icons/woman" title="woman icons">Woman icons created by Freepik - Flaticon</a>
+          </div>
+        </Col>
+      </Row>
+    </>
+  );
+
   return (
     <>
       <Row>
@@ -98,6 +128,7 @@ const AdminUserAccounts = () =>
         </Col>
         <Col xs={12}>
           {markup}
+          {/*attributions*/}
         </Col>
       </Row>
     </>
