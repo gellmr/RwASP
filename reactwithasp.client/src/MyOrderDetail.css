@@ -7,6 +7,9 @@
   /*color: coral !important;*/
   font-size: 11px;
 }
+.myOrdDetailIspTitle{
+  font-size:9px;
+}
 .myOrdDetailImageHead {
   /*color: darkmagenta;*/
   margin-top: 10px;
@@ -40,7 +43,7 @@
   display: flex;
   justify-content: space-between;
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 #myOrdDetailPage .myOrdDetailImageCell b {
   font-weight: 600;
@@ -85,7 +88,10 @@
   
   #myOrdDetailPage {
     /*color: magenta !important;*/
-    font-size: 14px;
+    font-size: 13px;
+  }
+  .myOrdDetailIspTitle {
+    font-size: 11px;
   }
 }
 
@@ -103,7 +109,7 @@
 @media (min-width: 768px) {
   #myOrdDetailPage {
     /*color: lime !important;*/
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 

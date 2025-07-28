@@ -76,7 +76,10 @@ function MyOrderDetail()
           <div className='myOrdDetailImageBody'>
 
             <Row className='myOrdDetailImageRow'>
-              <Col xs={4} className='myOrdDetailImageCell'>
+              <Col xs={2} className='myOrdDetailImageCell'>
+                <b>Price</b>
+              </Col>
+              <Col xs={3} className='myOrdDetailImageCell'>
                 <b>Item</b>
               </Col>
               <Col xs={2} className='myOrdDetailImageCell'>
@@ -93,7 +96,13 @@ function MyOrderDetail()
 
             {ord.orderedProducts && ord.orderedProducts.map(op =>
               <Row className='myOrdDetailImageRow'>
-                <Col xs={4} className='myOrdDetailImageCell'>
+
+                <Col xs={2} className='myOrdDetailImageCell'>
+                  <span className='mgLight' >${op.inStockProduct.price}</span>
+                  <br />
+                </Col>
+
+                <Col xs={3} className='myOrdDetailImageCell myOrdDetailIspTitle'>
                   <b>{op.inStockProduct.title}</b>
                 </Col>
 
@@ -111,6 +120,28 @@ function MyOrderDetail()
                 </Col>
               </Row>
             )}
+
+            {/*<hr style={{ margin:0, marginBottom:10 }} />*/}
+
+            <Row className='myOrdDetailImageRow'>
+              <Col xs={2} className='myOrdDetailImageCell'>
+                &nbsp;
+              </Col>
+              <Col xs={3} className='myOrdDetailImageCell'>
+                &nbsp;
+              </Col>
+              <Col xs={2} className='myOrdDetailImageCell'>
+                {ord.quantityTotal}
+              </Col>
+              <Col xs={2} className='myOrdDetailImageCell'>
+                $<b>
+                  {ord.priceTotal}
+                </b>
+              </Col>
+              <Col xs={3} className='myOrdDetailImageCell' style={{ textAlign: 'center' }}>
+                &nbsp;
+              </Col>
+            </Row>
 
           </div>
         </Col>
