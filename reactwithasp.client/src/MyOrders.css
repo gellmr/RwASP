@@ -27,7 +27,7 @@
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
   .myOrdersTable {
-    font-size: 12px;
+    font-size: 11px;
     /*color: red;*/
   }
 }
@@ -47,7 +47,7 @@
 
 @media (min-width: 576px) {
   .myOrdersTable {
-    font-size: 13px;
+    font-size: 12px;
     /*color: orange;*/
   }
 }
@@ -65,7 +65,7 @@
 
 @media (min-width: 768px) {
   .myOrdersTable {
-    font-size: 15px;
+    font-size: 13px;
     /*color: saddlebrown;*/
   }
 }
