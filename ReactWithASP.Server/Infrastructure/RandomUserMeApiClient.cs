@@ -86,7 +86,7 @@ namespace ReactWithASP.Server.Infrastructure
       try
       {
         List<UserDTO> distinctUsers = await GetFromApi();
-
+        //List<UserDTO> distinctUsers = await GetFromLocal();
         return distinctUsers;
       }
       catch (Exception ex)
