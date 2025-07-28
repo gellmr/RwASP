@@ -3,10 +3,11 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
+
+
 .freepikattrib {
   font-size: 11px;
 }
-
 .freepikBanner {
   color: white;
   background-color: #8ea5ad;
@@ -15,17 +16,55 @@
   font-weight: 400;
   margin-bottom: 9px;
 }
-
 .freepikSection a {
   text-decoration: none;
   font-weight: 400;
   color: #90c1d1;
   margin-bottom: 15px;
 }
-
 .freepikSection div {
   margin-bottom: 6px;
 }
+
+
+
+.adminUserAccRow {
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  text-align: left;
+  padding-left: 10px;
+  padding-bottom:6px;
+  margin:0px;
+  margin-bottom:15px;
+  font-size: 11px;
+  /*color:red;*/
+}
+.adminUserAccDetailsBox {
+  padding-top: 12px;
+  padding-bottom: 4px;
+}
+.adminUserAccCell {
+  padding-bottom: 8px;
+  padding-right: 25px;
+}
+.adminUserAccImage {
+  text-align: center;
+}
+.adminUserAccImage img {
+  margin-top: 5px;
+  width: 120px;
+  height: 120px;
+}
+.adminUserAccLarge {
+  /*border: 2px dashed red;*/
+  padding-top: 10px;
+ }
+.adminUserAccSmall {
+  /*border: 2px dashed green;*/
+}
+
+
 
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
@@ -44,15 +83,36 @@
 /* sm */
 /* Small devices (landscape phones, 576px and up) */
 
+
+
 @media (min-width: 576px) {
+  .adminUserAccRow {
+    /*color: orange;*/
+    font-size: 13px;
+  }
+  .adminUserAccDetailsBox {
+    padding-top: 20px;
+  }
+  .mgGuid {
+    /*color: magenta;*/
+    font-size:12px;
+  }
 }
+
+
 
 /* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
 /* ======= Custom Breakpoint - MD-INERMEDIATE ====== */
 /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
 
 @media (min-width: 708px) {
+  .mgGuid {
+    /*color: darkmagenta;*/
+    font-size: 13px;
+  }
 }
+
+
 
 /* ================================================= */
 /* =========            MEDIUM            ========== */
@@ -65,11 +125,22 @@
   .freepikBanner {
     padding-top: 8px !important;
   }
+
 }
+
+
 
 /* ================================================= */
 /* =========             LARGE            ========== */
 /* ================================================= */
 
 @media (min-width: 992px) {
+  .adminUserAccRow {
+    /*color: saddlebrown;*/
+    font-size: 15px;
+  }
+  .mgGuid {
+    /*color: darkcyan;*/
+    font-size: 15px;
+  }
 }

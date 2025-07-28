@@ -83,6 +83,7 @@ namespace ReactWithASP.Server.Infrastructure
     [HttpGet]
     public async Task<List<UserDTO>?> GetUsersAsync()
     {
+      throw new Exception("Randomuserme API is not available"); // Disable until I get word back from the API vendor
       try
       {
         List<UserDTO> distinctUsers = await GetFromApi();

@@ -36,6 +36,8 @@ namespace ReactWithASP.Server.Infrastructure
     public bool LockoutEnabled { get; set; }
     public Int32 AccessFailedCount { get; set; }
     public string? UserName { get; set; }
+
+    public string? Picture { get; set; }
   }
 
   public class OrderSeederDTO
@@ -78,7 +80,7 @@ namespace ReactWithASP.Server.Infrastructure
     private Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> _roleManager;
 
     protected RandomUserMeApiClient _userMeService;
-    public static List<UserDTO> usermeDTOs;
+    //public static List<UserDTO> usermeDTOs;
 
     public static ILookupNormalizer _normalizer;
     public static IPasswordHasher<AppUser> _hasher;
@@ -121,7 +123,7 @@ namespace ReactWithASP.Server.Infrastructure
 
     public async Task Execute()
     {
-      usermeDTOs = await _userMeService.GetUsersAsync();
+      //usermeDTOs = await _userMeService.GetUsersAsync();
 
       Console.WriteLine("Begin transaction for data seeding...");
       await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
@@ -275,7 +277,7 @@ namespace ReactWithASP.Server.Infrastructure
     private void SeedAppUsers(int u)
     {
       AppUserSeederDTO dto = appUserDTOs[u];
-      UserDTO usermeDto = usermeDTOs[u];
+      //UserDTO usermeDto = usermeDTOs[u];
       string[] splitName = dto.UserName.Split(" ");
       Guest? guest = null;
       AppUser user = new AppUser
@@ -283,7 +285,7 @@ namespace ReactWithASP.Server.Infrastructure
         Id = dto.Id.ToString() ?? string.Empty,
         GuestID = dto.GuestID,
         Guest = guest,
-        Email = SpliceUsermeEmail(usermeDto.Email, dto.Email),
+        Email = dto.Email, //  SpliceUsermeEmail(usermeDto.Email, dto.Email),
         EmailConfirmed = dto.EmailConfirmed,
         PasswordHash = _hashedVipPassword,
         //SecurityStamp = dto.SecurityStamp, // Allow database to generate this.
@@ -293,10 +295,12 @@ namespace ReactWithASP.Server.Infrastructure
         LockoutEnd = GetLockoutUtcDaysFromNow(dto.LockoutEndDateUtc),
         LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
         AccessFailedCount = dto.AccessFailedCount,
-        UserName = usermeDto.Name.First + " " + usermeDto.Name.Last,
+        UserName = dto.UserName, // usermeDto.Name.First + " " + usermeDto.Name.Last,
         //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
         //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email),
-        Picture = (usermeDto.Picture == null) ? string.Empty : usermeDto.Picture.Large
+
+        //Picture = (usermeDto.Picture == null) ? string.Empty : usermeDto.Picture.Large   // Use Large picture from randomuserme
+        Picture = (dto.Picture == null) ? string.Empty : dto.Picture
       };
       if (dto.IsGuest)
       {
@@ -304,8 +308,8 @@ namespace ReactWithASP.Server.Infrastructure
         {
           ID = (Guid)dto.GuestID,
           Email = user.Email,
-          FirstName = usermeDto.Name.First,
-          LastName = usermeDto.Name.Last
+          FirstName = splitName[0], // usermeDto.Name.First,
+          LastName  = splitName[1]  // usermeDto.Name.Last
         };
         Guests.Add(user.Id.ToString(), guest);
         _context.Guests.Add(guest);

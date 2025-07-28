@@ -57,10 +57,10 @@ const AdminUserAccounts = () =>
 
       <Col xs={12} sm={8}>
         <Row className="adminUserAccDetailsBox">
-          <Col className="adminUserAccCell" xs={4}>User ID</Col>   <Col xs={8} className="adminUserAccCell">{user.id}</Col>
-          <Col className="adminUserAccCell" xs={4}>UserName</Col>  <Col xs={8} className="adminUserAccCell">{user.userName}</Col>
-          <Col className="adminUserAccCell" xs={4}>Phone</Col>     <Col xs={8} className="adminUserAccCell">{user.phoneNumber}</Col>
-          <Col className="adminUserAccCell" xs={4}>Email</Col>     <Col xs={8} className="adminUserAccCell">{user.email}</Col>
+          <Col className="adminUserAccCell" xs={3}>User&nbsp;ID</Col>   <Col xs={9} className="adminUserAccCell mgGuid">{user.id}</Col>
+          <Col className="adminUserAccCell" xs={3}>UserName</Col>  <Col xs={9} className="adminUserAccCell">{user.userName}</Col>
+          <Col className="adminUserAccCell" xs={3}>Phone</Col>     <Col xs={9} className="adminUserAccCell">{user.phoneNumber}</Col>
+          <Col className="adminUserAccCell" xs={3}>Email</Col>     <Col xs={9} className="adminUserAccCell">{user.email}</Col>
         </Row>
       </Col>
 
