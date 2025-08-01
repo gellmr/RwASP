@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios';
+import { axiosInstance } from '@/axiosDefault.jsx';
 
 export const updateCartOnServer = createAsyncThunk( 'cart/updateCartOnServer',
   async (jsonData, { rejectWithValue }) => {
     try {
       // Notify the server our Cart has changed.
       const options = { headers: { 'Content-Type': 'application/json' } };
-      const response = await axios.post('/api/cart/update', jsonData, options);
+      const response = await axiosInstance.post('/api/cart/update', jsonData, options);
       return response.data;
     }
     catch (error) {
@@ -20,7 +20,7 @@ export const clearCartOnServer = createAsyncThunk('cart/clearCartOnServer',
     try {
       // Tell the server to clear our Cart.
       const options = { headers: { 'Content-Type': 'application/json' } };
-      const response = await axios.post('/api/cart/clear', { guestId:123 }, options);
+      const response = await axiosInstance.post('/api/cart/clear', { guestId:123 }, options);
       return response.data;
     }
     catch (error) {
