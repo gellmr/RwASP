@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const loginSlice = createSlice({
   name: 'login',
   initialState: {
-    value: ""
+    value: null
   },
   reducers: {
     setLogin: (state, action) => {

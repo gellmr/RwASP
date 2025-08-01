@@ -18,6 +18,8 @@ const AdminUserAccounts = () =>
   const [error, setError] = useState(null);
 
   const userAccounts = useSelector(state => state.adminUserAccounts.users);
+  const loginValue = useSelector(state => state.login.value);
+  const myUserId = loginValue.appUserId;
 
   const axiosInstance = axios.create({});
   axiosRetry(axiosInstance, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {

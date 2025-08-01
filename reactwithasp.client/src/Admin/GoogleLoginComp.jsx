@@ -29,7 +29,7 @@ const GoogleLoginComp = () =>
     axios.post(url, tokenResponse).then((response) => {
       console.log("------------------------------");
       console.log('Login success. Data fetched:', response.data); // response.data is already JSON
-      dispatch(setLogin(response.data.loginType));
+      dispatch(setLogin(response.data));
       console.log("Navigate to /admin/orders...");
       navigate('/admin/orders');
     })

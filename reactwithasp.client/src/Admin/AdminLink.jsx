@@ -7,9 +7,9 @@ import CartBtn from "@/Shop/CartBtn";
 
 const AdminLink = () => {
   const location = useLocation();
-  const login = useSelector(state => state.login.value);
   const withinAdmin = location.pathname.indexOf("/admin") !== -1;
-  const isLoggedIn = login !== "";
+  const login = useSelector(state => state.login.value);
+  const isLoggedIn = (login !== null);
 
   const adminLinks = (
     <>

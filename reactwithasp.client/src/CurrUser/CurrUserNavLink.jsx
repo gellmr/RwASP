@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux'
 function CurrUserNavLink()
 {
   const login = useSelector(state => state.login.value);
+  const isLoggedIn = (login !== null);
 
   const loginOutBtn = function () {
-    const markup = (login === "") ? <LogInButton /> : <LogOutButton />;
+    const markup = (isLoggedIn) ? <LogOutButton /> : <LogInButton />;
     return (
       <>
         {markup}

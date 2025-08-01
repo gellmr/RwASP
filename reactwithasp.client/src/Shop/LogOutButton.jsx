@@ -21,7 +21,7 @@ function LogOutButton()
     axios.post(url).then((response) => {
       console.log("------------------------------");
       console.log('Logout success. ', response.data);
-      dispatch(setLogin(""));
+      dispatch(setLogin(null));
       console.log("Navigate to /");
       navigate('/');
     })
