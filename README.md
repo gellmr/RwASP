@@ -8,6 +8,6 @@ The site can be viewed at [https://react.mikegelldemo.live](https://react.mikege
 
 The application allows you to browse and search for products, add to cart and proceed to checkout.
 
-Completed orders appear within the users' My Orders page.
+Completed orders appear within the user's My Orders page.
 
 There is also an Admin login, where you can view customer orders, customer accounts, and the product catalogue.
