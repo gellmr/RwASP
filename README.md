@@ -11,3 +11,5 @@ The application allows you to browse and search for products, add to cart and pr
 Completed orders appear within the user's My Orders page.
 
 There is also an Admin login, where you can view customer orders, customer accounts, and the product catalogue.
+
+To generate the orders backlog, I used a [stored procedure](https://github.com/gellmr/RwASP/blob/bec2014eccb80ac90f6b25a4145a8dbf960adaee/ReactWithASP.Server/Migrations/20250724052400_CreateSPGetAdminOrders.cs) to join several tables and aggregate data.
