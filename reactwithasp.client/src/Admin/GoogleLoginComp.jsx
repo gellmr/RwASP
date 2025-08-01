@@ -2,22 +2,15 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { setLogin } from '@/features/login/loginSlice.jsx'
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
+import { axiosInstance } from '@/axiosDefault.jsx';
 import { useNavigate } from "react-router";
 
 const GoogleLoginComp = () =>
 {
-  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  // Configure axios instance.
-  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
-    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
-  }});
 
   async function confirmToken(tokenResponse)
   {
@@ -26,7 +19,7 @@ const GoogleLoginComp = () =>
     setIsLoading(true);
     const url = window.location.origin + "/api/validate-google-token";
     console.log("Try to get Access Token (from Google API) " + url);
-    axios.post(url, tokenResponse).then((response) => {
+    axiosInstance.post(url, tokenResponse).then((response) => {
       console.log("------------------------------");
       console.log('Login success. Data fetched:', response.data); // response.data is already JSON
       dispatch(setLogin(response.data));
