@@ -3,27 +3,16 @@ import Col from 'react-bootstrap/Col'
 import { NavLink } from "react-router";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
-
+import { axiosInstance } from '@/axiosDefault.jsx';
 import { setMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
 import AdminTitleBar from "@/Admin/AdminTitleBar";
-
 import displayDate from '@/Shop/displayDate.jsx'
-
 import '@/MyOrders.css'
 
 const MyOrders = () =>
 {
-  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Configure axios instance.
-  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
-    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
-  }});
 
   const ordersThisPage = useSelector(state => state.myOrders.value);
   const dispatch = useDispatch();
@@ -36,7 +25,7 @@ const MyOrders = () =>
   {
     const url = window.location.origin + "/api/myorders";
     console.log("Axios retry..." + url);
-    axios.get(url).then((response) => {
+    axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
       dispatch(setMyOrders(response.data));
     })
