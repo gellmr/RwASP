@@ -3,10 +3,6 @@ import { useSelector } from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
-
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
-
 import displayDate from '@/Shop/displayDate.jsx'
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 
@@ -14,13 +10,6 @@ import '@/MyOrderDetail.css'
 
 function MyOrderDetail()
 {
-  const retryThisPage = 5;
-  
-  // Configure axios instance.
-  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
-    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
-  }});
-
   const { orderid } = useParams();
   const orders = useSelector(state => state.myOrders.value);
   const ord = (orders && orders.length > 0) && orders.find(o => o.id.toString() === orderid);
