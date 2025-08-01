@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router';
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
+import { axiosInstance } from '@/axiosDefault.jsx';
 import { setCategories, setNoCategories } from '@/features/categories/categoriesSlice.jsx'
 import Col from 'react-bootstrap/Col'
 import { NavLink } from "react-router";
@@ -12,7 +11,6 @@ import "bootstrap/dist/css/bootstrap.css";
 
 function CategoriesMenu()
 {
-  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,11 +20,6 @@ function CategoriesMenu()
   const location = useLocation();
   const currentPath = location.pathname + location.search;
 
-  // Configure this axios instance. 3 retries is about minimum for Vite load on my workstation.
-  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
-    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
-  }});
-
   useEffect(() => {
     fetchCategories();
   }, [currentPath]);
@@ -34,7 +27,7 @@ function CategoriesMenu()
   async function fetchCategories() {
     const url = '/api/categories';
     console.log("Axios retry..." + url);
-    axios.get(url).then((response) => {
+    axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
       dispatch(setCategories(response.data)); // response.data is already JSON
     })
