@@ -7,6 +7,8 @@ import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 import '@/AdminUserAccounts.css'
 
@@ -20,6 +22,10 @@ const AdminUserAccounts = () =>
   const userAccounts = useSelector(state => state.adminUserAccounts.users);
   const loginValue = useSelector(state => state.login.value);
   const myUserId = loginValue.appUserId;
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const axiosInstance = axios.create({});
   axiosRetry(axiosInstance, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
@@ -49,8 +55,25 @@ const AdminUserAccounts = () =>
     });
   }
 
+  const modalMarkup = () => (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Modal heading</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleClose}>
+          Save Changes
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+
   const handleClickPhoto = function () {
-    let a = 1;
+    handleShow();
   }
 
   const userRowMarkup = (user, isCurrentUser) => (
@@ -85,6 +108,7 @@ const AdminUserAccounts = () =>
           {/*LSPACE*/}
         </Col>
         <Col xs={12} lg={8}>
+          {modalMarkup()}
           {userAccounts.map(user => userRowMarkup(user, (user.id == myUserId)))}
         </Col>
         <Col xs={0} lg={2}>
