@@ -16,3 +16,7 @@ bin/**
 # Ignore external JSON IConfiguration files
 appsettings.Production.json
 appsettings.Development.json
+
+# Ignore uploads folder and contents
+uploads/
+uploads/**
