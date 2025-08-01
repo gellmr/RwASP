@@ -2,17 +2,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setAdminOrders } from '@/features/admin/orders/adminOrdersSlice.jsx'
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
 import { useNavigate } from "react-router";
 import Table from 'react-bootstrap/Table'
 import PaginationLinks from "@/Shop/PaginationLinks";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Spinner from 'react-bootstrap/Spinner';
 
+import { axiosInstance } from '@/axiosDefault.jsx';
+
 function AdminOrders()
 {
-  const retryThisPage = 5;
   const dispatch = useDispatch();
   const adminOrders = useSelector(state => state.adminOrders.lines);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,13 +22,6 @@ function AdminOrders()
   const numPages = 6;
   const pageIntP = (page !== undefined) ? page : 1; // 1 = first page
   const myRoute = "/admin/orders/";
-
-  // Configure axios instance.
-  const axiosInstance = axios.create({
-  });
-  axiosRetry(axiosInstance, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
-    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
-  }});
 
   useEffect(() => {
     fetchAdminOrders();
