@@ -66,6 +66,22 @@
 .adminUserAccCurrPhoto{
   cursor:pointer;
 }
+.adminUserAccCurrPhoto:hover {
+  background-color: #eeeeee;
+}
+.dragDropCont {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.dragDropCont:hover {
+  background-color: #eeeeee;
+  cursor: pointer;
+}
+.cloudGraphic {
+  width: 200px;
+}
 
 
 @media (min-width: 370px) {

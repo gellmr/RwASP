@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Dropzone from 'react-dropzone'
 
 import '@/AdminUserAccounts.css'
 
@@ -26,6 +27,11 @@ const AdminUserAccounts = () =>
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  function handleDrop(acceptedFiles) {
+    const fileOne = acceptedFiles[0];
+    console.log(fileOne);
+  }
 
   const axiosInstance = axios.create({});
   axiosRetry(axiosInstance, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
@@ -58,9 +64,27 @@ const AdminUserAccounts = () =>
   const modalMarkup = () => (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Profile Image</Modal.Title>
+        <Modal.Title>
+          Profile Image
+        </Modal.Title>
       </Modal.Header>
-      <Modal.Body>Please choose an image for your user profile.</Modal.Body>
+      <Modal.Body>
+        <div>Please choose an image for your user profile.</div>
+        <br/>
+        <Dropzone onDrop={handleDrop}>
+          {({ getRootProps, getInputProps }) => (
+            <section>
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <div>Click here to browse for a file, or drag and drop to upload.</div>
+                <div className="dragDropCont">
+                  <Image className="cloudGraphic" src={'/graphics/cloud-upload.png'} rounded />
+                </div>
+              </div>
+            </section>
+          )}
+        </Dropzone>
+      </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Cancel
