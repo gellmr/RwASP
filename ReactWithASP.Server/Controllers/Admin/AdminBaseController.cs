@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ReactWithASP.Server.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
-  public class AdminBaseController : MyBaseController
+  public class AdminBaseController : MyAuthenticatedController
   {
-    public AdminBaseController() { }
+    public AdminBaseController(UserManager<AppUser> userManager) : base(userManager){}
   }
 }

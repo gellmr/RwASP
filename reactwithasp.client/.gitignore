@@ -29,3 +29,7 @@ dist-ssr
 
 # Thumbs db file
 public/thumbs/Thumbs.db
+
+# Ignore userpic uploads folder and contents
+public/userpic
+public/userpic/**

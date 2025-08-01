@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
+using ReactWithASP.Server.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
@@ -12,7 +14,7 @@ namespace ReactWithASP.Server.Controllers.Admin
   {
     private IInStockRepository prodRepo;
 
-    public AdminProductsController(IInStockRepository pRepo) : base(){
+    public AdminProductsController(IInStockRepository pRepo, UserManager<AppUser> userManager) : base(userManager){
       prodRepo = pRepo;
     }
 

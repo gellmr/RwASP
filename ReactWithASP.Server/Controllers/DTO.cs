@@ -137,6 +137,20 @@ namespace ReactWithASP.Server.DTO
     //public string? OrderStatus { get; set; }
   }
 
+  namespace AdminUserAccounts
+  {
+    public class UserDTO // Cut back details of an AppUser object.
+    {
+      public string? Email { get; set; }
+      public bool? EmailConfirmed { get; set; }
+      public Guid? GuestID { get; set; }
+      public string? Id { get; set; }
+      public string? PhoneNumber { get; set; }
+      public bool? PhoneNumberConfirmed { get; set; }
+      public string? Picture { get; set; }
+      public string? UserName { get; set; }
+    }
+  }
 
   namespace RandomUserme
   {

@@ -63,8 +63,8 @@ namespace ReactWithASP.Server.Infrastructure
   {
     public static string SessionGuestID = "SessionGuestID";
     public static string GuestCookieName = "ReactMikeGellDemo.GuestCookie";
-    public static string IdentityCookieName = "ReactMikeGellDemo.IdentityCookie";
-    
+    public static string IdentityCookieName = "ReactMikeGellDemo.IdentityCookie"; // The authentication cookie. Contains the serialized claims principal object.
+
     public static CookieOptions CookieOptions = new CookieOptions {
       HttpOnly = true,
       Secure = true,

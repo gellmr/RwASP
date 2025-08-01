@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { setAdminUserAccounts } from '@/features/admin/useraccounts/adminUserAccountsSlice.jsx'
+import { setAdminUserAccounts, updateUserPic } from '@/features/admin/useraccounts/adminUserAccountsSlice.jsx'
 import { axiosInstance } from '@/axiosDefault.jsx';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
@@ -42,7 +42,16 @@ const AdminUserAccounts = () =>
         //}
       };
       axiosInstance.post(url, formData, postConfig).then((response) => {
+
+        // To help debug the production configuration for file upload path
+        let dev_UploadPath  = response.data.debug === 'C:\\path to\\                           RwASP\\reactwithasp.client\\public\\userpic';
+        let prod_UploadPath = response.data.debug === 'C:\\path to\\RwASP-wwwroot\\wwwroot\\userpic';
+
         console.log('File uploaded successfully!', response.data);
+        dispatch(updateUserPic({
+          userId: response.data.userId,
+          picture: response.data.picture
+        }));
       })
       .catch((error) => {
         console.error('Request failed after retries.', error);

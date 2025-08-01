@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using ReactWithASP.Server.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ReactWithASP.Server.Controllers
 {
   public class MyBaseController : ControllerBase
   {
-    public MyBaseController() { }
+    public MyBaseController(){}
   }
 }

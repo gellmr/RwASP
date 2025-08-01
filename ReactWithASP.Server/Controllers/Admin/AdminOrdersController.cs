@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using ReactWithASP.Server.Controllers.Admin;
-using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Domain.StoredProc;
+using ReactWithASP.Server.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -15,7 +16,7 @@ namespace ReactWithASP.Server.Controllers
   {
     private IOrdersRepository orderRepo;
 
-    public AdminOrdersController(IOrdersRepository oRepo) : base(){
+    public AdminOrdersController(IOrdersRepository oRepo, UserManager<AppUser> userManager) : base(userManager){
       orderRepo = oRepo;
     }
 
