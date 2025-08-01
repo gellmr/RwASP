@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setInStock, setNoStock } from '@/features/inStock/inStockSlice.jsx'
 import { useParams } from 'react-router';
-
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
-
+import { axiosInstance } from '@/axiosDefault.jsx';
 import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
@@ -13,14 +10,8 @@ import ProceedCartBtn from "@/Shop/ProceedCartBtn";
 
 function Shop()
 {
-  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Configure axios instance.
-  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
-      console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
-  }});
 
   // We can get a state variable from our slice, with useSelector, that gets it from the Redux store.
   //    Name of local state const
@@ -76,7 +67,7 @@ function Shop()
     const url = window.location.origin + "/api/products" + cat + query;
 
     console.log("Axios retry..." + url);
-    axios.get(url).then((response) => {
+    axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data); // response.data is already JSON
       dispatch(setInStock(response.data)); // Dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
     })
