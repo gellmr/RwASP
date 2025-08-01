@@ -15,3 +15,5 @@ There is also an Admin login, where you can view customer orders, customer accou
 To generate the orders backlog, I used a [stored procedure](https://github.com/gellmr/RwASP/blob/bec2014eccb80ac90f6b25a4145a8dbf960adaee/ReactWithASP.Server/Migrations/20250724052400_CreateSPGetAdminOrders.cs) to join several tables and aggregate data.
 
 The user profile images are thanks to Keith Armstrong's excellent API [RandomUserMe](https://randomuser.me/)
+
+For the login page, I have used standard Identity tables with https cookie authentication. I have also used [Google Sign In](https://github.com/gellmr/RwASP/blob/613bd91adb91c18ddf15209575635b8aea4bc8f6/ReactWithASP.Server/Controllers/GoogleTokenValidateController.cs)
