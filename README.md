@@ -6,7 +6,7 @@ The site can be viewed at [https://react.mikegelldemo.live](https://react.mikege
 
 (Please allow a few seconds for the site to load.)
 
-The application allows you to browse and search for products, add to cart and proceed to checkout.
+The application allows you to browse or search for products, add to cart and proceed to checkout.
 
 Completed orders appear within the user's My Orders page.
 
