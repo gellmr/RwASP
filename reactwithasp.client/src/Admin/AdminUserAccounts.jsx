@@ -26,9 +26,32 @@ const AdminUserAccounts = () =>
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  function handleDrop(acceptedFiles) {
-    const fileOne = acceptedFiles[0];
-    console.log(fileOne);
+  function handleDrop(acceptedFiles)
+  {
+    const file = acceptedFiles[0];
+    if (file)
+    {
+      const url = window.location.origin + "/api/admin-userpic";
+      const formData = new FormData();
+      formData.append('file', file);
+      const postConfig = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        //onUploadProgress: (progressEvent) => {
+        //  const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        //  console.log(`   Uploading: ${percentCompleted}%`);
+        //}
+      };
+      axiosInstance.post(url, formData, postConfig).then((response) => {
+        console.log('File uploaded successfully!', response.data);
+      })
+      .catch((error) => {
+        console.error('Request failed after retries.', error);
+      })
+      .finally(() => {
+        console.error('Completed - handleDrop');
+        handleClose();
+      });
+    }
   }
 
   useEffect(() => {
