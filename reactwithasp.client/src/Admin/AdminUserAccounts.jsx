@@ -76,7 +76,7 @@ const AdminUserAccounts = () =>
             <section>
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <div>Click here to browse for a file, or drag and drop to upload.</div>
+                <div style={{marginBottom:10}}>Click here to browse for a file, or drag and drop to upload.</div>
                 <div className="dragDropCont">
                   <Image className="cloudGraphic" src={'/graphics/cloud-upload.png'} rounded />
                 </div>
