@@ -58,15 +58,15 @@ const AdminUserAccounts = () =>
   const modalMarkup = () => (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Title>Profile Image</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+      <Modal.Body>Please choose an image for your user profile.</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Close
+          Cancel
         </Button>
         <Button variant="primary" onClick={handleClose}>
-          Save Changes
+          &nbsp;Save&nbsp;
         </Button>
       </Modal.Footer>
     </Modal>
