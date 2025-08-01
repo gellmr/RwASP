@@ -63,7 +63,9 @@
 .adminUserAccSmall {
   /*border: 2px dashed green;*/
 }
-
+.adminUserAccCurrPhoto{
+  cursor:pointer;
+}
 
 
 @media (min-width: 370px) {

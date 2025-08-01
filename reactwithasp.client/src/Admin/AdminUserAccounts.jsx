@@ -48,13 +48,17 @@ const AdminUserAccounts = () =>
       setIsLoading(false);
     });
   }
-  
-  const userRowMarkup = (user) => (
+
+  const handleClickPhoto = function () {
+    let a = 1;
+  }
+
+  const userRowMarkup = (user, isCurrentUser) => (
     <Row className="adminUserAccRow" key={user.id}>
 
       {/*large*/}
       <Col xs={4} className="adminUserAccCell d-none d-sm-block adminUserAccImage adminUserAccLarge">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded />
+        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={isCurrentUser ? handleClickPhoto : undefined} className={isCurrentUser ? "adminUserAccCurrPhoto" : ''}/>
       </Col>
 
       <Col xs={12} sm={8}>
@@ -68,8 +72,9 @@ const AdminUserAccounts = () =>
 
       {/*small*/}
       <Col xs={12} className="adminUserAccCell d-sm-none adminUserAccImage adminUserAccSmall">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded />
+        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={isCurrentUser ? handleClickPhoto : undefined} className={isCurrentUser ? "adminUserAccCurrPhoto" : ''} />
       </Col>
+
     </Row>
   );
 
@@ -80,7 +85,7 @@ const AdminUserAccounts = () =>
           {/*LSPACE*/}
         </Col>
         <Col xs={12} lg={8}>
-          { userAccounts.map(user => userRowMarkup(user)) }
+          {userAccounts.map(user => userRowMarkup(user, (user.id == myUserId)))}
         </Col>
         <Col xs={0} lg={2}>
           {/*RSPACE*/}
