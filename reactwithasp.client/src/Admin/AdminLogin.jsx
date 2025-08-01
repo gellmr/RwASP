@@ -9,14 +9,13 @@ import ConstructionBanner from "@/main/ConstructionBanner.jsx";
 import { useDispatch } from 'react-redux'
 import { setLogin } from '@/features/login/loginSlice.jsx'
 
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
+import { axiosInstance } from '@/axiosDefault.jsx';
+
 import { useState } from 'react';
 import { useNavigate } from "react-router";
 
 function AdminLogin()
 {
-  const retryThisPage = 5;
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
@@ -24,11 +23,6 @@ function AdminLogin()
 
   const [vipUserName, setVipUserName] = useState("");
   const [vipPassword, setVipPassword] = useState("");
-  
-  // Configure axios instance.
-  axiosRetry(axios, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
-    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`);
-  }});
 
   const loginClick = function () { 
     // Try to login to Admin pages...
@@ -37,7 +31,7 @@ function AdminLogin()
     const jsonData = { username:vipUserName, password:vipPassword };
     setError("");
     console.log("Submit login details... " + url);
-    axios.post(url, jsonData).then((response) => {
+    axiosInstance.post(url, jsonData).then((response) => {
       console.log("------------------------------");
       console.log('Login success. Data fetched:', response.data); // response.data is already JSON
       dispatch(setLogin(response.data));
