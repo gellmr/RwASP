@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setAdminUserAccounts } from '@/features/admin/useraccounts/adminUserAccountsSlice.jsx'
-import axios from 'axios';
-import axiosRetry from 'axios-retry';
+import { axiosInstance } from '@/axiosDefault.jsx';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -15,7 +14,6 @@ import '@/AdminUserAccounts.css'
 
 const AdminUserAccounts = () =>
 {
-  const retryThisPage = 5;
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -32,11 +30,6 @@ const AdminUserAccounts = () =>
     const fileOne = acceptedFiles[0];
     console.log(fileOne);
   }
-
-  const axiosInstance = axios.create({});
-  axiosRetry(axiosInstance, { retries: retryThisPage, retryDelay: axiosRetry.exponentialDelay, onRetry: (retryCount, error, requestConfig) => {
-    console.log(`axiosRetry attempt ${retryCount} for ${requestConfig.url}`); 
-  }});
 
   useEffect(() => {
     fetchAdminUserAccs();
