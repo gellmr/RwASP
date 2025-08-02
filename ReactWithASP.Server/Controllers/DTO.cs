@@ -1,5 +1,7 @@
 ﻿using ReactWithASP.Server.Infrastructure;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ReactWithASP.Server.DTO
@@ -107,6 +109,11 @@ namespace ReactWithASP.Server.DTO
 
     [Required(ErrorMessage = "FamilyName is required")]
     public string FamilyName { get; set; }
+
+    public string Picture { get; set; }
+
+    [ReadOnly(true)]
+    public string? UserName { get { return GivenName + "-" + FamilyName; } }
   }
 
   public class OrderSlugDTO // Used to render rows on the Admin Orders page.

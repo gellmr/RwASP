@@ -56,10 +56,22 @@ namespace ReactWithASP.Server.Controllers
         Email = payload.Email,
         GivenName = payload.GivenName,
         FamilyName = payload.FamilyName,
+        Picture = payload.Picture
       };
 
       appUser = await _userManager.FindByIdAsync(googleAppUser.Subject); // See if the user already exists in our database...
-      if (appUser == null)
+      if (appUser != null)
+      {
+        // There is already a database record for this google sign in.
+        // Allow the user to login. Update our database with values from the latest google payload.
+        appUser.Email    = googleAppUser.Email;
+        appUser.UserName = googleAppUser.UserName;
+        appUser.Picture  = googleAppUser.Picture;
+
+        // If the user has changed their name, email, or picture via Google, we save the new value here to our database.
+        await _userManager.UpdateAsync(appUser);
+      }
+      else
       {
         // There is no database record yet, for this GoogleSignIn user. Create new AppUser record in database...
         appUser = new AppUser{
@@ -67,9 +79,10 @@ namespace ReactWithASP.Server.Controllers
           AccessFailedCount = 0,
           LockoutEnabled = false,
           TwoFactorEnabled = false,
-          UserName = googleAppUser.GivenName + "-" + googleAppUser.FamilyName,
+          UserName = googleAppUser.UserName,
           Email = googleAppUser.Email,
           Id = googleAppUser.Subject,
+          Picture = googleAppUser.Picture
         };
 
         createResult = await _userManager.CreateAsync(appUser);
