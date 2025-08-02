@@ -79,7 +79,7 @@ namespace ReactWithASP.Server.Controllers
         // Allow the user to login. Update our database with values from the latest google payload.
         appUser.Email    = googleAppUser.Email;
         appUser.UserName = googleAppUser.UserName;
-        appUser.Picture  = googleAppUser.Picture;
+        appUser.Picture  = appUser.Picture ?? googleAppUser.Picture; // Dont update Picture if we already have a value.
 
         // If the user has changed their name, email, or picture via Google, we save the new value here to our database.
         await _userManager.UpdateAsync(appUser);
