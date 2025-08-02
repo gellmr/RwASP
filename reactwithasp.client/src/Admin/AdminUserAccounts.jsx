@@ -126,8 +126,8 @@ const AdminUserAccounts = () =>
   }
 
   const userRowMarkup = (user, isCurrentUser) => (
-    <Row className="adminUserAccRow" key={user.id}>
-
+    <Row key={user.id} className={isCurrentUser ? "adminUserAccRow currUserRow" : 'adminUserAccRow'}>
+      
       {/*large*/}
       <Col xs={4} className="adminUserAccCell d-none d-sm-block adminUserAccImage adminUserAccLarge">
         <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={isCurrentUser ? handleClickPhoto : undefined} className={isCurrentUser ? "adminUserAccCurrPhoto" : ''}/>
@@ -135,10 +135,10 @@ const AdminUserAccounts = () =>
 
       <Col xs={12} sm={8}>
         <Row className="adminUserAccDetailsBox">
-          <Col className="adminUserAccCell" xs={3}>User&nbsp;ID</Col>   <Col xs={9} className="adminUserAccCell mgGuid">{user.id}</Col>
-          <Col className="adminUserAccCell" xs={3}>UserName</Col>  <Col xs={9} className="adminUserAccCell">{user.userName}</Col>
-          <Col className="adminUserAccCell" xs={3}>Phone</Col>     <Col xs={9} className="adminUserAccCell">{user.phoneNumber}</Col>
-          <Col className="adminUserAccCell" xs={3}>Email</Col>     <Col xs={9} className="adminUserAccCell">{user.email}</Col>
+          <Col className="adminUserAccCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'UserName'}</Col>  <Col xs={9} className="adminUserAccCell">{user.userName}</Col>
+          <Col className="adminUserAccCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserAccCell mgGuid">{user.id}</Col>
+          <Col className="adminUserAccCell" xs={3}>Phone</Col>                                             <Col xs={9} className="adminUserAccCell">{user.phoneNumber}</Col>
+          <Col className="adminUserAccCell" xs={3}>Email</Col>                                             <Col xs={9} className="adminUserAccCell">{user.email}</Col>
         </Row>
       </Col>
 
