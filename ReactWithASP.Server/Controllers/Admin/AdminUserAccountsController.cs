@@ -4,6 +4,7 @@ using ReactWithASP.Server.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.DTO.AdminUserAccounts;
+using System.Security.Claims;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
@@ -28,9 +29,13 @@ namespace ReactWithASP.Server.Controllers.Admin
     {
       try
       {
+        // Grab the current user id from claims of the currently logged in user.
+        string currentUserId = (User.Identity.IsAuthenticated) ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty;
+
         IEnumerable<UserDTO> users = _userManager.Users
           .ToList()
-          .OrderBy(user => user.PhoneNumber)
+          .OrderBy(user => user.Id == currentUserId ? 0 : 1) // Make the currently logged in user appear FIRST in the sorted list.
+          .ThenBy(user => user.PhoneNumber)                  // The rest of the list is sorted by phone number.
           .Select( u => new UserDTO{
             Email = u.Email,
             EmailConfirmed = u.EmailConfirmed,
