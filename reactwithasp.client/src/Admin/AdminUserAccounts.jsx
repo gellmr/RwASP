@@ -21,6 +21,7 @@ const AdminUserAccounts = () =>
   const userAccounts = useSelector(state => state.adminUserAccounts.users);
   const loginValue = useSelector(state => state.login.value);
   const myUserId = loginValue.appUserId;
+  const isGoogleSignIn = loginValue.loginType === 'Google Sign In';
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -86,6 +87,14 @@ const AdminUserAccounts = () =>
     });
   }
 
+  const googleProfileWarn = () => (
+    <div>
+      <b>
+        This will not update your Google Profile image.
+      </b>
+    </div>
+  );
+
   const modalMarkup = () => (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -94,7 +103,9 @@ const AdminUserAccounts = () =>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div>Please choose an image for your user profile.</div>
+        <div>Please choose an image for your user profile.<br/>
+          {isGoogleSignIn && googleProfileWarn()}
+        </div>
         <br/>
         <Dropzone onDrop={handleDrop}>
           {({ getRootProps, getInputProps }) => (
