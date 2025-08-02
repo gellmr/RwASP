@@ -65,10 +65,13 @@
   height: 120px;
   border: 1px solid #f6f6f6;
 }
+.adminUserAccRow.currUserRow .adminUserAccImage img {
+  border: none;
+}
 .adminUserAccLarge {
   /*border: 2px dashed red;*/
   padding-top: 10px;
- }
+}
 .adminUserAccSmall {
   /*border: 2px dashed green;*/
 }
