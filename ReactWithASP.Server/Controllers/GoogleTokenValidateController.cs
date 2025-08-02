@@ -27,6 +27,19 @@ namespace ReactWithASP.Server.Controllers
       _clientId = config.GetSection("Authentication:Google:ClientId").Value;
     }
 
+    // Handle collisions of non unique UserName values
+    protected async Task<string> GenerateUniqueUsernameAsync(string proposedUsername)
+    {
+      string username = proposedUsername.Replace(" ", string.Empty);
+      string finalUsername = username;
+      int counter = 0;
+      while (await _userManager.FindByNameAsync(finalUsername) != null){
+        counter++;
+        finalUsername = $"{username}{counter}";
+      }
+      return finalUsername;
+    }
+
     [HttpPost("validate-google-token")] // POST /api/validate-google-token.  Accepts application/json POST submissions containing stringified JSON data in request body.
     public async Task<IActionResult> ValidateGoogleToken([FromBody] ConfirmGoogleAuthDTO tokenDTO)
     {
@@ -79,7 +92,7 @@ namespace ReactWithASP.Server.Controllers
           AccessFailedCount = 0,
           LockoutEnabled = false,
           TwoFactorEnabled = false,
-          UserName = googleAppUser.UserName,
+          UserName = await GenerateUniqueUsernameAsync(googleAppUser.UserName),
           Email = googleAppUser.Email,
           Id = googleAppUser.Subject,
           Picture = googleAppUser.Picture
