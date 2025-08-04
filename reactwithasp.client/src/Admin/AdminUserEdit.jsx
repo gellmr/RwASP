@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, NavLink } from "react-router";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -78,6 +78,16 @@ function AdminUserEdit()
     </Row>
   );
 
+  const backLink = () => (
+    <Row>
+      <Col style={{textAlign:'left', marginBottom:10}}>
+        <NavLink to={"/admin/useraccounts"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize:12 }}>
+          <i className="bi bi-arrow-left-short"></i> Back
+        </NavLink>
+      </Col>
+    </Row>
+  );
+
   const userTableMarkup = () => (
     <>
       <Row>
@@ -85,6 +95,7 @@ function AdminUserEdit()
           {/*LSPACE*/}
         </Col>
         <Col xs={12} lg={8}>
+          {backLink()}
           {userAccounts
             .filter(user => (user.id == userid))
             .map(user => userRowMarkup(user, (user.id == myUserId)))}
@@ -105,7 +116,7 @@ function AdminUserEdit()
     <>
       <Row>
         <Col xs={12}>
-          <AdminTitleBar titleText="User Account" construction={true} />
+          <AdminTitleBar titleText="User Account" construction={false} />
         </Col>
         <Col xs={12}>
           {markup}
