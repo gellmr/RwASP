@@ -20,6 +20,10 @@
   width: 200px;
 }
 
+.mgGuid {
+  color: #5c8dbf;
+}
+
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
 }
