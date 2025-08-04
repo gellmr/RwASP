@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Infrastructure;
-using Microsoft.AspNetCore.Identity;
 using ReactWithASP.Server.DTO.AdminUserAccounts;
 using System.Security.Claims;
+using Microsoft.AspNet.Identity;
+using System.Text.Json;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
@@ -16,11 +17,31 @@ namespace ReactWithASP.Server.Controllers.Admin
     protected IHostEnvironment _hostingEnvironment;
     private IConfiguration _config;
 
-    public AdminUserAccountsController(UserManager<AppUser> userManager, RandomUserMeApiClient userMeService, IHostEnvironment hostingEnv, IConfiguration config) : base (userManager)
+    public AdminUserAccountsController(Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager, RandomUserMeApiClient userMeService, IHostEnvironment hostingEnv, IConfiguration config) : base (userManager)
     {
       _userMeService = userMeService;
       _hostingEnvironment = hostingEnv;
       _config = config;
+    }
+
+    [HttpPost]
+    [Route("admin-user-update")]
+    public async Task<ActionResult> UpdateUser([FromBody] UserDTO userUpdate)
+    {
+      AppUser original = null;
+      try
+      {
+        AppUser appUser = await _userManager.FindByIdAsync(userUpdate.Id);
+        original = JsonSerializer.Deserialize<AppUser>(JsonSerializer.Serialize(appUser));
+        appUser.PhoneNumber = userUpdate.PhoneNumber;
+        appUser.Email = userUpdate.Email;
+        await _userManager.UpdateAsync(appUser);
+        return this.StatusCode(StatusCodes.Status200OK, new { Message = "Success updating user", Persist = userUpdate });
+      }
+      catch (Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message, Revert = original });
+      }
     }
 
     [HttpGet("admin-useraccounts")]

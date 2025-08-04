@@ -1,4 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { axiosInstance } from '@/axiosDefault.jsx';
+
+export const updateUserOnServer = createAsyncThunk('adminEditUser/updateUserOnServer',
+  async (updateData, { rejectWithValue }) => {
+    try {
+      let user = { ...updateData.user };
+      user[updateData.field] = updateData.update;
+      const options = { headers: { 'Content-Type': 'application/json' } };
+      const response = await axiosInstance.post('/api/admin-user-update', user, options);
+      return response.data;
+    }
+    catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const adminEditUserSlice = createSlice({
   name: 'adminEditUser',
@@ -17,8 +33,24 @@ export const adminEditUserSlice = createSlice({
     setAdminEditUser: (state, action) => {
       state.user = action.payload;
     },
+    setUserPhone: (state, action) => {
+      state.user.phoneNumber = action.payload;
+    },
+    setUserEmail: (state, action) => {
+      state.user.email = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(updateUserOnServer.fulfilled, (state, action) => {
+      console.log("updateUserOnServer.fulfilled " + action.payload.message);
+      state.user = action.payload.persist;
+    })
+    .addCase(updateUserOnServer.rejected, (state, action) => {
+      console.log("updateUserOnServer.rejected " + action.payload.message);
+      state.user = action.payload.revert;
+    });
   }
 })
 
-export const { setAdminEditUser } = adminEditUserSlice.actions
+export const { setAdminEditUser, setUserPhone, setUserEmail } = adminEditUserSlice.actions
 export default adminEditUserSlice.reducer

@@ -8,7 +8,7 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { axiosInstance } from '@/axiosDefault.jsx';
-import { setAdminEditUser } from '@/features/admin/edituser/adminEditUserSlice.jsx'
+import { setAdminEditUser, setUserPhone, setUserEmail, updateUserOnServer } from '@/features/admin/edituser/adminEditUserSlice.jsx'
 
 import '@/AdminUserShared.css'
 import '@/AdminUserEdit.css'
@@ -18,19 +18,20 @@ function AdminUserEdit()
   const modalRef = useRef();
 
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const userAccounts = useSelector(state => state.adminUserAccounts.users);
+  const { userid } = useParams();
+
+  const userAccount = useSelector(state => state.adminEditUser.user);
+  
   const loginValue = useSelector(state => state.login.value);
+  const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 
   const navigate = useNavigate();
   if (loginValue === null) {
     //navigate('/admin');
   }
-
-  const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
-  const { userid } = useParams();
 
   useEffect(() => {
     fetchAccount();
@@ -38,7 +39,6 @@ function AdminUserEdit()
 
   async function fetchAccount() {
     setError("");
-    setIsLoading(true);
     const url = window.location.origin + "/api/admin-user-edit/" + userid;
     axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
@@ -57,6 +57,15 @@ function AdminUserEdit()
     modalRef.current.showModal();
   }
 
+  const handlePhoneChange = function (event) {
+    dispatch(setUserPhone(event.target.value));
+    dispatch(updateUserOnServer({user:userAccount, field:'phoneNumber', update:event.target.value}));
+  }
+  const handleEmailChange = function (event) {
+    dispatch(setUserEmail(event.target.value));
+    dispatch(updateUserOnServer({user:userAccount, field:'email', update:event.target.value}));
+  }
+
   const userRowMarkup = (user, isCurrentUser) => (
     <Row key={user.id} className={isCurrentUser ? "adminUserEditRow currUserRow" : 'adminUserEditRow'}>
 
@@ -72,12 +81,12 @@ function AdminUserEdit()
 
           <Col className="adminUserEditCell" xs={3}>Phone</Col>
           <Col xs={9} className="adminUserEditCell">
-            <Form.Control type="phone" defaultValue={user.phoneNumber} />
+            <Form.Control type="phone" value={user.phoneNumber} onChange={handlePhoneChange} />
           </Col>
 
           <Col className="adminUserEditCell" xs={3}>Email</Col>
           <Col xs={9} className="adminUserEditCell">
-            <Form.Control type="phone" defaultValue={user.email} />
+            <Form.Control type="email" value={user.email} onChange={handleEmailChange} />
           </Col>
         </Row>
       </Col>
@@ -108,9 +117,7 @@ function AdminUserEdit()
         <Col xs={12} lg={8}>
           <DragDropUserPicModal ref={modalRef} />
           {backLink()}
-          {userAccounts
-            .filter(user => (user.id == userid))
-            .map(user => userRowMarkup(user, (user.id == myUserId)))}
+          {userRowMarkup(userAccount, true)}
         </Col>
         <Col xs={0} lg={2}>
           {/*RSPACE*/}
