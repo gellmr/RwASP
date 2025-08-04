@@ -121,7 +121,7 @@ function AdminUserEdit()
         <Col xs={12} lg={8}>
           <DragDropUserPicModal ref={modalRef} onSuccess={handleModalCloseSuccess} />
           {backLink()}
-          {userRowMarkup(userAccount, true)}
+          {userRowMarkup(userAccount, (userid == myUserId))}
         </Col>
         <Col xs={0} lg={2}>
           {/*RSPACE*/}
