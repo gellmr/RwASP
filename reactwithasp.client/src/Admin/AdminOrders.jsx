@@ -109,7 +109,7 @@ function AdminOrders()
         </thead>
         <tbody>
           {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
-            <tr>
+            <tr key={line.id}>
               <td>{line.orderPlacedDate}</td>
               <td>{line.id}</td>
               <td>{line.username}</td>
