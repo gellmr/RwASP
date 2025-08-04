@@ -21,6 +21,7 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
   const handleClose = () => setShow(false);
 
   const [show, setShow] = useState(false);
+  const [cloudGraphic, setCloudGraphic] = useState('/graphics/cloud-upload.png');
   const dispatch = useDispatch();
   const loginValue = useSelector(state => state.login.value);
   const isGoogleSignIn = (loginValue === null) ? false : (loginValue.loginType === 'Google Sign In');
@@ -57,6 +58,7 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
           userId: response.data.userId,
           picture: response.data.picture
         }));
+        setCloudGraphic(response.data.picture);
       })
       .catch((error) => {
         console.error('Request failed after retries.', error);
@@ -88,7 +90,7 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
                   <input {...getInputProps()} />
                   <div style={{ marginBottom: 10 }}>Click here to browse for a file, or drag and drop to upload.</div>
                   <div className="dragDropCont">
-                    <Image className="cloudGraphic" src={'/graphics/cloud-upload.png'} rounded />
+                    <Image className="cloudGraphic" src={cloudGraphic} rounded />
                   </div>
                 </div>
               </section>
