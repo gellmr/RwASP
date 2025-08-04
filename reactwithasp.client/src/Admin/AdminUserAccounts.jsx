@@ -160,10 +160,10 @@ const AdminUserAccounts = () =>
       </Col>
 
       <Col xs={12} className="adminUserAccDetailLinks">
-        <NavLink to={"/admin/useraccounts/" + user.id} className={isCurrentUser ? "btn btn-outline-primary adminUserAccDetailEditLink" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+        <NavLink to={"/admin/user/" + user.id + "/edit"} className={isCurrentUser ? "btn btn-outline-primary adminUserAccDetailEditLink" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
           Edit Account <i className="bi bi-pencil-square"></i>
         </NavLink>
-        <NavLink to={"/admin/useraccounts/" + user.id} className={isCurrentUser ? "btn btn-primary" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+        <NavLink to={"/admin/user/" + user.id + "/orders"} className={isCurrentUser ? "btn btn-primary" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
           View Orders <i className="bi bi-arrow-right-short"></i>
         </NavLink>
       </Col>
