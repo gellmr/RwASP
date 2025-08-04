@@ -5,6 +5,7 @@ import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
+import Form from 'react-bootstrap/Form';
 import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { setAdminEditUser } from '@/features/admin/edituser/adminEditUserSlice.jsx'
@@ -68,8 +69,16 @@ function AdminUserEdit()
         <Row className="adminUserEditDetailsBox">
           <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'UserName'}</Col>  <Col xs={9} className="adminUserEditCell">{user.userName}</Col>
           <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserEditCell mgGuid">{user.id}</Col>
-          <Col className="adminUserEditCell" xs={3}>Phone</Col>                                             <Col xs={9} className="adminUserEditCell">{user.phoneNumber}</Col>
-          <Col className="adminUserEditCell" xs={3}>Email</Col>                                             <Col xs={9} className="adminUserEditCell">{user.email}</Col>
+
+          <Col className="adminUserEditCell" xs={3}>Phone</Col>
+          <Col xs={9} className="adminUserEditCell">
+            <Form.Control type="phone" defaultValue={user.phoneNumber} />
+          </Col>
+
+          <Col className="adminUserEditCell" xs={3}>Email</Col>
+          <Col xs={9} className="adminUserEditCell">
+            <Form.Control type="phone" defaultValue={user.email} />
+          </Col>
         </Row>
       </Col>
 
