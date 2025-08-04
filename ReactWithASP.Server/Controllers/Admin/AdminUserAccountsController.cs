@@ -105,7 +105,7 @@ namespace ReactWithASP.Server.Controllers.Admin
 
     [HttpPost("admin-userpic")]
     [DisableRequestSizeLimit] // Optional: disables the default file size limit
-    public async Task<ActionResult> PostUserImage(IFormFile file)
+    public async Task<ActionResult> PostUserImage(IFormFile file, string? uid)
     {
       try
       {

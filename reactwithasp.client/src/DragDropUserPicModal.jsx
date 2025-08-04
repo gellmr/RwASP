@@ -10,9 +10,10 @@ import Button from 'react-bootstrap/Button';
 const DragDropUserPicModal = forwardRef((props, ref) => {
   // Expose these functions to parent component.
   useImperativeHandle(ref, () => ({
-    showModal() {
+    showModal(userid) {
       setCloudGraphic(defaultCloudGraphic);
       setShow(true);
+      setForUserId(userid);
     },
     hideModal() {
       setShow(false);
@@ -26,6 +27,7 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
   };
 
   const [show, setShow] = useState(false);
+  const [forUserId, setForUserId] = useState(null);
   const defaultCloudGraphic = '/graphics/cloud-upload.png';
   const [cloudGraphic, setCloudGraphic] = useState(defaultCloudGraphic);
   const dispatch = useDispatch();
@@ -43,7 +45,7 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
   function handleDrop(acceptedFiles) {
     const file = acceptedFiles[0];
     if (file) {
-      const url = window.location.origin + "/api/admin-userpic";
+      const url = window.location.origin + "/api/admin-userpic?uid=" + forUserId;
       const formData = new FormData();
       formData.append('file', file);
       const postConfig = {
