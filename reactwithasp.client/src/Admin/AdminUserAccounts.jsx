@@ -27,7 +27,7 @@ const AdminUserAccounts = () =>
 
   const navigate = useNavigate();
   if (loginValue === null) {
-    navigate('/admin');
+    //navigate('/admin');
   }
 
   useEffect(() => {

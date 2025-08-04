@@ -25,7 +25,7 @@ function AdminUserEdit()
 
   const navigate = useNavigate();
   if (loginValue === null) {
-    navigate('/admin');
+    //navigate('/admin');
   }
 
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
