@@ -9,8 +9,9 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Dropzone from 'react-dropzone'
-import { NavLink } from "react-router";
+import { useNavigate, NavLink } from "react-router";
 
+import '@/AdminUserShared.css'
 import '@/AdminUserAccounts.css'
 
 const AdminUserAccounts = () =>
@@ -21,8 +22,14 @@ const AdminUserAccounts = () =>
 
   const userAccounts = useSelector(state => state.adminUserAccounts.users);
   const loginValue = useSelector(state => state.login.value);
-  const myUserId = loginValue.appUserId;
-  const isGoogleSignIn = loginValue.loginType === 'Google Sign In';
+
+  const navigate = useNavigate();
+  if (loginValue === null) {
+    navigate('/admin');
+  }
+
+  const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
+  const isGoogleSignIn = (loginValue === null) ? false : (loginValue.loginType === 'Google Sign In');
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);

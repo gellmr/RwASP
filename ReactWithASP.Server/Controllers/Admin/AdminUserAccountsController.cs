@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Infrastructure;
 using Microsoft.AspNetCore.Identity;
-using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.DTO.AdminUserAccounts;
 using System.Security.Claims;
 
@@ -48,6 +47,34 @@ namespace ReactWithASP.Server.Controllers.Admin
           });
 
         return Ok(users);
+      }
+      catch (Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+      }
+    }
+
+    [HttpGet("admin-user-edit/{uid}")]
+    public async Task<ActionResult> GetUserAccount(string? uid)
+    {
+      try
+      {
+        // Ensure the given uid is either an AppUserId (Guid) or a Google Subject Id (20-255 numeric value)
+        if ( !(PcreValidation.ValidString(uid, MyRegex.AppUserId) || PcreValidation.ValidString(uid, MyRegex.GoogleSubject))){
+          return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid uid");
+        }
+        AppUser? u = await _userManager.FindByIdAsync(uid);
+        UserDTO user = new UserDTO{
+          Email = u.Email,
+          EmailConfirmed = u.EmailConfirmed,
+          GuestID = u.GuestID,
+          Id = u.Id,
+          PhoneNumber = u.PhoneNumber,
+          PhoneNumberConfirmed = u.PhoneNumberConfirmed,
+          Picture = u.Picture,
+          UserName = u.UserName
+        };
+        return Ok(user);
       }
       catch (Exception ex)
       {
