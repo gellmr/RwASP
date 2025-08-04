@@ -11,6 +11,7 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
   // Expose these functions to parent component.
   useImperativeHandle(ref, () => ({
     showModal() {
+      setCloudGraphic(defaultCloudGraphic);
       setShow(true);
     },
     hideModal() {
@@ -18,10 +19,15 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
     }
   }));
 
-  const handleClose = () => setShow(false);
+  const onSuccess = props.onSuccess;
+
+  const handleClose = () => {
+    setShow(false);
+  };
 
   const [show, setShow] = useState(false);
-  const [cloudGraphic, setCloudGraphic] = useState('/graphics/cloud-upload.png');
+  const defaultCloudGraphic = '/graphics/cloud-upload.png';
+  const [cloudGraphic, setCloudGraphic] = useState(defaultCloudGraphic);
   const dispatch = useDispatch();
   const loginValue = useSelector(state => state.login.value);
   const isGoogleSignIn = (loginValue === null) ? false : (loginValue.loginType === 'Google Sign In');
@@ -59,6 +65,9 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
           picture: response.data.picture
         }));
         setCloudGraphic(response.data.picture);
+        if (onSuccess) {
+          onSuccess(response.data.picture)
+        }
       })
       .catch((error) => {
         console.error('Request failed after retries.', error);

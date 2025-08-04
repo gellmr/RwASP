@@ -8,7 +8,7 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { axiosInstance } from '@/axiosDefault.jsx';
-import { setAdminEditUser, setUserPhone, setUserEmail, updateUserOnServer } from '@/features/admin/edituser/adminEditUserSlice.jsx'
+import { setAdminEditUser, setUserPhone, setUserEmail, setUserPicture, updateUserOnServer } from '@/features/admin/edituser/adminEditUserSlice.jsx'
 
 import '@/AdminUserShared.css'
 import '@/AdminUserEdit.css'
@@ -55,6 +55,10 @@ function AdminUserEdit()
 
   const handleClickPhoto = function () {
     modalRef.current.showModal();
+  }
+
+  const handleModalCloseSuccess = function (picture) {
+    dispatch(setUserPicture(picture));
   }
 
   const handlePhoneChange = function (event) {
@@ -115,7 +119,7 @@ function AdminUserEdit()
           {/*LSPACE*/}
         </Col>
         <Col xs={12} lg={8}>
-          <DragDropUserPicModal ref={modalRef} />
+          <DragDropUserPicModal ref={modalRef} onSuccess={handleModalCloseSuccess} />
           {backLink()}
           {userRowMarkup(userAccount, true)}
         </Col>
