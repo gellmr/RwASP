@@ -150,15 +150,15 @@ namespace ReactWithASP.Server.Controllers.Admin
         string pathToSave = "/userpic/" + uniqueFileName; // Relative to SPA root.
 
         // Get the currently logged in user by Id.
-        AppUser currentUser = await EnsureAppUser();
-        currentUser.Picture = pathToSave;
-        await _userManager.UpdateAsync(currentUser);
+        AppUser userToSave = await _userManager.FindByIdAsync(uid);
+        userToSave.Picture = pathToSave;
+        await _userManager.UpdateAsync(userToSave);
 
         // Respond with JSON including URL for the uploaded file.
         return this.StatusCode(StatusCodes.Status200OK, new {
           Message = "File uploaded successfully",
           Picture = pathToSave,
-          userId = currentUser.Id,
+          userId = userToSave.Id,
           debug = uploadsFolder  // Will be either C:\\path\\to\\RwASP\\reactwithasp.client\\public\\userpic   or   C:\\path\\to\\RwASP-wwwroot\\wwwroot\\userpic
         });
       }
