@@ -54,7 +54,7 @@ const AdminUserAccounts = () =>
   }
   
   const handleClickPhoto = function () {
-    modalRef.current.showModal();
+    modalRef.current.showModal(myUserId);
   }
 
   const userRowMarkup = (user, isCurrentUser) => (

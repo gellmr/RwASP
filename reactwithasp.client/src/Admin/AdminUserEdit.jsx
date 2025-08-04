@@ -54,7 +54,7 @@ function AdminUserEdit()
   }
 
   const handleClickPhoto = function () {
-    modalRef.current.showModal();
+    modalRef.current.showModal(userid);
   }
 
   const handleModalCloseSuccess = function (picture) {
