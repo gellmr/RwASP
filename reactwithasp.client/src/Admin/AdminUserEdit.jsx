@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams, NavLink } from "react-router";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
+import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { setAdminEditUser } from '@/features/admin/edituser/adminEditUserSlice.jsx'
 
@@ -13,6 +14,8 @@ import '@/AdminUserEdit.css'
 
 function AdminUserEdit()
 {
+  const modalRef = useRef();
+
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,8 +29,6 @@ function AdminUserEdit()
   }
 
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
-  const isGoogleSignIn = (loginValue === null) ? false : (loginValue.loginType === 'Google Sign In');
-
   const { userid } = useParams();
 
   useEffect(() => {
@@ -52,6 +53,7 @@ function AdminUserEdit()
   }
 
   const handleClickPhoto = function () {
+    modalRef.current.showModal();
   }
 
   const userRowMarkup = (user, isCurrentUser) => (
@@ -95,6 +97,7 @@ function AdminUserEdit()
           {/*LSPACE*/}
         </Col>
         <Col xs={12} lg={8}>
+          <DragDropUserPicModal ref={modalRef} />
           {backLink()}
           {userAccounts
             .filter(user => (user.id == userid))
