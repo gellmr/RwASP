@@ -9,6 +9,7 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Dropzone from 'react-dropzone'
+import { NavLink } from "react-router";
 
 import '@/AdminUserAccounts.css'
 
@@ -158,6 +159,14 @@ const AdminUserAccounts = () =>
         <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={isCurrentUser ? handleClickPhoto : undefined} className={isCurrentUser ? "adminUserAccCurrPhoto" : ''} />
       </Col>
 
+      <Col xs={12} className="adminUserAccDetailLinks">
+        <NavLink to={"/admin/useraccounts/" + user.id} className={isCurrentUser ? "btn btn-outline-primary adminUserAccDetailEditLink" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+          Edit Account <i className="bi bi-pencil-square"></i>
+        </NavLink>
+        <NavLink to={"/admin/useraccounts/" + user.id} className={isCurrentUser ? "btn btn-primary" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+          View Orders <i className="bi bi-arrow-right-short"></i>
+        </NavLink>
+      </Col>
     </Row>
   );
 
