@@ -75,7 +75,7 @@ function AdminUserEdit()
 
       {/*large*/}
       <Col xs={4} className="adminUserEditCell d-none d-sm-block adminUserEditImage adminUserEditLarge">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={isCurrentUser ? handleClickPhoto : undefined} className={isCurrentUser ? "adminUserEditCurrPhoto" : ''} referrerPolicy="no-referrer" />
+        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserEditCurrPhoto" referrerPolicy="no-referrer" />
       </Col>
 
       <Col xs={12} sm={8}>
@@ -97,7 +97,7 @@ function AdminUserEdit()
 
       {/*small*/}
       <Col xs={12} className="adminUserEditCell d-sm-none adminUserEditImage adminUserEditSmall">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={isCurrentUser ? handleClickPhoto : undefined} className={isCurrentUser ? "adminUserEditCurrPhoto" : ''} referrerPolicy="no-referrer" />
+        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserEditCurrPhoto" referrerPolicy="no-referrer" />
       </Col>
     </Row>
   );
