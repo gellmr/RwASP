@@ -159,6 +159,7 @@ namespace ReactWithASP.Server.DTO
       public bool? PhoneNumberConfirmed { get; set; }
       public string? Picture { get; set; }
       public string? UserName { get; set; }
+      public string? FullName { get; set; }
     }
   }
 

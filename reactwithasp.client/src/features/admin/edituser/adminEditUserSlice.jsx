@@ -27,7 +27,8 @@ export const adminEditUserSlice = createSlice({
     //PhoneNumber             "04 1234 4321"
     //PhoneNumberConfirmed    true
     //Picture                 null
-    //UserName                "user111" }
+    //FullName               "Ivan Brown"     // Display name can contain spaces
+    //UserName               "IvanBrown"   }  // URL friendly .NET Identity name.  Alphanum and -._@+
   },
   reducers: {
     setAdminEditUser: (state, action) => {

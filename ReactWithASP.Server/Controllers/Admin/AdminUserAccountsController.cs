@@ -65,6 +65,7 @@ namespace ReactWithASP.Server.Controllers.Admin
             PhoneNumberConfirmed = u.PhoneNumberConfirmed,
             Picture = u.Picture,
             UserName = u.UserName,
+            FullName = u.FullName
           });
 
         return Ok(users);
@@ -93,7 +94,8 @@ namespace ReactWithASP.Server.Controllers.Admin
           PhoneNumber = u.PhoneNumber,
           PhoneNumberConfirmed = u.PhoneNumberConfirmed,
           Picture = u.Picture,
-          UserName = u.UserName
+          UserName = u.UserName,
+          FullName = u.FullName
         };
         return Ok(user);
       }

@@ -80,7 +80,7 @@ function AdminUserEdit()
 
       <Col xs={12} sm={8}>
         <Row className="adminUserEditDetailsBox">
-          <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'UserName'}</Col>  <Col xs={9} className="adminUserEditCell">{user.userName}</Col>
+          <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col> <Col xs={9} className="adminUserEditCell">{user.fullName}</Col>
           <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserEditCell mgGuid" >{user.id}</Col>
 
           <Col className="adminUserEditCell" xs={3}>Phone</Col>

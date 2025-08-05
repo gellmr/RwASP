@@ -68,7 +68,7 @@ const AdminUserAccounts = () =>
 
       <Col xs={12} sm={8}>
         <Row className="adminUserAccDetailsBox">
-          <Col className="adminUserAccCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'UserName'}</Col>  <Col xs={9} className="adminUserAccCell">{user.userName}</Col>
+          <Col className="adminUserAccCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col> <Col xs={9} className="adminUserAccCell">{user.fullName}</Col>
           <Col className="adminUserAccCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserAccCell mgGuid">{user.id}</Col>
           <Col className="adminUserAccCell" xs={3}>Phone</Col>                                             <Col xs={9} className="adminUserAccCell">{user.phoneNumber}</Col>
           <Col className="adminUserAccCell" xs={3}>Email</Col>                                             <Col xs={9} className="adminUserAccCell">{user.email}</Col>
