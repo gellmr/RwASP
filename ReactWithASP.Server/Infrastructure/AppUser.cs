@@ -13,5 +13,6 @@ namespace ReactWithASP.Server.Infrastructure
     public Guid? GuestID { get; set; }
 
     public string? Picture { get; set; } // Fetched from randomuser.me during seed on start
+    public string? FullName { get; set; } // The display name. Custom property can contain spaces.
   }
 }

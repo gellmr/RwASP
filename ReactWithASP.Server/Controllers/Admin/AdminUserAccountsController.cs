@@ -152,7 +152,10 @@ namespace ReactWithASP.Server.Controllers.Admin
         // Get the currently logged in user by Id.
         AppUser userToSave = await _userManager.FindByIdAsync(uid);
         userToSave.Picture = pathToSave;
-        await _userManager.UpdateAsync(userToSave);
+        var result = await _userManager.UpdateAsync(userToSave);
+        if (!result.Succeeded){
+          throw new Exception("Could not save user. " + result.Errors.First().Description);
+        }
 
         // Respond with JSON including URL for the uploaded file.
         return this.StatusCode(StatusCodes.Status200OK, new {

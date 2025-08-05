@@ -20,7 +20,7 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
     }
   }));
 
-  const onSuccess = props.onSuccess;
+  const onSuccess = props.onSuccess; // Callback allows parent component to do something with the picture.
 
   const handleClose = () => {
     setShow(false);

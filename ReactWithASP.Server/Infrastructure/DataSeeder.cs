@@ -175,6 +175,7 @@ namespace ReactWithASP.Server.Infrastructure
       AppUser vipAppUser = new AppUser{
         Id = _config.GetSection("Authentication:VIP:Id").Value,
         UserName = vipUserName,
+        FullName = vipUserName,
         PasswordHash = _hashedVipPassword,
         //IsGuest = _config.GetSection("Authentication:VIP:IsGuest").Value,
         Email = _config.GetSection("Authentication:VIP:Email").Value,
@@ -295,7 +296,8 @@ namespace ReactWithASP.Server.Infrastructure
         LockoutEnd = GetLockoutUtcDaysFromNow(dto.LockoutEndDateUtc),
         LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
         AccessFailedCount = dto.AccessFailedCount,
-        UserName = dto.UserName, // usermeDto.Name.First + " " + usermeDto.Name.Last,
+        UserName = splitName[0] + splitName[1], // "Eg "DianaWalters"
+        FullName = dto.UserName,                // "Eg "Diana Walters"
         //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
         //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email),
 

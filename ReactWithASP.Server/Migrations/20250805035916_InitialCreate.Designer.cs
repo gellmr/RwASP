@@ -12,8 +12,8 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250724052400_CreateSPGetAdminOrders")]
-    partial class CreateSPGetAdminOrders
+    [Migration("20250805035916_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -401,6 +401,9 @@ namespace ReactWithASP.Server.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("GuestID")
                         .HasColumnType("uniqueidentifier");
