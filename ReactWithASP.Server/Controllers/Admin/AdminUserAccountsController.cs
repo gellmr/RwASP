@@ -33,6 +33,7 @@ namespace ReactWithASP.Server.Controllers.Admin
       {
         AppUser appUser = await _userManager.FindByIdAsync(userUpdate.Id);
         original = JsonSerializer.Deserialize<AppUser>(JsonSerializer.Serialize(appUser));
+        appUser.FullName = userUpdate.FullName;
         appUser.PhoneNumber = userUpdate.PhoneNumber;
         appUser.Email = userUpdate.Email;
         await _userManager.UpdateAsync(appUser);

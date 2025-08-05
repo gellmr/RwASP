@@ -8,7 +8,7 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { axiosInstance } from '@/axiosDefault.jsx';
-import { setAdminEditUser, setUserPhone, setUserEmail, setUserPicture, updateUserOnServer } from '@/features/admin/edituser/adminEditUserSlice.jsx'
+import { setAdminEditUser, setUserFullname, setUserPhone, setUserEmail, setUserPicture, updateUserOnServer } from '@/features/admin/edituser/adminEditUserSlice.jsx'
 
 import '@/AdminUserShared.css'
 import '@/AdminUserEdit.css'
@@ -61,6 +61,10 @@ function AdminUserEdit()
     dispatch(setUserPicture(picture));
   }
 
+  const handleFullnameChange = function (event) {
+    dispatch(setUserFullname(event.target.value));
+    dispatch(updateUserOnServer({ user:userAccount, field:'fullName', update:event.target.value }));
+  }
   const handlePhoneChange = function (event) {
     dispatch(setUserPhone(event.target.value));
     dispatch(updateUserOnServer({user:userAccount, field:'phoneNumber', update:event.target.value}));
@@ -80,8 +84,20 @@ function AdminUserEdit()
 
       <Col xs={12} sm={8}>
         <Row className="adminUserEditDetailsBox">
-          <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col> <Col xs={9} className="adminUserEditCell">{user.fullName}</Col>
-          <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserEditCell mgGuid" >{user.id}</Col>
+          <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col>
+          <Col xs={9} className="adminUserEditCell">
+            <Form.Control type="name" value={user.fullName} onChange={handleFullnameChange} />
+          </Col>
+
+          <Col className="adminUserEditCell" xs={3}>UserName</Col>
+          <Col xs={9} className="adminUserEditCell">
+            <Form.Control type="id" value={user.userName} readonly disabled="disabled" />
+          </Col>
+
+          <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>
+          <Col xs={9} className="adminUserEditCell mgGuid" >
+            <Form.Control type="id" value={user.id} readonly disabled="disabled" />
+          </Col>
 
           <Col className="adminUserEditCell" xs={3}>Phone</Col>
           <Col xs={9} className="adminUserEditCell">
@@ -139,7 +155,7 @@ function AdminUserEdit()
     <>
       <Row>
         <Col xs={12}>
-          <AdminTitleBar titleText="User Account" construction={false} />
+          <AdminTitleBar titleText="Customer Account" construction={false} />
         </Col>
         <Col xs={12}>
           {markup}

@@ -34,6 +34,9 @@ export const adminEditUserSlice = createSlice({
     setAdminEditUser: (state, action) => {
       state.user = action.payload;
     },
+    setUserFullname: (state, action) => {
+      state.user.fullName = action.payload;
+    },
     setUserPhone: (state, action) => {
       state.user.phoneNumber = action.payload;
     },
@@ -56,5 +59,5 @@ export const adminEditUserSlice = createSlice({
   }
 })
 
-export const { setAdminEditUser, setUserPhone, setUserEmail, setUserPicture } = adminEditUserSlice.actions
+export const { setAdminEditUser, setUserFullname, setUserPhone, setUserEmail, setUserPicture } = adminEditUserSlice.actions
 export default adminEditUserSlice.reducer
