@@ -180,9 +180,17 @@
 #adminLayout .mgNavLinkBtn.active {
   color: #ffd298;
 }
+  #adminLayout .mgNavLinkBtn.active:hover {
+    color: #fff2e1;
+    color: #c79d66;
+  }
 #adminLayout .backToShopBtn {
   color: #789ebe;
+  /*color: #8bb3d4;*/
 }
+  #adminLayout .backToShopBtn:hover {
+    color: #bce0ff;
+  }
 .mgNavLinkBtn.mgNavLinkCartBtn {
   color: white;
   padding-top: 6px;
