@@ -28,7 +28,7 @@ const AdminLayout = () =>
       <Container id="adminLayout" style={{ border: '' }} fluid>
         <Row>
           <Col>
-            <MgNavBar showCart={false} useFluid={true} brandText="(Admin Console)" linkTo="/admin/orders">
+            <MgNavBar showCart={false} useFluid={true} brandText="Admin Console" linkTo="/admin/orders">
               <ShopButton withBackArrow={showBackArrow} />
               <VL />
               <AdminLink />
