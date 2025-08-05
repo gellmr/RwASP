@@ -53,8 +53,9 @@ const AdminUserAccounts = () =>
     });
   }
   
-  const handleClickPhoto = function () {
-    modalRef.current.showModal(myUserId);
+  const handleClickPhoto = function (event) {
+    const foruser = event.target.dataset.foruser;
+    modalRef.current.showModal(foruser);
   }
 
   const userRowMarkup = (user, isCurrentUser) => (
@@ -62,7 +63,7 @@ const AdminUserAccounts = () =>
       
       {/*large*/}
       <Col xs={4} className="adminUserAccCell d-none d-sm-block adminUserAccImage adminUserAccLarge">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={isCurrentUser ? handleClickPhoto : undefined} className={isCurrentUser ? "adminUserAccCurrPhoto" : ''} referrerPolicy="no-referrer" />
+        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserAccCurrPhoto" referrerPolicy="no-referrer" data-foruser={user.id} />
       </Col>
 
       <Col xs={12} sm={8}>
@@ -76,7 +77,7 @@ const AdminUserAccounts = () =>
 
       {/*small*/}
       <Col xs={12} className="adminUserAccCell d-sm-none adminUserAccImage adminUserAccSmall">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={isCurrentUser ? handleClickPhoto : undefined} className={isCurrentUser ? "adminUserAccCurrPhoto" : ''} referrerPolicy="no-referrer" />
+        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserAccCurrPhoto" referrerPolicy="no-referrer" data-foruser={user.id} />
       </Col>
 
       <Col xs={12} className="adminUserAccDetailLinks">
