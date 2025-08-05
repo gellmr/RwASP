@@ -177,6 +177,12 @@
   padding: 12px;
   font-size: 12px;
 }
+#adminLayout .mgNavLinkBtn.active {
+  color: #ffd298;
+}
+#adminLayout .backToShopBtn {
+  color: #789ebe;
+}
 .mgNavLinkBtn.mgNavLinkCartBtn {
   color: white;
   padding-top: 6px;
