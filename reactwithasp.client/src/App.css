@@ -269,6 +269,10 @@
   flex-grow: 1;
   text-align: left;
 }
+#adminLayout .storeBrand {
+  font-size: 16px;
+  color:white;
+}
 .responsiveScrollsRight {
   font-size: 12px;
   color: #505050;
@@ -616,6 +620,9 @@ th, td {
   }
   .adminProductRow {
     font-size: 17px;
+  }
+  #adminLayout .storeBrand {
+    font-size: 20px;
   }
 }
 
