@@ -14,6 +14,7 @@ import store from '@/Shop/store.jsx'
 import AdminLogin from "@/Admin/AdminLogin.jsx";
 import AdminLayout from "@/Admin/AdminLayout.jsx";
 import AdminOrders from "@/Admin/AdminOrders.jsx";
+import AdminOrder from "@/Admin/AdminOrder.jsx";
 import AdminProducts from "@/Admin/AdminProducts.jsx";
 import AdminUserAccounts from "@/Admin/AdminUserAccounts.jsx";
 import AdminUserEdit from "@/Admin/AdminUserEdit.jsx";
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')).render(
 
           <Route element={<AdminLayout />}>
             <Route path="/admin/orders/:page?" element={<AdminOrders />} />
+            <Route path="/admin/order/:orderid?" element={<AdminOrder />} />
             <Route path="/admin/products" element={<AdminProducts />} />
             <Route path="/admin/useraccounts" element={<AdminUserAccounts />} />
             <Route path="/admin/user/:userid/edit"   element={<AdminUserEdit />} />

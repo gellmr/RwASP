@@ -58,6 +58,15 @@ function AdminOrders()
     });
   }
 
+  const handleClickBacklogRow = function (e) {
+    if (e.currentTarget.tagName == "TR") {
+      const orderid = e.currentTarget.dataset.orderid;
+      if (orderid !== undefined) {
+        navigate('/admin/order/' + orderid);
+      }
+    }
+  }
+
   const errMarkup = (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -110,7 +119,7 @@ function AdminOrders()
         </thead>
         <tbody>
           {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
-            <tr key={line.id} className="backlogCursorRow">
+            <tr key={line.id} className="backlogCursorRow" onClick={handleClickBacklogRow} data-orderid={line.id}>
               <td>{line.orderPlacedDate}</td>
               <td>{line.id}</td>
               <td>{line.username}</td>
