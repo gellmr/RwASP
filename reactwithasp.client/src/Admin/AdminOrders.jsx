@@ -7,8 +7,9 @@ import Table from 'react-bootstrap/Table'
 import PaginationLinks from "@/Shop/PaginationLinks";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Spinner from 'react-bootstrap/Spinner';
-
 import { axiosInstance } from '@/axiosDefault.jsx';
+
+import '@/AdminOrders.css'
 
 function AdminOrders()
 {
@@ -109,7 +110,7 @@ function AdminOrders()
         </thead>
         <tbody>
           {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
-            <tr key={line.id}>
+            <tr key={line.id} className="backlogCursorRow">
               <td>{line.orderPlacedDate}</td>
               <td>{line.id}</td>
               <td>{line.username}</td>
