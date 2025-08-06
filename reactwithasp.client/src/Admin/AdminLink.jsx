@@ -18,9 +18,9 @@ const AdminLink = () =>
   const myOrders = useSelector(state => state.myOrders.value);
   
   useEffect(() => {
-    const orderCount = (myOrders !== undefined && myOrders.length > 0) ? myOrders.length : null;
-    console.log("orderCount: " + orderCount);
-    setOrderCount(orderCount);
+    const oc = (myOrders !== undefined && myOrders.length > 0) ? myOrders.length : null;
+    console.log("order count: " + oc);
+    setOrderCount(oc);
   }, [myOrders]);
 
   const adminLinks = (
