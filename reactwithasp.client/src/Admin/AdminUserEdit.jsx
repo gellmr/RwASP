@@ -108,6 +108,16 @@ function AdminUserEdit()
           <Col xs={9} className="adminUserEditCell">
             <Form.Control type="email" value={user.email} onChange={handleEmailChange} />
           </Col>
+
+          <Col xs={12} className="adminUserEditCell" style={{ textAlign: 'right' }}>
+            <NavLink to={"/admin/user/" + user.id + "/payments"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom:5 }}>
+              View Payments
+            </NavLink>
+            
+            <NavLink to={"/admin/user/" + user.id + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginLeft: 6, marginBottom: 5 }}>
+              View Orders
+            </NavLink>
+          </Col>
         </Row>
       </Col>
 
