@@ -34,10 +34,10 @@ function AdminOrder ()
 
           {backLink()}
           <div className="AdminOrderDetailRow">
-            <Row className="">
+            <Row>
               <Col xs={6}>Order Number:</Col>  <Col xs={6}>{adminOrder.id}</Col>
             </Row>
-            <Row className="">
+            <Row>
               <Col xs={6}>User Name:</Col>
               <Col xs={6}>
                 <NavLink to={"/admin/user/" + adminOrder.userID + "/edit"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
@@ -45,16 +45,16 @@ function AdminOrder ()
                 </NavLink>
               </Col>
             </Row>
-            <Row className="">
+            <Row>
               <Col xs={6}>User ID:</Col>       <Col xs={6}>{adminOrder.userID}</Col>
             </Row>
-            <Row className="">
+            <Row>
               <Col xs={6}>Account Type:</Col>  <Col xs={6}>{adminOrder.accountType}</Col>
             </Row>
           </div>
 
           <div className="AdminOrderDetailRow">
-            <Row className="">
+            <Row>
               <Col xs={12}>Products:</Col>
             </Row>
             <Row className="">
