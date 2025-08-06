@@ -275,7 +275,7 @@
 
 .storeBrand {
   font-weight: 500;
-  font-size: 20px;
+  font-size: 16px;
   text-decoration: none;
   color: white;
   padding-right: 15px;
@@ -634,6 +634,9 @@ th, td {
   }
   .adminProductRow {
     font-size: 17px;
+  }
+  .storeBrand {
+    font-size: 20px;
   }
   #adminLayout .storeBrand {
     font-size: 20px;

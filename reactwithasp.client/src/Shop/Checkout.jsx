@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router";
 import { clearCart } from '@/features/cart/cartSlice.jsx'
+import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
@@ -29,6 +30,9 @@ function Checkout()
   const cart = useSelector(state => state.cart.cartLines);
   const cartPayload = JSON.parse(JSON.stringify(cart));
 
+  const loginValue = useSelector(state => state.login.value);
+  const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -50,6 +54,8 @@ function Checkout()
       const data = await response.json();
       console.log('Success:', data);
       dispatch(clearCart());
+      // A new order will have appeared under My Orders. Fetch from server to update the UI.
+      dispatch(fetchMyOrders({ uid: myUserId, gid: guestID })); // Invoke thunk
       navigate("/checkoutsuccess");
     } catch (error) {
       console.error('Error:', error);

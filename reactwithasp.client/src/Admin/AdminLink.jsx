@@ -4,12 +4,24 @@ import { NavLink } from "react-router";
 import VL from "@/Shop/VL";
 import { useLocation } from 'react-router';
 import CartBtn from "@/Shop/CartBtn";
+import { useState, useEffect } from 'react';
 
-const AdminLink = () => {
+const AdminLink = () =>
+{
+  const [orderCount, setOrderCount] = useState(null);
+
   const location = useLocation();
   const withinAdmin = location.pathname.indexOf("/admin") !== -1;
   const login = useSelector(state => state.login.value);
   const isLoggedIn = (login !== null);
+
+  const myOrders = useSelector(state => state.myOrders.value);
+  
+  useEffect(() => {
+    const orderCount = (myOrders !== undefined && myOrders.length > 0) ? myOrders.length : null;
+    console.log("orderCount: " + orderCount);
+    setOrderCount(orderCount);
+  }, [myOrders]);
 
   const adminLinks = (
     <>
@@ -23,6 +35,19 @@ const AdminLink = () => {
     </>
   );
 
+  const myOrdersCount = function () {
+    if (orderCount !== null && orderCount != 0){
+      return (
+        <>
+          &nbsp;({orderCount})
+        </>
+      );
+    }
+    return (
+      <></>
+    );
+  }
+
   const markup = function () {
     if (isLoggedIn && withinAdmin) {
       return ( // Logged in and currently on the admin pages
@@ -33,7 +58,7 @@ const AdminLink = () => {
         <>
           <NavLink to="/myorders" className="mgNavLinkBtn" style={{ textWrapMode:"nowrap" }}>
             <span className="mgAdminNavHideMD">My&nbsp;</span>
-            Orders
+            Orders{myOrdersCount()}
           </NavLink>
           <CartBtn isSmall={false} />
           <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" style={{ textWrapMode: "nowrap" }}>
@@ -45,7 +70,7 @@ const AdminLink = () => {
     }
     return ( // Not logged in
       <>
-        <NavLink to="/myorders" className="mgNavLinkBtn" style={{ textWrapMode:"nowrap"}} >My Orders</NavLink>
+        <NavLink to="/myorders" className="mgNavLinkBtn" style={{ textWrapMode:"nowrap"}} >My Orders{myOrdersCount()}</NavLink>
         <CartBtn isSmall={false} />
       </>
     );

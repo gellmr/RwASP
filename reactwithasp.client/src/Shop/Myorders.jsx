@@ -2,11 +2,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { NavLink } from "react-router";
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
-import { axiosInstance } from '@/axiosDefault.jsx';
-import { setMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
+import { useSelector } from 'react-redux'
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import displayDate from '@/Shop/displayDate.jsx'
+
 import '@/MyOrders.css'
 
 const MyOrders = () =>
@@ -15,30 +14,12 @@ const MyOrders = () =>
   const [error, setError] = useState(null);
 
   const ordersThisPage = useSelector(state => state.myOrders.value);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchMyOrders();
-  }, []);
-
-  async function fetchMyOrders()
-  {
-    const url = window.location.origin + "/api/myorders";
-    console.log("Axios retry..." + url);
-    axiosInstance.get(url).then((response) => {
-      console.log('Data fetched:', response.data);
-      dispatch(setMyOrders(response.data));
-    })
-    .catch((error) => {
-      console.error('Request failed after retries:', error);
-      setError(error);
-      dispatch(setMyOrders( [] ));
-    })
-    .finally(() => {
-      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+    if (ordersThisPage !== undefined) {
       setIsLoading(false);
-    });
-  }
+    }
+  }, []);
 
   const noOrdersMarkup = () => (
     <>

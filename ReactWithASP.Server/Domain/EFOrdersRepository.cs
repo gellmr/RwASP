@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Domain.StoredProc;
+using ReactWithASP.Server.DTO.MyOrders;
 using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Domain
@@ -62,10 +63,33 @@ namespace ReactWithASP.Server.Domain
       //return orders;
     }
 
-    public IEnumerable<Order> GetMyOrders(Guid? guestID)
+    public IEnumerable<Order>? GetMyOrders(UserIdDTO userInfo)
+    {
+      if (userInfo.uid != null){
+        return GetMyOrders(userInfo.uid);
+      }
+      if (userInfo.gid != null){
+        return GetMyOrders(userInfo.gid);
+      }
+      return null;
+    }
+
+    protected IEnumerable<Order> GetMyOrders(Guid? guestID)
     {
       IEnumerable<Order> rows = context.Orders.Where(o => o.GuestID == guestID);
-      foreach (Order order in rows){
+      return LoadOrderedProducts(rows);
+    }
+
+    protected IEnumerable<Order> GetMyOrders(string? userID)
+    {
+      IEnumerable<Order> rows = context.Orders.Where(o => o.UserID == userID);
+      return LoadOrderedProducts(rows);
+    }
+
+    protected IEnumerable<Order> LoadOrderedProducts(IEnumerable<Order> rows)
+    {
+      foreach (Order order in rows)
+      {
         order.OrderedProducts = context.OrderedProducts.Where(op => op.OrderID == order.ID).
           Select(op => new OrderedProduct
           {

@@ -31,6 +31,15 @@ namespace ReactWithASP.Server.DTO
 
   public class CartSubmitLineDTO { public Int32? cartLineID { get; set; } public Int32 qty { get; set; } public IspDTO? isp { get; set; } }
 
+  namespace MyOrders
+  {
+    public class UserIdDTO
+    {
+      public string? uid { get; set; }
+      public Guid? gid { get; set; }
+    }
+  }
+
   public class CheckoutSubmitDTO
   {
     [Required(ErrorMessage = "Please enter your First Name")]
@@ -208,6 +217,6 @@ namespace ReactWithASP.Server.DTO
     {
       public List<UserDTO>? Results { get; set; }
       public InfoDTO? Info { get; set; }
-      }
+    }
   }
 }

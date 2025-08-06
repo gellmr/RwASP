@@ -1,4 +1,5 @@
 ﻿using ReactWithASP.Server.Domain.StoredProc;
+using ReactWithASP.Server.DTO.MyOrders;
 
 namespace ReactWithASP.Server.Domain.Abstract
 {
@@ -6,6 +7,6 @@ namespace ReactWithASP.Server.Domain.Abstract
   {
     bool SaveOrder(Order order);
     Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum);
-    IEnumerable<Order> GetMyOrders(Guid? guestID);
+    public IEnumerable<Order>? GetMyOrders(UserIdDTO userInfo);
   }
 }

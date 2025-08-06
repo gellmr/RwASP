@@ -1,9 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { setCart, clearCart } from '@/features/cart/cartSlice.jsx'
 
-import { NavLink } from "react-router";
 import { Outlet } from "react-router";
 
 import Container from 'react-bootstrap/Container';
@@ -22,6 +21,8 @@ import Footer from "@/Shop/Footer";
 import VL from "@/Shop/VL";
 import { useParams } from 'react-router';
 import { useLocation } from 'react-router';
+import { axiosInstance } from '@/axiosDefault.jsx';
+import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
 
 const ShopLayout = () =>
 {
@@ -30,6 +31,11 @@ const ShopLayout = () =>
 
   const location = useLocation();
   const [backCss, setBackCss] = useState('');
+
+  const guestID = useSelector(state => state.cart.guestID);
+
+  const loginValue = useSelector(state => state.login.value);
+  const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 
   useEffect(() => {
     let css = "soccerBg1";
@@ -48,9 +54,17 @@ const ShopLayout = () =>
   async function fetchCart() {
     try {
       const url = window.location.origin + "/api/cart";
-      const response = await fetch(url);
-      const data = await response.json();
-      dispatch(setCart(data));
+      axiosInstance.get(url).then((response) => {
+        dispatch(setCart(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        // Wait until Cart has loaded before we try to invoke the thunk.
+        // Navbar is a child prop that contains UI which depends on having the latest My Orders data from server.
+        dispatch(fetchMyOrders({ uid: myUserId, gid: guestID })); // Invoke thunk
+      });
     } catch (err) {
       dispatch(clearCart());
     }
