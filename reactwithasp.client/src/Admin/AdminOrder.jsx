@@ -15,7 +15,7 @@ function AdminOrder ()
   const { orderid } = useParams();
   const adminOrders = useSelector(state => state.adminOrders.lines);
   const adminOrder = adminOrders.find(ord => ord.id == orderid);
-
+  
   const backLink = () => (
     <Row>
       <Col style={{ textAlign: 'left', marginBottom: 10 }}>
@@ -69,6 +69,31 @@ function AdminOrder ()
     </>
   );
 
+  const noOrderMarkup = function () {
+    return (
+      <>
+        <h5 style={{ marginTop: 12 }}>(Not Found)</h5>
+        <div style={{ height: 250 }}>
+          &nbsp;
+        </div>
+      </>
+    );
+  }
+
+  const loadingMarkup = function () {
+    return (
+      <>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="fetchErr">
+            <Spinner animation="border" size="sm" />
+            &nbsp;
+            Loading
+          </div>
+        </div>
+      </>
+    );
+  }
+
   const errMarkup = (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -77,33 +102,12 @@ function AdminOrder ()
     </>
   );
 
-  const loadingMarkup = (
-    <>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div className="fetchErr">
-          <Spinner animation="border" size="sm" />
-          &nbsp;
-          Loading
-        </div>
-      </div>
-    </>
-  );
-
-  const noOrderMarkup = (
-    <>
-      <h5 style={{ marginTop: 12 }}>(Not Found)</h5>
-      <div style={{ height: 250 }}>
-        &nbsp;
-      </div>
-    </>
-  );
-
   const markup = ((adminOrder === undefined) ? noOrderMarkup() : pageMarkup());
 
   return (
     <>
-      <AdminTitleBar titleText={"Order #" + adminOrder.id} construction={false} />
-      {isLoading ? loadingMarkup() : (error ? errMarkup : markup)}
+      <AdminTitleBar titleText={"Order #" + orderid} construction={false} />
+      {isLoading ? loadingMarkup() : (error ? errMarkup : markup )}
     </>
   );
 }
