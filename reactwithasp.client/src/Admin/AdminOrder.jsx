@@ -15,7 +15,7 @@ function AdminOrder ()
   const { orderid } = useParams();
   const adminOrders = useSelector(state => state.adminOrders.lines);
   const adminOrder = adminOrders.find(ord => ord.id == orderid);
-  
+
   const backLink = () => (
     <Row>
       <Col style={{ textAlign: 'left', marginBottom: 10 }}>
@@ -33,34 +33,49 @@ function AdminOrder ()
         <Col xs={12} sm={10} md={8} lg={6}>
 
           {backLink()}
+
+          {/* 
+          //  accountType            'Guest'
+          //  email                  'email@address.com'
+          //  id                     '120'
+          //  items                  'Drink Bottle'
+          //  itemsOrdered           '3'
+          //  orderPlacedDate        '6/08/2025 7:22:25 PM +08:00'
+          //  orderStatus            'OrderPlaced'
+          //  outstanding            '60.00'
+          //  paymentReceivedAmount  '0.00'
+          //  userID                 '72699C8D.....................0C817A9'
+          //  userIDshort            '72699C8D...'
+          //  username               'FirstName LastName'
+          */}
+
           <div className="AdminOrderDetailRow">
             <Row>
               <Col xs={6}>Order Number:</Col>  <Col xs={6}>{adminOrder.id}</Col>
-            </Row>
-            <Row>
               <Col xs={6}>User Name:</Col>
               <Col xs={6}>
                 <NavLink to={"/admin/user/" + adminOrder.userID + "/edit"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
                   {adminOrder.username}
                 </NavLink>
               </Col>
-            </Row>
-            <Row>
-              <Col xs={6}>User ID:</Col>       <Col xs={6}>{adminOrder.userID}</Col>
-            </Row>
-            <Row>
-              <Col xs={6}>Account Type:</Col>  <Col xs={6}>{adminOrder.accountType}</Col>
+              <Col xs={6}>User ID:</Col>           <Col xs={6}>{adminOrder.userID}</Col>
+              <Col xs={6}>Account Type:</Col>      <Col xs={6}>{adminOrder.accountType}</Col>
+              <Col xs={6}>email:</Col>             <Col xs={6}>{adminOrder.email}</Col>
+              <Col xs={6}>orderPlacedDate:</Col>   <Col xs={6}>{adminOrder.orderPlacedDate}</Col>
+              <Col xs={6}>paymentReceivedAmount:</Col> <Col xs={6}>{adminOrder.paymentReceivedAmount}</Col>
+              <Col xs={6}>outstanding:</Col>       <Col xs={6}>{adminOrder.outstanding}</Col>
+              <Col xs={6}>orderStatus:</Col>       <Col xs={6}>{adminOrder.orderStatus}</Col>
+              <Col xs={6}>itemsOrdered:</Col>      <Col xs={6}>{adminOrder.itemsOrdered}</Col>
             </Row>
           </div>
 
           <div className="AdminOrderDetailRow">
             <Row>
-              <Col xs={12}>Products:</Col>
-            </Row>
-            <Row className="">
-              <Col xs={6}>ID:</Col>      <Col xs={6}>XXX</Col>
-              <Col xs={6}>ID:</Col>      <Col xs={6}>XXX</Col>
-              <Col xs={6}>ID:</Col>      <Col xs={6}>XXX</Col>
+              <Col xs={12}><b>Products:</b></Col>
+              <br />
+              <br />
+              <Col xs={6}>items:</Col>             <Col xs={6}>{adminOrder.items}</Col>
+              {/* Need to add orderedProducts to the adminOrder object and map thru them here. */}
             </Row>
           </div>
         </Col>
