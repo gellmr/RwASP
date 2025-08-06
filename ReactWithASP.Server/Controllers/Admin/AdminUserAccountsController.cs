@@ -83,7 +83,7 @@ namespace ReactWithASP.Server.Controllers.Admin
       try
       {
         // Ensure the given uid is either an AppUserId (Guid) or a Google Subject Id (20-255 numeric value)
-        if ( !(PcreValidation.ValidString(uid, MyRegex.AppUserId) || PcreValidation.ValidString(uid, MyRegex.GoogleSubject))){
+        if ( !(PcreValidation.ValidString(uid, MyRegex.AppUserOrGuestId) || PcreValidation.ValidString(uid, MyRegex.GoogleSubject))){
           return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid uid");
         }
         AppUser? u = await _userManager.FindByIdAsync(uid);

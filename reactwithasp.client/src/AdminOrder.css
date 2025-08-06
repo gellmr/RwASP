@@ -4,16 +4,61 @@
 /* ======================================================== */
 
 .AdminOrderDetailRow {
-  text-align:left;
-  border:1px solid gainsboro;
-  border-radius:10px;
-  padding:15px;
-  font-size:12px;
-  margin-bottom:10px;
+  text-align: left;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
 }
+
+
+#adminOrderPage {
+  /*color: saddlebrown !important;*/
+  font-size: 9px;
+}
+
+.myAdminOrdDetailIspTitle {
+  font-size: 9px;
+}
+
+.AdminOrderDetailRow.AdminOrderDetailHeader .row{
+  margin-bottom: 5px;
+}
+
+
+#adminOrderPage .myAdminOrdDetailImageRow {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  /*border: 1px solid gainsboro;*/
+  background-color: #ffffffd6;
+}
+  #adminOrderPage .myAdminOrdDetailImageCell b {
+    font-weight: 400;
+  }
+  #adminOrderPage .myAdminOrdDetailImageCell .mgLight {
+    font-weight: 400;
+    color: #616161;
+  }
+  #adminOrderPage .myAdminOrdDetailImageCell:first-child {
+    padding-left: 25px;
+    font-weight: 600;
+  }
+  #adminOrderPage .myAdminOrdDetailImageCell:last-child {
+    /*border: 2px dashed magenta;*/
+    padding-left: 0px;
+  }
+
+
 
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
+  #adminOrderPage {
+    /*color: red !important;*/
+    font-size: 10px;
+  }
+  .myAdminOrdDetailIspTitle {
+  }
 }
 
 /* ======================================================== */
@@ -30,6 +75,13 @@
 /* Small devices (landscape phones, 576px and up) */
 
 @media (min-width: 576px) {
+  #adminOrderPage {
+    /*color: magenta !important;*/
+    font-size: 11px;
+  }
+  .myAdminOrdDetailIspTitle {
+    font-size: 10px;
+  }
 }
 
 /* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
@@ -44,6 +96,13 @@
 /* ================================================= */
 
 @media (min-width: 768px) {
+  #adminOrderPage {
+    /*color: lime !important;*/
+    font-size: 12px;
+  }
+  .myAdminOrdDetailIspTitle {
+    font-size: 11px;
+  }
 }
 
 /* ================================================= */
@@ -51,4 +110,11 @@
 /* ================================================= */
 
 @media (min-width: 992px) {
+  #adminOrderPage {
+    /*color: darkorange !important;*/
+    font-size: 14px;
+  }
+  .myAdminOrdDetailIspTitle {
+    font-size: 12px;
+  }
 }

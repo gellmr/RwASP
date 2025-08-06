@@ -63,27 +63,20 @@ namespace ReactWithASP.Server.Domain
       //return orders;
     }
 
-    public IEnumerable<Order>? GetMyOrders(UserIdDTO userInfo)
+    public IEnumerable<Order>? GetMyOrders(string? uid, string? gid)
     {
-      if (userInfo.uid != null){
-        return GetMyOrders(userInfo.uid);
+      if (uid != null && gid != null)
+      {
+        IEnumerable<Order> rowsBoth = context.Orders.Where(o => o.UserID.ToString().Equals(uid) || o.GuestID.ToString().Equals(gid));
+        return LoadOrderedProducts(rowsBoth);
       }
-      if (userInfo.gid != null){
-        return GetMyOrders(userInfo.gid);
+      else if(uid != null)
+      {
+        IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToString().Equals(uid));
+        return LoadOrderedProducts(rowsUser);
       }
-      return null;
-    }
-
-    protected IEnumerable<Order> GetMyOrders(Guid? guestID)
-    {
-      IEnumerable<Order> rows = context.Orders.Where(o => o.GuestID == guestID);
-      return LoadOrderedProducts(rows);
-    }
-
-    protected IEnumerable<Order> GetMyOrders(string? userID)
-    {
-      IEnumerable<Order> rows = context.Orders.Where(o => o.UserID == userID);
-      return LoadOrderedProducts(rows);
+      IEnumerable<Order> rowsGuest = context.Orders.Where(o => o.GuestID.ToString().Equals(gid));
+      return LoadOrderedProducts(rowsGuest);
     }
 
     protected IEnumerable<Order> LoadOrderedProducts(IEnumerable<Order> rows)

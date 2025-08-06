@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, NavLink } from 'react-router';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
 import Spinner from 'react-bootstrap/Spinner';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Image from 'react-bootstrap/Image';
 
 import '@/AdminOrder.css'
 
@@ -12,9 +14,32 @@ function AdminOrder ()
 {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const dispatch = useDispatch();
   const { orderid } = useParams();
+  
   const adminOrders = useSelector(state => state.adminOrders.lines);
   const adminOrder = adminOrders.find(ord => ord.id == orderid);
+
+  const myOrders = useSelector(state => state.myOrders.value);
+  const myOrd = (myOrders && myOrders.length > 0) ? myOrders.find(o => o.id.toString() === orderid) : null;
+
+  const nullOrUndefined = function (arg) {
+    return (
+      arg === undefined || arg == null
+    );
+  }
+  
+  const guestFullName = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.guest))   ? myOrd.guest.fullName   : null;
+  const fullName      = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.appUser)) ? myOrd.appUser.fullName : guestFullName;
+  
+  useEffect(() => {
+    // Fetch the full details of this order.
+    dispatch(fetchMyOrders({
+      uid: adminOrder.userID,
+      gid: null
+    })); // Invoke thunk
+  }, [orderid]);
 
   const backLink = () => (
     <Row>
@@ -26,9 +51,39 @@ function AdminOrder ()
     </Row>
   );
 
+  const orderDetailMarkup = () => (
+    <Col xs={12}>
+      {(myOrd !== null && myOrd.orderedProducts !== undefined && myOrd.orderedProducts.length > 0) && myOrd.orderedProducts.map(op =>
+        <Row key={op.id} className='myAdminOrdDetailImageRow'>
+          <Col xs={2} className='myAdminOrdDetailImageCell'>
+            <span className='mgLight' >${op.inStockProduct.price}</span>
+            <br />
+          </Col>
+
+          <Col xs={3} className='myAdminOrdDetailImageCell myAdminOrdDetailIspTitle'>
+            <b>{op.inStockProduct.title}</b>
+          </Col>
+
+          <Col xs={2} className='myAdminOrdDetailImageCell'>
+            <span className='mgLight'>{op.quantity}</span>
+            <br />
+          </Col>
+
+          <Col xs={2} className='myAdminOrdDetailImageCell'>
+            <span className='mgLight'>${op.inStockProduct.price * op.quantity}</span>
+          </Col>
+
+          <Col xs={3} className='myAdminOrdDetailImageCell' style={{ textAlign: 'center' }}>
+            <Image src={op.inStockProduct.image} rounded style={{ width: 35 }} /> &nbsp;
+          </Col>
+        </Row>
+      )}
+    </Col>
+  );
+
   const pageMarkup = () => (
     <>
-      <Row>
+      <Row id="adminOrderPage">
         <Col xs={0}  sm={1}  md={2} lg={3}></Col>
         <Col xs={12} sm={10} md={8} lg={6}>
 
@@ -49,33 +104,51 @@ function AdminOrder ()
           //  username               'FirstName LastName'
           */}
 
-          <div className="AdminOrderDetailRow">
+          <div className="AdminOrderDetailRow AdminOrderDetailHeader">
             <Row>
-              <Col xs={6}>Order Number:</Col>  <Col xs={6}>{adminOrder.id}</Col>
-              <Col xs={6}>User Name:</Col>
-              <Col xs={6}>
+              <Col xs={5}>Order Number:</Col>  <Col xs={7}>{adminOrder.id}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>Full Name:</Col>
+              <Col xs={7}>
                 <NavLink to={"/admin/user/" + adminOrder.userID + "/edit"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
-                  {adminOrder.username}
+                  {fullName}
                 </NavLink>
               </Col>
-              <Col xs={6}>User ID:</Col>           <Col xs={6}>{adminOrder.userID}</Col>
-              <Col xs={6}>Account Type:</Col>      <Col xs={6}>{adminOrder.accountType}</Col>
-              <Col xs={6}>email:</Col>             <Col xs={6}>{adminOrder.email}</Col>
-              <Col xs={6}>orderPlacedDate:</Col>   <Col xs={6}>{adminOrder.orderPlacedDate}</Col>
-              <Col xs={6}>paymentReceivedAmount:</Col> <Col xs={6}>{adminOrder.paymentReceivedAmount}</Col>
-              <Col xs={6}>outstanding:</Col>       <Col xs={6}>{adminOrder.outstanding}</Col>
-              <Col xs={6}>orderStatus:</Col>       <Col xs={6}>{adminOrder.orderStatus}</Col>
-              <Col xs={6}>itemsOrdered:</Col>      <Col xs={6}>{adminOrder.itemsOrdered}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>User Name:</Col>         <Col xs={7}>{adminOrder.username}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color:'#94a7ba'}}>{adminOrder.userID}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>Account Type:</Col>      <Col xs={7}>{adminOrder.accountType}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>email:</Col>             <Col xs={7}>{adminOrder.email}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>Items Ordered:</Col>      <Col xs={7}>{adminOrder.itemsOrdered}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>Order Status:</Col>       <Col xs={7}>{adminOrder.orderStatus}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>Order Placed:</Col>   <Col xs={7}>{adminOrder.orderPlacedDate}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>Payment Received:</Col> <Col xs={7}>${adminOrder.paymentReceivedAmount}</Col>
+            </Row>
+            <Row>
+              <Col xs={5}>Outstanding:</Col>       <Col xs={7}>${adminOrder.outstanding}</Col>
             </Row>
           </div>
 
           <div className="AdminOrderDetailRow">
             <Row>
-              <Col xs={12}><b>Products:</b></Col>
-              <br />
-              <br />
-              <Col xs={6}>items:</Col>             <Col xs={6}>{adminOrder.items}</Col>
-              {/* Need to add orderedProducts to the adminOrder object and map thru them here. */}
+              <Col xs={12} style={{marginBottom:10}}><b>Products:</b></Col>
+              {myOrd !== undefined ? orderDetailMarkup() : ''}
             </Row>
           </div>
         </Col>

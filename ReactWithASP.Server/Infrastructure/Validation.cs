@@ -5,7 +5,7 @@ namespace ReactWithASP.Server.Infrastructure
   public class MyRegex
   {
     // String representation of a Guid
-    public static string AppUserId{ get { return
+    public static string AppUserOrGuestId{ get { return
         "^[a-zA-Z0-9]{8}\\-[a-zA-Z0-9]{4}\\-[a-zA-Z0-9]{4}\\-[a-zA-Z0-9]{4}\\-[a-zA-Z0-9]{12}$"
     ;}}
 

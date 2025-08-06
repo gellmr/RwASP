@@ -28,27 +28,33 @@ namespace ReactWithASP.Server.Controllers
         Guest? guest = EnsureGuestFromCookieAndDb(null);
         userInfo.gid ??= guest.ID;
 
-        if (userInfo != null){
-          if (!(PcreValidation.ValidString(userInfo.uid, MyRegex.AppUserId) || PcreValidation.ValidString(userInfo.uid, MyRegex.GoogleSubject))){
+        if (userInfo.uid != null){
+          if (!(PcreValidation.ValidString(userInfo.uid, MyRegex.AppUserOrGuestId) || PcreValidation.ValidString(userInfo.uid, MyRegex.GoogleSubject))){
             return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid uid");
           }
         }
-        
+        if (userInfo.gid != null){
+          if ( !(PcreValidation.ValidString(userInfo.gid.ToString(), MyRegex.AppUserOrGuestId) )){
+            return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid gid");
+          }
+        }
+
         if (userInfo.uid == null && userInfo.gid == null){
           return this.StatusCode(StatusCodes.Status400BadRequest, "User ID unavailable.");
         }
 
         // Look up associated records, to display on the My Orders page.
-        IList<Order> orders = ordersRepo.GetMyOrders( userInfo ).ToList();
+        IList<Order> orders = ordersRepo.GetMyOrders( userInfo.uid, userInfo.gid.ToString() ).ToList();
+
+        Guest g = (userInfo.gid == null) ? null : guestRepo.Guests.FirstOrDefault(g => g.ID.ToString().Equals(userInfo.gid.ToString()));
+        AppUser u = (userInfo.uid == null) ? null : await _userManager.FindByIdAsync(userInfo.uid.ToString());
         foreach (Order order in orders)
         {
-          if (order.GuestID != null)
-          {
-            order.Guest = guestRepo.Guests.FirstOrDefault(g => g.ID == order.GuestID);
+          if (order.GuestID != null){
+            order.Guest = g;
           }
-          if (order.UserID != null)
-          {
-            order.AppUser = await _userManager.FindByIdAsync(order.UserID);
+          if (order.UserID != null){
+            order.AppUser = u;
           }
         }
         return Ok(new{ Rows = orders, Message = "Success"});
