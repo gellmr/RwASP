@@ -65,17 +65,21 @@ namespace ReactWithASP.Server.Domain
 
     public IEnumerable<Order>? GetMyOrders(string? uid, string? gid)
     {
-      if (uid != null && gid != null)
-      {
-        IEnumerable<Order> rowsBoth = context.Orders.Where(o => o.UserID.ToString().Equals(uid) || o.GuestID.ToString().Equals(gid));
+      uid = uid.ToLower();
+      gid = gid.ToLower();
+      if (uid != null && gid != null){
+        IEnumerable<Order> rowsBoth = context.Orders.Where(o =>
+          o.UserID.ToLower().Equals(uid) ||
+          o.GuestID.ToString().ToLower().Equals(gid)
+        );
         return LoadOrderedProducts(rowsBoth);
       }
       else if(uid != null)
       {
-        IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToString().Equals(uid));
+        IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToLower().Equals(uid));
         return LoadOrderedProducts(rowsUser);
       }
-      IEnumerable<Order> rowsGuest = context.Orders.Where(o => o.GuestID.ToString().Equals(gid));
+      IEnumerable<Order> rowsGuest = context.Orders.Where(o => o.GuestID.ToString().ToLower().Equals(gid));
       return LoadOrderedProducts(rowsGuest);
     }
 
