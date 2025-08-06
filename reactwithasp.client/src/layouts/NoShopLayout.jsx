@@ -3,8 +3,11 @@ import { Outlet } from "react-router";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+
 import "bootstrap/dist/css/bootstrap.css";
+
 import MgNavBar from "@/main/MgNavBar";
+import CategoriesMenu from "@/Shop/CategoriesMenu";
 import ShopButton from "@/Shop/ShopButton";
 import AdminLink from "@/Admin/AdminLink";
 import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
@@ -14,7 +17,7 @@ import Footer from "@/Shop/Footer";
 const NoShopLayout = () => {
   return (
     <>
-      <Container id="noShopLayout" style={{ border: '' }}>
+      <Container id="noShopLayout" className="soccerBaseBg" style={{ border: '' }}>
         <Row>
           <MgNavBar>
             <ShopButton withBackArrow={false} />
@@ -25,8 +28,14 @@ const NoShopLayout = () => {
         </Row>
 
         <Row>
-          <Col sm={12} style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>
+          <Col xs={0} md={2} lg={3} className="d-none d-md-block">
+             {/*LSPACE */}
+          </Col>
+          <Col xs={12} md={8} lg={6} className="shopLayoutTransparent" style={{ border: "", paddingTop: "15px", paddingBottom: "12px" }}>
             <Outlet /> {/* This will be either Shop or Cart... */}
+          </Col>
+          <Col xs={0} md={2} lg={3} className="d-none d-md-block">
+             {/*RSPACE */}
           </Col>
         </Row>
         <hr />
