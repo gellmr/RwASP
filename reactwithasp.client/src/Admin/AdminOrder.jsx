@@ -26,7 +26,7 @@ function AdminOrder ()
     </Row>
   );
 
-  const pageMarkup = (
+  const pageMarkup = () => (
     <>
       <Row>
         <Col xs={0}  sm={1}  md={2} lg={3}></Col>
@@ -53,6 +53,16 @@ function AdminOrder ()
             </Row>
           </div>
 
+          <div className="AdminOrderDetailRow">
+            <Row className="">
+              <Col xs={12}>Products:</Col>
+            </Row>
+            <Row className="">
+              <Col xs={6}>ID:</Col>      <Col xs={6}>XXX</Col>
+              <Col xs={6}>ID:</Col>      <Col xs={6}>XXX</Col>
+              <Col xs={6}>ID:</Col>      <Col xs={6}>XXX</Col>
+            </Row>
+          </div>
         </Col>
         <Col xs={0} sm={1} md={2} lg={3}></Col>
       </Row>
@@ -67,24 +77,33 @@ function AdminOrder ()
     </>
   );
 
-  const loadingMarkup = function () {
-    return (
-      <>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <div className="fetchErr">
-            <Spinner animation="border" size="sm" />
-            &nbsp;
-            Loading
-          </div>
+  const loadingMarkup = (
+    <>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="fetchErr">
+          <Spinner animation="border" size="sm" />
+          &nbsp;
+          Loading
         </div>
-      </>
-    )
-  };
+      </div>
+    </>
+  );
+
+  const noOrderMarkup = (
+    <>
+      <h5 style={{ marginTop: 12 }}>(Not Found)</h5>
+      <div style={{ height: 250 }}>
+        &nbsp;
+      </div>
+    </>
+  );
+
+  const markup = ((adminOrder === undefined) ? noOrderMarkup() : pageMarkup());
 
   return (
     <>
-      <AdminTitleBar titleText={"Order #" + adminOrder.id} construction={true} />
-      {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
+      <AdminTitleBar titleText={"Order #" + adminOrder.id} construction={false} />
+      {isLoading ? loadingMarkup() : (error ? errMarkup : markup)}
     </>
   );
 }
