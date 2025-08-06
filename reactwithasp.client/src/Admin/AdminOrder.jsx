@@ -38,7 +38,12 @@ function AdminOrder ()
               <Col xs={6}>Order Number:</Col>  <Col xs={6}>{adminOrder.id}</Col>
             </Row>
             <Row className="">
-              <Col xs={6}>User Name:</Col>     <Col xs={6}>{adminOrder.username}</Col>
+              <Col xs={6}>User Name:</Col>
+              <Col xs={6}>
+                <NavLink to={"/admin/user/" + adminOrder.userID + "/edit"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+                  {adminOrder.username}
+                </NavLink>
+              </Col>
             </Row>
             <Row className="">
               <Col xs={6}>User ID:</Col>       <Col xs={6}>{adminOrder.userID}</Col>
