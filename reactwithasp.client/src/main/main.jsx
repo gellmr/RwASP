@@ -19,6 +19,7 @@ import AdminProducts from "@/Admin/AdminProducts.jsx";
 import AdminUserAccounts from "@/Admin/AdminUserAccounts.jsx";
 import AdminUserEdit from "@/Admin/AdminUserEdit.jsx";
 import AdminUserOrders from "@/Admin/AdminUserOrders.jsx";
+import AdminUserPayments from "@/Admin/AdminUserPayments.jsx";
 import LoginLayout from "@/layouts/LoginLayout.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Provider } from 'react-redux'
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/admin/useraccounts" element={<AdminUserAccounts />} />
             <Route path="/admin/user/:userid/edit"   element={<AdminUserEdit />} />
             <Route path="/admin/user/:userid/orders" element={<AdminUserOrders />} />
+            <Route path="/admin/user/:userid/payments" element={<AdminUserPayments />} />
           </Route>
 
           <Route element={<ShopLayout />}>
