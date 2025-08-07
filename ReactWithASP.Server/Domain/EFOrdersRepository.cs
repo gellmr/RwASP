@@ -63,6 +63,25 @@ namespace ReactWithASP.Server.Domain
       //return orders;
     }
 
+    public IEnumerable<Order>? GetUserOrders(string? idval, string? usertype)
+    {
+      idval = (idval != null) ? idval.ToLower() : null;
+      if(usertype == null){
+        throw new ArgumentException("usertype is missing. Cannot get orders.");
+      }
+      if (idval != null){
+        if (usertype == "user"){
+          IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToLower().Equals(idval));
+          return LoadOrderedProducts(rowsUser);
+        }
+        else if (usertype == "guest"){
+          IEnumerable<Order> rowsUser = context.Orders.Where(o => o.GuestID.ToString().ToLower().Equals(idval));
+          return LoadOrderedProducts(rowsUser);
+        }
+      }
+      return new List<Order>();
+    }
+
     public IEnumerable<Order>? GetMyOrders(string? uid, string? gid)
     {
       uid = (uid != null) ? uid.ToLower() : null;

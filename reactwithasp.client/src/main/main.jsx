@@ -40,7 +40,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/admin/products" element={<AdminProducts />} />
             <Route path="/admin/useraccounts" element={<AdminUserAccounts />} />
             <Route path="/admin/:usertype/:idval/edit" element={<AdminUserEdit />} />
-            <Route path="/admin/user/:userid/orders" element={<AdminUserOrders />} />
+            <Route path="/admin/:usertype/:idval/orders" element={<AdminUserOrders />} />
             <Route path="/admin/user/:userid/payments" element={<AdminUserPayments />} />
           </Route>
 
