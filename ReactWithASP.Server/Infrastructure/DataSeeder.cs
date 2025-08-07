@@ -275,13 +275,6 @@ namespace ReactWithASP.Server.Infrastructure
       return name + "@" + email;
     }
 
-    private static string? GenUserName(string inputName, string digits) // eg "Diana Walters", "e35f7679-21dc-4f8e-8bea-2e3d41d72393"
-    {
-      string[] splitName = inputName.ToLower().Split(" ");
-      string[] splitDigits = digits.ToLower().Split("-");
-      string? outName = splitName[0] + "-" + splitName[1] + "-" + splitDigits[0].Substring(0,3);
-      return outName; // eg "diana-walters-e35"
-    }
 
     private void SeedAppUsers(int u)
     {
@@ -304,7 +297,7 @@ namespace ReactWithASP.Server.Infrastructure
         LockoutEnd = GetLockoutUtcDaysFromNow(dto.LockoutEndDateUtc),
         LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
         AccessFailedCount = dto.AccessFailedCount,
-        UserName = GenUserName(dto.UserName, dto.Id.ToString()),
+        UserName = MyExtensions.GenUserName(dto.UserName, dto.Id.ToString()),
         FullName = dto.UserName,                                 // "Eg "Diana Walters"
         //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
         //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email),

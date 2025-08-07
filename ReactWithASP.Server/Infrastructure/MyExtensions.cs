@@ -94,5 +94,14 @@ namespace ReactWithASP.Server.Infrastructure
       int substrLen = maxLength - 3;
       return value.Length <= maxLength ? value : value.Substring(0, substrLen) + "...";
     }
+
+    public static string? GenUserName(string inputName, string digits) // eg "Diana Walters", "e35f7679-21dc-4f8e-8bea-2e3d41d72393"
+    {
+      string[] splitName = inputName.ToLower().Split(" ");
+      string[] splitDigits = digits.ToLower().Split("-");
+      string? outName = splitName[0] + "-" + splitName[1] + "-" + splitDigits[0].Substring(0, 3);
+      return outName; // eg "diana-walters-e35"
+    }
+
   }
 }
