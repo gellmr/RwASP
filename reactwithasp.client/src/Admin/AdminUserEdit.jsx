@@ -74,59 +74,81 @@ function AdminUserEdit()
     dispatch(updateUserOnServer({user:userAccount, field:'email', update:event.target.value}));
   }
 
-  const userRowMarkup = (user, isCurrentUser) => (
-    <Row key={user.id} className={isCurrentUser ? "adminUserEditRow currUserRow" : 'adminUserEditRow'}>
+  const guestIdRow = function (gid) {
+    if (gid === undefined || gid ===null) {
+      return <>
+        <Col className="adminUserEditCell" xs={3}></Col>
+        <Col xs={9} className="adminUserEditCell">&nbsp;
+        </Col>
+      </>
+    }
+    return (
+      <>
+        <Col className="adminUserEditCell" xs={3}>Guest&nbsp;ID</Col>
+        <Col xs={9} className="adminUserEditCell mgGuid" >
+          <Form.Control type="id" value={gid} readonly disabled="disabled" />
+        </Col>
+      </>
+    );
+  }
 
-      {/*large*/}
-      <Col xs={4} className="adminUserEditCell d-none d-sm-block adminUserEditImage adminUserEditLarge">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserEditCurrPhoto" referrerPolicy="no-referrer" />
-      </Col>
+  const userRowMarkup = function (user, isCurrentUser) {
+    return (
+      <Row key={user.id} className={isCurrentUser ? "adminUserEditRow currUserRow" : 'adminUserEditRow'}>
 
-      <Col xs={12} sm={8}>
-        <Row className="adminUserEditDetailsBox">
-          <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col>
-          <Col xs={9} className="adminUserEditCell">
-            <Form.Control type="name" value={user.fullName} onChange={handleFullnameChange} />
-          </Col>
+        {/*large*/}
+        <Col xs={4} className="adminUserEditCell d-none d-sm-block adminUserEditImage adminUserEditLarge">
+          <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserEditCurrPhoto" referrerPolicy="no-referrer" />
+        </Col>
 
-          <Col className="adminUserEditCell" xs={3}>UserName</Col>
-          <Col xs={9} className="adminUserEditCell">
-            <Form.Control type="id" value={user.userName} readonly disabled="disabled" />
-          </Col>
+        <Col xs={12} sm={8}>
+          <Row className="adminUserEditDetailsBox">
+            <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col>
+            <Col xs={9} className="adminUserEditCell">
+              <Form.Control type="name" value={user.fullName} onChange={handleFullnameChange} />
+            </Col>
 
-          <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>
-          <Col xs={9} className="adminUserEditCell mgGuid" >
-            <Form.Control type="id" value={user.id} readonly disabled="disabled" />
-          </Col>
+            <Col className="adminUserEditCell" xs={3}>UserName</Col>
+            <Col xs={9} className="adminUserEditCell">
+              <Form.Control type="id" value={user.userName} readonly disabled="disabled" />
+            </Col>
 
-          <Col className="adminUserEditCell" xs={3}>Phone</Col>
-          <Col xs={9} className="adminUserEditCell">
-            <Form.Control type="phone" value={user.phoneNumber} onChange={handlePhoneChange} />
-          </Col>
+            <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>
+            <Col xs={9} className="adminUserEditCell mgGuid" >
+              <Form.Control type="id" value={user.id} readonly disabled="disabled" />
+            </Col>
 
-          <Col className="adminUserEditCell" xs={3}>Email</Col>
-          <Col xs={9} className="adminUserEditCell">
-            <Form.Control type="email" value={user.email} onChange={handleEmailChange} />
-          </Col>
-
-          <Col xs={12} className="adminUserEditCell" style={{ textAlign: 'right' }}>
-            <NavLink to={"/admin/user/" + user.id + "/payments"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom:5 }}>
-              View Payments
-            </NavLink>
+            {guestIdRow(user.guestID)}
             
-            <NavLink to={"/admin/user/" + user.id + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginLeft: 6, marginBottom: 5 }}>
-              View Orders
-            </NavLink>
-          </Col>
-        </Row>
-      </Col>
+            <Col className="adminUserEditCell" xs={3}>Phone</Col>
+            <Col xs={9} className="adminUserEditCell">
+              <Form.Control type="phone" value={user.phoneNumber} onChange={handlePhoneChange} />
+            </Col>
 
-      {/*small*/}
-      <Col xs={12} className="adminUserEditCell d-sm-none adminUserEditImage adminUserEditSmall">
-        <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserEditCurrPhoto" referrerPolicy="no-referrer" />
-      </Col>
-    </Row>
-  );
+            <Col className="adminUserEditCell" xs={3}>Email</Col>
+            <Col xs={9} className="adminUserEditCell">
+              <Form.Control type="email" value={user.email} onChange={handleEmailChange} />
+            </Col>
+
+            <Col xs={12} className="adminUserEditCell" style={{ textAlign: 'right' }}>
+              <NavLink to={"/admin/user/" + user.id + "/payments"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5 }}>
+                View Payments
+              </NavLink>
+
+              <NavLink to={"/admin/user/" + user.id + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginLeft: 6, marginBottom: 5 }}>
+                View Orders
+              </NavLink>
+            </Col>
+          </Row>
+        </Col>
+
+        {/*small*/}
+        <Col xs={12} className="adminUserEditCell d-sm-none adminUserEditImage adminUserEditSmall">
+          <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserEditCurrPhoto" referrerPolicy="no-referrer" />
+        </Col>
+      </Row>
+    );
+  }
 
   const backLink = () => (
     <Row>
