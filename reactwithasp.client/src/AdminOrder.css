@@ -27,12 +27,15 @@
 
 .myAdminOrdDetailTitleHead{
   margin-bottom:0px;
-  border-bottom:1px solid gainsboro;
+  /*border-bottom:1px solid gainsboro;*/
   padding-bottom:10px;
   padding-left:15px;
 }
 .myAdminOrdDetailHead {
   font-weight: 700;
+  background-color: #f6f6f6 !important;
+  border-radius: 0px !important;
+  border-bottom: 1px solid gainsboro;
 }
 .myAdminOrdDetailFoot {
   font-weight:500;
