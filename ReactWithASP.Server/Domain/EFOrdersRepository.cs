@@ -65,8 +65,9 @@ namespace ReactWithASP.Server.Domain
 
     public IEnumerable<Order>? GetMyOrders(string? uid, string? gid)
     {
-      uid = uid.ToLower();
-      gid = gid.ToLower();
+      uid = (uid != null) ? uid.ToLower() : null;
+      gid = (gid != null) ? gid.ToLower() : null;
+
       if (uid != null && gid != null){
         IEnumerable<Order> rowsBoth = context.Orders.Where(o =>
           o.UserID.ToLower().Equals(uid) ||

@@ -25,6 +25,15 @@
   margin-bottom: 5px;
 }
 
+.myAdminOrdDetailTitleHead{
+  margin-bottom:0px;
+  border-bottom:1px solid gainsboro;
+  padding-bottom:10px;
+  padding-left:15px;
+}
+.myAdminOrdDetailHead {
+  font-weight: 700;
+}
 
 #adminOrderPage .myAdminOrdDetailImageRow {
   padding-top: 10px;

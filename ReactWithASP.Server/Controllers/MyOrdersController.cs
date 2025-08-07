@@ -25,8 +25,6 @@ namespace ReactWithASP.Server.Controllers
     {
       try
       {
-        Guest? guest = EnsureGuestFromCookieAndDb(null);
-        userInfo.gid ??= guest.ID;
 
         if (userInfo.uid != null){
           if (!(PcreValidation.ValidString(userInfo.uid, MyRegex.AppUserOrGuestId) || PcreValidation.ValidString(userInfo.uid, MyRegex.GoogleSubject))){

@@ -25,7 +25,6 @@ function AdminOrder ()
   const myOrders = useSelector(state => state.myOrders.value);
   const myOrd = (myOrders && myOrders.length > 0) ? myOrders.find(o => o.id.toString() === orderid) : null;
 
-  }
   const guestFullName = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.guest))   ? myOrd.guest.fullName   : null;
   const fullName      = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.appUser)) ? myOrd.appUser.fullName : guestFullName;
   
@@ -33,7 +32,7 @@ function AdminOrder ()
     // Fetch the full details of this order.
     dispatch(fetchMyOrders({
       uid: adminOrder.userID,
-      gid: null
+      gid: adminOrder.guestID
     })); // Invoke thunk
   }, [orderid]);
 
@@ -45,6 +44,23 @@ function AdminOrder ()
         </NavLink>
       </Col>
     </Row>
+  );
+
+  const orderDetailHeadMarkup = () => (
+    <>
+      <Col xs={12} className="myAdminOrdDetailTitleHead">
+        <b>Items Ordered: </b>
+      </Col>
+      <Col xs={12}>
+        <Row className='myAdminOrdDetailImageRow myAdminOrdDetailHead'>
+          <Col xs={2} className='myAdminOrdDetailImageCell'>Price</Col>
+          <Col xs={3} className='myAdminOrdDetailImageCell myAdminOrdDetailIspTitle'>Description</Col>
+          <Col xs={2} className='myAdminOrdDetailImageCell'>Qty</Col>
+          <Col xs={2} className='myAdminOrdDetailImageCell'>Subtot</Col>
+          <Col xs={3} className='myAdminOrdDetailImageCell' style={{ textAlign: 'center' }}>&nbsp;</Col>
+        </Row>
+      </Col>
+    </>
   );
 
   const orderDetailMarkup = function ()
@@ -155,7 +171,7 @@ function AdminOrder ()
 
             <div className="AdminOrderDetailRow">
               <Row>
-                <Col xs={12} style={{ marginBottom: 10 }}><b>Products:</b></Col>
+                {orderDetailHeadMarkup()}
                 {myOrd !== undefined ? orderDetailMarkup() : ''}
               </Row>
             </div>
