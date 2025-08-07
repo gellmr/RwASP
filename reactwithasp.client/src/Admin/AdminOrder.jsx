@@ -123,7 +123,7 @@ function AdminOrder ()
       return <></>;
     }
     const idSeg = (myOrd.accountType === "User") ? (myOrd.userID) : (myOrd.guestID);
-    const editPathSeg = "user";
+    const editPathSeg = (myOrd.accountType === "User") ? "user" : "guest";
     const editPath = "/admin/" + editPathSeg + "/" + idSeg + "/edit";
 
     return (
