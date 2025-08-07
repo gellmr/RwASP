@@ -309,6 +309,7 @@ namespace ReactWithASP.Server.Infrastructure
         Guest? guest = new Guest{
           ID = (Guid)dto.GuestID,
           Email = dto.Email,
+          Picture = (dto.Picture == null) ? string.Empty : dto.Picture,
           FirstName = splitName[0],
           LastName = splitName[1]
         };

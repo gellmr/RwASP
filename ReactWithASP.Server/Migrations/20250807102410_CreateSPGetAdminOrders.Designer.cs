@@ -12,8 +12,8 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250807012203_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250807102410_CreateSPGetAdminOrders")]
+    partial class CreateSPGetAdminOrders
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,6 +204,9 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ID");
 
                     b.ToTable("Guests");
@@ -348,6 +351,9 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("GuestID")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Items")
                         .HasColumnType("nvarchar(max)");
 
@@ -371,7 +377,6 @@ namespace ReactWithASP.Server.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")

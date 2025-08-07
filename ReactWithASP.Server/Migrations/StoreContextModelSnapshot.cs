@@ -201,6 +201,9 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ID");
 
                     b.ToTable("Guests");
@@ -345,6 +348,9 @@ namespace ReactWithASP.Server.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("GuestID")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Items")
                         .HasColumnType("nvarchar(max)");
 
@@ -368,7 +374,6 @@ namespace ReactWithASP.Server.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
