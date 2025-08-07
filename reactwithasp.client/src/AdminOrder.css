@@ -21,7 +21,16 @@
   font-size: 9px;
 }
 
-.AdminOrderDetailRow.AdminOrderDetailHeader .row{
+.accordion{
+  margin-bottom:10px;
+}
+.collapseUserDeet{
+}
+.collapseUserDeet .row{
+  margin-bottom:5px;
+}
+
+.AdminOrderDetailRow.AdminOrderDetailHeader .row {
   margin-bottom: 5px;
 }
 

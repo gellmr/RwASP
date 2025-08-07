@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 import { nullOrUndefined } from '@/MgUtility.js';
+import Accordion from 'react-bootstrap/Accordion';
 
 import '@/AdminOrder.css'
 
@@ -177,29 +178,33 @@ function AdminOrder ()
 
               <Row><Col xs={5}>&nbsp;</Col><Col xs={7}>&nbsp;</Col></Row>
 
-              <Row>
-                <Col xs={5}>User Name:</Col>         <Col xs={7}>{adminOrder.username}</Col>
-              </Row>
-              <Row>
-                <Col xs={5}>email:</Col>             <Col xs={7}>{adminOrder.email}</Col>
-              </Row>
-              <Row>
-                <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.userID}</Col>
-              </Row>
-              <Row>
-                <Col xs={5}>Guest ID:</Col>          <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.guestID}</Col>
-              </Row>
-
-              <Row><Col xs={5}>&nbsp;</Col><Col xs={7}>&nbsp;</Col></Row>
-
               <Row style={{ color: '#6873df', fontWeight: 400 }}>
                 <Col xs={5}>Payment Received:</Col> <Col xs={7}>${adminOrder.paymentReceivedAmount}</Col>
               </Row>
               <Row style={{ color:'#ff8000', fontWeight:500}}>
                 <Col xs={5}>Outstanding:</Col>       <Col xs={7}>${adminOrder.outstanding}</Col>
               </Row>
-
             </div>
+
+            <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>User Details</Accordion.Header>
+                <Accordion.Body className="collapseUserDeet">
+                  <Row>
+                    <Col xs={5}>User Name:</Col>         <Col xs={7}>{adminOrder.username}</Col>
+                  </Row>
+                  <Row>
+                    <Col xs={5}>email:</Col>             <Col xs={7}>{adminOrder.email}</Col>
+                  </Row>
+                  <Row>
+                    <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.userID}</Col>
+                  </Row>
+                  <Row>
+                    <Col xs={5}>Guest ID:</Col>          <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.guestID}</Col>
+                  </Row>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
 
             <div className="AdminOrderDetailRow">
               <Row>
