@@ -7,6 +7,7 @@ import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
+import { nullOrUndefined } from '@/MgUtility.js';
 
 import '@/AdminOrder.css'
 
@@ -24,12 +25,7 @@ function AdminOrder ()
   const myOrders = useSelector(state => state.myOrders.value);
   const myOrd = (myOrders && myOrders.length > 0) ? myOrders.find(o => o.id.toString() === orderid) : null;
 
-  const nullOrUndefined = function (arg) {
-    return (
-      arg === undefined || arg == null
-    );
   }
-  
   const guestFullName = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.guest))   ? myOrd.guest.fullName   : null;
   const fullName      = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.appUser)) ? myOrd.appUser.fullName : guestFullName;
   
