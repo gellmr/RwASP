@@ -279,46 +279,42 @@ namespace ReactWithASP.Server.Infrastructure
     private void SeedAppUsers(int u)
     {
       AppUserSeederDTO dto = appUserDTOs[u];
-      //UserDTO usermeDto = usermeDTOs[u];
       string[] splitName = dto.UserName.Split(" ");
-      Guest? guest = null;
-      AppUser user = new AppUser
+      string? appUserId = (dto.Id == null) ? string.Empty : dto.Id.ToString().ToLower();
+      if (dto.IsGuest == false)
       {
-        Id = dto.Id.ToString() ?? string.Empty,
-        GuestID = dto.GuestID,
-        Guest = guest,
-        Email = dto.Email, //  SpliceUsermeEmail(usermeDto.Email, dto.Email),
-        EmailConfirmed = dto.EmailConfirmed,
-        PasswordHash = _hashedVipPassword,
-        //SecurityStamp = dto.SecurityStamp, // Allow database to generate this.
-        PhoneNumber = dto.PhoneNumber,
-        PhoneNumberConfirmed = dto.PhoneNumberConfirmed,
-        TwoFactorEnabled = dto.TwoFactorEnabled,
-        LockoutEnd = GetLockoutUtcDaysFromNow(dto.LockoutEndDateUtc),
-        LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
-        AccessFailedCount = dto.AccessFailedCount,
-        UserName = MyExtensions.GenUserName(dto.UserName, dto.Id.ToString()),
-        FullName = dto.UserName,                                 // "Eg "Diana Walters"
-        //NormalizedUserName = _normalizer.NormalizeName(splitName[0] + "-" + splitName[1]),
-        //NormalizedEmail = _normalizer.NormalizeEmail(dto.Email),
-
-        //Picture = (usermeDto.Picture == null) ? string.Empty : usermeDto.Picture.Large   // Use Large picture from randomuserme
-        Picture = (dto.Picture == null) ? string.Empty : dto.Picture
-      };
-      if (dto.IsGuest)
-      {
-        guest = new Guest
+        AppUser user = new AppUser
         {
-          ID = (Guid)dto.GuestID,
-          Email = user.Email,
-          FirstName = splitName[0], // usermeDto.Name.First,
-          LastName  = splitName[1]  // usermeDto.Name.Last
+          Id = appUserId,
+          GuestID = null, // dto.GuestID,
+          Guest = null,   // guest,
+          Email = dto.Email,
+          EmailConfirmed = dto.EmailConfirmed,
+          PasswordHash = _hashedVipPassword,
+          PhoneNumber = dto.PhoneNumber,
+          PhoneNumberConfirmed = dto.PhoneNumberConfirmed,
+          TwoFactorEnabled = dto.TwoFactorEnabled,
+          LockoutEnd = GetLockoutUtcDaysFromNow(dto.LockoutEndDateUtc),
+          LockoutEnabled = true, // "opt in" to lockout functionality. This does not mean the user is locked out.
+          AccessFailedCount = dto.AccessFailedCount,
+          UserName = MyExtensions.GenUserName(dto.UserName, dto.Id.ToString()),
+          FullName = dto.UserName, // "Eg "Diana Walters"
+          Picture = (dto.Picture == null) ? string.Empty : dto.Picture
         };
-        Guests.Add(user.Id.ToString(), guest);
+        AppUsers.Add(user);
+        _context.Users.Add(user);
+      }
+      else
+      {
+        Guest? guest = new Guest{
+          ID = (Guid)dto.GuestID,
+          Email = dto.Email,
+          FirstName = splitName[0],
+          LastName = splitName[1]
+        };
+        Guests.Add(appUserId, guest); // record which AppUser this Guest belongs to
         _context.Guests.Add(guest);
       }
-      AppUsers.Add(user);
-      _context.Users.Add(user);
       _context.SaveChanges();
     }
 
@@ -349,13 +345,9 @@ namespace ReactWithASP.Server.Infrastructure
     private void SeedOrders(int oidx)
     {
       OrderSeederDTO dto = orderDTOs[oidx];
-
       Guid? userId = dto.UserID;
       Guid? guestId = dto.GuestID;
-
-      AppUser? user = AppUsers.FirstOrDefault( u => (Guid.Parse(u.Id) == userId) || ((userId == null) && (u.GuestID == guestId)) );
-      Guest guest; Guests.TryGetValue(user.Id ?? string.Empty, out guest);
-
+      AppUser? user = AppUsers.FirstOrDefault(u => (Guid.Parse(u.Id) == userId) );
       Order order = new Order
       {
         ID = dto.ID,
@@ -368,16 +360,21 @@ namespace ReactWithASP.Server.Infrastructure
         ShippingAddress = dto.ShippingAddress ?? string.Empty,
         OrderStatus = dto.OrderStatus ?? string.Empty,
       };
-      if (guest != null)
+      if (user == null)
       {
+        // Look up the Guest record for this appUserId
+        Guest guest = Guests.First(g => g.Value.ID == guestId).Value;
+        // Order belongs to a guest
         order.Guest = guest;
         order.GuestID = guest.ID;
       }
       else
       {
-        order.AppUser = user; // AppUsers.First(u => Int32.Parse(u.Id) == userId);
+        // Order belongs to an AppUser
+        order.AppUser = user;
         order.UserID = userId.ToString();
       }
+      // Save the order
       Orders.Add(order);
       _context.Orders.Add(order);
       _context.SaveChanges();
