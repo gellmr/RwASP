@@ -38,9 +38,14 @@
   border-bottom: 1px solid gainsboro;
 }
 .myAdminOrdDetailFoot {
-  font-weight:500;
+  /*font-weight:500;*/
   padding-top: 10px;
   border-top: 1px solid gainsboro;
+}
+
+.grandTotal{
+  /*color:orangered;*/
+  font-weight:500;
 }
 
 #adminOrderPage .myAdminOrdDetailImageRow {

@@ -29,7 +29,7 @@ function AdminOrder ()
   const fullName      = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.appUser)) ? myOrd.appUser.fullName : guestFullName;
 
   if (!nullOrUndefined(myOrd)) {
-    let a = 1;
+    let a = 1; // looking for guest id 011c270d-e767-4150-97e7-a9ad24a61c71
   }
 
   useEffect(() => {
@@ -71,10 +71,9 @@ function AdminOrder ()
     <>
       <Col xs={12} className='myAdminOrdDetailFoot'>
         <Row className=''>
-          <Col xs={2} className='myAdminOrdDetailImageCell'>&nbsp;</Col>
-          <Col xs={3} className='myAdminOrdDetailImageCell myAdminOrdDetailIspTitle'>&nbsp;</Col>
+          <Col xs={5} className='myAdminOrdDetailImageCell' style={{textAlign:'left'}}>Total:</Col>
           <Col xs={2} className='myAdminOrdDetailImageCell'>{myOrd.quantityTotal}</Col>
-          <Col xs={2} className='myAdminOrdDetailImageCell'>${myOrd.priceTotal}</Col>
+          <Col xs={2} className='myAdminOrdDetailImageCell grandTotal'>${myOrd.priceTotal}</Col>
           <Col xs={3} className='myAdminOrdDetailImageCell' style={{ textAlign: 'center' }}>&nbsp;</Col>
         </Row>
       </Col>
@@ -122,6 +121,7 @@ function AdminOrder ()
     if (myOrd === undefined || myOrd === null) {
       return <></>;
     }
+    const nameLink = (myOrd.accountType == "User") ? (myOrd.userID) : (myOrd.guestID);
 
     return (
       <>
@@ -151,24 +151,10 @@ function AdminOrder ()
                 <Col xs={5}>Order Number:</Col>  <Col xs={7}>{myOrd.id}</Col>
               </Row>
               <Row>
-                <Col xs={5}>Full Name:</Col>
-                <Col xs={7}>
-                  <NavLink to={"/admin/user/" + adminOrder.userID + "/edit"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
-                    {fullName}
-                  </NavLink>
-                </Col>
+                <Col xs={5}>Order Placed:</Col>   <Col xs={7}>{adminOrder.orderPlacedDate}</Col>
               </Row>
               <Row>
-                <Col xs={5}>User Name:</Col>         <Col xs={7}>{adminOrder.username}</Col>
-              </Row>
-              <Row>
-                <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.userID}</Col>
-              </Row>
-              <Row>
-                <Col xs={5}>Account Type:</Col>      <Col xs={7}>{adminOrder.accountType}</Col>
-              </Row>
-              <Row>
-                <Col xs={5}>email:</Col>             <Col xs={7}>{adminOrder.email}</Col>
+                <Col xs={5}>Order Total:</Col>       <Col xs={7}>${myOrd.priceTotal}</Col>
               </Row>
               <Row>
                 <Col xs={5}>Items Ordered:</Col>      <Col xs={7}>{adminOrder.itemsOrdered}</Col>
@@ -176,15 +162,43 @@ function AdminOrder ()
               <Row>
                 <Col xs={5}>Order Status:</Col>       <Col xs={7}>{adminOrder.orderStatus}</Col>
               </Row>
+
               <Row>
-                <Col xs={5}>Order Placed:</Col>   <Col xs={7}>{adminOrder.orderPlacedDate}</Col>
+                <Col xs={5}>Customer Name:</Col>
+                <Col xs={7}>
+                  <NavLink to={"/admin/user/" + nameLink + "/edit"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+                    {fullName}
+                  </NavLink>
+                </Col>
               </Row>
               <Row>
+                <Col xs={5}>Account Type:</Col>      <Col xs={7}>{adminOrder.accountType}</Col>
+              </Row>
+
+              <Row><Col xs={5}>&nbsp;</Col><Col xs={7}>&nbsp;</Col></Row>
+
+              <Row>
+                <Col xs={5}>User Name:</Col>         <Col xs={7}>{adminOrder.username}</Col>
+              </Row>
+              <Row>
+                <Col xs={5}>email:</Col>             <Col xs={7}>{adminOrder.email}</Col>
+              </Row>
+              <Row>
+                <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.userID}</Col>
+              </Row>
+              <Row>
+                <Col xs={5}>Guest ID:</Col>          <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.guestID}</Col>
+              </Row>
+
+              <Row><Col xs={5}>&nbsp;</Col><Col xs={7}>&nbsp;</Col></Row>
+
+              <Row style={{ color: '#6873df', fontWeight: 400 }}>
                 <Col xs={5}>Payment Received:</Col> <Col xs={7}>${adminOrder.paymentReceivedAmount}</Col>
               </Row>
-              <Row>
+              <Row style={{ color:'#ff8000', fontWeight:500}}>
                 <Col xs={5}>Outstanding:</Col>       <Col xs={7}>${adminOrder.outstanding}</Col>
               </Row>
+
             </div>
 
             <div className="AdminOrderDetailRow">
