@@ -19,10 +19,13 @@ export const adminUserAccountsSlice = createSlice({
       state.users = action.payload;
     },
     updateUserPic: (state, action) => {
+      const utype = action.payload.usertype;
+      const idval = action.payload.idval;
+      const newpic = action.payload.picture;
       state.users = state.users.map(row => {
-        if (row.id === action.payload.userId) {
+        if (((utype === "guest") && (row.guestID === idval)) || (row.id === idval)){
           const rowCopy = JSON.parse(JSON.stringify(row)); // Ensure deep copy
-          return { ...rowCopy, picture: action.payload.picture };
+          return { ...rowCopy, picture: newpic };
         }
         else {
           return row; // Unchanged row

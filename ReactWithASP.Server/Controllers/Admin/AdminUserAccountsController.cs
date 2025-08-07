@@ -132,10 +132,13 @@ namespace ReactWithASP.Server.Controllers.Admin
 
     [HttpPost("admin-userpic")]
     [DisableRequestSizeLimit] // Optional: disables the default file size limit
-    public async Task<ActionResult> PostUserImage(IFormFile file, string? uid)
+    public async Task<ActionResult> PostUserImage(IFormFile file, string? idval, string? usertype)
     {
       try
       {
+        if (!(PcreValidation.ValidString(idval, MyRegex.AppUserOrGuestId) || PcreValidation.ValidString(idval, MyRegex.GoogleSubject))){
+          return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid idval");
+        }
         if (file == null || file.Length == 0){
           return this.StatusCode(StatusCodes.Status400BadRequest, "No file was uploaded");
         }
@@ -176,19 +179,31 @@ namespace ReactWithASP.Server.Controllers.Admin
 
         string pathToSave = "/userpic/" + uniqueFileName; // Relative to SPA root.
 
-        // Get the currently logged in user by Id.
-        AppUser userToSave = await _userManager.FindByIdAsync(uid);
-        userToSave.Picture = pathToSave;
-        var result = await _userManager.UpdateAsync(userToSave);
-        if (!result.Succeeded){
-          throw new Exception("Could not save user. " + result.Errors.First().Description);
+        // Get the user or guest that we are updating...
+        string? idsave = null;
+        if (!string.IsNullOrEmpty(usertype) && usertype == "guest")
+        {
+          Guest? g = _guestRepo.Guests.FirstOrDefault(g => g.ID.ToString().ToLower().Equals(idval));
+          g.Picture = pathToSave;
+          _guestRepo.SaveGuest(g);
+          idsave = g.ID.ToString().ToLower();
+        }
+        else
+        {
+          AppUser userToSave = await _userManager.FindByIdAsync(idval);
+          userToSave.Picture = pathToSave;
+          var result = await _userManager.UpdateAsync(userToSave);
+          if (!result.Succeeded){
+            throw new Exception("Could not save user. " + result.Errors.First().Description);
+          }
+          idsave = userToSave.Id;
         }
 
         // Respond with JSON including URL for the uploaded file.
         return this.StatusCode(StatusCodes.Status200OK, new {
           Message = "File uploaded successfully",
           Picture = pathToSave,
-          userId = userToSave.Id,
+          idsave = idsave,       // Id of the user or guest to save on client.
           debug = uploadsFolder  // Will be either C:\\path\\to\\RwASP\\reactwithasp.client\\public\\userpic   or   C:\\path\\to\\RwASP-wwwroot\\wwwroot\\userpic
         });
       }

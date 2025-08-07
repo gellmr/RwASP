@@ -7,13 +7,15 @@ import Dropzone from 'react-dropzone'
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 
-const DragDropUserPicModal = forwardRef((props, ref) => {
+const DragDropUserPicModal = forwardRef((props, ref) =>
+{
   // Expose these functions to parent component.
   useImperativeHandle(ref, () => ({
-    showModal(userid) {
+    showModal(idv, utype) {
       setCloudGraphic(defaultCloudGraphic);
       setShow(true);
-      setForUserId(userid);
+      setIdval(idv);
+      setUsertype(utype);
     },
     hideModal() {
       setShow(false);
@@ -27,7 +29,8 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
   };
 
   const [show, setShow] = useState(false);
-  const [forUserId, setForUserId] = useState(null);
+  const [idval, setIdval] = useState(null);
+  const [usertype, setUsertype] = useState(null);
   const defaultCloudGraphic = '/graphics/cloud-upload.png';
   const [cloudGraphic, setCloudGraphic] = useState(defaultCloudGraphic);
   const dispatch = useDispatch();
@@ -45,7 +48,7 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
   function handleDrop(acceptedFiles) {
     const file = acceptedFiles[0];
     if (file) {
-      const url = window.location.origin + "/api/admin-userpic?uid=" + forUserId;
+      const url = window.location.origin + "/api/admin-userpic?idval=" + idval + "&usertype=" + usertype;
       const formData = new FormData();
       formData.append('file', file);
       const postConfig = {
@@ -63,8 +66,9 @@ const DragDropUserPicModal = forwardRef((props, ref) => {
 
         console.log('File uploaded successfully!', response.data);
         dispatch(updateUserPic({
-          userId: response.data.userId,
-          picture: response.data.picture
+          idval: response.data.idsave, // need to pass guest id
+          picture: response.data.picture,
+          usertype: usertype
         }));
         setCloudGraphic(response.data.picture);
         if (onSuccess) {

@@ -55,8 +55,10 @@ function AdminUserEdit()
     });
   }
 
-  const handleClickPhoto = function () {
-    modalRef.current.showModal(idval);
+  const handleClickPhoto = function (event) {
+    const idv = idval;
+    const utype = usertype;
+    modalRef.current.showModal(idv, utype);
   }
 
   const handleModalCloseSuccess = function (picture) {

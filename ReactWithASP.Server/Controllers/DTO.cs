@@ -167,8 +167,9 @@ namespace ReactWithASP.Server.DTO
           Id = null,
           GuestID = g.ID,
           Email = g.Email,
-          FullName = g.FullName,
-          UserName = MyExtensions.GenUserName(g.FullName, g.ID.ToString())
+          Picture = g.Picture,
+          UserName = MyExtensions.GenUserName(g.FullName, g.ID.ToString()),
+          FullName = g.FullName
         };
       }
 
