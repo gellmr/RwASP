@@ -159,6 +159,22 @@ namespace ReactWithASP.Server.DTO
       public string? Picture { get; set; }
       public string? UserName { get; set; }
       public string? FullName { get; set; }
+
+      public static UserDTO TryParse(AppUser u)
+      {
+        return new UserDTO
+        {
+          Email = u.Email,
+          EmailConfirmed = u.EmailConfirmed,
+          GuestID = u.GuestID,
+          Id = u.Id,
+          PhoneNumber = u.PhoneNumber,
+          PhoneNumberConfirmed = u.PhoneNumberConfirmed,
+          Picture = u.Picture,
+          UserName = u.UserName,
+          FullName = u.FullName
+        };
+      }
     }
   }
 

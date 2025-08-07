@@ -56,23 +56,33 @@ namespace ReactWithASP.Server.Controllers.Admin
         // Grab the current user id from claims of the currently logged in user.
         string currentUserId = (User.Identity.IsAuthenticated) ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty;
 
-        IEnumerable<UserDTO> users = _userManager.Users
-          .ToList()
-          .OrderBy(user => user.Id == currentUserId ? 0 : 1) // Make the currently logged in user appear FIRST in the sorted list.
-          .ThenBy(user => user.PhoneNumber)                  // The rest of the list is sorted by phone number.
-          .Select( u => new UserDTO{
-            Email = u.Email,
-            EmailConfirmed = u.EmailConfirmed,
-            GuestID = u.GuestID,
-            Id = u.Id,
-            PhoneNumber = u.PhoneNumber,
-            PhoneNumberConfirmed = u.PhoneNumberConfirmed,
-            Picture = u.Picture,
-            UserName = u.UserName,
-            FullName = u.FullName
-          });
+        AppUser? curr = _userManager.Users.FirstOrDefault(user => user.Id == currentUserId);
+        UserDTO currentUser = UserDTO.TryParse(curr);
 
-        return Ok(users);
+        List<UserDTO> appUsers = _userManager.Users
+          .Where(u => u.Id != currentUserId)
+          .OrderBy(user => user.PhoneNumber)                  // The rest of the list is sorted by phone number.
+          .Select( u => UserDTO.TryParse(u))
+          .ToList();
+
+        List<UserDTO> guests = _guestRepo.Guests.Where(g => !string.IsNullOrEmpty(g.Email) && !string.IsNullOrEmpty(g.FirstName) && !string.IsNullOrEmpty(g.LastName))
+        .Select(u => new UserDTO{
+          Email = u.Email,
+          GuestID = u.ID,
+          Id = null,
+          Picture = u.Picture,
+          UserName = MyExtensions.GenUserName(u.FullName, u.ID.ToString().ToLower()),
+          FullName = u.FullName
+        })
+        .OrderBy(u => u.FullName)
+        .ToList();
+
+        List<UserDTO> allUsers = [currentUser, // Ensure current user appears at top
+          .. guests,   // Show guests above users
+          .. appUsers, // Show users
+        ];
+
+        return Ok(allUsers);
       }
       catch (Exception ex)
       {
