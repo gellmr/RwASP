@@ -1,0 +1,69 @@
+
+/* ======================================================== */
+/* =============     SMALLER THAN xs      ================= */
+/* ======================================================== */
+
+.adminUserOrdersLiner{
+  border:1px solid gainsboro;
+  border-radius:10px;
+  margin-bottom:10px;
+  padding:10px;
+  font-size:10px;
+}
+
+.OrderDetail{
+  text-align:left;
+  margin-bottom:5px;
+  padding-left:10px;
+}
+
+@media (min-width: 370px) {
+  /* BEGINING OF INTERMEDIATE SIZE */
+}
+
+/* ======================================================== */
+/* =============    DEFAULT BREAKPOINT: xs  =============== */
+/* ======================================================== */
+/* xs */
+/* Extra small devices (portrait phones, less than 576px) */
+/* No media query for `xs` since this is the default in Bootstrap */
+
+/* ================================================= */
+/* ========= OTHER BREAKPOINTS BELOW HERE ========== */
+/* ================================================= */
+/* sm */
+/* Small devices (landscape phones, 576px and up) */
+
+@media (min-width: 576px) {
+  .adminUserOrdersLiner {
+    font-size: 12px;
+  }
+}
+
+/* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
+/* ======= Custom Breakpoint - MD-INERMEDIATE ====== */
+/* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
+
+@media (min-width: 708px) {
+  .adminUserOrdersLiner {
+    font-size: 14px;
+  }
+}
+
+/* ================================================= */
+/* =========            MEDIUM            ========== */
+/* ================================================= */
+
+@media (min-width: 768px) {
+  .adminUserOrdersLiner {
+    font-size: 16px;
+  }
+}
+
+/* ================================================= */
+/* =========             LARGE            ========== */
+/* ================================================= */
+
+@media (min-width: 992px) {
+
+}

@@ -8,6 +8,8 @@ import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import '@/AdminUserOrders.css'
+
 function AdminUserOrders() {
   const { usertype, idval } = useParams();
   const [error, setError] = useState(null);
@@ -40,7 +42,7 @@ function AdminUserOrders() {
   const backLink = () => (
     <Row>
       <Col style={{ textAlign: 'left', marginBottom: 10 }}>
-        <NavLink to={"/admin/useraccounts"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
+        <NavLink to={"/admin/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
           <i className="bi bi-arrow-left-short"></i> Back
         </NavLink>
       </Col>
@@ -54,17 +56,27 @@ function AdminUserOrders() {
     }
     return (
       <>
-        <Row key={ord.id} className="">
+        <div key={ord.id} className="adminUserOrdersLiner">
+          <Row className="OrderDetail">
+            <Col xs={4}>Order ID</Col>          <Col xs={8}>{ord.id}</Col>
+          </Row>
+          <Row className="OrderDetail">
+            <Col xs={4}>Order Status</Col>      <Col xs={8}>{ord.orderStatus}</Col>
+          </Row>
+          <Row className="OrderDetail">
+            <Col xs={4}>Placed On</Col>         <Col xs={8}>{ord.orderPlacedDate}</Col>
+          </Row>
 
-          <Col xs={12}>{ord.id}</Col>
-          <Col xs={12}>{ord.orderStatus}</Col>
-          <Col xs={12}>{ord.orderPlacedDate}</Col>
-
-          <Col xs={12}>{ord.itemString}</Col>
-          <Col xs={12}>{ord.quantityTotal}</Col>
-          <Col xs={12}>{ord.priceTotal}</Col>
-
-        </Row>
+          <Row className="OrderDetail">
+            <Col xs={4}>Items</Col>             <Col xs={8}>{ord.itemString}</Col>
+          </Row>
+          <Row className="OrderDetail">
+            <Col xs={4}>Quantity Total</Col>    <Col xs={8}>{ord.quantityTotal}</Col>
+          </Row>
+          <Row className="OrderDetail">
+            <Col xs={4}>Price Total</Col>       <Col xs={8}>{ord.priceTotal}</Col>
+          </Row>
+        </div>
       </>
     );
   }
