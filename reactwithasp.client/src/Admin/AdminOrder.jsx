@@ -27,7 +27,11 @@ function AdminOrder ()
 
   const guestFullName = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.guest))   ? myOrd.guest.fullName   : null;
   const fullName      = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.appUser)) ? myOrd.appUser.fullName : guestFullName;
-  
+
+  if (!nullOrUndefined(myOrd)) {
+    let a = 1;
+  }
+
   useEffect(() => {
     // Fetch the full details of this order.
     dispatch(fetchMyOrders({
@@ -63,6 +67,20 @@ function AdminOrder ()
     </>
   );
 
+  const orderDetailFootMarkup = () => (
+    <>
+      <Col xs={12} className='myAdminOrdDetailFoot'>
+        <Row className=''>
+          <Col xs={2} className='myAdminOrdDetailImageCell'>&nbsp;</Col>
+          <Col xs={3} className='myAdminOrdDetailImageCell myAdminOrdDetailIspTitle'>&nbsp;</Col>
+          <Col xs={2} className='myAdminOrdDetailImageCell'>{myOrd.quantityTotal}</Col>
+          <Col xs={2} className='myAdminOrdDetailImageCell'>$ {myOrd.priceTotal}</Col>
+          <Col xs={3} className='myAdminOrdDetailImageCell' style={{ textAlign: 'center' }}>&nbsp;</Col>
+        </Row>
+      </Col>
+    </>
+  );
+
   const orderDetailMarkup = function ()
   {
     if (myOrd === undefined || myOrd === null || myOrd.orderedProducts === undefined || myOrd.orderedProducts.length == 0) {
@@ -87,7 +105,7 @@ function AdminOrder ()
             </Col>
 
             <Col xs={2} className='myAdminOrdDetailImageCell'>
-              <span className='mgLight'>${op.inStockProduct.price * op.quantity}</span>
+              <span className='mgLight'>$ {op.inStockProduct.price * op.quantity}</span>
             </Col>
 
             <Col xs={3} className='myAdminOrdDetailImageCell' style={{ textAlign: 'center' }}>
@@ -173,6 +191,7 @@ function AdminOrder ()
               <Row>
                 {orderDetailHeadMarkup()}
                 {myOrd !== undefined ? orderDetailMarkup() : ''}
+                {orderDetailFootMarkup()}
               </Row>
             </div>
           </Col>

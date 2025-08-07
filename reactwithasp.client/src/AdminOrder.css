@@ -34,6 +34,11 @@
 .myAdminOrdDetailHead {
   font-weight: 700;
 }
+.myAdminOrdDetailFoot {
+  font-weight:500;
+  padding-top: 10px;
+  border-top: 1px solid gainsboro;
+}
 
 #adminOrderPage .myAdminOrdDetailImageRow {
   padding-top: 10px;
