@@ -455,7 +455,6 @@ th, td {
   
   margin-top: 5px;
   margin-bottom: 5px;
-  background-color: #ffffffd6;
 }
 .inCartProd .innerRow{
   border: 1px solid lightgrey;
@@ -465,6 +464,7 @@ th, td {
   padding: 10px;
   padding-right:0px;
   padding-left:0px;
+  background-color: #ffffffd6;
 }
 .innerRow div{
   /*border: 1px dashed lime;*/

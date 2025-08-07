@@ -28,7 +28,8 @@ namespace ReactWithASP.Server.Controllers
           title       = cartLine.InStockProduct.Title,
           description = cartLine.InStockProduct.Description,
           price       = cartLine.InStockProduct.Price,
-          category    = (Int32)cartLine.InStockProduct.Category
+          category    = (Int32)cartLine.InStockProduct.Category,
+          image       = cartLine.InStockProduct.Image
         }
       }).ToList();
 
@@ -96,7 +97,8 @@ namespace ReactWithASP.Server.Controllers
          title       = updatedCartLine.InStockProduct.Title,
          description = updatedCartLine.InStockProduct.Description,
          price       = updatedCartLine.InStockProduct.Price,
-         category    = (Int32)updatedCartLine.InStockProduct.Category
+         category    = (Int32)updatedCartLine.InStockProduct.Category,
+         image       = updatedCartLine.InStockProduct.Image
       };
 
       // Send back response to client indicating success or failure.

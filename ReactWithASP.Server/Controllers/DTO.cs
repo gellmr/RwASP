@@ -28,6 +28,8 @@ namespace ReactWithASP.Server.DTO
 
     public decimal price { get; set; }
     public Int32 category { get; set; }
+
+    public string image { get; set; }
   }
 
   public class CartSubmitLineDTO { public Int32? cartLineID { get; set; } public Int32 qty { get; set; } public IspDTO? isp { get; set; } }

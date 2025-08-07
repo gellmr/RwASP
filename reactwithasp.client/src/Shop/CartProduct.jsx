@@ -6,7 +6,10 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Image from 'react-bootstrap/Image';
 import "@/App.css";
+
+import '@/CartProduct.css'
 
 function CartProduct({ cartLineID })
 {
@@ -20,6 +23,8 @@ function CartProduct({ cartLineID })
   const title = cartLine.isp.title;
   const slug  = cartLine.isp.description;
   const price = cartLine.isp.price;
+  const picture = cartLine.isp.image;
+
   const qtyInCartInt = cartLine.qty;
 
   const subtot = price * qtyInCartInt;
@@ -29,30 +34,43 @@ function CartProduct({ cartLineID })
   return (
     <Row>
       <Col xs={12} className="inCartProd">
-
         <Row className="innerRow">
-          <Col xs={8}>
-            <div data-product-id={cartLineID} className="inCartItemText">
-              <h6>
-                {title} ${price} 
-              </h6>
-            </div>
+
+          <Col xs={9} sm={7}>
+            <Row>
+              <Col xs={12}>
+                <div data-product-id={cartLineID} className="inCartItemText">
+                  <h6>
+                    {title} ${price}
+                  </h6>
+                </div>
+              </Col>
+              <Col xs={12} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
+                <p style={{ marginTop: "0px", marginBottom: "8px" }}>{slug}</p>
+              </Col>
+              <Col xs={12} className="d-flex d-sm-none" style={{ justifyContent:'left' }}>
+                <Image src={picture} rounded className="cartPicture cartSmallPicture" />
+              </Col>
+            </Row>
           </Col>
 
-          <Col xs={4} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", fontSize:"12px" }}>
-            <span className="d-block d-sm-none cartQtyXXs" >Qty:</span>
-            <span className="cartQtyXs d-block d-sm-none" >Quantity:</span>
-            <span className="d-none d-sm-block" >Quantity:</span>
-            &nbsp;
-            <span style={{ fontWeight:"500" }}>{qtyInCartInt}</span>
+          <Col xs={2} className="d-none d-sm-block" >
+            <Image src={picture} rounded className="cartPicture" />
           </Col>
 
-          <Col xs={8} style={{ textAlign: "left", fontSize: "13px", display: "flex", justifyContent: "flex-start" }}>
-            <p style={{ marginTop: "0px", marginBottom: "8px" }}>{slug}</p>
-          </Col>
-
-          <Col xs={4} className="cartLineSubInfoBottom">
-            <div style={{ textAlign: "right" }}>Price: ${subtot}</div>
+          <Col xs={3} style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", fontSize: "12px" }}>
+            <Row>
+              <Col xs={12}>
+                <span className="d-block d-sm-none cartQtyXXs" >Qty:</span>
+                <span className="cartQtyXs d-block d-sm-none" >Quantity:</span>
+                <span className="d-none d-sm-block" >Quantity:</span>
+                &nbsp;
+                <span style={{ fontWeight: "500" }}>{qtyInCartInt}</span>
+              </Col>
+              <Col xs={12} className="cartLineSubInfoBottom">
+                <div style={{ textAlign: "right" }}>Price: ${subtot}</div>
+              </Col>
+            </Row>
           </Col>
 
           <Col xs={12} className="inCartItemRemove">
@@ -73,8 +91,8 @@ function CartProduct({ cartLineID })
               }}><i className="bi bi-plus" style={{ fontSize: "15px" }} ></i></Button>
             </ButtonGroup>
           </Col>
-        </Row>
 
+        </Row>
       </Col>
     </Row>
   );
