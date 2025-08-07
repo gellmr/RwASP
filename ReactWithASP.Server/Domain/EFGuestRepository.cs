@@ -32,6 +32,7 @@ namespace ReactWithASP.Server.Domain
         dbEntry.Email = guest.Email;
         dbEntry.FirstName = guest.FirstName;
         dbEntry.LastName = guest.LastName;
+        dbEntry.Picture = guest.Picture;
         context.SaveChanges();
       }else{
         // Create new record
