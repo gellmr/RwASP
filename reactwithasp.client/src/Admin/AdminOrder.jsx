@@ -122,7 +122,9 @@ function AdminOrder ()
     if (myOrd === undefined || myOrd === null) {
       return <></>;
     }
-    const nameLink = (myOrd.accountType == "User") ? (myOrd.userID) : (myOrd.guestID);
+    const idSeg = (myOrd.accountType === "User") ? (myOrd.userID) : (myOrd.guestID);
+    const editPathSeg = "user";
+    const editPath = "/admin/" + editPathSeg + "/" + idSeg + "/edit";
 
     return (
       <>
@@ -167,7 +169,7 @@ function AdminOrder ()
               <Row>
                 <Col xs={5}>Customer Name:</Col>
                 <Col xs={7}>
-                  <NavLink to={"/admin/user/" + nameLink + "/edit"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+                  <NavLink to={editPath} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
                     {fullName}
                   </NavLink>
                 </Col>
