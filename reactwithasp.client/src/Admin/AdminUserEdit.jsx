@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { setAdminEditUser, setUserFullname, setUserPhone, setUserEmail, setUserPicture, updateUserOnServer } from '@/features/admin/edituser/adminEditUserSlice.jsx'
+import { nullOrUndefined } from '@/MgUtility.js';
 
 import '@/AdminUserShared.css'
 import '@/AdminUserEdit.css'
@@ -78,13 +79,23 @@ function AdminUserEdit()
     dispatch(updateUserOnServer({user:userAccount, field:'email', update:event.target.value}));
   }
 
-  const guestIdRow = function (gid) {
-    if (gid === undefined || gid ===null) {
-      return <>
-        <Col className="adminUserEditCell" xs={3}></Col>
-        <Col xs={9} className="adminUserEditCell">&nbsp;
+  const userIdRow = function (uid) {
+    if (nullOrUndefined(uid)) {
+      return (<></>);
+    }
+    return (
+      <>
+        <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>
+        <Col xs={9} className="adminUserEditCell mgGuid" >
+          <Form.Control type="id" value={uid} readonly disabled="disabled" />
         </Col>
       </>
+    );
+  }
+
+  const guestIdRow = function (gid) {
+    if (nullOrUndefined(gid)) {
+      return (<></>);
     }
     return (
       <>
@@ -96,7 +107,29 @@ function AdminUserEdit()
     );
   }
 
+  const phoneRow = function (user) {
+    if (!nullOrUndefined(user.guestID)) {
+      return (
+        <></>
+      );
+    }
+    return (
+      <>
+        <Col className="adminUserEditCell" xs={3}>Phone</Col>
+        <Col xs={9} className="adminUserEditCell">
+          <Form.Control type="phone" value={user.phoneNumber} onChange={handlePhoneChange} />
+        </Col>
+      </>
+    );
+  }
+
   const userRowMarkup = function (user, isCurrentUser) {
+    if (nullOrUndefined(user)) {
+      let a = 1;
+      return (
+        <></>
+      );
+    }
     return (
       <Row key={user.id} className={isCurrentUser ? "adminUserEditRow currUserRow" : 'adminUserEditRow'}>
 
@@ -117,17 +150,11 @@ function AdminUserEdit()
               <Form.Control type="id" value={user.userName} readonly disabled="disabled" />
             </Col>
 
-            <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>
-            <Col xs={9} className="adminUserEditCell mgGuid" >
-              <Form.Control type="id" value={user.id} readonly disabled="disabled" />
-            </Col>
+            {userIdRow(user.id)}
 
             {guestIdRow(user.guestID)}
-            
-            <Col className="adminUserEditCell" xs={3}>Phone</Col>
-            <Col xs={9} className="adminUserEditCell">
-              <Form.Control type="phone" value={user.phoneNumber} onChange={handlePhoneChange} />
-            </Col>
+
+            {phoneRow(user)}
 
             <Col className="adminUserEditCell" xs={3}>Email</Col>
             <Col xs={9} className="adminUserEditCell">

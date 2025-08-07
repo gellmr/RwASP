@@ -29,23 +29,48 @@ namespace ReactWithASP.Server.Controllers.Admin
     }
 
     [HttpPost]
+    [Route("admin-guest-update")]
+    public ActionResult UpdateGuest([FromBody] UserDTO userUpdate)
+    {
+      UserDTO? revert = null;
+      try
+      {
+        // Update guest
+        string? gid = userUpdate.GuestID.ToString().ToLower();
+        Guest? g = _guestRepo.Guests.FirstOrDefault(g => g.ID.ToString().ToLower().Equals(gid));
+        revert = UserDTO.TryParse(g);
+        g.updateFullName(userUpdate.FullName);
+        g.Email = userUpdate.Email;
+        _guestRepo.SaveGuest(g);
+        return this.StatusCode(StatusCodes.Status200OK, new { Message = "Success updating guest", Persist = userUpdate });
+      }
+      catch (Exception ex){
+
+        return this.StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message, Revert = revert });
+      }
+    }
+
+    [HttpPost]
     [Route("admin-user-update")]
     public async Task<ActionResult> UpdateUser([FromBody] UserDTO userUpdate)
     {
-      AppUser original = null;
+      UserDTO? revert = null;
       try
       {
+        // Update user
         AppUser appUser = await _userManager.FindByIdAsync(userUpdate.Id);
-        original = JsonSerializer.Deserialize<AppUser>(JsonSerializer.Serialize(appUser));
-        appUser.FullName = userUpdate.FullName;
+        revert = UserDTO.TryParse(appUser);
+        appUser.updateFullName(userUpdate.FullName);
         appUser.PhoneNumber = userUpdate.PhoneNumber;
         appUser.Email = userUpdate.Email;
-        await _userManager.UpdateAsync(appUser);
+        var result = await _userManager.UpdateAsync(appUser);
+        if (!result.Succeeded){
+          throw new ArgumentException("Could not save appUser. errors: " + result.Errors.ToString());
+        }
         return this.StatusCode(StatusCodes.Status200OK, new { Message = "Success updating user", Persist = userUpdate });
       }
-      catch (Exception ex)
-      {
-        return this.StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message, Revert = original });
+      catch (Exception ex){
+        return this.StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message, Revert = revert });
       }
     }
 
@@ -66,7 +91,12 @@ namespace ReactWithASP.Server.Controllers.Admin
           .Select( u => UserDTO.TryParse(u))
           .ToList();
 
-        List<UserDTO> guests = _guestRepo.Guests.Where(g => !string.IsNullOrEmpty(g.Email) && !string.IsNullOrEmpty(g.FirstName) && !string.IsNullOrEmpty(g.LastName))
+        List<UserDTO> guests = _guestRepo.Guests.Where(g =>
+          !string.IsNullOrEmpty(g.Email) &&
+          !string.IsNullOrEmpty(g.FirstName)
+          //&&
+          //!string.IsNullOrEmpty(g.LastName)
+        )
         .Select(u => new UserDTO{
           Email = u.Email,
           GuestID = u.ID,

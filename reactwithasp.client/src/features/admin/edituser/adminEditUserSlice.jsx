@@ -1,13 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '@/axiosDefault.jsx';
+import { nullOrUndefined } from '@/MgUtility.js';
 
 export const updateUserOnServer = createAsyncThunk('adminEditUser/updateUserOnServer',
   async (updateData, { rejectWithValue }) => {
     try {
       let user = { ...updateData.user };
       user[updateData.field] = updateData.update;
+      const url = !nullOrUndefined(user.guestID) ? '/api/admin-guest-update' : '/api/admin-user-update';
       const options = { headers: { 'Content-Type': 'application/json' } };
-      const response = await axiosInstance.post('/api/admin-user-update', user, options);
+      const response = await axiosInstance.post(url, user, options);
       return response.data;
     }
     catch (error) {
