@@ -65,10 +65,10 @@ namespace ReactWithASP.Server.Domain
     {
       get {
         if (!string.IsNullOrEmpty(UserID)){
-          return AppUser.UserName;
+          return AppUser == null ? string.Empty : AppUser.UserName;
         }
         else if (GuestID != null){
-          return Guest.FullName;
+          return Guest == null ? string.Empty : Guest.FullName;
         }
         else {
           return string.Empty;
@@ -83,7 +83,7 @@ namespace ReactWithASP.Server.Domain
     [NotMapped]
     public string UserOrGuestEmail
     {
-      get { return (GuestID != null) ? Guest.Email : AppUser.Email; }
+      get { return (GuestID != null) ? Guest.Email : (AppUser != null ? AppUser.Email : string.Empty); }
     }
     [NotMapped]
     public string ItemString
