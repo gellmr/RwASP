@@ -4,6 +4,7 @@ using ReactWithASP.Server.DTO;
 
 namespace ReactWithASP.Server.Domain.StoredProc
 {
+  // This class is used to map to the results of the CreateSPGetAdminOrders stored procedure.
   [Keyless]
   public class AdminOrderRow
   {
@@ -11,7 +12,8 @@ namespace ReactWithASP.Server.Domain.StoredProc
 
     public Int32 OrderID { get; set; }
     public string? Username { get; set; }
-    public string UserID { get; set; }
+    public string? UserID { get; set; }
+    public string? GuestID { get; set; }
     public string AccountType { get; set; }
     public string? Email { get; set; }
     public DateTimeOffset OrderPlaced { get; set; }
@@ -24,12 +26,15 @@ namespace ReactWithASP.Server.Domain.StoredProc
     public OrderSlugDTO OrderSlug {
       get{
         string itemDisplay = Items.IsNullOrEmpty() ? string.Empty : ((Items.Length > maxLenItemsDisplay) ? Items.Substring(0, maxLenItemsDisplay - 3) + "..." : Items);
-        string UserIDshort = (UserID.Length < 12) ? UserID : (UserID.Substring(0, 8) + "...");
+        string UserIDshort  = (UserID == null)  ? null : ((UserID.Length  < 12) ? UserID  : (UserID.Substring(0, 8)  + "..."));
+        string GuestIDshort = (GuestID == null) ? null : ((GuestID.Length < 12) ? GuestID : (GuestID.Substring(0, 8) + "..."));
         return new OrderSlugDTO{
           ID = OrderID.ToString(),
           Username = Username ?? string.Empty,
           UserID = UserID,
+          GuestID = GuestID,
           UserIDshort = UserIDshort,
+          GuestIDshort = GuestIDshort,
           AccountType = AccountType,
           Email = Email ?? string.Empty,
           OrderPlacedDate = OrderPlaced.ToString(),

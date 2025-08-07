@@ -130,7 +130,9 @@ namespace ReactWithASP.Server.DTO
     public string? ID { get; set; }
     public string? Username { get; set; }
     public string? UserID { get; set; }
-    public string? UserIDshort { get; set; }
+    public string? GuestID { get; set; }
+    public string? UserIDshort { get; set; } // To display in table cell
+    public string? GuestIDshort { get; set; } // To display in table cell
     public string? AccountType { get; set; }
     public string? Email { get; set; }
     public string? OrderPlacedDate { get; set; }
@@ -139,18 +141,6 @@ namespace ReactWithASP.Server.DTO
     public string? ItemsOrdered { get; set; }
     public string? Items { get; set; }
     public string? OrderStatus { get; set; }
-
-    //public string ID { get; set; }
-    //public string? Username { get; set; }
-    //public string? UserID { get; set; }
-    //public string? AccountType { get; set; }
-    //public string? Email { get; set; }
-    //public DateTimeOffset? OrderPlacedDate { get; set; }
-    //public decimal? PaymentReceivedAmount { get; set; }
-    //public decimal? Outstanding { get; set; }
-    //public decimal? ItemsOrdered { get; set; }
-    //public string? Items { get; set; }
-    //public string? OrderStatus { get; set; }
   }
 
   namespace AdminUserAccounts

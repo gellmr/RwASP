@@ -16,8 +16,9 @@ namespace ReactWithASP.Server.Migrations
           DECLARE @skip INT = (@PageNumber - 1) * @PageSize;
           SELECT ord.ID as 'OrderID',
             CASE WHEN usr.UserName IS NOT NULL THEN (usr.UserName) ELSE (guest.FirstName + ' ' + guest.LastName) END AS 'Username',
-            CASE WHEN guest.ID IS NOT NULL THEN convert(nvarchar(50), guest.ID) ELSE (usr.Id) END AS 'UserID',
-            CASE WHEN guest.ID IS NOT NULL THEN 'Guest' ELSE 'User' END AS AccountType,
+            CASE WHEN usr.Id IS NOT NULL THEN (usr.Id) END AS 'UserID',
+            CASE WHEN guest.ID IS NOT NULL THEN convert(nvarchar(50), guest.ID) END AS 'GuestID',
+            CASE WHEN guest.ID IS NOT NULL THEN 'Guest' ELSE 'User' END AS 'AccountType',
             CASE WHEN guest.ID IS NOT NULL THEN (guest.Email) ELSE (usr.Email) END AS 'Email',
             ord.[OrderPlacedDate] as 'OrderPlaced',
             CASE WHEN ordWPay.PaymentReceived IS NULL THEN 0 ELSE ordWPay.PaymentReceived END AS 'PaymentReceived',

@@ -108,6 +108,7 @@ function AdminOrders()
             <th>OrderID</th>
             <th>Username</th>
             <th>UserID</th>
+            <th>GuestID</th>
             <th>AccountType</th>
             <th>Email</th>
             <th>PaymentReceived</th>
@@ -124,6 +125,7 @@ function AdminOrders()
               <td>{line.id}</td>
               <td>{line.username}</td>
               <td>{line.userIDshort}</td>
+              <td>{line.guestIDshort}</td>
               <td>{line.accountType}</td>
               <td>{line.email}</td>
               <td>{line.paymentReceivedAmount}</td>

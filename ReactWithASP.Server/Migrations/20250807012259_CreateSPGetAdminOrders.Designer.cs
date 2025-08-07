@@ -12,8 +12,8 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250805035916_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250807012259_CreateSPGetAdminOrders")]
+    partial class CreateSPGetAdminOrders
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
