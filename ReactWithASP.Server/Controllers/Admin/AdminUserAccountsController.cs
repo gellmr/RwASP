@@ -5,6 +5,7 @@ using ReactWithASP.Server.DTO.AdminUserAccounts;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using System.Text.Json;
+using ReactWithASP.Server.Domain.Abstract;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
@@ -16,12 +17,14 @@ namespace ReactWithASP.Server.Controllers.Admin
     protected RandomUserMeApiClient _userMeService;
     protected IHostEnvironment _hostingEnvironment;
     private IConfiguration _config;
+    protected IGuestRepository _guestRepo;
 
-    public AdminUserAccountsController(Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager, RandomUserMeApiClient userMeService, IHostEnvironment hostingEnv, IConfiguration config) : base (userManager)
+    public AdminUserAccountsController(Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager, RandomUserMeApiClient userMeService, IHostEnvironment hostingEnv, IConfiguration config, IGuestRepository gRepo) : base (userManager)
     {
       _userMeService = userMeService;
       _hostingEnvironment = hostingEnv;
       _config = config;
+      _guestRepo = gRepo;
     }
 
     [HttpPost]
