@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using System.Text.Json;
 using ReactWithASP.Server.Domain.Abstract;
+using ReactWithASP.Server.Domain;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
@@ -90,27 +91,37 @@ namespace ReactWithASP.Server.Controllers.Admin
       }
     }
 
-    [HttpGet("admin-user-edit/{uid}")]
-    public async Task<ActionResult> GetUserAccount(string? uid)
+    [HttpGet("admin-guest-edit/{idval}")]
+    public async Task<ActionResult> GetGuestAccount(string? idval)
+    {
+      try
+      {
+        // Ensure the given gid string is equivalent to a Guid
+        if (!PcreValidation.ValidString(idval, MyRegex.AppUserOrGuestId)){
+          return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid gid");
+        }
+        idval = (idval == null) ? null : idval.ToLower();
+        Guest? g = _guestRepo.Guests.FirstOrDefault(g => g.ID.ToString().ToLower().Equals(idval));
+        UserDTO user = UserDTO.TryParse(g);
+        return Ok(user);
+      }
+      catch (Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+      }
+    }
+
+    [HttpGet("admin-user-edit/{idval}")]
+    public async Task<ActionResult> GetUserAccount(string? idval)
     {
       try
       {
         // Ensure the given uid is either an AppUserId (Guid) or a Google Subject Id (20-255 numeric value)
-        if ( !(PcreValidation.ValidString(uid, MyRegex.AppUserOrGuestId) || PcreValidation.ValidString(uid, MyRegex.GoogleSubject))){
+        if ( !(PcreValidation.ValidString(idval, MyRegex.AppUserOrGuestId) || PcreValidation.ValidString(idval, MyRegex.GoogleSubject))){
           return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid uid");
         }
-        AppUser? u = await _userManager.FindByIdAsync(uid);
-        UserDTO user = new UserDTO{
-          Email = u.Email,
-          EmailConfirmed = u.EmailConfirmed,
-          GuestID = u.GuestID,
-          Id = u.Id,
-          PhoneNumber = u.PhoneNumber,
-          PhoneNumberConfirmed = u.PhoneNumberConfirmed,
-          Picture = u.Picture,
-          UserName = u.UserName,
-          FullName = u.FullName
-        };
+        AppUser? u = await _userManager.FindByIdAsync(idval);
+        UserDTO user = UserDTO.TryParse(u);
         return Ok(user);
       }
       catch (Exception ex)

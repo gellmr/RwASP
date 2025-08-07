@@ -1,4 +1,5 @@
-﻿using ReactWithASP.Server.Infrastructure;
+﻿using ReactWithASP.Server.Domain;
+using ReactWithASP.Server.Infrastructure;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -159,6 +160,17 @@ namespace ReactWithASP.Server.DTO
       public string? Picture { get; set; }
       public string? UserName { get; set; }
       public string? FullName { get; set; }
+
+      public static UserDTO TryParse(Guest g)
+      {
+        return new UserDTO{
+          Id = null,
+          GuestID = g.ID,
+          Email = g.Email,
+          FullName = g.FullName,
+          UserName = MyExtensions.GenUserName(g.FullName, g.ID.ToString())
+        };
+      }
 
       public static UserDTO TryParse(AppUser u)
       {

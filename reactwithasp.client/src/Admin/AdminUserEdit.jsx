@@ -21,7 +21,7 @@ function AdminUserEdit()
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { userid } = useParams();
+  const { usertype, idval } = useParams();
 
   const userAccount = useSelector(state => state.adminEditUser.user);
   
@@ -35,11 +35,13 @@ function AdminUserEdit()
 
   useEffect(() => {
     fetchAccount();
-  }, [userid]);
+  }, [idval]);
 
   async function fetchAccount() {
     setError("");
-    const url = window.location.origin + "/api/admin-user-edit/" + userid;
+    const t = usertype;
+    const path = ((usertype == "guest") ? "/api/admin-guest-edit/" : "/api/admin-user-edit/") + idval;
+    const url = window.location.origin + path;
     axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
       dispatch(setAdminEditUser(response.data));
@@ -54,7 +56,7 @@ function AdminUserEdit()
   }
 
   const handleClickPhoto = function () {
-    modalRef.current.showModal(userid);
+    modalRef.current.showModal(idval);
   }
 
   const handleModalCloseSuccess = function (picture) {
@@ -169,7 +171,7 @@ function AdminUserEdit()
         <Col xs={12} lg={8}>
           <DragDropUserPicModal ref={modalRef} onSuccess={handleModalCloseSuccess} />
           {backLink()}
-          {userRowMarkup(userAccount, (userid == myUserId))}
+          {userRowMarkup(userAccount, (idval == myUserId))}
         </Col>
         <Col xs={0} lg={2}>
           {/*RSPACE*/}
