@@ -162,11 +162,11 @@ function AdminUserEdit()
             </Col>
 
             <Col xs={12} className="adminUserEditCell" style={{ textAlign: 'right' }}>
-              <NavLink to={"/admin/user/" + user.id + "/payments"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5 }}>
+              <NavLink to={"/admin/user/" + idval + "/payments"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5 }}>
                 View Payments
               </NavLink>
 
-              <NavLink to={"/admin/user/" + user.id + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginLeft: 6, marginBottom: 5 }}>
+              <NavLink to={"/admin/user/" + idval + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginLeft: 6, marginBottom: 5 }}>
                 View Orders
               </NavLink>
             </Col>
