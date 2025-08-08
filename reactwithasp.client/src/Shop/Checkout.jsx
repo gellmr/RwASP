@@ -11,6 +11,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import CartBar from "@/Shop/CartBar";
 
+import '@/Checkout.css'
+
 function Checkout()
 {
   const dispatch = useDispatch();
@@ -63,12 +65,15 @@ function Checkout()
   };
 
   const autoFill = function (e) {
-    setFirstName("FirstName"); setLastName("LastName");
-    setShipLine1("Unit 10/150"); setShipLine2("Third Floor, 123 Streetname Bvd"); setShipLine3("The Tall Apartment Building (Inc)");
-    setShipCity("MySuburb");
-    setShipState("MyState");
-    setShipCountry("MyCountry");
-    setShipZip("6000");
+    setFirstName("John");
+    setLastName("Doe");
+    setShipLine1("123 River Gum Way");
+    setShipLine2("Unit 10/150, Third Floor");
+    setShipLine3("The Tall Apartment Building (Inc)");
+    setShipCity("SpringField");
+    setShipState("WA");
+    setShipCountry("Australia");
+    setShipZip("6525");
     setShipEmail("email@address.com");
   }
 
@@ -87,49 +92,49 @@ function Checkout()
 
               <InputGroup className="mb-3">
                 <InputGroup.Text>First Name</InputGroup.Text>
-                <Form.Control id="shipFirstName" name="shipFirstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                <Form.Control id="shipFirstName" name="shipFirstName" type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Please enter your First Name"/>
               </InputGroup>
 
               <InputGroup className="mb-3">
                 <InputGroup.Text>Last Name</InputGroup.Text>
-                <Form.Control id="shipLastName" name="shipLastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                <Form.Control id="shipLastName" name="shipLastName" type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Please enter your Last Name" />
               </InputGroup>
 
               <h5 className="shipHeading">Shipping Address</h5>
               <InputGroup className="mb-3">
                 <InputGroup.Text>Line 1</InputGroup.Text>
-                <Form.Control id="shipLine1" name="shipLine1" type="text" value={shipLine1} onChange={(e) => setShipLine1(e.target.value)} />
+                <Form.Control id="shipLine1" name="shipLine1" type="text" value={shipLine1} onChange={(e) => setShipLine1(e.target.value)} placeholder="Street address / house number" />
               </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text>Line 2</InputGroup.Text>
-                <Form.Control id="shipLine2" name="shipLine2" type="text" value={shipLine2} onChange={(e) => setShipLine2(e.target.value)} />
+                <Form.Control id="shipLine2" name="shipLine2" type="text" value={shipLine2} onChange={(e) => setShipLine2(e.target.value)} placeholder="Apartment / unit / floor number" />
               </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text>Line 3</InputGroup.Text>
-                <Form.Control id="shipLine3" name="shipLine3" type="text" value={shipLine3} onChange={(e) => setShipLine3(e.target.value)} />
+                <Form.Control id="shipLine3" name="shipLine3" type="text" value={shipLine3} onChange={(e) => setShipLine3(e.target.value)} placeholder="Any extra details that might help the courier" />
               </InputGroup>
 
               <InputGroup className="mb-3">
                 <InputGroup.Text>City</InputGroup.Text>
-                <Form.Control id="shipCity" name="shipCity" type="text" value={shipCity} onChange={(e) => setShipCity(e.target.value)} />
+                <Form.Control id="shipCity" name="shipCity" type="text" value={shipCity} onChange={(e) => setShipCity(e.target.value)} placeholder="Your suburb / city / town" />
               </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text>State</InputGroup.Text>
-                <Form.Control id="shipState" name="shipState" type="text" value={shipState} onChange={(e) => setShipState(e.target.value)} />
+                <Form.Control id="shipState" name="shipState" type="text" value={shipState} onChange={(e) => setShipState(e.target.value)} placeholder="Eg, Western Australia" />
               </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text>Country</InputGroup.Text>
-                <Form.Control id="shipCountry" name="shipCountry" type="text" value={shipCountry} onChange={(e) => setShipCountry(e.target.value)} />
+                <Form.Control id="shipCountry" name="shipCountry" type="text" value={shipCountry} onChange={(e) => setShipCountry(e.target.value)} placeholder="Eg, Australia" />
               </InputGroup>
               <InputGroup className="mb-3">
                 <InputGroup.Text>Zip</InputGroup.Text>
-                <Form.Control id="shipZip" name="shipZip" type="text" value={shipZip} onChange={(e) => setShipZip(e.target.value)} />
+                <Form.Control id="shipZip" name="shipZip" type="text" value={shipZip} onChange={(e) => setShipZip(e.target.value)} placeholder="Eg, 6000" />
               </InputGroup>
 
               <h5 className="shipHeading">Your Email Address</h5>
               <InputGroup className="mb-5">
                 <InputGroup.Text>Email</InputGroup.Text>
-                <Form.Control id="shipEmail" name="shipEmail" type="text" value={shipEmail} onChange={(e) => setShipEmail(e.target.value)} />
+                <Form.Control id="shipEmail" name="shipEmail" type="text" value={shipEmail} onChange={(e) => setShipEmail(e.target.value)} placeholder="Please enter a valid email address" />
               </InputGroup>
 
               <ButtonGroup className="checkoutSubmitBtnGroup">
