@@ -20,9 +20,6 @@ function AdminOrder ()
   const dispatch = useDispatch();
   const { orderid } = useParams();
   
-  const adminOrders = useSelector(state => state.adminOrders.lines);
-  const adminOrder = adminOrders.find(ord => ord.id == orderid);
-
   const myOrd = useSelector(state => state.myOrder.value);
 
   const guestFullName = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.guest))   ? myOrd.guest.fullName   : null;
@@ -125,36 +122,21 @@ function AdminOrder ()
 
             {backLink()}
 
-            {/* Structure of adminOrder
-            //  accountType            'Guest'
-            //  email                  'email@address.com'
-            //  id                     '120'
-            //  items                  'Drink Bottle'
-            //  itemsOrdered           '3'
-            //  orderPlacedDate        '6/08/2025 7:22:25 PM +08:00'
-            //  orderStatus            'OrderPlaced'
-            //  outstanding            '60.00'
-            //  paymentReceivedAmount  '0.00'
-            //  userID                 '72699C8D.....................0C817A9'
-            //  userIDshort            '72699C8D...'
-            //  username               'FirstName LastName'
-            */}
-
             <div className="AdminOrderDetailRow AdminOrderDetailHeader">
               <Row>
                 <Col xs={5}>Order Number:</Col>  <Col xs={7}>{myOrd.id}</Col>
               </Row>
               <Row>
-                <Col xs={5}>Order Placed:</Col>   <Col xs={7}>{adminOrder.orderPlacedDate}</Col>
+                <Col xs={5}>Order Placed:</Col>   <Col xs={7}>{myOrd.orderPlacedDate}</Col>
               </Row>
               <Row>
                 <Col xs={5}>Order Total:</Col>       <Col xs={7}>${myOrd.priceTotal}</Col>
               </Row>
               <Row>
-                <Col xs={5}>Items Ordered:</Col>      <Col xs={7}>{adminOrder.itemsOrdered}</Col>
+                <Col xs={5}>Items Ordered:</Col>      <Col xs={7}>{myOrd.quantityTotal}</Col>
               </Row>
               <Row>
-                <Col xs={5}>Order Status:</Col>       <Col xs={7}>{adminOrder.orderStatus}</Col>
+                <Col xs={5}>Order Status:</Col>       <Col xs={7}>{myOrd.orderStatus}</Col>
               </Row>
 
               <Row>
@@ -166,16 +148,16 @@ function AdminOrder ()
                 </Col>
               </Row>
               <Row>
-                <Col xs={5}>Account Type:</Col>      <Col xs={7}>{adminOrder.accountType}</Col>
+                <Col xs={5}>Account Type:</Col>      <Col xs={7}>{myOrd.accountType}</Col>
               </Row>
 
               <Row><Col xs={5}>&nbsp;</Col><Col xs={7}>&nbsp;</Col></Row>
 
               <Row style={{ color: '#6873df', fontWeight: 400 }}>
-                <Col xs={5}>Payment Received:</Col> <Col xs={7}>${adminOrder.paymentReceivedAmount}</Col>
+                <Col xs={5}>Payment Received:</Col> <Col xs={7}>${myOrd.priceTotal - myOrd.outstanding}</Col>
               </Row>
-              <Row style={{ color:'#ff8000', fontWeight:500}}>
-                <Col xs={5}>Outstanding:</Col>       <Col xs={7}>${adminOrder.outstanding}</Col>
+              <Row style={{ color: '#ff8000', fontWeight: 500 }}>
+                <Col xs={5}>Outstanding:</Col>       <Col xs={7}>${myOrd.outstanding}</Col>
               </Row>
             </div>
 
@@ -184,16 +166,16 @@ function AdminOrder ()
                 <Accordion.Header>User Details</Accordion.Header>
                 <Accordion.Body className="collapseUserDeet">
                   <Row>
-                    <Col xs={5}>User Name:</Col>         <Col xs={7}>{adminOrder.username}</Col>
+                    <Col xs={5}>User Name:</Col>         <Col xs={7}>{myOrd.userOrGuestName}</Col>
                   </Row>
                   <Row>
-                    <Col xs={5}>email:</Col>             <Col xs={7}>{adminOrder.email}</Col>
+                    <Col xs={5}>email:</Col>             <Col xs={7}>{myOrd.userOrGuestEmail}</Col>
                   </Row>
                   <Row>
-                    <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.userID}</Col>
+                    <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color: '#94a7ba' }}>{myOrd.userID}</Col>
                   </Row>
                   <Row>
-                    <Col xs={5}>Guest ID:</Col>          <Col xs={7} style={{ color: '#94a7ba' }}>{adminOrder.guestID}</Col>
+                    <Col xs={5}>Guest ID:</Col>          <Col xs={7} style={{ color: '#94a7ba' }}>{myOrd.guestID}</Col>
                   </Row>
                 </Accordion.Body>
               </Accordion.Item>
@@ -246,7 +228,7 @@ function AdminOrder ()
     </>
   );
 
-  const markup = ((adminOrder === undefined) ? noOrderMarkup() : pageMarkup());
+  const markup = ((myOrd === undefined) ? noOrderMarkup() : pageMarkup());
 
   return (
     <>
