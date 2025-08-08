@@ -76,6 +76,13 @@ function AdminUserOrders() {
           <Row className="OrderDetail">
             <Col xs={4}>Price Total</Col>       <Col xs={8}>{ord.priceTotal}</Col>
           </Row>
+          <Row className="OrderDetail">
+            <Col xs={12} style={{textAlign:'right'} }>
+              <NavLink to={"/admin/order/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+                View Details <i className="bi bi-arrow-right-short"></i>
+              </NavLink>
+            </Col>
+          </Row>
         </div>
       </>
     );
