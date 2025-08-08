@@ -28,10 +28,6 @@ function AdminOrder ()
   const guestFullName = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.guest))   ? myOrd.guest.fullName   : null;
   const fullName      = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.appUser)) ? myOrd.appUser.fullName : guestFullName;
 
-  if (!nullOrUndefined(myOrd)) {
-    let a = 1; // looking for guest id 011c270d-e767-4150-97e7-a9ad24a61c71
-  }
-
   useEffect(() => {
     dispatch(fetchMyOrder({ orderid: parseInt(orderid) })); // Invoke thunk
   }, [orderid]);
