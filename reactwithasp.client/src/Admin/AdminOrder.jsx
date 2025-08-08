@@ -164,7 +164,7 @@ function AdminOrder ()
             <Accordion>
               <Accordion.Item eventKey="0">
                 <Accordion.Header>User Details</Accordion.Header>
-                <Accordion.Body className="collapseUserDeet">
+                <Accordion.Body className="collapseDeet">
                   <Row>
                     <Col xs={5}>User Name:</Col>         <Col xs={7}>{myOrd.userOrGuestName}</Col>
                   </Row>
@@ -188,6 +188,29 @@ function AdminOrder ()
                 {orderDetailFootMarkup()}
               </Row>
             </div>
+
+            <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Shipping Details</Accordion.Header>
+                <Accordion.Body className="collapseDeet">
+                  <Row>
+                    <Col xs={12}>{myOrd.shippingAddress}</Col>
+                  </Row>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+
+            <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Billing Details</Accordion.Header>
+                <Accordion.Body className="collapseDeet">
+                  <Row>
+                    <Col xs={12}>{myOrd.billingAddress}</Col>
+                  </Row>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+
           </Col>
           <Col xs={0} sm={1} md={2} lg={3}></Col>
         </Row>

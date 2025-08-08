@@ -197,13 +197,15 @@ namespace ReactWithASP.Server.Domain
 
     public static string ParseAddress(CheckoutSubmitDTO shippingInfo)
     {
-      return shippingInfo.ShipLine1 + " " +
-              shippingInfo.ShipLine2 + " " +
-              shippingInfo.ShipLine3 + " " +
-              shippingInfo.ShipCity + " " +
-              shippingInfo.ShipState + " " +
-              shippingInfo.ShipCountry + " " +
-              shippingInfo.ShipZip;
+      string? ne = string.Empty;
+      string line1 = string.IsNullOrEmpty(shippingInfo.ShipLine1) ? ne : (shippingInfo.ShipLine1 + ", ");
+      string line2 = string.IsNullOrEmpty(shippingInfo.ShipLine2) ? ne : (shippingInfo.ShipLine2 + ", ");
+      string line3 = string.IsNullOrEmpty(shippingInfo.ShipLine3) ? ne : (shippingInfo.ShipLine3 + ", ");
+      return line1 + line2 + line3 +
+        shippingInfo.ShipCity + ", " +
+        shippingInfo.ShipState + ", " +
+        shippingInfo.ShipCountry + ", " +
+        shippingInfo.ShipZip;
     }
 
     public static ShippingState ParseShippingState(string str)

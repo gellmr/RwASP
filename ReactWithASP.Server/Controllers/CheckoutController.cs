@@ -2,6 +2,7 @@
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.DTO;
+using ReactWithASP.Server.DTO.OrderDTOs;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -31,6 +32,16 @@ namespace ReactWithASP.Server.Controllers
 
       DateTimeOffset now = DateTimeOffset.Now;
       string shipAddress = Order.ParseAddress(checkoutSubmit);
+      
+      AddressDTO shipAddy = new AddressDTO{
+        Line1 = checkoutSubmit.ShipLine1,
+        Line2 = checkoutSubmit.ShipLine2,
+        Line3 = checkoutSubmit.ShipLine3,
+        City = checkoutSubmit.ShipCity,
+        State = checkoutSubmit.ShipState,
+        Country = checkoutSubmit.ShipCountry,
+        Zip = checkoutSubmit.ShipZip
+      };
 
       Order order1 = new Order();
       order1.OrderPlacedDate = now;

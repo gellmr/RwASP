@@ -24,11 +24,12 @@
 .accordion{
   margin-bottom:10px;
 }
-.collapseUserDeet{
-  text-align:left;
+
+.collapseDeet {
+  text-align: left;
 }
-.collapseUserDeet .row{
-  margin-bottom:5px;
+.collapseDeet .row {
+  margin-bottom: 5px;
 }
 
 .AdminOrderDetailRow.AdminOrderDetailHeader .row {
