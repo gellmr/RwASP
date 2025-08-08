@@ -36,6 +36,11 @@ namespace ReactWithASP.Server.DTO
 
   namespace MyOrders
   {
+    public class OrderIdRequest
+    {
+      public Int32 orderID { get; set; }
+    }
+
     public class UserIdDTO
     {
       public string? uid { get; set; }

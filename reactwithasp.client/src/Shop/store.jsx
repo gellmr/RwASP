@@ -10,6 +10,7 @@ import adminUserOrdersReducer from '@/features/admin/userorders/adminUserOrdersS
 import adminEditUserReducer from '@/features/admin/edituser/adminEditUserSlice.jsx'
 import loginReducer from '@/features/login/loginSlice.jsx'
 import myOrdersReducer from '@/features/myOrders/myOrdersSlice.jsx'
+import myOrderReducer from '@/features/myOrder/myOrderSlice.jsx'
 
 export default configureStore({
   reducer: {
@@ -25,5 +26,6 @@ export default configureStore({
     adminEditUser:      adminEditUserReducer,
     login:              loginReducer,
     myOrders:           myOrdersReducer,
+    myOrder:            myOrderReducer,
   }
 })

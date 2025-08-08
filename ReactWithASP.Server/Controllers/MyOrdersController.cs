@@ -20,6 +20,21 @@ namespace ReactWithASP.Server.Controllers
     }
 
     [HttpPost]
+    [Route("fetch-order")]
+    public async Task<ActionResult> FetchOrder([FromBody] OrderIdRequest request)
+    {
+      try
+      {
+        Order order = ordersRepo.GetOrderById(request.orderID);
+        return Ok(new { Order=order, Message="Success" });
+      }
+      catch(Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+      }
+    }
+
+    [HttpPost]
     [Route("fetch-orders")]
     public async Task<ActionResult> FetchOrders(UserIdDTO userInfo)
     {

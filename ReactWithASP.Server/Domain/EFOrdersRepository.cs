@@ -11,10 +11,13 @@ namespace ReactWithASP.Server.Domain
     private readonly IConfiguration _config;
     private StoreContext context;
 
+    // Constructor
     public EFOrdersRepository(IConfiguration c){
       _config = c;
       context = new StoreContext(_config);
     }
+
+    // ------------------------------------------------------------------------------
 
     // Return true if saved successfully.
     bool IOrdersRepository.SaveOrder(Order order)
@@ -72,14 +75,24 @@ namespace ReactWithASP.Server.Domain
       if (idval != null){
         if (usertype == "user"){
           IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToLower().Equals(idval));
-          return LoadOrderedProducts(rowsUser);
+          return LoadAllOrderedProducts(rowsUser);
         }
         else if (usertype == "guest"){
           IEnumerable<Order> rowsUser = context.Orders.Where(o => o.GuestID.ToString().ToLower().Equals(idval));
-          return LoadOrderedProducts(rowsUser);
+          return LoadAllOrderedProducts(rowsUser);
         }
       }
       return new List<Order>();
+    }
+
+    public Order GetOrderById(int orderid)
+    {
+      Order? order = context.Orders.FirstOrDefault(ord => ord.ID == orderid);
+      if (order == null){
+        throw new ArgumentException("Could not load Order with orderid " + orderid);
+      }
+      order.OrderedProducts = LoadOrderedProducts(order);
+      return order;
     }
 
     public IEnumerable<Order>? GetMyOrders(string? uid, string? gid)
@@ -92,33 +105,41 @@ namespace ReactWithASP.Server.Domain
           o.UserID.ToLower().Equals(uid) ||
           o.GuestID.ToString().ToLower().Equals(gid)
         );
-        return LoadOrderedProducts(rowsBoth);
+        return LoadAllOrderedProducts(rowsBoth);
       }
       else if(uid != null)
       {
         IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToLower().Equals(uid));
-        return LoadOrderedProducts(rowsUser);
+        return LoadAllOrderedProducts(rowsUser);
       }
       IEnumerable<Order> rowsGuest = context.Orders.Where(o => o.GuestID.ToString().ToLower().Equals(gid));
-      return LoadOrderedProducts(rowsGuest);
+      return LoadAllOrderedProducts(rowsGuest);
     }
 
-    protected IEnumerable<Order> LoadOrderedProducts(IEnumerable<Order> rows)
+    // ------------------------------------------------------------------------------
+    // Utility methods below are not part of repo interface
+
+    protected List<OrderedProduct> LoadOrderedProducts(Order order)
+    {
+      return context.OrderedProducts.Where(op => op.OrderID == order.ID).
+      Select(op => new OrderedProduct
+      {
+        // Load everything that we might need for display on the My Orders page...
+        ID = op.ID,
+        Quantity = op.Quantity,
+        Order = null,   // Avoid cycle of loading objects. We already have the Order.
+        OrderID = null,
+        InStockProduct = op.InStockProduct,
+        InStockProductID = op.InStockProductID,
+      })
+      .ToList();
+    }
+
+    protected IEnumerable<Order> LoadAllOrderedProducts(IEnumerable<Order> rows)
     {
       foreach (Order order in rows)
       {
-        order.OrderedProducts = context.OrderedProducts.Where(op => op.OrderID == order.ID).
-          Select(op => new OrderedProduct
-          {
-            // Load everything that we might need for display on the My Orders page...
-            ID = op.ID,
-            Quantity = op.Quantity,
-            Order = null,   // Avoid cycle of loading objects. We already have the Order.
-            OrderID = null,
-            InStockProduct = op.InStockProduct,
-            InStockProductID = op.InStockProductID,
-          })
-          .ToList();
+        order.OrderedProducts = LoadOrderedProducts(order);
       }
       return rows;
     }

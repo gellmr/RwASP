@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, NavLink } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
+import { fetchMyOrder } from '@/features/myOrder/myOrderSlice.jsx'
 import Spinner from 'react-bootstrap/Spinner';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
@@ -23,8 +23,7 @@ function AdminOrder ()
   const adminOrders = useSelector(state => state.adminOrders.lines);
   const adminOrder = adminOrders.find(ord => ord.id == orderid);
 
-  const myOrders = useSelector(state => state.myOrders.value);
-  const myOrd = (myOrders && myOrders.length > 0) ? myOrders.find(o => o.id.toString() === orderid) : null;
+  const myOrd = useSelector(state => state.myOrder.value);
 
   const guestFullName = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.guest))   ? myOrd.guest.fullName   : null;
   const fullName      = (!nullOrUndefined(myOrd) && !nullOrUndefined(myOrd.appUser)) ? myOrd.appUser.fullName : guestFullName;
@@ -34,11 +33,7 @@ function AdminOrder ()
   }
 
   useEffect(() => {
-    // Fetch the full details of this order.
-    dispatch(fetchMyOrders({
-      uid: adminOrder.userID,
-      gid: adminOrder.guestID
-    })); // Invoke thunk
+    dispatch(fetchMyOrder({ orderid: parseInt(orderid) })); // Invoke thunk
   }, [orderid]);
 
   const backLink = () => (
