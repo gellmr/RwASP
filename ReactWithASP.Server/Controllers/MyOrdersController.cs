@@ -25,7 +25,14 @@ namespace ReactWithASP.Server.Controllers
     {
       try
       {
-        Order order = ordersRepo.GetOrderById(request.orderID);
+        Order order = ordersRepo.GetOrderById(request.orderID); /// Load Guest if present so the fullname will be available.
+        // Also load associated Guest / AppUser if available.
+        if (order.GuestID != null){
+          order.Guest = guestRepo.Guests.FirstOrDefault(g => g.ID.Equals(order.GuestID));
+        }
+        else if (order.UserID != null){
+          order.AppUser = _userManager.Users.FirstOrDefault(user => user.Id == order.UserID);
+        }
         return Ok(new { Order=order, Message="Success" });
       }
       catch(Exception ex)
