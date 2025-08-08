@@ -84,7 +84,7 @@ function MyOrderDetail()
             <hr />
 
             {ord.orderedProducts && ord.orderedProducts.map(op =>
-              <Row className='myOrdDetailImageRow'>
+              <Row key={op.id} className='myOrdDetailImageRow'>
 
                 <Col xs={2} className='myOrdDetailImageCell'>
                   <span className='mgLight' >${op.inStockProduct.price}</span>
