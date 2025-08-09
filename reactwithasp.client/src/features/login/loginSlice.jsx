@@ -10,7 +10,7 @@ export const loginSlice = createSlice({
     // The type of login, or null if we are NOT logged in.
     // value: {
     //   loginResult: 'Success',
-    //   loginType: 'VIP AppUser',
+    //   loginType: 'User',
     //   appUserId: '392943d5-e5ce-4f7a-93ed-d3407b0b61eb'
     // }
     value: null,
