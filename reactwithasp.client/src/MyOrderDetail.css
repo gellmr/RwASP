@@ -12,12 +12,10 @@
 }
 .myOrdDetailImageHead {
   /*color: darkmagenta;*/
-  margin-top: 10px;
   border-radius: 10px;
   border: 1px solid gainsboro;
   background-color: #ffffffd6;
   padding-bottom: 5px;
-  margin-bottom: 12px;
 }
 #myOrdDetailPage .myOrdDetailImageHead tr,
 #myOrdDetailPage .myOrdDetailImageHead td {
