@@ -143,15 +143,21 @@ namespace ReactWithASP.Server.Infrastructure
     private async Task Seed()
     {
       // We want to keep CartLine records, and Guest records. All other tables can be cleared.
-        
+
       // Delete all rows for the tables we are recreating...
-      _context.OrderPayments.RemoveRange(_context.OrderPayments);
-      _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
-      _context.InStockProducts.RemoveRange(_context.InStockProducts);
-      _context.Orders.RemoveRange(_context.Orders);
-      _context.Users.RemoveRange(_context.Users);
-      _context.Guests.RemoveRange(_context.Guests);
-      _context.SaveChanges();
+      try{
+        _context.OrderPayments.RemoveRange(_context.OrderPayments);
+        _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
+        _context.InStockProducts.RemoveRange(_context.InStockProducts);
+        _context.Orders.RemoveRange(_context.Orders);
+        _context.Users.RemoveRange(_context.Users);
+        _context.CartLines.RemoveRange(_context.CartLines);
+        _context.Guests.RemoveRange(_context.Guests);
+        _context.SaveChanges();
+      }catch(Exception ex)
+      {
+        throw new Exception("Could not clear database tables");
+      }
 
       Guests = new Dictionary<string, Guest>();
 
