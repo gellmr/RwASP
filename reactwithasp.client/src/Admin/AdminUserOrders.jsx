@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, NavLink } from "react-router";
+import { useParams, NavLink, useNavigate } from "react-router";
 import { useSelector, useDispatch } from 'react-redux'
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { setAdminUserOrders } from '@/features/admin/userorders/adminUserOrdersSlice.jsx'
@@ -7,6 +7,7 @@ import { nullOrUndefined } from '@/MgUtility.js';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 
 import '@/AdminUserOrders.css'
 
@@ -16,12 +17,11 @@ function AdminUserOrders() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const userOrders = useSelector(state => state.adminUserOrders.orders);
-
   const userDisplayName = "Showing Orders for " + fullname;
-
+  
   useEffect(() => {
     fetchOrders();
   }, [idval]);
@@ -79,12 +79,16 @@ function AdminUserOrders() {
     );
   }
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   const backLink = (textPos) => (
     <Row>
       <Col style={{ textAlign: textPos, marginBottom: 10 }}>
-        <NavLink to={"/admin/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
+        <Button onClick={handleGoBack} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
           <i className="bi bi-arrow-left-short"></i> Back
-        </NavLink>
+        </Button>
       </Col>
     </Row>
   );
