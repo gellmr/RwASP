@@ -21,10 +21,11 @@ namespace ReactWithASP.Server.Domain
         if (string.IsNullOrEmpty(FirstName) && string.IsNullOrEmpty(LastName)){
           return string.Empty; // Both empty
         }
-        else if (string.IsNullOrEmpty(LastName)){
-          return FirstName; // No LastName.
-        }else{
-          return LastName; // No FirstName
+        else if (string.IsNullOrEmpty(LastName)){ return FirstName; // FirstName available
+        }
+        else if (string.IsNullOrEmpty(FirstName)){ return LastName; // LastName available
+        }
+        else{ return FirstName + " " + LastName; // Both available.
         }
       }
     }
