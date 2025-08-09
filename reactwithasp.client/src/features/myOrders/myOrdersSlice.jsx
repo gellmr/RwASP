@@ -1,10 +1,14 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstance } from '@/axiosDefault.jsx';
+import { nullOrUndefined } from '@/MgUtility.js';
 
 // Thunk to fetch My Orders from server
 export const fetchMyOrders = createAsyncThunk('myOrders/fetchMyOrders',
   async (jsonData, { rejectWithValue }) => {
     try {
+      if (nullOrUndefined(jsonData.gid) && nullOrUndefined(jsonData.uid)) {
+        return rejectWithValue("No id was provided");
+      }
       const options = { headers: { 'Content-Type': 'application/json' } };
       const response = await axiosInstance.post('/api/myorders/fetch-orders', jsonData, options);
       return response.data;

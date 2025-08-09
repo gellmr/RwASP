@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import { setGuest } from '@/features/login/loginSlice.jsx'
 import { setCart, clearCart } from '@/features/cart/cartSlice.jsx'
 
 import { Outlet } from "react-router";
@@ -23,6 +24,7 @@ import { useParams } from 'react-router';
 import { useLocation } from 'react-router';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
+import { nullOrUndefined } from '@/MgUtility.js';
 
 const ShopLayout = () =>
 {
@@ -32,11 +34,11 @@ const ShopLayout = () =>
   const location = useLocation();
   const [backCss, setBackCss] = useState('');
 
-  const guestID = useSelector(state => state.cart.guestID);
-
+  const guestID = useSelector(state => state.login.guest);
   const loginValue = useSelector(state => state.login.value);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 
+  // Background css
   useEffect(() => {
     let css = "soccerBg1";
     switch (category) {
@@ -47,9 +49,42 @@ const ShopLayout = () =>
     setBackCss("soccerBaseBg " + css);
   }, [location]);
 
+  // Fetch generated guest id from server, on page load.
+  useEffect(() => {
+    if (nullOrUndefined(myUserId)) {
+      fetchGuest();
+    }
+  }, [loginValue]);
+
+  useEffect(() => {
+    if (!nullOrUndefined(guestID)) {
+      // Once we have the guest id, we can load the orders. Navbar is a child prop that
+      // contains UI which depends on having the latest My Orders data from server.
+      dispatch(fetchMyOrders({ uid: myUserId, gid: guestID })); // Invoke thunk
+    }
+  }, [myUserId, guestID]);
+
+  // Fetch the cart, if login value or guest id changes.
   useEffect(() => {
     fetchCart();
-  }, []);
+  }, [guestID, loginValue]);
+
+  async function fetchGuest() {
+    try {
+      const url = window.location.origin + "/api/guest";
+      axiosInstance.get(url).then((response) => {
+        dispatch(setGuest(response.data)); // Receive the guest id from server
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+      });
+    } catch (err) {
+      // Something went wrong.
+      let a = 1;
+    }
+  }
 
   async function fetchCart() {
     try {
@@ -59,11 +94,6 @@ const ShopLayout = () =>
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        // Wait until Cart has loaded before we try to invoke the thunk.
-        // Navbar is a child prop that contains UI which depends on having the latest My Orders data from server.
-        dispatch(fetchMyOrders({ uid: myUserId, gid: guestID })); // Invoke thunk
       });
     } catch (err) {
       dispatch(clearCart());
