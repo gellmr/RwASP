@@ -1,10 +1,11 @@
 ﻿using ReactWithASP.Server.Infrastructure;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using ReactWithASP.Server.Domain.Abstract;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReactWithASP.Server.Controllers
 {
+  [Authorize]
   public class MyAuthenticatedController : MyBaseController
   {
     protected UserManager<AppUser> _userManager;

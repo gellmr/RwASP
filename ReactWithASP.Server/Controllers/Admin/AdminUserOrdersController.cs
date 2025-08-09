@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
-using ReactWithASP.Server.Domain.StoredProc;
 using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
-  [Authorize]
-  [ApiController]
-  [Route("api")]
   public class AdminUserOrdersController : AdminBaseController
   {
     private IOrdersRepository orderRepo;

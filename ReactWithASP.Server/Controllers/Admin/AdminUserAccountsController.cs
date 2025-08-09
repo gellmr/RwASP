@@ -1,18 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Infrastructure;
 using ReactWithASP.Server.DTO.AdminUserAccounts;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
-using System.Text.Json;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Domain;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
-  [Authorize]
-  [ApiController]
-  [Route("api")]
   public class AdminUserAccountsController : AdminBaseController
   {
     protected RandomUserMeApiClient _userMeService;
