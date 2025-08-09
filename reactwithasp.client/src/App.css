@@ -318,14 +318,26 @@
   padding-bottom: 12px;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
-  background-color: #ffffff69;
 }
 
-.mg-nav-items {
-  /*border:3px dashed magenta;*/
-  align-items: flex-start;
-  width: 100%;
-}
+  .shopLayoutTransparent.bgOrderFullTransparent {
+    background-color: transparent;
+  }
+  .shopLayoutTransparent.bgCartFullTransparent {
+    background-color: transparent;
+  }
+  .shopLayoutTransparent.bgRegularTransparent {
+    background-image: linear-gradient(to bottom, #ffffff69, transparent);
+  }
+  .shopLayoutTransparent.bgStrongTransparent {
+    background-image: linear-gradient(to bottom, #ffffffcc, transparent);
+  }
+
+  .mg-nav-items {
+    /*border:3px dashed magenta;*/
+    align-items: flex-start;
+    width: 100%;
+  }
 
 tr:nth-child(even) {
     background: #F2F2F2;

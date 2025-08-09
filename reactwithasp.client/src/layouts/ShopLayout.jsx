@@ -38,6 +38,27 @@ const ShopLayout = () =>
   const loginValue = useSelector(state => state.login.value);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 
+  // If we are on My Orders page and there are no orders, or Cart page
+  // and cart is empty, display the background using full transparent.
+  let transparentClass = "shopLayoutTransparent bgRegularTransparent";
+  const cartProducts = useSelector(state => state.cart.cartLines);
+  const cartQty = cartProducts.reduce((sum, row) => sum + row.qty, 0);
+  const myOrders = useSelector(state => state.myOrders.value);
+  const ordQty = myOrders.reduce((sum, row) => sum + row.qty, 0);
+  if (location.pathname === "/myorders" && ordQty === 0){
+    transparentClass = "shopLayoutTransparent bgOrderFullTransparent";
+  }
+  if (location.pathname === "/cart" && cartQty === 0) {
+    transparentClass = "shopLayoutTransparent bgCartFullTransparent";
+  }
+  if (location.pathname === "/checkout") {
+    transparentClass = "shopLayoutTransparent bgStrongTransparent";
+  }
+  if (location.pathname.includes("/myorders/")) {
+    transparentClass = "shopLayoutTransparent bgStrongTransparent";
+  }
+  const bgTransparentClass = transparentClass;
+
   // Background css
   useEffect(() => {
     let css = "soccerBg1";
@@ -117,7 +138,7 @@ const ShopLayout = () =>
           <Col xs={0}  md={1}        className="d-none d-md-block">
             {/* LSPACE */}
           </Col>
-          <Col xs={12} md={8} lg={6} className="shopLayoutTransparent">
+          <Col xs={12} md={8} lg={6} className={bgTransparentClass}>
             <Outlet /> {/* This will be either Shop or Cart... */}
           </Col>
           <Col xs={0} lg={2}         className="d-none d-lg-block">
