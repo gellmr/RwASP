@@ -22,7 +22,7 @@ function Cart()
   const totalQty   = cartProducts.reduce((sum, row) => sum + row.qty, 0);
   const totalPrice = cartProducts.reduce((sum, row) => sum + (row.isp.price * row.qty), 0);
 
-  const cartLen = totalQty > 0 ? "Your Cart:" : "Your Cart is Empty";
+  const cartLen = totalQty > 0 ? "My Cart:" : "Cart is Empty";
 
   return (
     <div style={{minHeight:780}}>
@@ -40,7 +40,7 @@ function Cart()
         <Row>
           {/* <CartBar /> */}
           <Col className="cartContents col-12">
-            {!cartProducts || cartProducts.length === 0 && <div className="cartEmptyMsg" style={{ textAlign: "center" }}>( Empty )</div>}
+            {!cartProducts || cartProducts.length === 0 && <div className="cartEmptyMsg" style={{ textAlign: "center" }}>&nbsp;</div>}
             {cartProducts && cartProducts.map(row =>
               <CartProduct key={row.cartLineID} cartLineID={row.cartLineID} />
             )}

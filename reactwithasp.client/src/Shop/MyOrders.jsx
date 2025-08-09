@@ -3,7 +3,6 @@ import Col from 'react-bootstrap/Col';
 import { NavLink } from "react-router";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import AdminTitleBar from "@/Admin/AdminTitleBar";
 import displayDate from '@/Shop/displayDate.jsx';
 import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx';
 import { nullOrUndefined } from '@/MgUtility.js';
@@ -40,7 +39,9 @@ const MyOrders = () =>
 
   const noOrdersMarkup = () => (
     <>
-      <h5 style={{ marginTop: 12 }}>(None at the moment)</h5>
+      <div className="ordersEmptyMsg">
+        (None at the moment)
+      </div>
       <div style={{ height:250 }}>
         &nbsp;
       </div>
@@ -103,22 +104,34 @@ const MyOrders = () =>
       ordersThisPage && ordersThisPage.map(ord => orderRow(ord))
   ))));
 
+  const accountInfo = function () {
+    if (!ordersThisPage || ordersThisPage.length === 0) {
+      return (<></>);
+    }
+    return (
+      <Col xs={12}>
+        <div className="myOrdersTable myOrdersHeadInfo">
+          <Row>
+            <Col xs={4}>Account&nbsp;Type:</Col> <Col xs={8}>{accType}</Col>
+          </Row>
+          <Row>
+            <Col xs={4}>{accType} ID:</Col>  <Col xs={8} className="guid">{idval}</Col>
+          </Row>
+        </div>
+      </Col>
+    );
+  }
+
   return (
     <>
       <Row>
         <Col xs={12}>
-          <AdminTitleBar titleText="My Orders" construction={false} />
-        </Col>
-        <Col xs={12}>
-          <div className="myOrdersTable myOrdersHeadInfo">
-            <Row>
-              <Col xs={4}>Account&nbsp;Type:</Col> <Col xs={8}>{accType}</Col>
-            </Row>
-            <Row>
-              <Col xs={4}>{accType} ID:</Col>  <Col xs={8} className="guid">{idval}</Col>
-            </Row>
+          <div style={{ textAlign: "center", paddingLeft: 15, paddingBottom: 5 }}>
+            <h2 style={{ display: "inline-block", marginRight: 10 }}>My Orders</h2>
           </div>
+
         </Col>
+        {accountInfo()}
         {rowsMarkup}
       </Row>
     </>
