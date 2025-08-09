@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useParams, NavLink, useNavigate } from "react-router";
+import { useParams, NavLink } from "react-router";
 import { useSelector, useDispatch } from 'react-redux'
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { setAdminUserOrders } from '@/features/admin/userorders/adminUserOrdersSlice.jsx'
 import { nullOrUndefined } from '@/MgUtility.js';
+import BackLink from "@/Shop/BackLink";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
 
 import '@/AdminUserOrders.css'
 
@@ -17,7 +17,7 @@ function AdminUserOrders() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const dispatch = useDispatch();
   const userOrders = useSelector(state => state.adminUserOrders.orders);
   const userDisplayName = "Showing Orders for " + fullname;
@@ -79,30 +79,17 @@ function AdminUserOrders() {
     );
   }
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
-  const backLink = (textPos) => (
-    <Row>
-      <Col style={{ textAlign: textPos, marginBottom: 10 }}>
-        <Button onClick={handleGoBack} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
-          <i className="bi bi-arrow-left-short"></i> Back
-        </Button>
-      </Col>
-    </Row>
-  );
 
   const noOrdersMarkup = () => (
     <div style={{ height: 100, marginTop: 20 }}>
       <div style={{marginBottom:25}} >(None at the moment)</div>
-      {backLink('center')}
+      <BackLink textPos="center" />
     </div>
   );
 
   const yesOrdersMarkup = () => (
     <>
-      {backLink('left')}
+      <BackLink textPos="left" />
       { userOrders.map(ord => orderRow(ord)) }
     </>
   );
