@@ -12,12 +12,15 @@ import '@/AdminUserOrders.css'
 
 function AdminUserOrders() {
   const { usertype, idval } = useParams();
+  const [fullname, setFullname] = useState('');
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
 
   const userOrders = useSelector(state => state.adminUserOrders.orders);
+
+  const userDisplayName = "Showing Orders for " + fullname;
 
   useEffect(() => {
     fetchOrders();
@@ -28,7 +31,8 @@ function AdminUserOrders() {
     //const path = ((usertype == "guest") ? "/api/admin-guest-orders/" : "/api/admin-user-orders/") + idval;
     const url = window.location.origin + "/api/admin-user-orders?idval=" + idval + "&usertype=" + usertype;
     axiosInstance.get(url).then((response) => {
-      dispatch(setAdminUserOrders(response.data));
+      setFullname(response.data.fullName);
+      dispatch(setAdminUserOrders(response.data.orders));
     })
     .catch((error) => {
       setError(error);
@@ -38,17 +42,6 @@ function AdminUserOrders() {
       setIsLoading(false);
     });
   }
-
-  const backLink = () => (
-    <Row>
-      <Col style={{ textAlign: 'left', marginBottom: 10 }}>
-        <NavLink to={"/admin/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
-          <i className="bi bi-arrow-left-short"></i> Back
-        </NavLink>
-      </Col>
-    </Row>
-  );
-
 
   const orderRow = function (ord) {
     if (nullOrUndefined(ord)) {
@@ -86,6 +79,30 @@ function AdminUserOrders() {
     );
   }
 
+  const backLink = (textPos) => (
+    <Row>
+      <Col style={{ textAlign: textPos, marginBottom: 10 }}>
+        <NavLink to={"/admin/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
+          <i className="bi bi-arrow-left-short"></i> Back
+        </NavLink>
+      </Col>
+    </Row>
+  );
+
+  const noOrdersMarkup = () => (
+    <div style={{ height: 100, marginTop: 20 }}>
+      <div style={{marginBottom:25}} >(None at the moment)</div>
+      {backLink('center')}
+    </div>
+  );
+
+  const yesOrdersMarkup = () => (
+    <>
+      {backLink('left')}
+      { userOrders.map(ord => orderRow(ord)) }
+    </>
+  );
+
   const userOrdersMarkup = function () {
     return (
       <>
@@ -94,8 +111,7 @@ function AdminUserOrders() {
             {/*LSPACE*/}
           </Col>
           <Col xs={12} sm={10} md={8} lg={6}>
-            {backLink()}
-            { userOrders.map(ord => orderRow(ord)) }
+            {userOrders.length == 0 ? noOrdersMarkup() : yesOrdersMarkup() }
           </Col>
           <Col xs={0} sm={1} md={2} lg={3}>
             {/*RSPACE*/}
@@ -114,7 +130,7 @@ function AdminUserOrders() {
     <>
       <Row>
         <Col xs={12}>
-          <AdminTitleBar titleText="Customer Account" construction={false} />
+          <AdminTitleBar titleText={userDisplayName} construction={false} />
         </Col>
         <Col xs={12}>
           {markup}

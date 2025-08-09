@@ -16,7 +16,7 @@ namespace ReactWithASP.Server.Controllers
   {
     private IOrdersRepository orderRepo;
 
-    public AdminOrdersController(IOrdersRepository oRepo, UserManager<AppUser> userManager) : base(userManager){
+    public AdminOrdersController(IOrdersRepository oRepo, UserManager<AppUser> userManager, IGuestRepository gRepo) : base(userManager, gRepo){
       orderRepo = oRepo;
     }
 

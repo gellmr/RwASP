@@ -14,7 +14,7 @@ namespace ReactWithASP.Server.Controllers.Admin
   {
     private IInStockRepository prodRepo;
 
-    public AdminProductsController(IInStockRepository pRepo, UserManager<AppUser> userManager) : base(userManager){
+    public AdminProductsController(IInStockRepository pRepo, UserManager<AppUser> userManager, IGuestRepository gRepo) : base(userManager, gRepo){
       prodRepo = pRepo;
     }
 
