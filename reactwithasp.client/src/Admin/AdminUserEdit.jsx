@@ -11,6 +11,7 @@ import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { setAdminEditUser, setUserFullname, setUserPhone, setUserEmail, setUserPicture, updateUserOnServer } from '@/features/admin/edituser/adminEditUserSlice.jsx'
 import { nullOrUndefined } from '@/MgUtility.js';
+import BackLink from "@/Shop/BackLink";
 
 import '@/AdminUserShared.css'
 import '@/AdminUserEdit.css'
@@ -192,16 +193,6 @@ function AdminUserEdit()
     );
   }
 
-  const backLink = () => (
-    <Row>
-      <Col style={{textAlign:'left', marginBottom:10}}>
-        <NavLink to={"/admin/useraccounts"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize:12 }}>
-          <i className="bi bi-arrow-left-short"></i> Back
-        </NavLink>
-      </Col>
-    </Row>
-  );
-
   const userTableMarkup = () => (
     <>
       <Row>
@@ -210,7 +201,7 @@ function AdminUserEdit()
         </Col>
         <Col xs={12} sm={10} md={8} lg={8}>
           <DragDropUserPicModal ref={modalRef} onSuccess={handleModalCloseSuccess} />
-          {backLink()}
+          <BackLink textPos="left" />
           {userRowMarkup(userAccount, (idval == myUserId))}
         </Col>
         <Col xs={0} sm={1} md={2} lg={2}>

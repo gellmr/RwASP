@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 import displayDate from '@/Shop/displayDate.jsx'
 import AdminTitleBar from "@/Admin/AdminTitleBar";
+import BackLink from "@/Shop/BackLink";
 
 import '@/MyOrderDetail.css'
 
@@ -14,16 +15,6 @@ function MyOrderDetail()
   const { orderid } = useParams();
   const orders = useSelector(state => state.myOrders.value);
   const ord = (orders && orders.length > 0) && orders.find(o => o.id.toString() === orderid);
-
-  const backLink = () => (
-    <Row>
-      <Col style={{ textAlign: 'left', marginBottom: 10 }}>
-        <Link to={"/myorders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
-          <i className="bi bi-arrow-left-short"></i> View All Orders
-        </Link>
-      </Col>
-    </Row>
-  );
 
   const noOrderMarkup = () => (
     <>
@@ -156,7 +147,7 @@ function MyOrderDetail()
         <Col xs={12}>
           <AdminTitleBar titleText={"Order #" + orderid} construction={false} />
         </Col>
-        {backLink()}
+        <BackLink textPos="left" />
         {markup}
       </Row>
     </>

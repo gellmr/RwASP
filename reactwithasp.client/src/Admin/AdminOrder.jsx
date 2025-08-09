@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 import { nullOrUndefined } from '@/MgUtility.js';
 import Accordion from 'react-bootstrap/Accordion';
+import BackLink from "@/Shop/BackLink";
 
 import '@/AdminOrder.css'
 
@@ -28,16 +29,6 @@ function AdminOrder ()
   useEffect(() => {
     dispatch(fetchMyOrder({ orderid: parseInt(orderid) })); // Invoke thunk
   }, [orderid]);
-
-  const backLink = () => (
-    <Row>
-      <Col style={{ textAlign: 'left', marginBottom: 10 }}>
-        <NavLink to={"/admin/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', fontSize: 12 }}>
-          <i className="bi bi-arrow-left-short"></i> Back
-        </NavLink>
-      </Col>
-    </Row>
-  );
 
   const orderDetailHeadMarkup = () => (
     <>
@@ -120,7 +111,7 @@ function AdminOrder ()
           <Col xs={0} sm={1} md={2} lg={3}></Col>
           <Col xs={12} sm={10} md={8} lg={6}>
 
-            {backLink()}
+            <BackLink textPos="left" />
 
             <div className="AdminOrderDetailRow AdminOrderDetailHeader">
               <Row>
