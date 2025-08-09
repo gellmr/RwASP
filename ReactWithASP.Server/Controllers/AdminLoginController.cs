@@ -82,7 +82,7 @@ namespace ReactWithASP.Server.Controllers
           {
             guest = null;
             guestId = null;
-            return Ok(new { loginResult = "Success", loginType = "VIP AppUser", appUserId = appUser.Id });
+            return Ok(new { loginResult = "Success", loginType = "User", appUserId = appUser.Id });
           }
           if (result.RequiresTwoFactor){
             return this.StatusCode(StatusCodes.Status202Accepted, "Redirect the user to complete two-factor authentication");

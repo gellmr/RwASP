@@ -24,7 +24,7 @@ const MyOrders = () =>
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 
   // "Guest" | "User" | null
-  const accType = !nullOrUndefined(guestID) ? "Guest" : (!nullOrUndefined(loginValue) ? "User"   : null );
+  const accType = !nullOrUndefined(guestID) ? "Guest" : (!nullOrUndefined(loginValue) ? loginValue.loginType : null );
   const idval   = !nullOrUndefined(guestID) ? guestID : (!nullOrUndefined(myUserId)   ? myUserId : null) ;
 
   useEffect(() => {
@@ -84,15 +84,6 @@ const MyOrders = () =>
                 <td>$ {ord.priceTotal}</td>
               </tr>
 
-              <tr className="myOrdersAccTypeSection">
-                <td>Account Type</td>
-                <td>{accType}</td>
-              </tr>
-              <tr>
-                <td>{accType} ID</td>
-                <td>{idval}</td>
-              </tr>
-
               <tr>
                 <td></td>
                 <td style={{ textAlign: 'right', paddingBottom:15 }}>
@@ -113,6 +104,16 @@ const MyOrders = () =>
       <Row>
         <Col xs={12}>
           <AdminTitleBar titleText="My Orders" construction={false} />
+        </Col>
+        <Col xs={12}>
+          <div className="myOrdersTable myOrdersHeadInfo">
+            <Row>
+              <Col xs={4}>Account&nbsp;Type:</Col> <Col xs={8}>{accType}</Col>
+            </Row>
+            <Row>
+              <Col xs={4}>{accType} ID:</Col>  <Col xs={8} className="guid">{idval}</Col>
+            </Row>
+          </div>
         </Col>
         {rowsMarkup}
       </Row>

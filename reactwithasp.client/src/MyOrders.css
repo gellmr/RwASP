@@ -3,6 +3,17 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
+.myOrdersHeadInfo {
+  text-align: left;
+  padding: 15px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.myOrdersHeadInfo .row{
+  margin-bottom:5px;
+}
+
 .myOrdersTable {
   margin-top: 10px;
   border-radius: 10px;
@@ -24,8 +35,8 @@
   /*border:3px solid green;*/
 }
 
-tr.myOrdersAccTypeSection td {
-  padding-top: 15px;
+.guid {
+  color: #5d62c1;
 }
 
 @media (min-width: 370px) {
