@@ -8,6 +8,9 @@ import Col from 'react-bootstrap/Col'
 import ProceedCheckoutBtn from "@/Shop/ProceedCheckoutBtn";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+
+import '@/Cart.css'
+
 function Cart()
 {
   const dispatch = useDispatch();
@@ -37,11 +40,14 @@ function Cart()
         <Row>
           {/* <CartBar /> */}
           <Col className="cartContents col-12">
-            {!cartProducts || cartProducts.length === 0 && <div className="fetchErr" style={{ textAlign: "center" }}>( Empty )</div>}
+            {!cartProducts || cartProducts.length === 0 && <div className="cartEmptyMsg" style={{ textAlign: "center" }}>( Empty )</div>}
             {cartProducts && cartProducts.map(row =>
               <CartProduct key={row.cartLineID} cartLineID={row.cartLineID} />
             )}
-            <CartSummaryLine totalQuantity={totalQty} totalPrice={totalPrice} />
+            {(cartProducts && cartProducts.length > 0) && <>
+              <CartSummaryLine totalQuantity={totalQty} totalPrice={totalPrice} />
+            </>}
+            
           </Col>
           {/* <CartBar /> */}
         </Row>
