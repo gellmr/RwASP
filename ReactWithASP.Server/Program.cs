@@ -107,11 +107,14 @@ using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
   try{
     var context = services.GetRequiredService<StoreContext>();
-    //if (env.EnvironmentName == "Development"){
-    await context.Database.MigrateAsync();
-    //}
-    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-    await seeder.Execute();
+    if (env.EnvironmentName == "Development"){
+      await context.Database.MigrateAsync();
+    }
+    bool execSeed = bool.Parse(builder.Configuration["SeedOnStart"]);
+    if (execSeed){
+      var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+      await seeder.Execute();
+    }
   }
   catch (Exception ex){
     var logger = services.GetRequiredService<ILogger<Program>>();
