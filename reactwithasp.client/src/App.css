@@ -327,7 +327,7 @@
     background-color: transparent;
   }
   .shopLayoutTransparent.bgRegularTransparent {
-    background-image: linear-gradient(to bottom, #ffffff69, transparent);
+    background-image: linear-gradient(to bottom, #ffffffad, transparent);
   }
   .shopLayoutTransparent.bgStrongTransparent {
     background-image: linear-gradient(to bottom, #ffffffcc, transparent);
