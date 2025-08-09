@@ -24,6 +24,10 @@
   /*border:3px solid green;*/
 }
 
+tr.myOrdersAccTypeSection td {
+  padding-top: 15px;
+}
+
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
   .myOrdersTable {
