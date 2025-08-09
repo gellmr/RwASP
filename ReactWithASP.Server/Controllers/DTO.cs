@@ -125,10 +125,12 @@ namespace ReactWithASP.Server.DTO
     [Required(ErrorMessage = "FamilyName is required")]
     public string FamilyName { get; set; }
 
+    [Required(ErrorMessage = "FullName is required")]
+    public string FullName { get; set; }
+
     public string Picture { get; set; }
 
-    [ReadOnly(true)]
-    public string? UserName { get { return GivenName + "-" + FamilyName; } }
+    public string UserName { get; set; } // Generated, eg "diana-walters-e35"
   }
 
   public class OrderSlugDTO // Used to render rows on the Admin Orders page.

@@ -62,14 +62,19 @@ namespace ReactWithASP.Server.Controllers
       AppUser? appUser;
       bool persistAfterBrowserClose = false;
 
+      string desiredUserName = MyExtensions.GenUserName(payload.Name, payload.Subject); // eg "diana-walters-e35"
+      string actualUserName = await GenerateUniqueUsernameAsync(desiredUserName);       // eg "diana-walters-e351"
+
       // Token is valid, extract user information
       GoogleAppUserDTO googleAppUser = new GoogleAppUserDTO
       {
         Subject = payload.Subject, // This is the unique Google user ID. String about 21 characters long.
         Email = payload.Email,
-        GivenName = payload.GivenName,
-        FamilyName = payload.FamilyName,
-        Picture = payload.Picture
+        Picture = payload.Picture,
+        UserName = actualUserName,       // "diana-walters-e35"
+        FullName = payload.Name,         // "Diana Walters"
+        GivenName = payload.GivenName,   // "Diana"
+        FamilyName = payload.FamilyName, // "Walters"
       };
 
       appUser = await _userManager.FindByIdAsync(googleAppUser.Subject); // See if the user already exists in our database...
@@ -92,7 +97,8 @@ namespace ReactWithASP.Server.Controllers
           AccessFailedCount = 0,
           LockoutEnabled = false,
           TwoFactorEnabled = false,
-          UserName = await GenerateUniqueUsernameAsync(googleAppUser.UserName),
+          UserName = actualUserName,
+          FullName = googleAppUser.FullName,
           Email = googleAppUser.Email,
           Id = googleAppUser.Subject,
           Picture = googleAppUser.Picture
