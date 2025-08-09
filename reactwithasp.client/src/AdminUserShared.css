@@ -24,6 +24,16 @@
   color: #5c8dbf;
 }
 
+/* Style for View Payments button... (until I implement it and un-disable this button) */
+.temp-btn-disabled {
+  opacity: var(--bs-btn-disabled-opacity);
+  cursor: default;
+}
+.temp-btn-disabled:hover {
+  background-color: var(--bs-btn-bg);
+  border-color: var(--bs-btn-border-color);
+}
+
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
 }

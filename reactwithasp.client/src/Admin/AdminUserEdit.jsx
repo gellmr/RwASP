@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, useParams, NavLink } from "react-router";
+import { useNavigate, useParams, NavLink, Link } from "react-router";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { setAdminEditUser, setUserFullname, setUserPhone, setUserEmail, setUserPicture, updateUserOnServer } from '@/features/admin/edituser/adminEditUserSlice.jsx'
@@ -123,7 +124,15 @@ function AdminUserEdit()
     );
   }
 
+  const comingSoonTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      This feature coming soon!
+    </Tooltip>
+  );
+
   const userRowMarkup = function (user, isCurrentUser) {
+    const toPayments = "#"; // TODO  "/admin/" + usertype + "/" + idval + "/payments";
+
     if (nullOrUndefined(user)) {
       let a = 1;
       return (
@@ -162,13 +171,15 @@ function AdminUserEdit()
             </Col>
 
             <Col xs={12} className="adminUserEditCell" style={{ textAlign: 'right' }}>
-              <NavLink to={"/admin/" + usertype + "/" + idval + "/payments"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5 }}>
-                View Payments
-              </NavLink>
-
-              <NavLink to={"/admin/" + usertype + "/" + idval + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginLeft: 6, marginBottom: 5 }}>
+              <NavLink to={"/admin/" + usertype + "/" + idval + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5 }}>
                 View Orders
               </NavLink>
+
+              <OverlayTrigger placement="bottom" delay={{ show: 250, hide: 400 }} overlay={comingSoonTooltip}>
+                <Link to={toPayments} className="btn btn-light temp-btn-disabled" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5, marginLeft: 6 }}>
+                View Payments
+                </Link>
+              </OverlayTrigger>
             </Col>
           </Row>
         </Col>
