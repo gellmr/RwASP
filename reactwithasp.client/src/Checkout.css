@@ -3,11 +3,6 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
-.shopLayoutTransparent {
-  background-color: #ffffff69;
-  background-color: #ffffff7d;
-}
-
 .checkoutLines input::placeholder {
   color: #d0d0d0;
 }
