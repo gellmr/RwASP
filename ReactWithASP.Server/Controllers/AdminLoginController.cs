@@ -22,6 +22,12 @@ namespace ReactWithASP.Server.Controllers
       SignInManager<AppUser> signInManager
     ): base(cartRepo, guestRepo, inStockRepo, config, userManager, signInManager){}
 
+    [HttpGet("guest")] // GET /api/guest
+    public ActionResult FetchGuest(){
+      Guest guest = EnsureGuestFromCookieAndDb(null);
+      return Ok(guest.ID);
+    }
+
     [HttpPost("admin-logout")] // POST /api/admin-logout
     public async Task<IActionResult> AdminLogout()
     {
