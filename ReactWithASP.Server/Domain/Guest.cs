@@ -18,7 +18,14 @@ namespace ReactWithASP.Server.Domain
     [NotMapped]
     public string FullName {
       get {
-        return FirstName + " " + LastName;
+        if (string.IsNullOrEmpty(FirstName) && string.IsNullOrEmpty(LastName)){
+          return string.Empty; // Both empty
+        }
+        else if (string.IsNullOrEmpty(LastName)){
+          return FirstName; // No LastName.
+        }else{
+          return LastName; // No FirstName
+        }
       }
     }
 
