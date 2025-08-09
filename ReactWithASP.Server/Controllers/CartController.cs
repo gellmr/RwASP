@@ -20,7 +20,6 @@ namespace ReactWithASP.Server.Controllers
       IEnumerable<CartUpdateDTO> cartLinesDistinctByIsp = cartLineRepo.CartLines
       .DistinctBy(line => line.InStockProductID)
       .Select(cartLine => new CartUpdateDTO{
-        guestID = guest.ID,
         cartLineID = (Int32)cartLine.ID,
         qty        = (Int32)cartLine.Quantity,
         isp = new IspDTO{
@@ -38,18 +37,16 @@ namespace ReactWithASP.Server.Controllers
 
     [HttpPost]
     [Route("clear")] // POST api/cart/clear
-    public ActionResult Clear(Nullable<Guid> guestId)
+    public ActionResult Clear()
     {
       // Try to look up the guest. If no guest, create new guest.
       Guest guest = EnsureGuestFromCookieAndDb(null);
-      guestId = guest.ID;
+      Guid? gid = guest.ID;
 
       // Remove all CartLine records for this Guest ID.
-      cartLineRepo.ClearCartLines(guestId);
-
-      // Send back response to client indicating success or failure.
-      CartResponseDTO cartResponse = new CartResponseDTO { guestID = guestId };
-      return Ok(cartResponse); // 200 ok
+      cartLineRepo.ClearCartLines(gid);
+      
+      return Ok(); // 200 ok
     }
 
     [HttpPost]
@@ -90,7 +87,6 @@ namespace ReactWithASP.Server.Controllers
 
       // Prepare JSON for client
       cartUpdate.cartLineID = cartUpdate.cartLineID ?? (Int32)updatedCartLine.ID;
-      cartUpdate.guestID = guestId;
       cartUpdate.isp = (updatedCartLine == null) ? null : new IspDTO
       {
          id          = updatedCartLine.InStockProduct.ID,

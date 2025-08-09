@@ -20,7 +20,7 @@ export const clearCartOnServer = createAsyncThunk('cart/clearCartOnServer',
     try {
       // Tell the server to clear our Cart.
       const options = { headers: { 'Content-Type': 'application/json' } };
-      const response = await axiosInstance.post('/api/cart/clear', { guestId:123 }, options);
+      const response = await axiosInstance.post('/api/cart/clear', {}, options);
       return response.data;
     }
     catch (error) {
@@ -39,7 +39,6 @@ export const cartSlice = createSlice({
     //   qty: 5
     // }
     isLoading: false,
-    guestID: undefined
   },
   reducers: {
     setCart: (state, action) => {
@@ -88,7 +87,6 @@ export const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(updateCartOnServer.fulfilled, (state, action) => {
       console.log("updateCartOnServer.fulfilled");
-      state.guestID = action.payload.guestID; // Receive guest id from Server.
       const ispCopy = (action.payload.isp === null) ? null : JSON.parse(JSON.stringify(action.payload.isp));
       const removal = (action.payload.qty === 0) ? true : false;
       if (removal) {
@@ -118,7 +116,6 @@ export const cartSlice = createSlice({
 
     .addCase(clearCartOnServer.fulfilled, (state, action) => {
       console.log("clearCartOnServer.fulfilled");
-      state.guestID = action.payload.guestID; // Receive guest id from Server.
     })
 
     .addCase(clearCartOnServer.rejected, (state, action) => {

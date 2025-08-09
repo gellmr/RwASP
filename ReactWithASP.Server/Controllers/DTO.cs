@@ -7,9 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace ReactWithASP.Server.DTO
 {
-  public class CartResponseDTO { public Guid? guestID { get; set; } }
-
-  public class CartUpdateDTO : CartResponseDTO
+  public class CartUpdateDTO
   {
     public Int32? cartLineID { get; set; }
     public Int32 qty { get; set; }
