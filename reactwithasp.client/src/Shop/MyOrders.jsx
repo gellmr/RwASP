@@ -47,19 +47,15 @@ const MyOrders = () =>
     </>
   );
 
-  const rowsMarkup =
-    (isLoading) ? <div className="fetchErr">Loading...</div> : (
-    (error) ? <div className="fetchErr">Error: {error.message}</div> : (
-    (!ordersThisPage) ? <div className="fetchErr">( Could not find any Orders! )</div> : (
-    (ordersThisPage.length === 0) ? noOrdersMarkup() : (
-    ordersThisPage && ordersThisPage.map(ord =>
+  const orderRow = function (ord) {
+    return (
       <Col xs={12} key={ord.id}>
         <div className="myOrdersTable">
           <table style={{ width: "100%", textAlign: "left" }}>
             <tbody>
               <tr>
                 <td>Order Number</td>
-                <td style={{ fontWeight:600 }}>{ord.id}</td>
+                <td style={{ fontWeight: 600 }}>{ord.id}</td>
               </tr>
               <tr>
                 <td>Status</td>
@@ -86,7 +82,7 @@ const MyOrders = () =>
 
               <tr>
                 <td></td>
-                <td style={{ textAlign: 'right', paddingBottom:15 }}>
+                <td style={{ textAlign: 'right', paddingBottom: 15 }}>
                   <NavLink to={"/myorders/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
                     View Details <i className="bi bi-arrow-right-short"></i>
                   </NavLink>
@@ -96,7 +92,15 @@ const MyOrders = () =>
           </table>
         </div>
       </Col>
-    )
+    );
+  }
+
+  const rowsMarkup =
+    (isLoading) ? <div className="fetchErr">Loading...</div> : (
+    (error) ? <div className="fetchErr">Error: {error.message}</div> : (
+    (!ordersThisPage) ? <div className="fetchErr">( Could not find any Orders! )</div> : (
+    (ordersThisPage.length === 0) ? noOrdersMarkup() : (
+      ordersThisPage && ordersThisPage.map(ord => orderRow(ord))
   ))));
 
   return (
