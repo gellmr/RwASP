@@ -55,36 +55,34 @@ function AdminUserOrders() {
       return (<></>);
     }
     return (
-      <>
-        <div key={ord.id} className="adminUserOrdersLiner">
-          <Row className="OrderDetail">
-            <Col xs={4}>Order ID</Col>          <Col xs={8}>{ord.id}</Col>
-          </Row>
-          <Row className="OrderDetail">
-            <Col xs={4}>Order Status</Col>      <Col xs={8}>{ord.orderStatus}</Col>
-          </Row>
-          <Row className="OrderDetail">
-            <Col xs={4}>Placed On</Col>         <Col xs={8}>{ord.orderPlacedDate}</Col>
-          </Row>
+      <div key={ord.id} className="adminUserOrdersLiner">
+        <Row className="OrderDetail">
+          <Col xs={4}>Order ID</Col>          <Col xs={8}>{ord.id}</Col>
+        </Row>
+        <Row className="OrderDetail">
+          <Col xs={4}>Order Status</Col>      <Col xs={8}>{ord.orderStatus}</Col>
+        </Row>
+        <Row className="OrderDetail">
+          <Col xs={4}>Placed On</Col>         <Col xs={8}>{ord.orderPlacedDate}</Col>
+        </Row>
 
-          <Row className="OrderDetail">
-            <Col xs={4}>Items</Col>             <Col xs={8}>{ord.itemString}</Col>
-          </Row>
-          <Row className="OrderDetail">
-            <Col xs={4}>Quantity Total</Col>    <Col xs={8}>{ord.quantityTotal}</Col>
-          </Row>
-          <Row className="OrderDetail">
-            <Col xs={4}>Price Total</Col>       <Col xs={8}>{ord.priceTotal}</Col>
-          </Row>
-          <Row className="OrderDetail">
-            <Col xs={12} style={{textAlign:'right'} }>
-              <NavLink to={"/admin/order/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
-                View Details <i className="bi bi-arrow-right-short"></i>
-              </NavLink>
-            </Col>
-          </Row>
-        </div>
-      </>
+        <Row className="OrderDetail">
+          <Col xs={4}>Items</Col>             <Col xs={8}>{ord.itemString}</Col>
+        </Row>
+        <Row className="OrderDetail">
+          <Col xs={4}>Quantity Total</Col>    <Col xs={8}>{ord.quantityTotal}</Col>
+        </Row>
+        <Row className="OrderDetail">
+          <Col xs={4}>Price Total</Col>       <Col xs={8}>{ord.priceTotal}</Col>
+        </Row>
+        <Row className="OrderDetail">
+          <Col xs={12} style={{textAlign:'right'} }>
+            <NavLink to={"/admin/order/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+              View Details <i className="bi bi-arrow-right-short"></i>
+            </NavLink>
+          </Col>
+        </Row>
+      </div>
     );
   }
 
