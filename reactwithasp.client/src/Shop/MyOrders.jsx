@@ -34,6 +34,8 @@ const MyOrders = () =>
   const accType = !nullOrUndefined(guestID) ? "Guest" : (!nullOrUndefined(loginValue) ? loginValue.loginType : null );
   const idval   = !nullOrUndefined(guestID) ? guestID : (!nullOrUndefined(myUserId)   ? myUserId : null) ;
 
+  const devMode = (import.meta.env.DEV); // true if environment is development
+
   useEffect(() => {
     if (!nullOrUndefined(ordersThisPage) && Array.isArray(ordersThisPage)) {
       // Finished loading
@@ -138,6 +140,17 @@ const MyOrders = () =>
       ordersThisPage && ordersThisPage.map(ord => orderRow(ord))
   ))));
 
+  const devShowAccountId = function () {
+    return (
+      <Col xs={12} className="myOrdRow">
+        <Row>
+          <Col xs={4} sm={3} className="">{accType} ID:</Col>
+          <Col xs={8} sm={9} className="guid">{idval}</Col>
+        </Row>
+      </Col>
+    );
+  }
+
   const accountInfo = function () {
     if (!ordersThisPage || ordersThisPage.length === 0) {
       return (<></>);
@@ -155,12 +168,7 @@ const MyOrders = () =>
                 </Row>
               </Col>
 
-              <Col xs={12} className="myOrdRow">
-                <Row>
-                  <Col xs={4} sm={3} className="">{accType} ID:</Col>
-                  <Col xs={8} sm={9} className="guid">{idval}</Col>
-                </Row>
-              </Col>
+              {devMode && devShowAccountId()}
 
               <Col xs={12} className="myOrdRow" style={{marginBottom:15}}>
                 <Row>
