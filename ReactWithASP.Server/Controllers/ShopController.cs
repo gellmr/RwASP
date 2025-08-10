@@ -14,11 +14,13 @@ namespace ReactWithASP.Server.Controllers
     protected IGuestRepository guestRepo;
     protected ICartLineRepository cartLineRepo;
     protected IInStockRepository inStockRepo;
+    protected Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager;
 
-    public ShopController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo) {
+    public ShopController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager) {
       guestRepo = gRepo;
       cartLineRepo = rRepo;
       inStockRepo = pRepo;
+      _userManager = userManager;
     }
 
     protected string? GetLoggedInUserIdFromIdentityCookie()
