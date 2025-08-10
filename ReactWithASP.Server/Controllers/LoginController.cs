@@ -7,7 +7,6 @@ namespace ReactWithASP.Server.Controllers
   public abstract class LoginController: ShopController
   {
     protected SignInManager<AppUser> _signInManager;
-    protected UserManager<AppUser> _userManager;
     protected IConfiguration _config;
 
     public LoginController(
@@ -17,10 +16,9 @@ namespace ReactWithASP.Server.Controllers
       IConfiguration config,
       UserManager<AppUser> userManager,
       SignInManager<AppUser> signInManager
-    ): base(cartRepo, guestRepo, inStockRepo)
+    ): base(cartRepo, guestRepo, inStockRepo, userManager)
     {
       _config = config;
-      _userManager = userManager;
       _signInManager = signInManager;
     }
   }
