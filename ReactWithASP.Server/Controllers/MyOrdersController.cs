@@ -12,11 +12,9 @@ namespace ReactWithASP.Server.Controllers
   public class MyOrdersController: ShopController
   {
     private IOrdersRepository ordersRepo;
-    protected UserManager<AppUser> _userManager;
-
-    public MyOrdersController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IOrdersRepository oRepo, UserManager<AppUser> userManager) : base(rRepo, gRepo, pRepo){
+    
+    public MyOrdersController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IOrdersRepository oRepo, UserManager<AppUser> userManager) : base(rRepo, gRepo, pRepo, userManager){
       ordersRepo = oRepo;
-      _userManager = userManager;
     }
 
     [HttpPost]
