@@ -23,9 +23,15 @@ namespace ReactWithASP.Server.Controllers
     ): base(cartRepo, guestRepo, inStockRepo, config, userManager, signInManager){}
 
     [HttpGet("guest")] // GET /api/guest
-    public ActionResult FetchGuest(){
-      Guest guest = EnsureGuestFromCookieAndDb(null);
-      return Ok(guest.ID);
+    public ActionResult FetchGuest()
+    {  
+      try{
+        Guest guest = EnsureGuestFromCookieAndDb(null);
+        return Ok(guest.ID);
+      }
+      catch (Exception ex){
+        return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+      }
     }
 
     [HttpPost("admin-logout")] // POST /api/admin-logout

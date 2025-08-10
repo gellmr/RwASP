@@ -1,4 +1,5 @@
-﻿using ReactWithASP.Server.Domain.Abstract;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Domain
@@ -11,6 +12,10 @@ namespace ReactWithASP.Server.Domain
     public EFGuestRepository(IConfiguration c){
       _config = c;
       context = new StoreContext(_config);
+    }
+    
+    public IDbContextTransaction BeginTransaction(){
+      return context.Database.BeginTransaction();
     }
 
     public IEnumerable<Guest> Guests

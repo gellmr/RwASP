@@ -34,43 +34,72 @@ namespace ReactWithASP.Server.Controllers
 
       // See if guest ID cookie exists...
       string cookieGuestId = Request.Cookies[MyExtensions.GuestCookieName];
-      if (string.IsNullOrEmpty(cookieGuestId)){
+      if (string.IsNullOrEmpty(cookieGuestId))
+      {
         // Could not get ID from cookie. We will create it in a moment...
       }
-      else{  
+      else
+      {
         // Got an ID from the cookie...
         guest.ID = cookieGuestId.ToGuid();
       }
 
       // Do we need to generate the ID for the first time ?
-      if (guest.ID == null){
+      if (guest.ID == null)
+      {
         guest.ID = Guid.NewGuid();
       }
 
-      // Look up guest in database.
-      Guest dbGuest = guestRepo.Guests.FirstOrDefault(g => g.ID == guest.ID); 
-      if (dbGuest != null){
-        // There was a record in the database...
-        guest.Email = dbGuest.Email;
-        guest.FirstName = dbGuest.FirstName;
-        guest.LastName = dbGuest.LastName;
+      // Use transaction to avoid race condition.
+      // If a second request comes later, it will have to await.
+      using (var transaction = guestRepo.BeginTransaction())
+      {
+        try
+        {
+          //    Look up the guest in the database within the transaction.
+          //    The database will lock this record to prevent other concurrent
+          //    transactions from modifying it until this one is complete.
+          Guest dbGuest = guestRepo.Guests.FirstOrDefault(g => g.ID.Equals(guest.ID));
+          if (dbGuest != null)
+          {
+            // There was a record in the database...
+            guest.Email     = dbGuest.Email;
+            guest.FirstName = dbGuest.FirstName;
+            guest.LastName  = dbGuest.LastName;
+          }
+
+          //    Update the guest object with incoming DTO values.
+          if (updateDto != null)
+          {
+            guest.Email     = updateDto.Email     ?? guest.Email;
+            guest.FirstName = updateDto.FirstName ?? guest.FirstName;
+            guest.LastName  = updateDto.LastName  ?? guest.LastName;
+          }
+
+          //    Persist the updated data to the database.
+          //    This save is part of the transaction and won't be finalized
+          //    until we commit.
+          guestRepo.SaveGuest(guest);
+
+          //    Commit the transaction.
+          //    This is where all changes are made permanent and the database lock is released.
+          transaction.Commit();
+        }
+        catch (Exception)
+        {
+          // If anything goes wrong, rollback the transaction.
+          // The database will revert to the state it was in before the transaction began.
+          transaction.Rollback();
+          throw; // Re-throw the exception so you can handle it upstream.
+        }
       }
 
-      // Incoming update values (if available) will overwrite existing database ones...
-      if (updateDto != null){
-        guest.Email     = updateDto.Email     ?? guest.Email;     // Overwrite from updateDto if available.
-        guest.FirstName = updateDto.FirstName ?? guest.FirstName; // Overwrite from updateDto if available.
-        guest.LastName  = updateDto.LastName  ?? guest.LastName;  // Overwrite from updateDto if available.
-      }
-
-      // Persist to database.
-      guestRepo.SaveGuest(guest);
-
-      // Persist ID to cookie.
+      //    Persist ID to cookie.
+      //    This happens after a successful database commit.
       HttpContext.Response.Cookies.Delete(MyExtensions.GuestCookieName);
       Response.Cookies.Append(MyExtensions.GuestCookieName, guest.ID.ToString(), MyExtensions.CookieOptions);
 
-      // Return whatever data we have.
+      //    Return the finalized guest object.
       return guest;
     }
   }
