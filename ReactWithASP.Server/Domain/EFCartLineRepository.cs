@@ -98,9 +98,17 @@ namespace ReactWithASP.Server.Domain
 
           // Set Unchanged for associated entities
           InStockProduct isp = cartLine.InStockProduct;
-          Guest? guest = cartLine.Guest;
           context.Entry(isp).State = EntityState.Unchanged;   // Dont create InStockProduct. It already exists in database.
-          context.Entry(guest).State = EntityState.Unchanged; // Dont create Guest. It already exists in database.
+
+          if (cartLine.Guest != null){
+            Guest? guest = cartLine.Guest;
+            context.Entry(guest).State = EntityState.Unchanged; // Dont create Guest. It already exists in database.
+          }
+
+          if (cartLine.AppUser != null){
+            AppUser? appUser = cartLine.AppUser;
+            context.Entry(appUser).State = EntityState.Unchanged; // Dont create AppUser. Already exists.
+          }
 
           context.SaveChanges();
           return cartLine; // Return the updated record.
