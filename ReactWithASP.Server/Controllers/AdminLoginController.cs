@@ -27,7 +27,10 @@ namespace ReactWithASP.Server.Controllers
     {  
       try{
         Guest guest = EnsureGuestFromCookieAndDb(null);
-        return Ok(guest.ID);
+        return Ok( new {
+          ID = guest.ID,
+          FullName = guest.FullName
+        });
       }
       catch (Exception ex){
         return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
