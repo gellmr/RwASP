@@ -95,24 +95,24 @@ namespace ReactWithASP.Server.Domain
       return order;
     }
 
-    public IEnumerable<Order>? GetMyOrders(string? uid, string? gid)
+    public IEnumerable<Order>? GetMyOrders(string? uid, Guid? gid)
     {
-      uid = (uid != null) ? uid.ToLower() : null;
-      gid = (gid != null) ? gid.ToLower() : null;
-
+      // If empty string, just use null. If we have a value, convert to lower.
+      uid = string.IsNullOrEmpty(uid) ? null : uid.ToLower();
+      
       if (uid != null && gid != null){
-        IEnumerable<Order> rowsBoth = context.Orders.Where(o =>
-          o.UserID.ToLower().Equals(uid) ||
-          o.GuestID.ToString().ToLower().Equals(gid)
-        );
+        // Look up orders, for the given guest and user ids.
+        IEnumerable<Order> rowsBoth = context.Orders.Where(o => o.UserID.ToLower().Equals(uid) || o.GuestID.Equals(gid));
         return LoadAllOrderedProducts(rowsBoth);
       }
       else if(uid != null)
       {
+        // Look up user orders
         IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToLower().Equals(uid));
         return LoadAllOrderedProducts(rowsUser);
       }
-      IEnumerable<Order> rowsGuest = context.Orders.Where(o => o.GuestID.ToString().ToLower().Equals(gid));
+      // Look up guest orders
+      IEnumerable<Order> rowsGuest = context.Orders.Where(o => o.GuestID.Equals(gid));
       return LoadAllOrderedProducts(rowsGuest);
     }
 
