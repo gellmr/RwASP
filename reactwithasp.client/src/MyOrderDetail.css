@@ -17,25 +17,8 @@
   background-color: #ffffffd6;
   padding-bottom: 5px;
 }
-#myOrdDetailPage .myOrdDetailImageHead tr,
-#myOrdDetailPage .myOrdDetailImageHead td {
-  background-color: transparent !important;
-}
-#myOrdDetailPage .myOrdDetailImageHead td {
-  padding-top: 5px;
-}
-#myOrdDetailPage .myOrdDetailImageHead tr:first-child td {
-  padding-top: 10px;
-  /*border:3px solid green;*/
-}
-.tableEnd{
-  padding-bottom:10px;
-}
-.myOrdDetailImageHead table {
-  border-bottom: 1px solid gainsboro;
-}
 
-.myOrdDetailShip {
+.myOrdDetailRow {
   margin-top: 5px;
   padding-top: 5px;
   padding-left: 30px;

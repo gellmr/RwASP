@@ -31,38 +31,49 @@ function MyOrderDetail()
       <div className="myOrdDetailImageHead">
         <Row>
           <Col xs={12}>
-            <table style={{ width: "100%", textAlign: "left" }}>
-              <tbody>
-                <tr>
-                  <td>Order Number</td>
-                  <td style={{ fontWeight: 600 }}>{ord.id}</td>
-                </tr>
-                <tr>
-                  <td>Status</td>
-                  <td>{ord.orderStatus}</td>
-                </tr>
-                <tr>
-                  <td style={{ verticalAlign:'top' }}>Placed Date</td>
-                  <td>
-                    {displayDate(ord.orderPlacedDate)}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Price Total</td>
-                  <td>$ {ord.priceTotal}</td>
-                </tr>
-                <tr>
-                  <td className="tableEnd">Total Items</td>
-                  <td className="tableEnd">{ord.quantityTotal}</td>
-                </tr>
-              </tbody>
-            </table>
-          </Col>
-          <Col xs={12} className="myOrdDetailShip">
-            <Row>
-              <Col xs={3} className="">Ship to:</Col>
-              <Col xs={9} className="shipAddy">{ord.shippingAddress}</Col>
-            </Row>
+
+            <Col xs={12} className="myOrdDetailRow">
+              <Row>
+                <Col xs={3} className="">Order Number</Col>
+                <Col xs={9} className="" style={{ fontWeight: 600 }}>{ord.id}</Col>
+              </Row>
+            </Col>
+
+            <Col xs={12} className="myOrdDetailRow">
+              <Row>
+                <Col xs={3} className="">Status</Col>
+                <Col xs={9} className="">{ord.orderStatus}</Col>
+              </Row>
+            </Col>
+
+            <Col xs={12} className="myOrdDetailRow">
+              <Row>
+                <Col xs={3} className="">Placed Date</Col>
+                <Col xs={9} className="">{displayDate(ord.orderPlacedDate)}</Col>
+              </Row>
+            </Col>
+
+            <Col xs={12} className="myOrdDetailRow">
+              <Row>
+                <Col xs={3} className="">Price Total</Col>
+                <Col xs={9} className="">$ {ord.priceTotal}</Col>
+              </Row>
+            </Col>
+
+            <Col xs={12} className="myOrdDetailRow">
+              <Row>
+                <Col xs={3} className="">Total Items</Col>
+                <Col xs={9} className="">{ord.quantityTotal}</Col>
+              </Row>
+            </Col>
+
+            <Col xs={12} className="myOrdDetailRow">
+              <Row>
+                <Col xs={3} className="">Ship to:</Col>
+                <Col xs={9} className="shipAddy">{ord.shippingAddress}</Col>
+              </Row>
+            </Col>
+
           </Col>
         </Row>
       </div>
