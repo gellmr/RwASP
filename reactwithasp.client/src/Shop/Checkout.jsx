@@ -29,7 +29,8 @@ function Checkout()
   const [shipZip,      setShipZip] = useState('');
   const [shipEmail, setShipEmail] = useState('');
 
-  const guestID = useSelector(state => state.login.guest);
+  const guest = useSelector(state => state.login.guest);
+  const guestID = guest.id;
   const cart = useSelector(state => state.cart.cartLines);
   const cartPayload = JSON.parse(JSON.stringify(cart));
 
