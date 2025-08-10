@@ -90,7 +90,7 @@ const MyOrders = () =>
               </tr>
 
               <tr>
-                <td>Shipping Address</td>
+                <td>Ship To:</td>
                 <td className="shipAddy">{ord.shippingAddress}</td>
               </tr>
 

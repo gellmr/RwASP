@@ -30,7 +30,7 @@ function MyOrderDetail()
 
       <div className="myOrdDetailImageHead">
         <Row>
-          <Col>
+          <Col xs={12}>
             <table style={{ width: "100%", textAlign: "left" }}>
               <tbody>
                 <tr>
@@ -52,11 +52,17 @@ function MyOrderDetail()
                   <td>$ {ord.priceTotal}</td>
                 </tr>
                 <tr>
-                  <td>Total Items</td>
-                  <td>{ord.quantityTotal}</td>
+                  <td className="tableEnd">Total Items</td>
+                  <td className="tableEnd">{ord.quantityTotal}</td>
                 </tr>
               </tbody>
             </table>
+          </Col>
+          <Col xs={12} className="myOrdDetailShip">
+            <Row>
+              <Col xs={3} className="">Ship to:</Col>
+              <Col xs={9} className="shipAddy">{ord.shippingAddress}</Col>
+            </Row>
           </Col>
         </Row>
       </div>
