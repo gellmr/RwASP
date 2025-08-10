@@ -91,6 +91,7 @@ namespace ReactWithASP.Server.Controllers
           {
             guest = null;
             guestId = null;
+            DeleteGuestCookie(); // Remove the Guest cookie, indicating that we are logged in.
             return Ok(new {
               loginResult = "Success",
               loginType = "User",
