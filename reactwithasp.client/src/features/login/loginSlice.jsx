@@ -34,7 +34,7 @@ export const loginSlice = createSlice({
       // The application needs to log out before requesting a new guest id.
       // If we are NOT logged in...
       if (state.value == null) {
-        state.guest = action.payload; // Receive guest id from server.
+        state.guest = action.payload; // Receive guest id and fullname from server.
       }
     }
   }

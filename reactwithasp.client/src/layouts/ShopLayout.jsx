@@ -34,7 +34,8 @@ const ShopLayout = () =>
   const location = useLocation();
   const [backCss, setBackCss] = useState('');
 
-  const guestID = useSelector(state => state.login.guest);
+  const guest = useSelector(state => state.login.guest);
+  const guestID = !nullOrUndefined(guest) ? guest.id : null;
   const loginValue = useSelector(state => state.login.value);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 

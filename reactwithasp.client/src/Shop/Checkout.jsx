@@ -30,7 +30,7 @@ function Checkout()
   const [shipEmail, setShipEmail] = useState('');
 
   const guest = useSelector(state => state.login.guest);
-  const guestID = guest.id;
+  const guestID = !nullOrUndefined(guest) ? guest.id : null;
   const cart = useSelector(state => state.cart.cartLines);
   const cartPayload = JSON.parse(JSON.stringify(cart));
 

@@ -28,8 +28,8 @@ namespace ReactWithASP.Server.Controllers
       try{
         Guest guest = EnsureGuestFromCookieAndDb(null);
         return Ok( new {
-          ID = guest.ID,
-          FullName = guest.FullName
+          id = guest.ID,
+          fullname = guest.FullName
         });
       }
       catch (Exception ex){
