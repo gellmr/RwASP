@@ -17,12 +17,18 @@ const MyOrders = () =>
   const dispatch = useDispatch();
 
   const ordersThisPage = useSelector(state => state.myOrders.value);
+
+  let full_name;
+
   const guest = useSelector(state => state.login.guest);
   const guestID = !nullOrUndefined(guest) ? guest.id : null;
-  const fullname = !nullOrUndefined(guest) ? guest.fullname : null;
-  const loginValue = useSelector(state => state.login.value);
+  full_name = !nullOrUndefined(guest) ? guest.fullname : null;
 
+  const loginValue = useSelector(state => state.login.value);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
+  full_name = !nullOrUndefined(loginValue) ? loginValue.fullname : full_name;
+  
+  const fullname = full_name;
 
   // "Guest" | "User" | null
   const accType = !nullOrUndefined(guestID) ? "Guest" : (!nullOrUndefined(loginValue) ? loginValue.loginType : null );
