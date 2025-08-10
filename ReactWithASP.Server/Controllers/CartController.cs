@@ -2,6 +2,7 @@
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.DTO;
+using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -51,63 +52,72 @@ namespace ReactWithASP.Server.Controllers
 
     [HttpPost]
     [Route("update")] // POST api/cart/update  Accepts POST data with JSON in Request Body. Content-Type must be 'application/json'
-    public ActionResult Update([FromBody] CartUpdateDTO cartUpdate, Nullable<Guid> guestId)
+    public async Task<ActionResult> Update([FromBody] CartUpdateDTO cartUpdate, Nullable<Guid> guestId)
     {
       // Client cart has been updated with the given quantities.
       // Update the user's cart in the database...
 
-      Guest guest = null;
-      string? uid = GetLoggedInUserIdFromIdentityCookie(); // Try to get ID of currently logged in user.
-      if (uid != null)
+      try
       {
-        guestId = null; // Dont use the guest id.
-      }
-      else
-      {
-        // There is no logged in user. Try to look up the guest. If no guest, create new guest.
-        guest = EnsureGuestFromCookieAndDb(null);
-        guestId = guest.ID;
-      }
+        Guest? guest = null;
+        AppUser? user = null;
+        string? uid = GetLoggedInUserIdFromIdentityCookie(); // Try to get ID of currently logged in user.
+        if (uid != null)
+        {
+          user = await _userManager.FindByIdAsync(uid);
+          guestId = null; // Dont use the guest id.
+        }
+        else
+        {
+          // There is no logged in user. Try to look up the guest. If no guest, create new guest.
+          guest = EnsureGuestFromCookieAndDb(null);
+          guestId = guest.ID;
+        }
       
-      // Look up (isp) product in database.
-      InStockProduct isp = inStockRepo.InStockProducts.FirstOrDefault(record => record.ID == cartUpdate.isp.id);
-      if (isp == null){
-        Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
-        cartLineRepo.RemoveById((Int32)cartUpdate.cartLineID); // Remove the offending cart row from database.
-        return new JsonResult(new {
-          message = "InStockProduct not found",
-          error = "ispRemove",
-          ispRemove = cartUpdate.isp.id
-        });
+        // Look up (isp) product in database.
+        InStockProduct isp = inStockRepo.InStockProducts.FirstOrDefault(record => record.ID == cartUpdate.isp.id);
+        if (isp == null){
+          Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+          cartLineRepo.RemoveById((Int32)cartUpdate.cartLineID); // Remove the offending cart row from database.
+          return new JsonResult(new {
+            message = "InStockProduct not found",
+            error = "ispRemove",
+            ispRemove = cartUpdate.isp.id
+          });
+        }
+
+        // Create database entry for new CartLine, connected to user/guest and the existing InStockProduct.
+        CartLine cartLine = new CartLine{
+          ID = cartUpdate.cartLineID ?? null, // Must be null when we are creating or DB will complain.
+          GuestID = guestId,
+          Guest = guest,
+          InStockProductID = isp.ID,
+          InStockProduct = isp,
+          Quantity = cartUpdate.qty,
+          UserID = uid,
+          AppUser = user,
+        };
+        CartLine? updatedCartLine = cartLineRepo.SaveCartLine(cartLine);
+
+        // Prepare JSON for client
+        cartUpdate.cartLineID = cartUpdate.cartLineID ?? (Int32)updatedCartLine.ID;
+        cartUpdate.isp = (updatedCartLine == null) ? null : new IspDTO
+        {
+           id          = updatedCartLine.InStockProduct.ID,
+           title       = updatedCartLine.InStockProduct.Title,
+           description = updatedCartLine.InStockProduct.Description,
+           price       = updatedCartLine.InStockProduct.Price,
+           category    = (Int32)updatedCartLine.InStockProduct.Category,
+           image       = updatedCartLine.InStockProduct.Image
+        };
+
+        // Send back response to client indicating success or failure.
+        return Ok(cartUpdate); // Respond with 200 OK, and the finalised cart state.
       }
-
-      // Create database entry for new CartLine, connected to user/guest and the existing InStockProduct.
-      CartLine cartLine = new CartLine{
-        ID = cartUpdate.cartLineID ?? null, // Must be null when we are creating or DB will complain.
-        GuestID = guestId,
-        Guest = guest,
-        InStockProductID = isp.ID,
-        InStockProduct = isp,
-        Quantity = cartUpdate.qty,
-        UserID = null,
-        AppUser = null
-      };
-      CartLine? updatedCartLine = cartLineRepo.SaveCartLine(cartLine);
-
-      // Prepare JSON for client
-      cartUpdate.cartLineID = cartUpdate.cartLineID ?? (Int32)updatedCartLine.ID;
-      cartUpdate.isp = (updatedCartLine == null) ? null : new IspDTO
+      catch (Exception ex)
       {
-         id          = updatedCartLine.InStockProduct.ID,
-         title       = updatedCartLine.InStockProduct.Title,
-         description = updatedCartLine.InStockProduct.Description,
-         price       = updatedCartLine.InStockProduct.Price,
-         category    = (Int32)updatedCartLine.InStockProduct.Category,
-         image       = updatedCartLine.InStockProduct.Image
-      };
-
-      // Send back response to client indicating success or failure.
-      return Ok(cartUpdate); // Respond with 200 OK, and the finalised cart state.
+        return this.StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+      }
     }
   }
 }
