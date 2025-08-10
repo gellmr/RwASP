@@ -118,7 +118,13 @@ namespace ReactWithASP.Server.Controllers
       guest = null;
       guestId = null;
       userType = UserType.GoogleAppUser;
-      return Ok(new { loginResult = "Success validating Google Login token.", loginType = "Google Sign In", appUserId = appUser.Id });
+      return Ok(new
+      {
+        loginResult = "Success validating Google Login token.",
+        loginType = "Google Sign In",
+        appUserId = appUser.Id,
+        fullname = appUser.FullName
+      });
     }
 
     private async Task<GoogleJsonWebSignature.Payload?> ValidateTokenAsync(ConfirmGoogleAuthDTO tokenDTO)
