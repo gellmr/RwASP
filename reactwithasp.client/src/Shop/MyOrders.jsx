@@ -17,7 +17,9 @@ const MyOrders = () =>
   const dispatch = useDispatch();
 
   const ordersThisPage = useSelector(state => state.myOrders.value);
-  const guestID = useSelector(state => state.login.guest);
+  const guest = useSelector(state => state.login.guest);
+  const guestID = guest.id;
+  const fullname = guest.fullname;
   const loginValue = useSelector(state => state.login.value);
 
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
@@ -116,6 +118,9 @@ const MyOrders = () =>
           </Row>
           <Row>
             <Col xs={4}>{accType} ID:</Col>  <Col xs={8} className="guid">{idval}</Col>
+          </Row>
+          <Row>
+            <Col xs={4}>Full&nbsp;Name:</Col> <Col xs={8}>{fullname}</Col>
           </Row>
         </div>
       </Col>
