@@ -35,10 +35,14 @@
   /*border:3px solid green;*/
 }
 
-.guid {
-  color: #5d62c1;
-  color: #9b9cb8;
-}
+  .myOrdersTable .shipAddy {
+    color: #707082;
+  }
+
+  .guid {
+    color: #5d62c1;
+    color: #9b9cb8;
+  }
 
 .ordersEmptyMsg {
   color: #4872a0;

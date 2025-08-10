@@ -90,6 +90,11 @@ const MyOrders = () =>
               </tr>
 
               <tr>
+                <td>Shipping Address</td>
+                <td className="shipAddy">{ord.shippingAddress}</td>
+              </tr>
+
+              <tr>
                 <td></td>
                 <td style={{ textAlign: 'right', paddingBottom: 15 }}>
                   <NavLink to={"/myorders/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
