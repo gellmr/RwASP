@@ -45,6 +45,9 @@ namespace ReactWithASP.Server.Domain
         if (order.Guest != null){
           context.Entry(order.Guest).State = EntityState.Unchanged; // Dont create the guest.
         }
+        if (order.AppUser != null){
+          context.Entry(order.AppUser).State = EntityState.Unchanged; // Dont create the user.
+        }
         context.SaveChanges();
         return true;
       }

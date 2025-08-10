@@ -98,7 +98,9 @@ namespace ReactWithASP.Server.Controllers
               loginResult = "Success",
               loginType = "User",
               appUserId = appUser.Id,
-              fullname = appUser.FullName
+              fullname = appUser.FullName,
+              firstname = AppUser.GetFirstName( appUser.FullName),
+              lastname  = AppUser.GetLastName(  appUser.FullName),
             });
           }
           if (result.RequiresTwoFactor){

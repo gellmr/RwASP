@@ -27,5 +27,21 @@ namespace ReactWithASP.Server.Infrastructure
       }
       FullName = fullName;
     }
+
+    public static string GetFirstName(string fullName)
+    {
+      if (string.IsNullOrWhiteSpace(fullName)) { return string.Empty; }
+      string[] names = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+      if (names.Length > 0) { return names[0]; }
+      return string.Empty;
+    }
+
+    public static string GetLastName(string fullName)
+    {
+      if (string.IsNullOrWhiteSpace(fullName)) { return string.Empty; }
+      string[] names = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+      if (names.Length > 1) { Int32 lastIdx = names.Length - 1; return names[lastIdx]; }
+      return string.Empty;
+    }
   }
 }

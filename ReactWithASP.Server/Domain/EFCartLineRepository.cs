@@ -26,13 +26,24 @@ namespace ReactWithASP.Server.Domain
       }
     }
 
-    public void ClearCartLines(Nullable<Guid> guestID)
+    protected void ClearLines(IEnumerable<CartLine> lines)
     {
-      IEnumerable<CartLine> lines = context.CartLines.Where(line => line.Guest != null && (line.Guest.ID == guestID));
       foreach (CartLine c in lines){
         context.CartLines.Remove(c);
       }
       context.SaveChanges();
+    }
+
+    public void ClearUserCartLines(string? uid)
+    {
+      IEnumerable<CartLine> lines = context.CartLines.Where(line => line.UserID != null && (line.AppUser.Id == uid));
+      ClearLines(lines);
+    }
+
+    public void ClearCartLines(Nullable<Guid> guestID)
+    {
+      IEnumerable<CartLine> lines = context.CartLines.Where(line => line.Guest != null && (line.Guest.ID == guestID));
+      ClearLines(lines);
     }
 
     public void RemoveById(Int32 cartLineIdRem)
