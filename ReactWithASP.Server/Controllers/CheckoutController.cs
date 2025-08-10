@@ -12,11 +12,9 @@ namespace ReactWithASP.Server.Controllers
   public class CheckoutController: ShopController
   {
     private IOrdersRepository ordersRepo;
-    protected Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager;
 
-    public CheckoutController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IOrdersRepository oRepo, Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager) : base(rRepo, gRepo, pRepo) {
+    public CheckoutController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IOrdersRepository oRepo, Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager) : base(rRepo, gRepo, pRepo, userManager) {
       ordersRepo = oRepo;
-      _userManager = userManager;
     }
 
     [HttpPost("submit")] // POST api/checkout/submit.  Accepts application/json POST submissions containing stringified JSON data in request body.
