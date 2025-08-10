@@ -56,10 +56,19 @@ namespace ReactWithASP.Server.Controllers
       // Client cart has been updated with the given quantities.
       // Update the user's cart in the database...
 
-      // Try to look up the guest. If no guest, create new guest.
-      Guest guest = EnsureGuestFromCookieAndDb(null);
-      guestId = guest.ID;
-
+      Guest guest = null;
+      string? uid = GetLoggedInUserIdFromIdentityCookie(); // Try to get ID of currently logged in user.
+      if (uid != null)
+      {
+        guestId = null; // Dont use the guest id.
+      }
+      else
+      {
+        // There is no logged in user. Try to look up the guest. If no guest, create new guest.
+        guest = EnsureGuestFromCookieAndDb(null);
+        guestId = guest.ID;
+      }
+      
       // Look up (isp) product in database.
       InStockProduct isp = inStockRepo.InStockProducts.FirstOrDefault(record => record.ID == cartUpdate.isp.id);
       if (isp == null){
