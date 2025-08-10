@@ -19,7 +19,7 @@ const MyOrders = () =>
   const ordersThisPage = useSelector(state => state.myOrders.value);
   const guest = useSelector(state => state.login.guest);
   const guestID = !nullOrUndefined(guest) ? guest.id : null;
-  const fullname = guest.fullname;
+  const fullname = !nullOrUndefined(guest) ? guest.fullname : null;
   const loginValue = useSelector(state => state.login.value);
 
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
