@@ -85,7 +85,7 @@ namespace ReactWithASP.Server.Controllers
           //    This is where all changes are made permanent and the database lock is released.
           transaction.Commit();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
           // If anything goes wrong, rollback the transaction.
           // The database will revert to the state it was in before the transaction began.
