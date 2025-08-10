@@ -7,6 +7,7 @@ import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import InStockProductCanAdd from "@/Shop/InStockProductCanAdd";
 import ProceedCartBtn from "@/Shop/ProceedCartBtn";
+import Spinner from 'react-bootstrap/Spinner';
 
 function Shop()
 {
@@ -82,8 +83,20 @@ function Shop()
     });
   }
 
+  const loadingSpinner = function () {
+    return (
+      <>
+        <div className="fetchErr">
+          <Spinner animation="border" size="sm" />
+          &nbsp;
+          Loading
+        </div>
+      </>
+    );
+  }
+
   const markup =
-    (isLoading) ? <div className="fetchErr">Loading...</div>             : (
+    (isLoading) ? loadingSpinner()                                       : (
     (error)     ? <div className="fetchErr">Error: {error.message}</div> : (
     (!inStockProdThisPage || inStockProdThisPage.length === 0) ? <div className="fetchErr">( Search returned no results )</div> : (
     inStockProdThisPage && inStockProdThisPage.map(prod =>

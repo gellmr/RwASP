@@ -519,12 +519,12 @@ th, td {
   font-size: 12px;
 }
 .fetchErr {
-  color: #4695eb;
+  color: #a5bbcf;
   margin-top: 10px;
   margin-bottom: 10px;
   text-align: center;
   padding: 15px;
-  background-color: #e7f7ff;
+  background-color: #eff7ff63;
   border-radius: 10px;
 }
 
