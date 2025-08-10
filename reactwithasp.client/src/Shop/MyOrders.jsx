@@ -59,51 +59,72 @@ const MyOrders = () =>
   const orderRow = function (ord) {
     return (
       <Col xs={12} key={ord.id}>
-        <div className="myOrdersTable">
-          <table style={{ width: "100%", textAlign: "left" }}>
-            <tbody>
-              <tr>
-                <td>Order Number</td>
-                <td style={{ fontWeight: 600 }}>{ord.id}</td>
-              </tr>
-              <tr>
-                <td>Status</td>
-                <td>{ord.orderStatus}</td>
-              </tr>
-              <tr>
-                <td>Placed Date</td>
-                <td>
-                  {displayDate(ord.orderPlacedDate)}
-                </td>
-              </tr>
-              <tr>
-                <td>Items</td>
-                <td>{ord.itemString}</td>
-              </tr>
-              <tr>
-                <td>Total Items</td>
-                <td>{ord.quantityTotal}</td>
-              </tr>
-              <tr>
-                <td>Price Total</td>
-                <td>$ {ord.priceTotal}</td>
-              </tr>
+        <div className="myOrdersRect">
+          <Row>
+            <Col xs={12}>
 
-              <tr>
-                <td>Ship To:</td>
-                <td className="shipAddy">{ord.shippingAddress}</td>
-              </tr>
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">Order Number</Col>
+                  <Col xs={9} className="" style={{ fontWeight: 600 }}>{ord.id}</Col>
+                </Row>
+              </Col>
 
-              <tr>
-                <td></td>
-                <td style={{ textAlign: 'right', paddingBottom: 15 }}>
-                  <NavLink to={"/myorders/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
-                    View Details <i className="bi bi-arrow-right-short"></i>
-                  </NavLink>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">Status</Col>
+                  <Col xs={9} className="">{ord.orderStatus}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">Placed Date</Col>
+                  <Col xs={9} className="">{displayDate(ord.orderPlacedDate)}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">Items</Col>
+                  <Col xs={9} className="">{ord.itemString}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">Total Items</Col>
+                  <Col xs={9} className="">{ord.quantityTotal}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">Price Total</Col>
+                  <Col xs={9} className="">$ {ord.priceTotal}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">Ship To:</Col>
+                  <Col xs={9} className="shipToDetail">{ord.shippingAddress}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className=""></Col>
+                  <Col xs={9} style={{textAlign:'right', paddingBottom:10, paddingRight:25}}>
+                    <NavLink to={"/myorders/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+                      View Details <i className="bi bi-arrow-right-short"></i>
+                    </NavLink>
+                  </Col>
+                </Row>
+              </Col>
+
+            </Col>
+          </Row>
         </div>
       </Col>
     );
@@ -123,16 +144,33 @@ const MyOrders = () =>
     }
     return (
       <Col xs={12}>
-        <div className="myOrdersTable myOrdersHeadInfo">
+        <div className="myOrdersRect myOrdersHeadInfo">
           <Row>
-            <Col xs={4}>Account&nbsp;Type:</Col> <Col xs={8}>{accType}</Col>
+            <Col xs={12}>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">Account Type:</Col>
+                  <Col xs={9} className="">{accType}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={3} className="">{accType} ID:</Col>
+                  <Col xs={9} className="guid">{idval}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow" style={{marginBottom:15}}>
+                <Row>
+                  <Col xs={3} className="">Full Name:</Col>
+                  <Col xs={9} className="">{fullname}</Col>
+                </Row>
+              </Col>
+            </Col>
           </Row>
-          <Row>
-            <Col xs={4}>{accType} ID:</Col>  <Col xs={8} className="guid">{idval}</Col>
-          </Row>
-          <Row>
-            <Col xs={4}>Full&nbsp;Name:</Col> <Col xs={8}>{fullname}</Col>
-          </Row>
+
         </div>
       </Col>
     );
