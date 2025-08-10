@@ -11,7 +11,8 @@ export const loginSlice = createSlice({
     // value: {
     //   loginResult: 'Success',
     //   loginType: 'User',
-    //   appUserId: '392943d5-e5ce-4f7a-93ed-d3407b0b61eb'
+    //   appUserId: 'e35f7679-21dc-4f8e-8bea-2e3d41d72393',
+    //   fullname: 'Diana Walters'
     // }
     value: null,
 
