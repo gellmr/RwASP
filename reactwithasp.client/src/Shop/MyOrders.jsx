@@ -45,7 +45,7 @@ const MyOrders = () =>
       dispatch(fetchMyOrders({ uid: myUserId, gid: guestID })); // Invoke thunk
       setIsLoading(true);
     }
-  }, [ordersThisPage]);
+  }, [ordersThisPage, myUserId, guestID]);
 
   const noOrdersMarkup = () => (
     <>

@@ -79,7 +79,7 @@ const ShopLayout = () =>
   }, [loginValue]);
 
   useEffect(() => {
-    if (!nullOrUndefined(guestID)) {
+    if (!nullOrUndefined(myUserId) || !nullOrUndefined(guestID)) {
       // Once we have the guest id, we can load the orders. Navbar is a child prop that
       // contains UI which depends on having the latest My Orders data from server.
       dispatch(fetchMyOrders({ uid: myUserId, gid: guestID })); // Invoke thunk
