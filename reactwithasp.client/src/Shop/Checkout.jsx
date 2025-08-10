@@ -19,24 +19,33 @@ function Checkout()
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const [firstName,   setFirstName] = useState('');
-  const [lastName,    setLastName] = useState('');
-  const [shipLine1, setShipLine1] = useState('');
-  const [shipLine2, setShipLine2] = useState('');
-  const [shipLine3, setShipLine3] = useState('');
-  const [shipCity,     setShipCity] = useState('');
-  const [shipState,    setShipState] = useState('');
-  const [shipCountry,  setShipCountry] = useState('');
-  const [shipZip,      setShipZip] = useState('');
-  const [shipEmail, setShipEmail] = useState('');
+  let _firstname;
+  let _lastname;
 
   const guest = useSelector(state => state.login.guest);
   const guestID = !nullOrUndefined(guest) ? guest.id : null;
+  _firstname = (guest === null) ? '' : guest.firstname;
+  _lastname  = (guest === null) ? '' : guest.lastname;
+
   const cart = useSelector(state => state.cart.cartLines);
   const cartPayload = JSON.parse(JSON.stringify(cart));
 
   const loginValue = useSelector(state => state.login.value);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
+  _firstname = (loginValue === null) ? _firstname : loginValue.firstname;
+  _lastname  = (loginValue === null) ? _lastname  : loginValue.lastname;
+
+  const [firstName, setFirstName] = useState( nullOrUndefined(_firstname) ? '' : _firstname );
+  const [lastName,  setLastName]  = useState( nullOrUndefined(_lastname)  ? '' : _lastname );
+
+  const [shipLine1,   setShipLine1]   = useState('');
+  const [shipLine2,   setShipLine2]   = useState('');
+  const [shipLine3,   setShipLine3]   = useState('');
+  const [shipCity,    setShipCity]    = useState('');
+  const [shipState,   setShipState]   = useState('');
+  const [shipCountry, setShipCountry] = useState('');
+  const [shipZip,     setShipZip]     = useState('');
+  const [shipEmail,   setShipEmail]   = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();

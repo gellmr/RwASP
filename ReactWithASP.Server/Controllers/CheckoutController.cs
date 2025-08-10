@@ -3,6 +3,7 @@ using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.DTO.OrderDTOs;
+using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -11,13 +12,15 @@ namespace ReactWithASP.Server.Controllers
   public class CheckoutController: ShopController
   {
     private IOrdersRepository ordersRepo;
+    protected Microsoft.AspNetCore.Identity.UserManager<AppUser> _userManager;
 
-    public CheckoutController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IOrdersRepository oRepo) : base(rRepo, gRepo, pRepo) {
+    public CheckoutController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, IOrdersRepository oRepo, Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager) : base(rRepo, gRepo, pRepo) {
       ordersRepo = oRepo;
+      _userManager = userManager;
     }
 
     [HttpPost("submit")] // POST api/checkout/submit.  Accepts application/json POST submissions containing stringified JSON data in request body.
-    public IActionResult Submit([FromBody] CheckoutSubmitDTO checkoutSubmit)
+    public async Task<IActionResult> Submit([FromBody] CheckoutSubmitDTO checkoutSubmit)
     {
       if (!ModelState.IsValid){ return BadRequest(ModelState); }
       
@@ -62,7 +65,13 @@ namespace ReactWithASP.Server.Controllers
         order1.OrderedProducts.Add(op1);
       }
 
-      UserType userType = UserType.Guest;
+      AppUser? appUser;
+      string? uid = GetLoggedInUserIdFromIdentityCookie(); // Lookup the currently logged in user.
+      if (uid != null){
+        appUser = await _userManager.FindByIdAsync(uid);
+      }
+
+      UserType userType = (uid != null) ? UserType.AppUser : UserType.Guest;
 
       try{
         switch(userType){
@@ -71,6 +80,8 @@ namespace ReactWithASP.Server.Controllers
             order1.Guest = guest;
             break;
           case UserType.AppUser : break;
+            order1.AppUser = appUser;
+            order1.UserID = uid;
           case UserType.GoogleAppUser: break;
           case UserType.None : break;
         }

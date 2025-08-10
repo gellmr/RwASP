@@ -29,7 +29,9 @@ namespace ReactWithASP.Server.Controllers
         Guest guest = EnsureGuestFromCookieAndDb(null);
         return Ok( new {
           id = guest.ID,
-          fullname = guest.FullName
+          fullname = guest.FullName,
+          firstname = guest.FirstName,
+          lastname = guest.LastName,
         });
       }
       catch (Exception ex){
