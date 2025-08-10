@@ -65,57 +65,57 @@ const MyOrders = () =>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">Order Number</Col>
-                  <Col xs={9} className="" style={{ fontWeight: 600 }}>{ord.id}</Col>
+                  <Col xs={4} sm={3} className="">Order Number</Col>
+                  <Col xs={8} sm={9} className="" style={{ fontWeight: 600 }}>{ord.id}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">Status</Col>
-                  <Col xs={9} className="">{ord.orderStatus}</Col>
+                  <Col xs={4} sm={3} className="">Status</Col>
+                  <Col xs={8} sm={9} className="">{ord.orderStatus}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">Placed Date</Col>
-                  <Col xs={9} className="">{displayDate(ord.orderPlacedDate)}</Col>
+                  <Col xs={4} sm={3} className="">Placed Date</Col>
+                  <Col xs={8} sm={9} className="">{displayDate(ord.orderPlacedDate)}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">Items</Col>
-                  <Col xs={9} className="">{ord.itemString}</Col>
+                  <Col xs={4} sm={3} className="">Items</Col>
+                  <Col xs={8} sm={9} className="">{ord.itemString}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">Total Items</Col>
-                  <Col xs={9} className="">{ord.quantityTotal}</Col>
+                  <Col xs={4} sm={3} className="">Total Items</Col>
+                  <Col xs={8} sm={9} className="">{ord.quantityTotal}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">Price Total</Col>
-                  <Col xs={9} className="">$ {ord.priceTotal}</Col>
+                  <Col xs={4} sm={3} className="">Price Total</Col>
+                  <Col xs={8} sm={9} className="">$ {ord.priceTotal}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">Ship To:</Col>
-                  <Col xs={9} className="shipToDetail">{ord.shippingAddress}</Col>
+                  <Col xs={4} sm={3} className="">Ship To:</Col>
+                  <Col xs={8} sm={9} className="shipToDetail">{ord.shippingAddress}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className=""></Col>
-                  <Col xs={9} style={{textAlign:'right', paddingBottom:10, paddingRight:25}}>
+                  <Col xs={4} sm={3} className=""></Col>
+                  <Col xs={8} sm={9} style={{textAlign:'right', paddingBottom:10, paddingRight:25}}>
                     <NavLink to={"/myorders/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
                       View Details <i className="bi bi-arrow-right-short"></i>
                     </NavLink>
@@ -150,22 +150,22 @@ const MyOrders = () =>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">Account Type:</Col>
-                  <Col xs={9} className="">{accType}</Col>
+                  <Col xs={4} sm={3} className="">Account Type:</Col>
+                  <Col xs={8} sm={9} className="">{accType}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow">
                 <Row>
-                  <Col xs={3} className="">{accType} ID:</Col>
-                  <Col xs={9} className="guid">{idval}</Col>
+                  <Col xs={4} sm={3} className="">{accType} ID:</Col>
+                  <Col xs={8} sm={9} className="guid">{idval}</Col>
                 </Row>
               </Col>
 
               <Col xs={12} className="myOrdRow" style={{marginBottom:15}}>
                 <Row>
-                  <Col xs={3} className="">Full Name:</Col>
-                  <Col xs={9} className="">{fullname}</Col>
+                  <Col xs={4} sm={3} className="">Full Name:</Col>
+                  <Col xs={8} sm={9} className="">{fullname}</Col>
                 </Row>
               </Col>
             </Col>

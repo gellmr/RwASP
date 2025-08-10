@@ -28,8 +28,7 @@
 
 
 .shipToDetail {
-  /*color: #707082;*/
-  padding-right: 35px;
+  /*color:darkmagenta;*/
 }
 
 .shipAddy {
@@ -75,6 +74,10 @@
   .myOrdersRect {
     font-size: 12px;
     /*color: orange;*/
+  }
+  .shipToDetail {
+    /*color:lime;*/
+    padding-right: 35px !important;
   }
 }
 
