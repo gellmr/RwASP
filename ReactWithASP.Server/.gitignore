@@ -21,6 +21,3 @@ appsettings.json
 # Ignore uploads folder and contents
 uploads/
 uploads/**
-
-# Ignore changes to the deploy marker file. This file is part of the project but gets deleted on startup.
-deploy_marker.txt
