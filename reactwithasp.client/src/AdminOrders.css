@@ -3,8 +3,78 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
-#adminLayout tr.backlogCursorRow{
-  cursor:pointer;
+.adminOrderPagin{
+  display:flex;
+  justify-content:center;
+}
+
+#adminLayout .adminOrderPagin .btn-toolbar a {
+  background-color: #ffffffab;
+  margin: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#adminLayout .adminOrderPagin .btn-toolbar a.active {
+  background-color: rgb(10, 88, 202);
+}
+
+#adminLayout .adminOrdersOuter {
+  padding-top: 10px;
+  padding-bottom: 1px;
+  min-height: 775px;
+}
+#adminLayout .adminOrdersOuter h4{
+  color: #3a3f44;
+  font-size: 31px;
+}
+
+#adminLayout .adminOrderPMarkup .wrapLeftTable{
+  color:red;
+  display:inline-block;
+  min-width:8px;
+}
+#adminLayout .adminOrderPMarkup .wrapLeftClearTable {
+  display: inline-block;
+  min-width: 8px;
+  flex-grow:2;
+}
+#adminLayout .adminOrderPMarkup .wrapClearTable {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+#adminLayout .adminOrderPMarkup .wrapTable {
+  background-color: #ffffffab;
+  border-radius:8px;
+  padding-top:8px;
+  padding-bottom:8px;
+  display:flex;
+  flex-direction:row;
+  justify-content:flex-start;
+  overflow-x: auto;
+}
+#adminLayout .adminOrderPMarkup table {
+  margin-bottom: 1px;
+}
+#adminLayout .adminOrderPMarkup .table-responsive{
+  padding-top: 0px;
+  flex-grow:2;
+  overflow-x: visible;
+}
+#adminLayout .adminOrdersTable td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.adminOrdersOuter .responsiveScrollsRight {
+  color: #3d3d3d;
+}
+
+#adminLayout tr.backlogCursorRow {
+  cursor: pointer;
 }
 
 @media (min-width: 370px) {

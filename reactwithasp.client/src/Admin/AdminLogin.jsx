@@ -36,7 +36,7 @@ function AdminLogin()
       console.log('Login success. Data fetched:', response.data); // response.data is already JSON
       dispatch(setLogin(response.data));
       console.log("Navigate to /admin/orders...");
-      navigate('/admin/orders');
+      navigate('/admin/orders/1');
     })
     .catch((err) => {
       const result = err.response.data.loginResult;

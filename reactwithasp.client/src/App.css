@@ -222,8 +222,9 @@
 .mgFooter {
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
-  background-color: #ffffffb3;
-  padding-bottom: 90px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  background: linear-gradient(to right, transparent, #ffffffab, transparent);
 }
 
 @media (min-width: 370px) {

@@ -97,60 +97,68 @@ function AdminOrders()
   );
 
   const pageMarkup = (
-    <>
-      <div style={{ display:"flex", justifyContent:"center" }}>
+    <div className="adminOrderPMarkup">
+      <div className="adminOrderPagin">
         <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
       </div>
-      <Table hover responsive>
-        <thead>
-          <tr>
-            <th>OrderPlaced</th>
-            <th>OrderID</th>
-            <th>Username</th>
-            <th>UserID</th>
-            <th>GuestID</th>
-            <th>AccountType</th>
-            <th>Email</th>
-            <th>PaymentReceived</th>
-            <th>Outstanding</th>
-            <th>ItemsOrdered</th>
-            <th style={{textAlign:"left"}}>Items</th>
-            <th>OrderStatus</th>
-          </tr>
-        </thead>
-        <tbody>
-          {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
-            <tr key={line.id} className="backlogCursorRow" onClick={handleClickBacklogRow} data-orderid={line.id}>
-              <td>{line.orderPlacedDate}</td>
-              <td>{line.id}</td>
-              <td>{line.username}</td>
-              <td>{line.userIDshort}</td>
-              <td>{line.guestIDshort}</td>
-              <td>{line.accountType}</td>
-              <td>{line.email}</td>
-              <td>{line.paymentReceivedAmount}</td>
-              <td>{line.outstanding}</td>
-              <td>{line.itemsOrdered}</td>
-              <td style={{textAlign:"left"}}>{line.items}</td>
-              <td>{line.orderStatus}</td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div className="wrapClearTable">
+        <div className="wrapLeftClearTable"></div>
+        <div className="wrapTable">
+          <div className="wrapLeftTable"></div>
+          <Table hover responsive className="adminOrdersTable">
+            <thead>
+              <tr>
+                <th>OrderPlaced</th>
+                <th>OrderID</th>
+                <th>Username</th>
+                <th>UserID</th>
+                <th>GuestID</th>
+                <th>AccountType</th>
+                <th>Email</th>
+                <th>PaymentReceived</th>
+                <th>Outstanding</th>
+                <th>ItemsOrdered</th>
+                <th style={{textAlign:"left"}}>Items</th>
+                <th>OrderStatus</th>
+              </tr>
+            </thead>
+            <tbody>
+              {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
+                <tr key={line.id} className="backlogCursorRow" onClick={handleClickBacklogRow} data-orderid={line.id}>
+                  <td>{line.orderPlacedDate}</td>
+                  <td>{line.id}</td>
+                  <td>{line.username}</td>
+                  <td>{line.userIDshort}</td>
+                  <td>{line.guestIDshort}</td>
+                  <td>{line.accountType}</td>
+                  <td>{line.email}</td>
+                  <td>{line.paymentReceivedAmount}</td>
+                  <td>{line.outstanding}</td>
+                  <td>{line.itemsOrdered}</td>
+                  <td style={{textAlign:"left"}}>{line.items}</td>
+                  <td>{line.orderStatus}</td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+          <div className="wrapLeftTable"></div>
+        </div>
+        <div className="wrapLeftClearTable"></div>
+      </div>
+      <div className="adminOrderPagin">
         <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
       </div>
-    </>
+    </div>
   );
 
   return (
-    <>
+    <div className="adminOrdersOuter">
       <AdminTitleBar titleText="Orders Backlog" construction={false}>
         {responsiveMessage}
       </AdminTitleBar>
 
       {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
-    </>
+    </div>
   );
 }
 export default AdminOrders;
