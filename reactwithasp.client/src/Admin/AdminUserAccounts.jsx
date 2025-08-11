@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 import DragDropUserPicModal from "@/DragDropUserPicModal";
 import { useNavigate, NavLink } from "react-router";
+import { nullOrUndefined } from '@/MgUtility.js';
 
 import '@/AdminUserShared.css'
 import '@/AdminUserAccounts.css'
@@ -117,7 +118,7 @@ const AdminUserAccounts = () =>
         </Col>
         <Col xs={12} lg={8} className="adminContainUserAccRow">
           <DragDropUserPicModal ref={modalRef} />
-          {userAccounts.map(user => userRowMarkup(user, (user.id == myUserId)))}
+          {userAccounts.map(user => userRowMarkup(user, (!nullOrUndefined(myUserId) && myUserId == user.id )))}
         </Col>
         <Col xs={0} lg={2}>
           {/*RSPACE*/}
