@@ -223,7 +223,7 @@ function AdminUserEdit()
 
           <Row>
             <Col xs={12}>
-              <AdminTitleBar titleText="Customer Account" construction={false} />
+              <AdminTitleBar titleText="Edit Account" construction={false} />
             </Col>
             <Col xs={12}>
               {markup}
