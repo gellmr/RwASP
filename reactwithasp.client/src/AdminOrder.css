@@ -9,8 +9,18 @@
   border-radius: 10px;
   padding: 15px;
   margin-bottom: 10px;
+  background-color: #ffffffde;
+  background-color: #fffffff2;
 }
-
+#adminLayout button.accordion-button {
+  background-color: #ffffffad;
+}
+.myAdminOrdDetailImageRow {
+  background-color: transparent !important;
+}
+.myAdminOrdDetailImageRow.myAdminOrdDetailHead  {
+  background-color: transparent !important;
+}
 
 #adminOrderPage {
   /*color: saddlebrown !important;*/

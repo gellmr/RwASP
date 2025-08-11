@@ -17,6 +17,8 @@ import VL from "@/Shop/VL";
 import Footer from "@/Shop/Footer";
 import { useLocation } from 'react-router';
 
+import '@/AdminLayout.css'
+
 const AdminLayout = () =>
 {
   const location = useLocation();
@@ -25,7 +27,7 @@ const AdminLayout = () =>
 
   return (
     <>
-      <Container id="adminLayout" style={{ border: '' }} fluid>
+      <Container id="adminLayout" className="adminBgBase adminBg1" style={{ border: '' }} fluid>
         <Row>
           <Col>
             <MgNavBar showCart={false} useFluid={true} brandText="Admin Console" linkTo="/admin/orders">

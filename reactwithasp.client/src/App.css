@@ -70,9 +70,10 @@
   font-size: 11px;
   text-align: left;
   padding-left: 10px;
-  padding-bottom:6px;
-  margin:0px;
-  margin-bottom:15px;
+  padding-bottom: 6px;
+  margin: 0px;
+  margin-bottom: 15px;
+  background-color: #ffffffde;
 }
 .adminProductDetailsBox {
   padding-top: 8px;
@@ -217,8 +218,8 @@
 }
 
 .mgFooter {
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   background-color: #ffffffb3;
   padding-bottom: 90px;
 }
