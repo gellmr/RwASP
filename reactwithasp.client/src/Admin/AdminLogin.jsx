@@ -49,7 +49,7 @@ function AdminLogin()
 
   const errMarkup = (
     <>
-      {error && <span>Error: {error}</span>}
+      {error && <span className="loginErrStyle">{error}</span>}
     </>
   );
 
@@ -80,6 +80,7 @@ function AdminLogin()
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Form className="mg-admin-login-form">
           <Row>
+            {errMarkup}
             <Col xs={12} md={6}>
               <Form.Group className="mb-3" controlId="formGroupEmail" style={{ textAlign:"left"}}>
                 <Form.Label>&nbsp;&nbsp;Email address</Form.Label>
@@ -95,7 +96,6 @@ function AdminLogin()
                 </InputGroup>
               </Form.Group>
             </Col>
-            {errMarkup}
             <div style={{ marginBottom: 40 }}></div>
 
             <Stack direction="horizontal" gap={3} className="d-none d-sm-flex" style={{ marginTop: 10 }}>

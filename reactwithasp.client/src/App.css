@@ -530,6 +530,13 @@ th, td {
   background-color: #eff7ff63;
   border-radius: 10px;
 }
+.loginErrStyle {
+  font-size: 16px;
+  background-color: #f2f6ff;
+  background-color: #f4f8ff;
+  padding: 10px;
+  margin-bottom: 15px;
+}
 
 
 /* CHECKOUT STYLES */
