@@ -199,10 +199,10 @@ function AdminUserEdit()
         <Col xs={0} sm={1} md={2} lg={2}>
           {/*LSPACE*/}
         </Col>
-        <Col xs={12} sm={10} md={8} lg={8}>
+        <Col xs={12} sm={10} md={8} lg={8} className="adminUserEditWrap">
           <DragDropUserPicModal ref={modalRef} onSuccess={handleModalCloseSuccess} />
           <BackLink textPos="left" />
-          {userRowMarkup(userAccount, (idval == myUserId))}
+          {userRowMarkup(userAccount, (!nullOrUndefined(idval) && idval == myUserId))}
         </Col>
         <Col xs={0} sm={1} md={2} lg={2}>
           {/*RSPACE*/}
@@ -219,7 +219,7 @@ function AdminUserEdit()
   return (
     <>
       <Row>
-        <Col sm={12} className="adminCont">
+        <Col sm={12} className="adminCont adminParallax adminParallaxUserEdit">
 
           <Row>
             <Col xs={12}>

@@ -3,6 +3,14 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
+.adminParallaxUserEdit {
+  background-image: url('/bg/warehouse-image1.jpg');
+}
+
+.adminUserEditWrap{
+  margin-bottom:60px;
+}
+
 .adminUserEditRow {
   border: 1px solid gainsboro;
   border-radius: 10px;
@@ -14,6 +22,7 @@
   margin-bottom: 15px;
   font-size: 11px;
   /*color:red;*/
+  background-color: #ffffffe8;
 }
 
   .adminUserEditRow .form-control{
