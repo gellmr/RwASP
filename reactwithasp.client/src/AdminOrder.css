@@ -7,6 +7,15 @@
   background-image: url('/bg/warehouse-image1.jpg');
 }
 
+#adminLayout .adminParallaxOrders h4 {
+  color: #272727;
+  font-size: 30px;
+  width: 100%;
+  padding: 10px;
+  padding-top: 10px;
+  background: linear-gradient(to right, transparent, #ffffff38, transparent);
+}
+
 .AdminOrderDetailRow {
   text-align: left;
   border: 1px solid gainsboro;
