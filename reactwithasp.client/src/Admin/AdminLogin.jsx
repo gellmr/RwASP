@@ -39,7 +39,9 @@ function AdminLogin()
       navigate('/admin/orders');
     })
     .catch((err) => {
-      setError(err.response.data.loginResult);
+      const result = err.response.data.loginResult;
+      const message = err.response.data.message;
+      setError(message);
     })
     .finally(() => {
       console.log('(loginClick) Request (and retries) completed. This runs regardless of success or failure.');
