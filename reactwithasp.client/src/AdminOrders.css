@@ -24,8 +24,12 @@
   min-height: 775px;
 }
 #adminLayout .adminOrdersOuter h4{
-  color: #3a3f44;
-  font-size: 31px;
+  color: #ffffff;
+  font-size: 38px;
+  width: 100%;
+  padding: 12px;
+  padding-top: 5px;
+  background: linear-gradient(to right, transparent, #434343d1, transparent);
 }
 
 #adminLayout .adminOrderPMarkup .wrapLeftTable{
