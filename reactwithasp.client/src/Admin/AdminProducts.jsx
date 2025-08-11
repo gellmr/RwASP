@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 
+import '@/AdminProducts.css'
+
 const AdminProducts = () =>
 {
   const dispatch = useDispatch();
@@ -82,7 +84,7 @@ const AdminProducts = () =>
   return (
     <>
       <Row>
-        <Col sm={12} className="adminCont">
+        <Col sm={12} className="adminCont adminParallaxProducts">
 
           <Row>
             <Col xs={12}>

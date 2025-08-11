@@ -1,0 +1,15 @@
+
+.adminCont.adminParallaxProducts {
+  /* Disabled height so list of products can be as tall as needed */
+  max-height: unset;
+  /* Add your background image */
+  background-image: url'(/bg/warehouse-image1.jpg');
+  /* Center the image */
+  background-position: center;
+  /* Do not repeat the image */
+  background-repeat: no-repeat;
+  /* This is the magic! */
+  background-attachment: fixed;
+  /* Cover the entire container */
+  background-size: cover;
+}
