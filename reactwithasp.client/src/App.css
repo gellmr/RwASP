@@ -62,7 +62,9 @@
 .lime{
   /*background-color:lime!important;*/
 }
-
+.adminProductsAll {
+  background-color: #ffffff29;
+}
 .adminProductRow {
   border: 1px solid gainsboro;
   border-radius: 10px;

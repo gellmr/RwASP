@@ -64,7 +64,7 @@ const AdminProducts = () =>
         <Col xs={0} lg={2}>
           {/*LSPACE*/}
         </Col>
-        <Col xs={12} lg={8}>
+        <Col xs={12} lg={8} className="adminProductsAll">
           {adminProducts.map(prod => prodRowMarkup(prod))}
         </Col>
         <Col xs={0} lg={2}>
