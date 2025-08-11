@@ -110,10 +110,13 @@ using (var scope = app.Services.CreateScope()){
     if (env.EnvironmentName == "Development"){
       await context.Database.MigrateAsync();
     }
+    var seedMarkerPath = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
     bool execSeed = bool.Parse(builder.Configuration["SeedOnStart"]);
-    if (execSeed){
+    if (execSeed && File.Exists(seedMarkerPath))
+    {
       var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
       await seeder.Execute();
+      File.Delete(seedMarkerPath);
     }
   }
   catch (Exception ex){
