@@ -180,6 +180,12 @@
   padding: 12px;
   font-size: 12px;
 }
+.adminCont {
+  padding-top: 15px;
+  padding-bottom: 12px;
+  overflow-x: clip;
+}
+
 #adminLayout .mgNavLinkBtn.active {
   color: #ffd298;
 }

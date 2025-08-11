@@ -246,8 +246,14 @@ function AdminOrder ()
 
   return (
     <>
-      <AdminTitleBar titleText={"Order #" + orderid} construction={false} />
-      {isLoading ? loadingMarkup() : (error ? errMarkup : markup )}
+      <Row>
+        <Col sm={12} className="adminCont">
+
+          <AdminTitleBar titleText={"Order #" + orderid} construction={false} />
+          {isLoading ? loadingMarkup() : (error ? errMarkup : markup)}
+
+        </Col>
+      </Row>
     </>
   );
 }

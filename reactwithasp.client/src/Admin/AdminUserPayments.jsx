@@ -1,8 +1,16 @@
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 function AdminUserpayments() {
   return (
     <>
-      AdminUserpayments
+      <Row>
+        <Col sm={12} className="adminCont">
+
+          AdminUserpayments
+
+        </Col>
+      </Row>
     </>
   );
 }

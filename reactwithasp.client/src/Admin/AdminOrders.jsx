@@ -8,6 +8,8 @@ import PaginationLinks from "@/Shop/PaginationLinks";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Spinner from 'react-bootstrap/Spinner';
 import { axiosInstance } from '@/axiosDefault.jsx';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 import '@/AdminOrders.css'
 
@@ -152,13 +154,18 @@ function AdminOrders()
   );
 
   return (
-    <div className="adminOrdersOuter">
-      <AdminTitleBar titleText="Orders Backlog" construction={false}>
-        {responsiveMessage}
-      </AdminTitleBar>
+    <Row>
+      <Col sm={12} className="adminCont">
 
-      {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
-    </div>
+        <div className="adminOrdersOuter">
+          <AdminTitleBar titleText="Orders Backlog" construction={false}>
+            {responsiveMessage}
+          </AdminTitleBar>
+          {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
+        </div>
+
+      </Col>
+    </Row>
   );
 }
 export default AdminOrders;

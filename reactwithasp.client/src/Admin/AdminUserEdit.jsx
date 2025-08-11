@@ -219,11 +219,16 @@ function AdminUserEdit()
   return (
     <>
       <Row>
-        <Col xs={12}>
-          <AdminTitleBar titleText="Customer Account" construction={false} />
-        </Col>
-        <Col xs={12}>
-          {markup}
+        <Col sm={12} className="adminCont">
+
+          <Row>
+            <Col xs={12}>
+              <AdminTitleBar titleText="Customer Account" construction={false} />
+            </Col>
+            <Col xs={12}>
+              {markup}
+            </Col>
+          </Row>
         </Col>
       </Row>
     </>
