@@ -27,7 +27,7 @@ const AdminLayout = () =>
 
   return (
     <>
-      <Container id="adminLayout" className="adminBgBase adminBg1" style={{ border: '' }} fluid>
+      <Container fluid id="adminLayout" className="adminBgBase adminBg1">
         <Row>
           <Col>
             <MgNavBar showCart={false} useFluid={true} brandText="Admin Console" linkTo="/admin/orders">
