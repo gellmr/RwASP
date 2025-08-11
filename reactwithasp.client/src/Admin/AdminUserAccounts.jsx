@@ -115,7 +115,7 @@ const AdminUserAccounts = () =>
         <Col xs={0} lg={2}>
           {/*LSPACE*/}
         </Col>
-        <Col xs={12} lg={8}>
+        <Col xs={12} lg={8} className="adminContainUserAccRow">
           <DragDropUserPicModal ref={modalRef} />
           {userAccounts.map(user => userRowMarkup(user, (user.id == myUserId)))}
         </Col>

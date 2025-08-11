@@ -29,7 +29,11 @@
 }
 
 
-
+.adminContainUserAccRow {
+  background-color: #ffffff24;
+  border-radius: 9px;
+  padding-top: 10px;
+}
 .adminUserAccRow {
   border: 1px solid gainsboro;
   border-radius: 10px;
@@ -41,6 +45,7 @@
   margin-bottom:15px;
   font-size: 11px;
   /*color:red;*/
+  background-color: #ffffffab;
 }
 .adminUserAccRow.currUserRow{
   background-color: #a0cfff;
