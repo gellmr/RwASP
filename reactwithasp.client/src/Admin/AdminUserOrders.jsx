@@ -82,7 +82,7 @@ function AdminUserOrders() {
 
   const noOrdersMarkup = () => (
     <div style={{ height: 100, marginTop: 20 }}>
-      <div style={{marginBottom:25}} >(None at the moment)</div>
+      <div className="noneAtMoment" >(None at the moment)</div>
       <BackLink textPos="center" />
     </div>
   );
@@ -120,9 +120,9 @@ function AdminUserOrders() {
   return (
     <>
       <Row>
-        <Col sm={12} className="adminCont">
+        <Col sm={12} className="adminCont adminParallax adminParallaxUserOrders" style={{paddingTop:0, paddingBottom:0}}>
 
-          <Row>
+          <Row className="whiteBack">
             <Col xs={12}>
               <AdminTitleBar titleText={userDisplayName} construction={false} />
             </Col>

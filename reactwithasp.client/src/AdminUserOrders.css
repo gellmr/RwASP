@@ -11,14 +11,42 @@
   font-size:10px;
 }
 
-.OrderDetail{
-  text-align:left;
-  margin-bottom:5px;
-  padding-left:10px;
+.adminParallaxUserOrders {
+  background-image: url('/bg/warehouse-image1.jpg');
+  min-height:700px;
+}
+
+.adminParallaxUserOrders .noneAtMoment{
+  margin-bottom:33px;
+  font-size:17px;
+}
+
+.adminParallaxUserOrders .adminTitleBar{
+  color: #3a3f44;
+  font-size: 29px;
+  margin-top: 6px;
+  padding-top:14px;
+}
+
+.adminParallaxUserOrders .whiteBack{
+  background-color:#ffffffab;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.OrderDetail {
+  text-align: left;
+  margin-bottom: 5px;
+  padding-left: 10px;
 }
 
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
+  .adminParallaxUserOrders .noneAtMoment {
+    font-size: 19px;
+  }
 }
 
 /* ======================================================== */
@@ -37,6 +65,9 @@
 @media (min-width: 576px) {
   .adminUserOrdersLiner {
     font-size: 12px;
+  }
+  .adminParallaxUserOrders .noneAtMoment {
+    font-size: 21px;
   }
 }
 
