@@ -57,7 +57,7 @@
   background-color: #ffffffeb;
 }
 .adminUserAccRow.currUserRow{
-  background-color: #a0cfff;
+  background-color:#fdff7ad9;
 }
 .adminUserAccRow.currUserRow .adminUserAccDetailsBox .adminUserAccCell:first-child {
   font-weight: 500;
@@ -92,10 +92,6 @@
   font-size: 10px;
   margin-left:11px;
   margin-bottom:5px;
-}
-.adminUserAccDetailEditLink {
-  border-color: #5389d9;
-  color: #054bb3;
 }
 .adminUserAccLarge {
   /*border: 2px dashed red;*/
