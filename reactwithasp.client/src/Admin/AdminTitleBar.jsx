@@ -4,7 +4,7 @@ const AdminTitleBar = ({ children, titleText="Title Here", construction=true}) =
   return (
     <>
       <div style={{ textAlign: "center", paddingLeft: 15, paddingBottom: 5 }}>
-        <h4 style={{ display: "inline-block", marginRight: 10 }}>{titleText}</h4>
+        <h4 className="adminTitleBar" style={{ display: "inline-block", marginRight: 10 }}>{titleText}</h4>
         {children}
       </div>
       {construction && <ConstructionBanner />}
