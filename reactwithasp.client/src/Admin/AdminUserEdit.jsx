@@ -89,7 +89,7 @@ function AdminUserEdit()
       <>
         <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>
         <Col xs={9} className="adminUserEditCell mgGuid" >
-          <Form.Control type="id" value={uid} readonly disabled="disabled" />
+          <Form.Control type="id" value={uid} readOnly disabled="disabled" />
         </Col>
       </>
     );
@@ -103,7 +103,7 @@ function AdminUserEdit()
       <>
         <Col className="adminUserEditCell" xs={3}>Guest&nbsp;ID</Col>
         <Col xs={9} className="adminUserEditCell mgGuid" >
-          <Form.Control type="id" value={gid} readonly disabled="disabled" />
+          <Form.Control type="id" value={gid} readOnly disabled="disabled" />
         </Col>
       </>
     );
@@ -157,7 +157,7 @@ function AdminUserEdit()
 
             <Col className="adminUserEditCell" xs={3}>UserName</Col>
             <Col xs={9} className="adminUserEditCell">
-              <Form.Control type="id" value={user.userName} readonly disabled="disabled" />
+              <Form.Control type="id" value={user.userName} readOnly disabled="disabled" />
             </Col>
 
             {userIdRow(user.id)}
