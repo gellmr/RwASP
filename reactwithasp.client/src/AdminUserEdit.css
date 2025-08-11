@@ -39,7 +39,8 @@
   }
 
   .adminUserEditRow.currUserRow {
-    background-color: #a0cfff;
+    background-color: #fdff7ad9;
+    border: 1px solid #d3d3ae42;
   }
 
     .adminUserEditRow.currUserRow .adminUserEditDetailsBox .adminUserEditCell:first-child {

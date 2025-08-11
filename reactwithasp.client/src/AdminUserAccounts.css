@@ -58,6 +58,7 @@
 }
 .adminUserAccRow.currUserRow{
   background-color:#fdff7ad9;
+  border: 1px solid #d3d3ae42;
 }
 .adminUserAccRow.currUserRow .adminUserAccDetailsBox .adminUserAccCell:first-child {
   font-weight: 500;
