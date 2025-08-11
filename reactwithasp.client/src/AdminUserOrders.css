@@ -21,6 +21,17 @@
   margin-bottom:10px;
 }
 
+#adminLayout .adminParallaxUserOrders h4 {
+  margin-top: 13px;
+
+  color: #272727;
+  font-size: 30px;
+  width: 100%;
+  padding: 10px;
+  padding-top: 10px;
+  background: linear-gradient(to right, transparent, #ffffff38, transparent);
+}
+
 .adminParallaxUserOrders {
   background-image: url('/bg/warehouse-image1.jpg');
   min-height:700px;

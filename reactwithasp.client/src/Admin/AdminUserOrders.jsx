@@ -20,7 +20,7 @@ function AdminUserOrders() {
   //const navigate = useNavigate();
   const dispatch = useDispatch();
   const userOrders = useSelector(state => state.adminUserOrders.orders);
-  const userDisplayName = "Showing Orders for " + fullname;
+  const userDisplayName = "Orders for " + fullname;
 
   const gotOrders = (!nullOrUndefined(userOrders) && Array.isArray(userOrders) && userOrders.length > 0) ? true : false;
 
