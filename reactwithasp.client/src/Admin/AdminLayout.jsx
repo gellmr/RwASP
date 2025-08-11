@@ -29,14 +29,12 @@ const AdminLayout = () =>
     <>
       <Container fluid id="adminLayout" className="adminBgBase adminBg1">
         <Row>
-
           <MgNavBar showCart={false} useFluid={true} brandText="Admin Console" linkTo="/admin/orders">
             <ShopButton withBackArrow={showBackArrow} />
             <VL />
             <AdminLink />
             <CurrUserNavLink />
           </MgNavBar>
-
         </Row>
 
         <Outlet />
