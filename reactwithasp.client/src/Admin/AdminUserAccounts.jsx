@@ -134,7 +134,7 @@ const AdminUserAccounts = () =>
   return (
     <>
       <Row>
-        <Col sm={12} className="adminCont">
+        <Col sm={12} className="adminCont adminParallax adminUserAccountsParallax">
 
           <Row>
             <Col xs={12}>

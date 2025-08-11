@@ -3,7 +3,9 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
-
+.adminUserAccountsParallax {
+  background-image: url('/bg/warehouse-image1.jpg');
+}
 
 .freepikattrib {
   font-size: 11px;
