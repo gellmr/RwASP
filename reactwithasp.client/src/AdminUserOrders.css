@@ -10,6 +10,16 @@
   padding:10px;
   font-size:10px;
 }
+.adminUserOrdersLiner.whiteLiner {
+  background-color: #ffffffe3;
+}
+.wrapLiners{
+  background-color: #ffffff21;
+  padding: 10px;
+  border-radius: 15px;
+  padding-bottom:1px;
+  margin-bottom:10px;
+}
 
 .adminParallaxUserOrders {
   background-image: url('/bg/warehouse-image1.jpg');
@@ -34,6 +44,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.adminParallaxUserOrders .clearBack{
 }
 
 .OrderDetail {

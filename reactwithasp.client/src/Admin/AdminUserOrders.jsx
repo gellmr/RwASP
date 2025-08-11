@@ -24,6 +24,9 @@ function AdminUserOrders() {
 
   const gotOrders = (!nullOrUndefined(userOrders) && Array.isArray(userOrders) && userOrders.length > 0) ? true : false;
 
+  const whiteBackStyle = gotOrders ? "clearBack" : "whiteBack";
+  const linerStyle = gotOrders ? "adminUserOrdersLiner whiteLiner" : "adminUserOrdersLiner";
+
   useEffect(() => {
     fetchOrders();
   }, [idval]);
@@ -50,7 +53,7 @@ function AdminUserOrders() {
       return (<></>);
     }
     return (
-      <div key={ord.id} className="adminUserOrdersLiner">
+      <div key={ord.id} className={linerStyle}>
         <Row className="OrderDetail">
           <Col xs={4}>Order ID</Col>          <Col xs={8}>{ord.id}</Col>
         </Row>
@@ -92,7 +95,9 @@ function AdminUserOrders() {
   const yesOrdersMarkup = () => (
     <>
       <BackLink textPos="left" />
-      { userOrders.map(ord => orderRow(ord)) }
+      <div className="wrapLiners">
+        {userOrders.map(ord => orderRow(ord))}
+      </div>
     </>
   );
 
@@ -124,7 +129,7 @@ function AdminUserOrders() {
       <Row>
         <Col sm={12} className="adminCont adminParallax adminParallaxUserOrders" style={{paddingTop:0, paddingBottom:0}}>
 
-          <Row className="whiteBack">
+          <Row className={whiteBackStyle}>
             <Col xs={12}>
               <AdminTitleBar titleText={userDisplayName} construction={false} />
             </Col>
