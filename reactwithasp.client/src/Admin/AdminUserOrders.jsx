@@ -21,7 +21,9 @@ function AdminUserOrders() {
   const dispatch = useDispatch();
   const userOrders = useSelector(state => state.adminUserOrders.orders);
   const userDisplayName = "Showing Orders for " + fullname;
-  
+
+  const gotOrders = (!nullOrUndefined(userOrders) && Array.isArray(userOrders) && userOrders.length > 0) ? true : false;
+
   useEffect(() => {
     fetchOrders();
   }, [idval]);
@@ -102,7 +104,7 @@ function AdminUserOrders() {
             {/*LSPACE*/}
           </Col>
           <Col xs={12} sm={10} md={8} lg={6}>
-            {userOrders.length == 0 ? noOrdersMarkup() : yesOrdersMarkup() }
+            {gotOrders ? yesOrdersMarkup() : noOrdersMarkup()}
           </Col>
           <Col xs={0} sm={1} md={2} lg={3}>
             {/*RSPACE*/}
