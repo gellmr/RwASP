@@ -84,7 +84,7 @@ const AdminProducts = () =>
   return (
     <>
       <Row>
-        <Col sm={12} className="adminCont adminParallaxProducts">
+        <Col sm={12} className="adminCont adminParallax adminProductsParallax">
 
           <Row>
             <Col xs={12}>

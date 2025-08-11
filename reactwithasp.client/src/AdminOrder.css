@@ -3,6 +3,10 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
+.adminParallaxOrders {
+  background-image: url('/bg/warehouse-image1.jpg');
+}
+
 .AdminOrderDetailRow {
   text-align: left;
   border: 1px solid gainsboro;

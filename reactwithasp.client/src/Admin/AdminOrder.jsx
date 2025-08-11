@@ -247,7 +247,7 @@ function AdminOrder ()
   return (
     <>
       <Row>
-        <Col sm={12} className="adminCont">
+        <Col sm={12} className="adminCont adminParallax adminParallaxOrders">
 
           <AdminTitleBar titleText={"Order #" + orderid} construction={false} />
           {isLoading ? loadingMarkup() : (error ? errMarkup : markup)}
