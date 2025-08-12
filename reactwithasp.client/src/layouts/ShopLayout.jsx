@@ -36,6 +36,7 @@ const ShopLayout = () =>
 
   const guest = useSelector(state => state.login.guest);
   const guestID = !nullOrUndefined(guest) ? guest.id : null;
+
   const loginValue = useSelector(state => state.login.value);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 
@@ -73,7 +74,7 @@ const ShopLayout = () =>
 
   // Fetch generated guest id from server, on page load.
   useEffect(() => {
-    if (nullOrUndefined(myUserId)) {
+    if (nullOrUndefined(myUserId) && nullOrUndefined(guest)) {
       fetchGuest();
     }
   }, [loginValue]);
