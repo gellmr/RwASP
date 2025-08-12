@@ -48,6 +48,9 @@
   padding: 15px;
   padding-top:0px;
 }
+.ordersEmptyMsg div{
+  margin-bottom:9px;
+}
 
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */

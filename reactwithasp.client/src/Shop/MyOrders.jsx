@@ -30,6 +30,9 @@ const MyOrders = () =>
   
   const fullname = full_name;
 
+  const emptyMsgText1 = (myUserId) ? "(Logged in as " + loginValue.fullname + ")" : "(None at the moment)";
+  const emptyMsgText2 = (myUserId) ? "You currently have no orders" : '';
+
   // "Guest" | "User" | null
   const accType = !nullOrUndefined(guestID) ? "Guest" : (!nullOrUndefined(loginValue) ? loginValue.loginType : null );
   const idval   = !nullOrUndefined(guestID) ? guestID : (!nullOrUndefined(myUserId)   ? myUserId : null) ;
@@ -50,7 +53,8 @@ const MyOrders = () =>
   const noOrdersMarkup = () => (
     <>
       <div className="ordersEmptyMsg">
-        (None at the moment)
+        <div>{emptyMsgText1}</div>
+        <div>{emptyMsgText2}</div>
       </div>
       <div style={{ height:250 }}>
         &nbsp;
