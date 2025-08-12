@@ -37,9 +37,29 @@
   min-height:700px;
 }
 
+.adminParallaxUserOrders .contNoOrders {
+  margin-top:20px;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+}
+.adminParallaxUserOrders .barNoOrders {
+  /*background-color:red;*/
+  flex-grow:2;
+  min-width:10px;
+}
+.adminParallaxUserOrders .boxNoOrders {
+  border-radius: 10px;
+  width: 300px;
+  padding: 20px;
+  background-color: #ffffffd4;
+  min-height: 120px;
+}
 .adminParallaxUserOrders .noneAtMoment{
-  margin-bottom:33px;
-  font-size:17px;
+  font-size:20px;
+  height:40px;
+  margin-top:7px;
+  margin-bottom:5px;
 }
 
 .adminParallaxUserOrders .adminTitleBar{
@@ -51,6 +71,7 @@
 
 .adminParallaxUserOrders .whiteBack{
   background-color:#ffffffab;
+  background-color:#ffffff3d;
   height:100%;
   display: flex;
   flex-direction: column;
@@ -69,7 +90,7 @@
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
   .adminParallaxUserOrders .noneAtMoment {
-    font-size: 19px;
+    font-size: 22px;
   }
 }
 
@@ -91,7 +112,8 @@
     font-size: 12px;
   }
   .adminParallaxUserOrders .noneAtMoment {
-    font-size: 21px;
+    font-size: 22px;
+    margin-bottom:15px;
   }
 }
 

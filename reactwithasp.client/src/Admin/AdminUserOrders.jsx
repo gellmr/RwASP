@@ -26,7 +26,7 @@ function AdminUserOrders() {
 
   const whiteBackStyle = gotOrders ? "clearBack" : "whiteBack";
   const linerStyle = gotOrders ? "adminUserOrdersLiner whiteLiner" : "adminUserOrdersLiner";
-
+  
   useEffect(() => {
     fetchOrders();
   }, [idval]);
@@ -86,18 +86,28 @@ function AdminUserOrders() {
 
 
   const noOrdersMarkup = () => (
-    <div style={{ height: 100, marginTop: 20 }}>
-      <div className="noneAtMoment" >(None at the moment)</div>
-      <BackLink textPos="center" />
-    </div>
+    <>
+      <div className="contNoOrders">
+        <div className="barNoOrders">{/*LSPACE*/}</div>
+        <div className="boxNoOrders">
+          <div className="noneAtMoment" >(None at the moment)</div>
+          <BackLink textPos="center" btnClasses="btn btn-secondary"/>
+        </div>
+        <div className="barNoOrders">{/*rSPACE*/}</div>
+      </div>
+    </>
   );
 
   const yesOrdersMarkup = () => (
     <>
-      <BackLink textPos="left" />
-      <div className="wrapLiners">
-        {userOrders.map(ord => orderRow(ord))}
-      </div>
+      <Col xs={0} sm={1} md={2} lg={3}>{/*LSPACE*/}</Col>
+      <Col xs={12} sm={10} md={8} lg={6}>
+        <BackLink textPos="left" />
+        <div className="wrapLiners">
+          {userOrders.map(ord => orderRow(ord))}
+        </div>
+      </Col>
+      <Col xs={0} sm={1} md={2} lg={3}>{/*RSPACE*/}</Col>
     </>
   );
 
@@ -105,15 +115,7 @@ function AdminUserOrders() {
     return (
       <>
         <Row>
-          <Col xs={0} sm={1} md={2} lg={3}>
-            {/*LSPACE*/}
-          </Col>
-          <Col xs={12} sm={10} md={8} lg={6}>
-            {gotOrders ? yesOrdersMarkup() : noOrdersMarkup()}
-          </Col>
-          <Col xs={0} sm={1} md={2} lg={3}>
-            {/*RSPACE*/}
-          </Col>
+          {gotOrders ? yesOrdersMarkup() : noOrdersMarkup()}
         </Row>
       </>
     );
