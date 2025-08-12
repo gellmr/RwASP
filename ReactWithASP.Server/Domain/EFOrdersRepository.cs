@@ -95,6 +95,7 @@ namespace ReactWithASP.Server.Domain
         throw new ArgumentException("Could not load Order with orderid " + orderid);
       }
       order.OrderedProducts = LoadOrderedProducts(order);
+      order.OrderPayments = LoadPayments(order);
       return order;
     }
 
@@ -121,6 +122,17 @@ namespace ReactWithASP.Server.Domain
 
     // ------------------------------------------------------------------------------
     // Utility methods below are not part of repo interface
+
+    protected List<OrderPayment> LoadPayments(Order order)
+    {
+      return context.OrderPayments.Where(pay => pay.OrderID == order.ID).Select(pay => new OrderPayment{
+          ID = pay.ID,
+          Order = null,   // Avoid load loop
+          OrderID = null, // Avoid load loop
+          Amount = pay.Amount,
+          Date = pay.Date,
+        }).ToList();
+    }
 
     protected List<OrderedProduct> LoadOrderedProducts(Order order)
     {

@@ -105,6 +105,9 @@ function AdminOrder ()
     const editPathSeg = (myOrd.accountType === "User") ? "user" : "guest";
     const editPath = "/admin/" + editPathSeg + "/" + idSeg + "/edit";
 
+    const payReceived = myOrd.orderPaymentsReceived;
+    const payOutstand = myOrd.priceTotal - myOrd.orderPaymentsReceived;
+
     return (
       <>
         <Row id="adminOrderPage">
@@ -145,10 +148,10 @@ function AdminOrder ()
               <Row><Col xs={5}>&nbsp;</Col><Col xs={7}>&nbsp;</Col></Row>
 
               <Row style={{ color: '#6873df', fontWeight: 400 }}>
-                <Col xs={5}>Payment Received:</Col> <Col xs={7}>${myOrd.priceTotal - myOrd.outstanding}</Col>
+                <Col xs={5}>Payments Received:</Col> <Col xs={7}>${payReceived}</Col>
               </Row>
               <Row style={{ color: '#ff8000', fontWeight: 500 }}>
-                <Col xs={5}>Outstanding:</Col>       <Col xs={7}>${myOrd.outstanding}</Col>
+                <Col xs={5}>Outstanding:</Col>       <Col xs={7}>${payOutstand}</Col>
               </Row>
             </div>
 
