@@ -37,7 +37,7 @@ const ShopLayout = () =>
   const guest = useSelector(state => state.login.guest);
   const guestID = !nullOrUndefined(guest) ? guest.id : null;
 
-  const loginValue = useSelector(state => state.login.value);
+  const loginValue = useSelector(state => state.login.user);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 
   // If we are on My Orders page and there are no orders, or Cart page

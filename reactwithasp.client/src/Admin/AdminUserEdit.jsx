@@ -28,7 +28,7 @@ function AdminUserEdit()
 
   const userAccount = useSelector(state => state.adminEditUser.user);
   
-  const loginValue = useSelector(state => state.login.value);
+  const loginValue = useSelector(state => state.login.user);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 
   const navigate = useNavigate();

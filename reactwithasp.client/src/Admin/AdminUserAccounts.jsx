@@ -22,7 +22,7 @@ const AdminUserAccounts = () =>
   const [error, setError] = useState(null);
 
   const userAccounts = useSelector(state => state.adminUserAccounts.users);
-  const loginValue = useSelector(state => state.login.value);
+  const loginValue = useSelector(state => state.login.user);
 
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
 

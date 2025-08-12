@@ -12,7 +12,7 @@ const AdminLink = () =>
 
   const location = useLocation();
   const withinAdmin = location.pathname.indexOf("/admin") !== -1;
-  const login = useSelector(state => state.login.value);
+  const login = useSelector(state => state.login.user);
   const isLoggedIn = (login !== null);
 
   const myOrders = useSelector(state => state.myOrders.value);

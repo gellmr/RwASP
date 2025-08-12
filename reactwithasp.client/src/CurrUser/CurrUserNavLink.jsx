@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 
 function CurrUserNavLink()
 {
-  const login = useSelector(state => state.login.value);
+  const login = useSelector(state => state.login.user);
   const isLoggedIn = (login !== null);
 
   const loginOutBtn = function () {

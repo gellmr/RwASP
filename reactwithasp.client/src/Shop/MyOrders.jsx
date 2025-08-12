@@ -24,7 +24,7 @@ const MyOrders = () =>
   const guestID = !nullOrUndefined(guest) ? guest.id : null;
   full_name = !nullOrUndefined(guest) ? guest.fullname : null;
 
-  const loginValue = useSelector(state => state.login.value);
+  const loginValue = useSelector(state => state.login.user);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
   full_name = !nullOrUndefined(loginValue) ? loginValue.fullname : full_name;
   

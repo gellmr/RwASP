@@ -30,7 +30,7 @@ function Checkout()
   const cart = useSelector(state => state.cart.cartLines);
   const cartPayload = JSON.parse(JSON.stringify(cart));
 
-  const loginValue = useSelector(state => state.login.value);
+  const loginValue = useSelector(state => state.login.user);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
   _firstname = (loginValue === null) ? _firstname : loginValue.firstname;
   _lastname  = (loginValue === null) ? _lastname  : loginValue.lastname;
