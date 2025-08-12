@@ -7,6 +7,8 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/dist/assets/**</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\features\inStock\" />
