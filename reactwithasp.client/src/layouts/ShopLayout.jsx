@@ -74,10 +74,8 @@ const ShopLayout = () =>
 
   // Fetch generated guest id from server, on page load.
   useEffect(() => {
-    if (nullOrUndefined(myUserId) && nullOrUndefined(guest)) {
-      fetchGuest();
-    }
-  }, [loginValue]);
+    fetchGuest();
+  }, [loginValue, ordQty]);
 
   useEffect(() => {
     if (!nullOrUndefined(myUserId) || !nullOrUndefined(guestID)) {
