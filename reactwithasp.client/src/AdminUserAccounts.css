@@ -56,10 +56,10 @@
   /*color:red;*/
   background-color: #ffffffeb;
 }
-.adminUserAccRow.currUserRow{
-  background-color:#fdff7ad9;
-  border: 1px solid #d3d3ae42;
-}
+  .adminUserAccRow.currUserRow {
+    background-color: #84c7fff7;
+    border: 1px solid #6fa9d973;
+  }
 .adminUserAccRow.currUserRow .adminUserAccDetailsBox .adminUserAccCell:first-child {
   font-weight: 500;
   text-wrap-mode: nowrap;
