@@ -163,14 +163,18 @@ function AdminOrder ()
                     <Col xs={5}>User Name:</Col>         <Col xs={7}>{myOrd.userOrGuestName}</Col>
                   </Row>
                   <Row>
-                    <Col xs={5}>email:</Col>             <Col xs={7}>{myOrd.userOrGuestEmail}</Col>
+                    <Col xs={5}>Email:</Col>             <Col xs={7}>{myOrd.userOrGuestEmail}</Col>
                   </Row>
-                  <Row>
-                    <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color: '#94a7ba' }}>{myOrd.userID}</Col>
-                  </Row>
-                  <Row>
-                    <Col xs={5}>Guest ID:</Col>          <Col xs={7} style={{ color: '#94a7ba' }}>{myOrd.guestID}</Col>
-                  </Row>
+                  {!nullOrUndefined(myOrd.userID) && 
+                    <Row>
+                      <Col xs={5}>User ID:</Col>           <Col xs={7} style={{ color: '#94a7ba' }}>{myOrd.userID}</Col>
+                    </Row>
+                  }
+                  {!nullOrUndefined(myOrd.guestID) &&
+                    <Row>
+                      <Col xs={5}>Guest ID:</Col>          <Col xs={7} style={{ color: '#94a7ba' }}>{myOrd.guestID}</Col>
+                    </Row>
+                  }
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
