@@ -143,46 +143,52 @@ function AdminUserEdit()
     return (
       <Row key={user.id} className={isCurrentUser ? "adminUserEditRow currUserRow" : 'adminUserEditRow'}>
 
-        {/*large*/}
-        <Col xs={4} className="adminUserEditCell d-none d-sm-block adminUserEditImage adminUserEditLarge">
-          <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserEditCurrPhoto" referrerPolicy="no-referrer" />
+        <Col xs={12}>
+          <Row>
+
+            {/*large*/}
+            <Col xs={4} className="adminUserEditCell d-none d-sm-flex adminUserEditImage adminUserEditLarge">
+              <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserEditCurrPhoto" referrerPolicy="no-referrer" />
+            </Col>
+
+            <Col xs={12} sm={8}>
+              <Row className="adminUserEditDetailsBox">
+                <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col>
+                <Col xs={9} className="adminUserEditCell">
+                  <Form.Control type="name" value={user.fullName} onChange={handleFullnameChange} />
+                </Col>
+
+                <Col className="adminUserEditCell" xs={3}>UserName</Col>
+                <Col xs={9} className="adminUserEditCell">
+                  <Form.Control type="id" value={user.userName} readOnly disabled="disabled" />
+                </Col>
+
+                {userIdRow(user.id)}
+
+                {guestIdRow(user.guestID)}
+
+                {phoneRow(user)}
+
+                <Col className="adminUserEditCell" xs={3}>Email</Col>
+                <Col xs={9} className="adminUserEditCell">
+                  <Form.Control type="email" value={user.email} onChange={handleEmailChange} />
+                </Col>
+              </Row>
+            </Col>
+
+          </Row>
         </Col>
 
-        <Col xs={12} sm={8}>
-          <Row className="adminUserEditDetailsBox">
-            <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col>
-            <Col xs={9} className="adminUserEditCell">
-              <Form.Control type="name" value={user.fullName} onChange={handleFullnameChange} />
-            </Col>
+        <Col xs={12} className="adminUserEditCell" style={{ textAlign: 'right' }}>
+          <NavLink to={"/admin/" + usertype + "/" + idval + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5 }}>
+            View Orders
+          </NavLink>
 
-            <Col className="adminUserEditCell" xs={3}>UserName</Col>
-            <Col xs={9} className="adminUserEditCell">
-              <Form.Control type="id" value={user.userName} readOnly disabled="disabled" />
-            </Col>
-
-            {userIdRow(user.id)}
-
-            {guestIdRow(user.guestID)}
-
-            {phoneRow(user)}
-
-            <Col className="adminUserEditCell" xs={3}>Email</Col>
-            <Col xs={9} className="adminUserEditCell">
-              <Form.Control type="email" value={user.email} onChange={handleEmailChange} />
-            </Col>
-
-            <Col xs={12} className="adminUserEditCell" style={{ textAlign: 'right' }}>
-              <NavLink to={"/admin/" + usertype + "/" + idval + "/orders"} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5 }}>
-                View Orders
-              </NavLink>
-
-              <OverlayTrigger placement="bottom" delay={{ show: 250, hide: 400 }} overlay={comingSoonTooltip}>
-                <Link to={toPayments} className="btn btn-light temp-btn-disabled" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5, marginLeft: 6 }}>
-                View Payments
-                </Link>
-              </OverlayTrigger>
-            </Col>
-          </Row>
+          <OverlayTrigger placement="bottom" delay={{ show: 250, hide: 400 }} overlay={comingSoonTooltip}>
+            <Link to={toPayments} className="btn btn-light temp-btn-disabled" style={{ textWrapMode: "nowrap", textDecoration: 'none', marginBottom: 5, marginLeft: 6 }}>
+              View Payments
+            </Link>
+          </OverlayTrigger>
         </Col>
 
         {/*small*/}

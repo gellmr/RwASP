@@ -79,7 +79,7 @@ const AdminUserAccounts = () =>
       <Row key={idval} className={isCurrentUser ? "adminUserAccRow currUserRow" : 'adminUserAccRow'}>
 
         {/*large*/}
-        <Col xs={4} className="adminUserAccCell d-none d-sm-block adminUserAccImage adminUserAccLarge">
+        <Col xs={4} className="adminUserAccCell d-none d-sm-flex adminUserAccImage adminUserAccLarge">
           <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserAccCurrPhoto" referrerPolicy="no-referrer" data-foruser={idval} data-usertype={usertype} />
         </Col>
 

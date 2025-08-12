@@ -92,7 +92,13 @@
 
 .adminUserEditLarge {
   /*border: 2px dashed red;*/
-  padding-top: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+}
+.adminUserEditLarge img{
+  margin-bottom:20px;
 }
 
 .adminUserEditSmall {
