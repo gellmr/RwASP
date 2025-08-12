@@ -22,10 +22,10 @@ export const loginSlice = createSlice({
   reducers: {
     setLogin: (state, action) => {
       if (action.payload == null) {
-        state.value = null; // Log out
+        state.user = null; // Log out
       } else {
         // Receive login information from server.
-        state.value = action.payload;
+        state.user = action.payload;
         if (!nullOrUndefined(action.payload.appUserId)) {
           state.guest = null; // We are logged in. Clear the guest id.
         }
@@ -34,7 +34,7 @@ export const loginSlice = createSlice({
     setGuest: (state, action) => {
       // The application needs to log out before requesting a new guest id.
       // If we are NOT logged in...
-      if (state.value == null) {
+      if (state.user == null) {
         state.guest = action.payload; // Receive guest id and fullname from server.
       }
     }
