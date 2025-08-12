@@ -8,13 +8,13 @@ export const loginSlice = createSlice({
     // a guest id yet, both variables below will be null.
 
     // The type of login, or null if we are NOT logged in.
-    // value: {
+    // user: {
     //   loginResult: 'Success',
     //   loginType: 'User',
     //   appUserId: 'e35f7679-21dc-4f8e-8bea-2e3d41d72393',
     //   fullname: 'Diana Walters'
     // }
-    value: null,
+    user: null,
 
     // The guest {id, fullname, firstname, lastname} ...or null if we ARE logged in.
     guest: null,
