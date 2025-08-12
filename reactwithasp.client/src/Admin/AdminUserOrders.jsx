@@ -68,10 +68,10 @@ function AdminUserOrders() {
           <Col xs={4}>Items</Col>             <Col xs={8}>{ord.itemString}</Col>
         </Row>
         <Row className="OrderDetail">
-          <Col xs={4}>Quantity Total</Col>    <Col xs={8}>{ord.quantityTotal}</Col>
+          <Col xs={4}>Quantity Total</Col>    <Col xs={8}>{ord.quantityTotal} <span style={{ color: '#919191' }}>Line items</span></Col>
         </Row>
         <Row className="OrderDetail">
-          <Col xs={4}>Price Total</Col>       <Col xs={8}>{ord.priceTotal}</Col>
+          <Col xs={4}>Price Total</Col>       <Col xs={8}>${ord.priceTotal}</Col>
         </Row>
         <Row className="OrderDetail">
           <Col xs={12} style={{textAlign:'right'} }>
