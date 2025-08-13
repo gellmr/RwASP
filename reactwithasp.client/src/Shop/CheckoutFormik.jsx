@@ -127,10 +127,10 @@ const CheckoutFormik = () =>
       {formikTextInput('shipLine2', "Line 2")}
       {formikTextInput('shipLine3', "Line 3")}
 
-      {formikTextInput('shipCity',   "City")}
-      {formikTextInput('shipState',  "State")}
-      {formikTextInput('shipCoutry', "Country")}
-      {formikTextInput('shipZip',    "Zip")}
+      {formikTextInput('shipCity',    "City")}
+      {formikTextInput('shipState',   "State")}
+      {formikTextInput('shipCountry', "Country")}
+      {formikTextInput('shipZip',     "Zip")}
       
       <InputGroup className="mb-1">
         <span class="input-group-text">Email</span>
