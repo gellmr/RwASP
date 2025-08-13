@@ -61,7 +61,7 @@ const AdminLink = () =>
             Orders{myOrdersCount()}
           </NavLink>
           <CartBtn isSmall={false} />
-          <NavLink to="/admin/orders" className="mgNavLinkBtn mgAdminNavLinks" style={{ textWrapMode: "nowrap" }}>
+          <NavLink to="/admin/orders/1" className="mgNavLinkBtn mgAdminNavLinks" style={{ textWrapMode: "nowrap" }}>
             Admin
             <span className="mgAdminNavHideMD">&nbsp;Pages</span>
           </NavLink>
