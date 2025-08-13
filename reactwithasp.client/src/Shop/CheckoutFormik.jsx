@@ -11,6 +11,10 @@ const validationSchema = Yup.object({
   ,shipLine1: Yup.string().min( 2, 'Address Line 1 must be at least 2 characters long.').required('Address Line 1 is required.')
   ,shipLine2: Yup.string().min( 2, 'Address Line 2 must be at least 2 characters long.')
   ,shipLine3: Yup.string().min( 2, 'Address Line 3 must be at least 2 characters long.')
+  ,shipCity:    Yup.string().min(2, 'City must be at least 2 characters long.').required(    'City is required.')
+  ,shipState:   Yup.string().min(2, 'State must be at least 2 characters long.').required(   'State is required.')
+  ,shipCountry: Yup.string().min(2, 'Country must be at least 2 characters long.').required( 'Country is required.')
+  ,shipZip:     Yup.string().min(4, 'Zip must be at least 4 characters long.').required(     'Zip is required.')
   ,email: Yup.string().email( 'Invalid email format.').required('Email is required.')
 });
 
@@ -22,6 +26,10 @@ const CheckoutFormik = () =>
     shipLine1: '',
     shipLine2: '',
     shipLine3: '',
+    shipCity: '',
+    shipState: '',
+    shipCountry: '',
+    shipZip: '',
     email: ''
   };
 
@@ -31,6 +39,10 @@ const CheckoutFormik = () =>
     formik.setFieldValue('shipLine1', '123 River Gum Way');
     formik.setFieldValue('shipLine2', 'Unit 10/150, Third Floor');
     formik.setFieldValue('shipLine3', 'The Tall Apartment Building (Inc)');
+    formik.setFieldValue('shipCity',    'SpringField');
+    formik.setFieldValue('shipState',   'WA');
+    formik.setFieldValue('shipCountry', 'Australia');
+    formik.setFieldValue('shipZip',     '6525');
     formik.setFieldValue('email', 'test@example.com');
   }
 
@@ -115,6 +127,11 @@ const CheckoutFormik = () =>
       {formikTextInput('shipLine2', "Line 2")}
       {formikTextInput('shipLine3', "Line 3")}
 
+      {formikTextInput('shipCity',   "City")}
+      {formikTextInput('shipState',  "State")}
+      {formikTextInput('shipCoutry', "Country")}
+      {formikTextInput('shipZip',    "Zip")}
+      
       <InputGroup className="mb-1">
         <span class="input-group-text">Email</span>
         <input class="form-control" id="email" name="email" type="text" onChange={formik.handleChange} value={formik.values["email"]} />
