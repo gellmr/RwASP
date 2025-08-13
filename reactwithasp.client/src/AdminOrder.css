@@ -24,6 +24,7 @@
   margin-bottom: 10px;
   background-color: #ffffffde;
   background-color: #fffffff2;
+  filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.15));
 }
 #adminLayout button.accordion-button {
   background-color: #ffffffad;
@@ -44,8 +45,9 @@
   font-size: 9px;
 }
 
-.accordion{
-  margin-bottom:10px;
+.accordion {
+  margin-bottom: 10px;
+  filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.15));
 }
 
 .collapseDeet {
