@@ -1,9 +1,14 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { useFormik, Formik, Form, Field, ErrorMessage } from 'formik';
+import { useFormik } from 'formik';
 import { nullOrUndefined } from '@/MgUtility.js';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import InputGroup from 'react-bootstrap/InputGroup';
+
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from "react-router";
+import { clearCart } from '@/features/cart/cartSlice.jsx'
+import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
 
 const validationSchema = Yup.object({
   firstName:  Yup.string().min( 2, 'First Name must be at least 2 characters long.').required('First Name is required.')
@@ -18,11 +23,31 @@ const validationSchema = Yup.object({
   ,shipEmail:   Yup.string().email( 'Invalid email format.').required('Email is required.')
 });
 
-const CheckoutFormik = (cart) =>
+const CheckoutFormik = () =>
 {
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  const cart = useSelector(state => state.cart.cartLines);
+
+  let _firstname;
+  let _lastname;
+
+  const guest = useSelector(state => state.login.guest);
+  const guestID = !nullOrUndefined(guest) ? guest.id : null;
+
+  _firstname = (guest === null) ? '' : guest.firstname;
+  _lastname = (guest === null) ? '' : guest.lastname;
+
+  const loginValue = useSelector(state => state.login.user);
+  const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
+
+  _firstname = (loginValue === null) ? _firstname : loginValue.firstname;
+  _lastname = (loginValue === null) ? _lastname : loginValue.lastname;
+
   const initVals = {
-    firstName: '',
-    lastName: '',
+    firstName: _firstname,
+    lastName: _lastname,
     shipLine1: '',
     shipLine2: '',
     shipLine3: '',
@@ -89,12 +114,14 @@ const CheckoutFormik = (cart) =>
     {
       // This function will only be called if validation passes
       const url = window.location.origin + "/api/checkout/submit";
-      const jsonData = { ...structuredClone(cart), ...values };
+      const jsonData = { cart: structuredClone(cart), ...values };
       const options = { headers: { 'Content-Type': 'application/json' } };
       axiosInstance.post(url, jsonData, options).then((response) => {
-        //dispatch();
-        //navigate('');
-        console.log('Submitted');
+        console.log('Checkout Success:', response.data);
+        dispatch(clearCart());
+        // A new order will have appeared under My Orders. Fetch from server to update the UI.
+        dispatch(fetchMyOrders({ uid: myUserId, gid: guestID })); // Invoke thunk
+        navigate("/checkoutsuccess");
       })
       .catch((error) => {
         console.log('Error ' + error);
@@ -106,14 +133,15 @@ const CheckoutFormik = (cart) =>
     },
   });
 
-  const formikTextInput = function (fieldName, displayText, fieldType="text") {
+  const formikTextInput = function (fieldName, displayText, fieldType = "text") {
+    const val = nullOrUndefined(formik.values[fieldName]) ? '' : formik.values[fieldName];
     return (
       <>
         <InputGroup className="mb-1">
-          <span class="input-group-text">{displayText}</span>
-          <input class="form-control" id={fieldName} name={fieldName} type={fieldType} onChange={formik.handleChange} value={formik.values[fieldName]} />
+          <span className="input-group-text">{displayText}</span>
+          <input className="form-control" id={fieldName} name={fieldName} type={fieldType} onChange={formik.handleChange} value={val} />
         </InputGroup>
-        <div class="mb-1 text-center">
+        <div className="mb-1 text-center">
           {formikErr(formik, fieldName)}
         </div>
       </>
@@ -135,11 +163,11 @@ const CheckoutFormik = (cart) =>
       {formikTextInput('shipZip',     "Zip")}
       {formikTextInput('shipEmail', "Email", "email")}
 
-      <div role="group" class="checkoutSubmitBtnGroup btn-group">
-        <button type="button" class="btn btn btn-light" onClick={autoFill}>
-          <i class="bi bi-list-check"></i>&nbsp;Autofill
+      <div role="group" className="checkoutSubmitBtnGroup btn-group">
+        <button type="button" className="btn btn btn-light" onClick={autoFill}>
+          <i className="bi bi-list-check"></i>&nbsp;Autofill
         </button>
-        <button type="submit" class="btn btn-primary btn btn-success">Complete Order</button>
+        <button type="submit" className="btn btn-primary btn btn-success">Complete Order</button>
       </div>
 
     </form>
