@@ -131,7 +131,7 @@ function AdminUserOrders() {
       <Row>
         <Col sm={12} className="adminCont adminParallax adminParallaxUserOrders" style={{paddingTop:0, paddingBottom:0}}>
 
-          <Row className={whiteBackStyle}>
+          <Row className={whiteBackStyle} style={{marginBottom:80}}>
             <Col xs={12}>
               <AdminTitleBar titleText={userDisplayName} construction={false} />
             </Col>
@@ -140,6 +140,7 @@ function AdminUserOrders() {
             </Col>
           </Row>
 
+          <div className="mgFooter">Built with React / Redux and .NET Core 8.0</div>
         </Col>
       </Row>
     </>

@@ -137,7 +137,7 @@ const AdminUserAccounts = () =>
       <Row>
         <Col sm={12} className="adminCont adminParallax adminUserAccountsParallax">
 
-          <Row>
+          <Row style={{marginBottom:100}}>
             <Col xs={12}>
               <AdminTitleBar titleText="Customer Accounts" construction={false} />
             </Col>
@@ -145,6 +145,8 @@ const AdminUserAccounts = () =>
               {markup}
             </Col>
           </Row>
+
+          <div className="mgFooter">Built with React / Redux and .NET Core 8.0</div>
         </Col>
       </Row>
     </>

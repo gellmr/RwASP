@@ -39,8 +39,8 @@ const AdminLayout = () =>
 
         <Outlet />
 
-        <hr />
-        <Footer />
+        {/*<hr />*/}
+        {/*<Footer />*/}
       </Container>
     </>
   );

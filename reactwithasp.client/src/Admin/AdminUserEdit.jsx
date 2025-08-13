@@ -227,14 +227,16 @@ function AdminUserEdit()
       <Row>
         <Col sm={12} className="adminCont adminParallax adminParallaxUserEdit">
 
-          <Row>
+          <Row className="innerRow">
             <Col xs={12}>
               <AdminTitleBar titleText="Edit Account" construction={false} />
             </Col>
-            <Col xs={12}>
+            <Col xs={12} className="mainSection">
               {markup}
             </Col>
           </Row>
+
+          <div className="mgFooter">Built with React / Redux and .NET Core 8.0</div>
         </Col>
       </Row>
     </>

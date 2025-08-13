@@ -4,16 +4,29 @@
 /* ======================================================== */
 
 .adminParallaxUserEdit {
-  background-image: url('/bg/warehouse-image1.jpg');
+  background-image: url('/bg/warehouse-flat1.jpg');
+}
+
+.adminParallaxUserEdit .innerRow {
+  min-height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.adminParallaxUserEdit .mainSection {
+  flex-grow: 2;
+  padding-top: 75px;
 }
 
 #adminLayout .adminParallaxUserEdit h4 {
   color: #272727;
   font-size: 30px;
   width: 100%;
+  margin-top: 10px;
   padding: 10px;
   padding-top: 10px;
-  background: linear-gradient(to right, transparent, #ffffff38, transparent);
+  background: linear-gradient(to right, transparent, #fffffff0, transparent);
 }
 
 .adminUserEditWrap{
