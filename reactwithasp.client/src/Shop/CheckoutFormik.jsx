@@ -6,14 +6,10 @@ import { axiosInstance } from '@/axiosDefault.jsx';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 const validationSchema = Yup.object({
-  firstName: Yup.string()
-    .min(2,   'First Name must be at least 2 characters long.')
-    .required('First Name is required.')
-  ,lastName: Yup.string()
-    .min(2, 'Last Name must be at least 2 characters long.')
-  ,email: Yup.string()
-    .email('Invalid email format.')
-    .required('Email is required.')
+  firstName:  Yup.string().min( 2, 'First Name must be at least 2 characters long.').required('First Name is required.')
+  ,lastName:  Yup.string().min( 2, 'Last Name must be at least 2 characters long.')
+  ,shipLine1: Yup.string().min( 2, 'Address Line 1 must be at least 2 characters long.').required('Address Line 1 is required.')
+  ,email: Yup.string().email( 'Invalid email format.').required('Email is required.')
 });
 
 const CheckoutFormik = () =>
@@ -21,12 +17,14 @@ const CheckoutFormik = () =>
   const initVals = {
     firstName: '',
     lastName: '',
+    shipLine1: '',
     email: ''
   };
 
   const autoFill = function () {
     formik.setFieldValue('firstName', 'John');
-    formik.setFieldValue('lastName',  'Doe');
+    formik.setFieldValue('lastName', 'Doe');
+    formik.setFieldValue('shipLine1', '123 River Gum Way');
     formik.setFieldValue('email', 'test@example.com');
   }
 
@@ -104,9 +102,10 @@ const CheckoutFormik = () =>
 
   return (
     <form onSubmit={validateBeforeSubmit}>
-
       {formikTextInput('firstName', "First Name")}
       {formikTextInput('lastName', "Last Name")}
+
+      {formikTextInput('shipLine1', "Line 1")}
       
       <div>
         <label htmlFor="email">Email</label>
