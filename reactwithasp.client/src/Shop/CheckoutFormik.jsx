@@ -46,8 +46,8 @@ const CheckoutFormik = () =>
   _lastname = (loginValue === null) ? _lastname : loginValue.lastname;
 
   const initVals = {
-    firstName: _firstname,
-    lastName: _lastname,
+    firstName: nullOrUndefined(_firstname) ? '' : _firstname,
+    lastName:  nullOrUndefined(_lastname)  ? '' : _lastname,
     shipLine1: '',
     shipLine2: '',
     shipLine3: '',
