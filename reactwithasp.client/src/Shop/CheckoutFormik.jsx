@@ -15,7 +15,7 @@ const validationSchema = Yup.object({
   ,shipState:   Yup.string().min(2, 'State must be at least 2 characters long.').required(   'State is required.')
   ,shipCountry: Yup.string().min(2, 'Country must be at least 2 characters long.').required( 'Country is required.')
   ,shipZip:     Yup.string().min(4, 'Zip must be at least 4 characters long.').required(     'Zip is required.')
-  ,email: Yup.string().email( 'Invalid email format.').required('Email is required.')
+  ,shipEmail:   Yup.string().email( 'Invalid email format.').required('Email is required.')
 });
 
 const CheckoutFormik = () =>
@@ -30,7 +30,7 @@ const CheckoutFormik = () =>
     shipState: '',
     shipCountry: '',
     shipZip: '',
-    email: ''
+    shipEmail: ''
   };
 
   const autoFill = function () {
@@ -43,7 +43,7 @@ const CheckoutFormik = () =>
     formik.setFieldValue('shipState',   'WA');
     formik.setFieldValue('shipCountry', 'Australia');
     formik.setFieldValue('shipZip',     '6525');
-    formik.setFieldValue('email', 'test@example.com');
+    formik.setFieldValue('shipEmail', 'test@example.com');
   }
 
   const markAllFieldsAsTouched = (values, setTouched) => {
@@ -104,12 +104,12 @@ const CheckoutFormik = () =>
     },
   });
 
-  const formikTextInput = function (fieldName, displayText) {
+  const formikTextInput = function (fieldName, displayText, fieldType="text") {
     return (
       <>
         <InputGroup className="mb-1">
           <span class="input-group-text">{displayText}</span>
-          <input class="form-control" id={fieldName} name={fieldName} type="text" onChange={formik.handleChange} value={formik.values[fieldName]} />
+          <input class="form-control" id={fieldName} name={fieldName} type={fieldType} onChange={formik.handleChange} value={formik.values[fieldName]} />
         </InputGroup>
         <div class="mb-1 text-center">
           {formikErr(formik, fieldName)}
@@ -131,14 +131,7 @@ const CheckoutFormik = () =>
       {formikTextInput('shipState',   "State")}
       {formikTextInput('shipCountry', "Country")}
       {formikTextInput('shipZip',     "Zip")}
-      
-      <InputGroup className="mb-1">
-        <span class="input-group-text">Email</span>
-        <input class="form-control" id="email" name="email" type="text" onChange={formik.handleChange} value={formik.values["email"]} />
-      </InputGroup>
-      <div class="mb-1 text-center">
-        {formikErr(formik, "email")}
-      </div>
+      {formikTextInput('shipEmail', "Email", "email")}
 
       <div role="group" class="checkoutSubmitBtnGroup btn-group">
         <button type="button" class="btn btn btn-light" onClick={autoFill}>
