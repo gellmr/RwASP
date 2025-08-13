@@ -307,7 +307,7 @@
 #noShopLayout { padding-left: 18px; padding-right: 18px; }
 
 #shopLayout .shopMain {
-  min-height: 100vh;
+  /*min-height: 100vh;*/
 }
 
 #adminLayout nav{
