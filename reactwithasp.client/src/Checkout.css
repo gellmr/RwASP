@@ -7,6 +7,10 @@
   color: #d0d0d0;
 }
 
+.checkoutLines .error {
+  color: #62a76e;
+}
+
 @media (min-width: 370px) {
   /* BEGINING OF INTERMEDIATE SIZE */
 }
