@@ -259,6 +259,7 @@ function AdminOrder ()
           <AdminTitleBar titleText={"Order #" + orderid} construction={false} />
           {isLoading ? loadingMarkup() : (error ? errMarkup : markup)}
 
+          <div className="mgFooter" style={{marginTop:80}}>Built with React / Redux and .NET Core 8.0</div>
         </Col>
       </Row>
     </>
