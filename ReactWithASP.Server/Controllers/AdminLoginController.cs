@@ -74,6 +74,7 @@ namespace ReactWithASP.Server.Controllers
         fullname = appUser.FullName,
         firstname = AppUser.GetFirstName(appUser.FullName),
         lastname = AppUser.GetLastName(appUser.FullName),
+        email = appUser.Email,
       });
     }
 

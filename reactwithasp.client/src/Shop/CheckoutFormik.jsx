@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { nullOrUndefined } from '@/MgUtility.js';
+import { nullOrUndefined, isNullOrEmpty } from '@/MgUtility.js';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import InputGroup from 'react-bootstrap/InputGroup';
 
@@ -45,6 +45,8 @@ const CheckoutFormik = () =>
   _firstname = (loginValue === null) ? _firstname : loginValue.firstname;
   _lastname = (loginValue === null) ? _lastname : loginValue.lastname;
 
+  let _email = (loginValue === null) ? '' : loginValue.email;
+
   const initVals = {
     firstName: nullOrUndefined(_firstname) ? '' : _firstname,
     lastName:  nullOrUndefined(_lastname)  ? '' : _lastname,
@@ -55,12 +57,16 @@ const CheckoutFormik = () =>
     shipState: '',
     shipCountry: '',
     shipZip: '',
-    shipEmail: ''
+    shipEmail: nullOrUndefined(_email) ? '' : _email,
   };
 
   const autoFill = async function () {
-    formik.setFieldValue('firstName', 'John');
-    formik.setFieldValue('lastName', 'Doe');
+    let _firstName = isNullOrEmpty(formik.values['firstName']) ? "John" : formik.values['firstName'];
+    let _lastName = isNullOrEmpty(formik.values['lastName']) ? "Doe" : formik.values['lastName'];
+    let _email = isNullOrEmpty(formik.values['shipEmail']) ? "test@example.com" : formik.values['shipEmail'];
+
+    formik.setFieldValue('firstName', _firstName);
+    formik.setFieldValue('lastName',  _lastName);
     formik.setFieldValue('shipLine1', '123 River Gum Way');
     formik.setFieldValue('shipLine2', 'Unit 10/150, Third Floor');
     formik.setFieldValue('shipLine3', 'The Tall Apartment Building (Inc)');
@@ -68,7 +74,7 @@ const CheckoutFormik = () =>
     formik.setFieldValue('shipState',   'WA');
     formik.setFieldValue('shipCountry', 'Australia');
     formik.setFieldValue('shipZip',     '6525');
-    formik.setFieldValue('shipEmail', 'test@example.com');
+    formik.setFieldValue('shipEmail', _email);
     await formik.validateForm(); // Wait for the form values to update
     markAllFieldsAsTouched(formik.values, formik.setTouched); // Trigger this so the error messages will clear
   }
