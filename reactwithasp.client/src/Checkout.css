@@ -10,6 +10,8 @@
 .checkoutLines .error {
   color: #62a76e;
   font-size: 11px;
+  text-align:right;
+  padding-right:10px;
 }
 
 .checkoutLines {

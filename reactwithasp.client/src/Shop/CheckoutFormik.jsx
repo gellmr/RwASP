@@ -9,6 +9,8 @@ const validationSchema = Yup.object({
   firstName:  Yup.string().min( 2, 'First Name must be at least 2 characters long.').required('First Name is required.')
   ,lastName:  Yup.string().min( 2, 'Last Name must be at least 2 characters long.')
   ,shipLine1: Yup.string().min( 2, 'Address Line 1 must be at least 2 characters long.').required('Address Line 1 is required.')
+  ,shipLine2: Yup.string().min( 2, 'Address Line 2 must be at least 2 characters long.')
+  ,shipLine3: Yup.string().min( 2, 'Address Line 3 must be at least 2 characters long.')
   ,email: Yup.string().email( 'Invalid email format.').required('Email is required.')
 });
 
@@ -18,6 +20,8 @@ const CheckoutFormik = () =>
     firstName: '',
     lastName: '',
     shipLine1: '',
+    shipLine2: '',
+    shipLine3: '',
     email: ''
   };
 
@@ -25,6 +29,8 @@ const CheckoutFormik = () =>
     formik.setFieldValue('firstName', 'John');
     formik.setFieldValue('lastName', 'Doe');
     formik.setFieldValue('shipLine1', '123 River Gum Way');
+    formik.setFieldValue('shipLine2', 'Unit 10/150, Third Floor');
+    formik.setFieldValue('shipLine3', 'The Tall Apartment Building (Inc)');
     formik.setFieldValue('email', 'test@example.com');
   }
 
@@ -106,6 +112,8 @@ const CheckoutFormik = () =>
       {formikTextInput('lastName', "Last Name")}
 
       {formikTextInput('shipLine1', "Line 1")}
+      {formikTextInput('shipLine2', "Line 2")}
+      {formikTextInput('shipLine3', "Line 3")}
 
       <InputGroup className="mb-1">
         <span class="input-group-text">Email</span>
