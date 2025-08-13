@@ -94,6 +94,9 @@ const AdminProducts = () =>
               {markup}
             </Col>
           </Row>
+
+
+          <div className="mgFooter" style={{ marginTop: 150 }}>Built with React / Redux and .NET Core 8.0</div>
         </Col>
       </Row>
     </>
