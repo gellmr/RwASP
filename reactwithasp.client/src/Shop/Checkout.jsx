@@ -29,7 +29,6 @@ function Checkout()
   _lastname  = (guest === null) ? '' : guest.lastname;
 
   const cart = useSelector(state => state.cart.cartLines);
-  const cartPayload = JSON.parse(JSON.stringify(cart));
 
   const loginValue = useSelector(state => state.login.user);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
@@ -45,7 +44,7 @@ function Checkout()
           {/* <CartBar /> */}
           <Col className="checkoutLines">
             <div className="shipHeading">Please provide your details below, and we'll ship your goods right away.</div>
-            <CheckoutFormik />
+            <CheckoutFormik cart={cart} />
           </Col>
           {/* <CartBar /> */}
         </Row>

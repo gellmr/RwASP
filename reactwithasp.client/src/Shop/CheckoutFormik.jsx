@@ -18,7 +18,7 @@ const validationSchema = Yup.object({
   ,shipEmail:   Yup.string().email( 'Invalid email format.').required('Email is required.')
 });
 
-const CheckoutFormik = () =>
+const CheckoutFormik = (cart) =>
 {
   const initVals = {
     firstName: '',
@@ -88,8 +88,8 @@ const CheckoutFormik = () =>
     onSubmit: values =>
     {
       // This function will only be called if validation passes
-      const jsonData = JSON.stringify(values, null, 2);
       const url = window.location.origin + "/api/checkout/submit";
+      const jsonData = { ...structuredClone(cart), ...values };
       const options = { headers: { 'Content-Type': 'application/json' } };
       axiosInstance.post(url, jsonData, options).then((response) => {
         //dispatch();
