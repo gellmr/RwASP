@@ -135,12 +135,13 @@ function AdminUserOrders() {
             <Col xs={12}>
               <AdminTitleBar titleText={userDisplayName} construction={false} />
             </Col>
-            <Col xs={12}>
+            <Col xs={12} className="mainSection">
               {markup}
             </Col>
-          </Row>
 
-          <div className="mgFooter" style={{marginTop:110}}>Built with React / Redux and .NET Core 8.0</div>
+            <div className="mgFooter" style={{ marginTop: 110 }}>Built with React / Redux and .NET Core 8.0</div>
+          </Row>
+          
         </Col>
       </Row>
     </>
