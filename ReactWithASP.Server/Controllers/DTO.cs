@@ -52,7 +52,7 @@ namespace ReactWithASP.Server.DTO
     [RegularExpression(OkInputs.CheckoutName50, ErrorMessage = OkInputs.CheckoutName50Err)]
     public string? FirstName { get; set; }
 
-    [Required(ErrorMessage = "Please enter your Last Name")]
+    //[Required(ErrorMessage = "Please enter your Last Name")]
     [RegularExpression(OkInputs.CheckoutName50, ErrorMessage = OkInputs.CheckoutName50Err)]
     public string? LastName { get; set; }
 
