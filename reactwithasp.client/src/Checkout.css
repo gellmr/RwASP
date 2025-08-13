@@ -3,20 +3,37 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
+.checkoutLines .shipHeading {
+  width: 100%;
+  padding-left: 5px;
+  margin-top: 25px;
+  font-size: 14px;
+  padding-bottom: 13px;
+  text-align: center;
+}
+
 .checkoutLines input::placeholder {
   color: #d0d0d0;
 }
 
 .checkoutLines .error {
-  color: #62a76e;
+  color: #2e5334;
   font-size: 11px;
-  text-align:right;
-  padding-right:10px;
+  text-align: right;
+  padding-right: 10px;
+  position: relative;
+  top: -25px;
 }
 
 .checkoutLines {
-  background-color: #ffffffab;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 10px;
+  background-image: linear-gradient(to bottom, #ffffffcc, transparent);
+}
+
+.checkoutSubmitBtnGroup .btn {
+  font-size: 14px;
 }
 
 @media (min-width: 370px) {
@@ -37,6 +54,9 @@
 /* Small devices (landscape phones, 576px and up) */
 
 @media (min-width: 576px) {
+  .checkoutSubmitBtnGroup .btn {
+    font-size: 18px;
+  }
 }
 
 /* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */

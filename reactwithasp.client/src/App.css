@@ -548,20 +548,6 @@ th, td {
 }
 
 
-/* CHECKOUT STYLES */
-.checkoutLines {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-.checkoutLines .shipHeading {
-  width: 100%;
-  text-align: left;
-  padding-left: 5px;
-  margin-top: 25px;
-}
-.checkoutSubmitBtnGroup .btn {
-  font-size:14px;
-}
 
 /* ADMIN LOGIN PAGE */
 .mg-admin-login-form {
@@ -612,9 +598,6 @@ th, td {
   .cartQtyXs {
     /*color: orange;*/
     display: none !important;
-  }
-  .checkoutSubmitBtnGroup .btn {
-    font-size: 18px;
   }
   .mgNavLinkBtn {
     font-size: 12px;
