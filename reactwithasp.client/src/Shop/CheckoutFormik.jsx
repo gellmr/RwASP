@@ -88,23 +88,26 @@ const CheckoutFormik = () =>
     },
   });
 
+  const formikTextInput = function (fieldName, displayText) {
+    return (
+      <>
+        <InputGroup className="mb-1">
+          <span class="input-group-text">{displayText}</span>
+          <input class="form-control" id={fieldName} name={fieldName} type="text" onChange={formik.handleChange} value={formik.values[fieldName]} />
+        </InputGroup>
+        <div class="mb-1 text-center">
+          {formikErr(formik, fieldName)}
+        </div>
+      </>
+    );
+  }
+
   return (
     <form onSubmit={validateBeforeSubmit}>
 
-      <InputGroup className="mb-1">
-        <span class="input-group-text">First Name</span>
-        <input class="form-control" id="firstName" name="firstName" type="text" onChange={formik.handleChange} value={formik.values.firstName} />
-      </InputGroup>
-      <div class="mb-1 text-center">
-        {formikErr(formik, "firstName")}
-      </div>
-
-      <InputGroup className="mb-3">
-        <span class="input-group-text">Last Name</span>
-        <input class="form-control" id="lastName" name="lastName" type="text" onChange={formik.handleChange} value={formik.values.lastName} />
-      </InputGroup>
-      <div>{formikErr(formik, "lastName")}</div>
-
+      {formikTextInput('firstName', "First Name")}
+      {formikTextInput('lastName', "Last Name")}
+      
       <div>
         <label htmlFor="email">Email</label>
         <input id="email" name="email" type="email" onChange={formik.handleChange} value={formik.values.email} />
