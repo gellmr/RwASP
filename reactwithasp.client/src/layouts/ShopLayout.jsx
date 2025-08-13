@@ -133,7 +133,7 @@ const ShopLayout = () =>
           </MgNavBar>
         </Row>
 
-        <Row >
+        <Row className="shopMain">
           <CategoriesMenu />
           <Col xs={0}  md={1}        className="d-none d-md-block">
             {/* LSPACE */}
