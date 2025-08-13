@@ -4,7 +4,7 @@
   padding-bottom: 12px;
   overflow-x: clip;
   background-repeat: no-repeat;
-  background-image: url("/bg/warehouse-image1.jpg");
+  /*background-image: url("/bg/warehouse-image1.jpg");*/
   background-size: cover;
   background-position: center;
   max-height: 1500px;
