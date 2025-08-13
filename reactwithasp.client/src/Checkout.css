@@ -17,19 +17,20 @@
 }
 
 .checkoutLines .error {
-  color: #2e5334;
+  color: #095123;
   font-size: 11px;
   text-align: right;
   padding-right: 10px;
   position: relative;
-  top: -25px;
+  top: -4px;
+  min-width: 174px;
 }
 
 .checkoutLines {
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 17px;
+  padding-right: 17px;
   border-radius: 10px;
-  background-image: linear-gradient(to bottom, #ffffffcc, transparent);
+  background-image: linear-gradient(270deg, #ffffffbd, #ffffff00);
 }
 
 .checkoutSubmitBtnGroup .btn {

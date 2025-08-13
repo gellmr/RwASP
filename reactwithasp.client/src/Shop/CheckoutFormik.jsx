@@ -33,7 +33,7 @@ const CheckoutFormik = () =>
     shipEmail: ''
   };
 
-  const autoFill = function () {
+  const autoFill = async function () {
     formik.setFieldValue('firstName', 'John');
     formik.setFieldValue('lastName', 'Doe');
     formik.setFieldValue('shipLine1', '123 River Gum Way');
@@ -44,6 +44,8 @@ const CheckoutFormik = () =>
     formik.setFieldValue('shipCountry', 'Australia');
     formik.setFieldValue('shipZip',     '6525');
     formik.setFieldValue('shipEmail', 'test@example.com');
+    await formik.validateForm(); // Wait for the form values to update
+    markAllFieldsAsTouched(formik.values, formik.setTouched); // Trigger this so the error messages will clear
   }
 
   const markAllFieldsAsTouched = (values, setTouched) => {
