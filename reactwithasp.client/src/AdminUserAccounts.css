@@ -4,16 +4,17 @@
 /* ======================================================== */
 
 .adminUserAccountsParallax {
-  background-image: url('/bg/warehouse-image1.jpg');
+  background-image: url('/bg/warehouse-flat1.jpg');
 }
 
 #adminLayout .adminUserAccountsParallax h4 {
   color: #272727;
   font-size: 30px;
   width: 100%;
+  margin-top:10px;
   padding: 10px;
   padding-top: 10px;
-  background: linear-gradient(to right, transparent, #ffffff38, transparent);
+  background: linear-gradient(to right, transparent, #ffffffab, #ffffffab, transparent);
 }
 
 .freepikattrib {
