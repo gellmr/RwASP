@@ -8,7 +8,7 @@
 }
 
 .adminParallaxUserEdit .innerRow {
-  min-height: 800px;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

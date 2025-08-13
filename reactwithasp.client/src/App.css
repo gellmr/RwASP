@@ -63,7 +63,9 @@
   /*background-color:lime!important;*/
 }
 .adminProductsAll {
-  background-color: #ffffff29;
+  background-color: #ffffff12;
+  border-radius: 10px;
+  padding-top: 10px;
 }
 .adminProductRow {
   border: 1px solid gainsboro;

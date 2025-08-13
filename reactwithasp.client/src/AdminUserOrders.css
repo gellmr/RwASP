@@ -34,8 +34,10 @@
 
 .adminParallaxUserOrders {
   background-image: url('/bg/warehouse-image1.jpg');
-  
-  min-height: 880px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .adminParallaxUserOrders .contNoOrders {
@@ -85,6 +87,7 @@ border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  flex-grow:2;
 }
 
 .mainSection{
