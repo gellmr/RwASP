@@ -164,6 +164,7 @@ function AdminOrders()
           {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
         </div>
 
+        <div className="mgFooter" style={{ marginTop: 38 }}>Built with React / Redux and .NET Core 8.0</div>
       </Col>
     </Row>
   );
