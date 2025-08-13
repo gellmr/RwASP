@@ -106,10 +106,12 @@ const CheckoutFormik = () =>
       {formikTextInput('lastName', "Last Name")}
 
       {formikTextInput('shipLine1', "Line 1")}
-      
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" name="email" type="email" onChange={formik.handleChange} value={formik.values.email} />
+
+      <InputGroup className="mb-1">
+        <span class="input-group-text">Email</span>
+        <input class="form-control" id="email" name="email" type="text" onChange={formik.handleChange} value={formik.values["email"]} />
+      </InputGroup>
+      <div class="mb-1 text-center">
         {formikErr(formik, "email")}
       </div>
 
