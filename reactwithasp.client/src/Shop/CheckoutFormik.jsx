@@ -140,8 +140,13 @@ const CheckoutFormik = () =>
         {formikErr(formik, "email")}
       </div>
 
-      <button type="button" onClick={autoFill}>Autofill</button>
-      <button type="submit">Complete Order</button>
+      <div role="group" class="checkoutSubmitBtnGroup btn-group">
+        <button type="button" class="btn btn btn-light" onClick={autoFill}>
+          <i class="bi bi-list-check"></i>&nbsp;Autofill
+        </button>
+        <button type="submit" class="btn btn-primary btn btn-success">Complete Order</button>
+      </div>
+
     </form>
   );
 };
