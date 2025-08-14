@@ -9,10 +9,14 @@ export const loginSlice = createSlice({
 
     // The type of login, or null if we are NOT logged in.
     // user: {
-    //   loginResult: 'Success',
-    //   loginType: 'User',
+    //   loginResult:    'Success',
+    //   loginType:      'User',
+    //   isGoogleSignIn:  false,
     //   appUserId: 'e35f7679-21dc-4f8e-8bea-2e3d41d72393',
-    //   fullname: 'Diana Walters'
+    //   fullname:  'Diana Walters'
+    //   firstname: 'Diana'
+    //   lastname:  'Walters'
+    //   email:     'name@email.address'
     // }
     user: null,
 

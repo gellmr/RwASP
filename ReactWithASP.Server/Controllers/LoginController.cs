@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
+using System.Security.Claims;
 
 namespace ReactWithASP.Server.Controllers
 {
@@ -8,6 +11,8 @@ namespace ReactWithASP.Server.Controllers
   {
     protected SignInManager<AppUser> _signInManager;
     protected IConfiguration _config;
+    protected bool PersistAfterBrowserClose = false; // false means the cookie is session-based
+    protected bool LockoutOnFailure = false;
 
     public LoginController(
       ICartLineRepository cartRepo,
@@ -20,6 +25,24 @@ namespace ReactWithASP.Server.Controllers
     {
       _config = config;
       _signInManager = signInManager;
+    }
+
+    // Generate a response indicating the user has successfully logged in
+    [NonAction]
+    protected IActionResult LoginSuccessResponse(AppUser? appUser, bool isGoogle=false)
+    {
+      //DeleteGuestCookie(); // Dont delete
+      return Ok(new
+      {
+        loginResult = "Success",
+        loginType = "User",
+        isGoogleSignIn = isGoogle, 
+        appUserId = appUser.Id,
+        fullname = appUser.FullName,
+        firstname = AppUser.GetFirstName(appUser.FullName),
+        lastname = AppUser.GetLastName(appUser.FullName),
+        email = appUser.Email,
+      });
     }
   }
 }

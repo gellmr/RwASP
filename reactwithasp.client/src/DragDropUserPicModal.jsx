@@ -35,7 +35,7 @@ const DragDropUserPicModal = forwardRef((props, ref) =>
   const [cloudGraphic, setCloudGraphic] = useState(defaultCloudGraphic);
   const dispatch = useDispatch();
   const loginValue = useSelector(state => state.login.user);
-  const isGoogleSignIn = (loginValue === null) ? false : (loginValue.loginType === 'Google Sign In');
+  const isGoogleSignIn = (loginValue === null) ? false : (loginValue.isGoogleSignIn == true);
 
   const googleProfileWarn = () => (
     <div>
