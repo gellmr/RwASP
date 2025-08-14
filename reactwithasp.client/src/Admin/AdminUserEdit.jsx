@@ -110,6 +110,7 @@ function AdminUserEdit()
   }
 
   const phoneRow = function (user) {
+    var phoneVal = nullOrUndefined(user.phoneNumber) ? '' : user.phoneNumber;
     if (!nullOrUndefined(user.guestID)) {
       return (
         <></>
@@ -119,7 +120,7 @@ function AdminUserEdit()
       <>
         <Col className="adminUserEditCell" xs={3}>Phone</Col>
         <Col xs={9} className="adminUserEditCell">
-          <Form.Control type="phone" value={user.phoneNumber} onChange={handlePhoneChange} />
+          <Form.Control type="phone" value={phoneVal} onChange={handlePhoneChange} />
         </Col>
       </>
     );
