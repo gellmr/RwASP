@@ -21,10 +21,10 @@ const GoogleLoginComp = () =>
     console.log("Try to get Access Token (from Google API) " + url);
     axiosInstance.post(url, tokenResponse).then((response) => {
       console.log("------------------------------");
-      console.log('Login success. Data fetched:', response.data); // response.data is already JSON
+      console.log('Login success. Data fetched:', response.data);
       dispatch(setLogin(response.data));
       console.log("Navigate to /admin/orders...");
-      navigate('/admin/orders');
+      navigate('/admin/orders/1');
     })
     .catch((err) => {
       setError(err.response.data.loginResult);

@@ -33,7 +33,7 @@ function AdminLogin()
     console.log("Submit login details... " + url);
     axiosInstance.post(url, jsonData).then((response) => {
       console.log("------------------------------");
-      console.log('Login success. Data fetched:', response.data); // response.data is already JSON
+      console.log('Login success. Data fetched:', response.data);
       dispatch(setLogin(response.data));
       console.log("Navigate to /admin/orders...");
       navigate('/admin/orders/1');
