@@ -65,7 +65,7 @@ namespace ReactWithASP.Server.Controllers
     [NonAction]
     protected IActionResult LoginSuccessResponse(AppUser? appUser)
     {
-      //DeleteGuestCookie();
+      //DeleteGuestCookie(); // Dont delete
       return Ok(new
       {
         loginResult = "Success",

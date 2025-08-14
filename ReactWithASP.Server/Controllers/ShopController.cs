@@ -23,14 +23,14 @@ namespace ReactWithASP.Server.Controllers
       _userManager = userManager;
     }
 
+    protected void DeleteGuestCookie(){
+      HttpContext.Response.Cookies.Delete(MyExtensions.GuestCookieName);
+    }
+
     protected string? GetLoggedInUserIdFromIdentityCookie()
     {
       string? uid = User.Identity.IsAuthenticated ? User.FindFirstValue(ClaimTypes.NameIdentifier) : null;
       return uid;
-    }
-
-    protected void DeleteGuestCookie(){
-      HttpContext.Response.Cookies.Delete(MyExtensions.GuestCookieName);
     }
 
     // Fetches a Guest object from the database, creating if necessary.
@@ -40,11 +40,11 @@ namespace ReactWithASP.Server.Controllers
     // The Guest ID gets saved to the cookie before we return the finalised Guest object.
     protected Guest EnsureGuestFromCookieAndDb(Guest? updateDto)
     {
-      // If we have a currently logged in AppUser then delete the Guest cookie and return immediately.
+      // If we have a currently logged in AppUser then return immediately.
       string? uid = GetLoggedInUserIdFromIdentityCookie();
       if (!string.IsNullOrEmpty(uid))
       {
-        DeleteGuestCookie();
+        //DeleteGuestCookie(); // Dont delete
         return null;
       }
 
