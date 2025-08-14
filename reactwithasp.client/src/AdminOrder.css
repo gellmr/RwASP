@@ -24,7 +24,8 @@
   margin-bottom: 10px;
   background-color: #ffffffde;
   background-color: #fffffff2;
-  filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.15));
+  /*filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.15));*/
+  filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.2));
 }
 #adminLayout button.accordion-button {
   background-color: #ffffffad;
@@ -47,7 +48,8 @@
 
 .accordion {
   margin-bottom: 10px;
-  filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.15));
+  /*filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.15));*/
+  filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.2));
 }
 
 .collapseDeet {

@@ -50,12 +50,13 @@
   margin-bottom: 12px;
   text-align: left;
   padding-left: 10px;
-  padding-bottom:6px;
-  margin:0px;
-  margin-bottom:15px;
+  padding-bottom: 6px;
+  margin: 0px;
+  margin-bottom: 15px;
   font-size: 11px;
   /*color:red;*/
   background-color: #ffffffeb;
+  filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.2));
 }
   .adminUserAccRow.currUserRow {
     background-color: #84c7fff7;

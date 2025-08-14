@@ -155,7 +155,7 @@ function AdminOrder ()
               </Row>
             </div>
 
-            <Accordion>
+            <Accordion defaultActiveKey={['0']} >
               <Accordion.Item eventKey="0">
                 <Accordion.Header>User Details</Accordion.Header>
                 <Accordion.Body className="collapseDeet">
@@ -187,7 +187,7 @@ function AdminOrder ()
               </Row>
             </div>
 
-            <Accordion>
+            <Accordion defaultActiveKey={['0']} >
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Shipping Details</Accordion.Header>
                 <Accordion.Body className="collapseDeet">
@@ -198,16 +198,16 @@ function AdminOrder ()
               </Accordion.Item>
             </Accordion>
 
-            <Accordion>
-              <Accordion.Item eventKey="0">
-                <Accordion.Header>Billing Details</Accordion.Header>
-                <Accordion.Body className="collapseDeet">
-                  <Row>
-                    <Col xs={12}>{myOrd.billingAddress}</Col>
-                  </Row>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
+            {/*<Accordion>*/}
+            {/*  <Accordion.Item eventKey="0">*/}
+            {/*    <Accordion.Header>Billing Details</Accordion.Header>*/}
+            {/*    <Accordion.Body className="collapseDeet">*/}
+            {/*      <Row>*/}
+            {/*        <Col xs={12}>{myOrd.billingAddress}</Col>*/}
+            {/*      </Row>*/}
+            {/*    </Accordion.Body>*/}
+            {/*  </Accordion.Item>*/}
+            {/*</Accordion>*/}
 
           </Col>
           <Col xs={0} sm={1} md={2} lg={3}></Col>

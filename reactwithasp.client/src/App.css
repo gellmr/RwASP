@@ -78,6 +78,7 @@
   margin: 0px;
   margin-bottom: 15px;
   background-color: #ffffffde;
+  filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.2));
 }
 .adminProductDetailsBox {
   padding-top: 8px;
