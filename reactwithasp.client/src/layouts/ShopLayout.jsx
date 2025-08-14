@@ -100,6 +100,7 @@ const ShopLayout = () =>
         console.log(error);
       })
       .finally(() => {
+        console.log("fetchGuest completed after retries.");
       });
     } catch (err) {
       // Something went wrong.
@@ -114,7 +115,10 @@ const ShopLayout = () =>
         dispatch(setCart(response.data));
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
+      })
+      .finally(() => {
+        console.log("fetchCart completed after retries.");
       });
     } catch (err) {
       dispatch(clearCart());
