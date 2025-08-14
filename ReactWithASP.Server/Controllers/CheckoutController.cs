@@ -77,6 +77,7 @@ namespace ReactWithASP.Server.Controllers
           savedOk = ordersRepo.SaveOrder(order1);
           if (savedOk){
             cartLineRepo.ClearUserCartLines(order1.UserID); // Clear the cart of this user.
+            cartLineRepo.ClearCartLines(guest.ID); // Clear the cart of this guest.
             return Ok(checkoutSubmit); // Respond with 200 OK, and automatically cast object to JSON for the response.
           }
         }
