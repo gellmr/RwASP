@@ -116,26 +116,30 @@ const CheckoutFormik = () =>
   const formik = useFormik({
     initialValues: initVals,
     validationSchema: validationSchema,
-    onSubmit: values =>
+    onSubmit: async (values) =>
     {
       // This function will only be called if validation passes
-      const url = window.location.origin + "/api/checkout/submit";
-      const jsonData = { cart: structuredClone(cart), ...values };
-      const options = { headers: { 'Content-Type': 'application/json' } };
-      axiosInstance.post(url, jsonData, options).then((response) => {
+      try {
+        const url = window.location.origin + "/api/checkout/submit";
+        const jsonData = { cart: structuredClone(cart), ...values };
+        const options = { headers: { 'Content-Type': 'application/json' } };
+
+        const response = await axiosInstance.post(url, jsonData, options);
         console.log('Checkout Success:', response.data);
-        dispatch(clearCart());
-        // A new order will have appeared under My Orders. Fetch from server to update the UI.
-        dispatch(fetchMyOrders({ uid: myUserId, gid: guestID })); // Invoke thunk
+
+        // Await the clearCart action.
+        await dispatch(clearCart());
+
+        // Await the fetchMyOrders action before navigating.
+        await dispatch(fetchMyOrders({ uid: myUserId, gid: guestID }));
+
+        // This will only be called after the above two actions are complete.
         navigate("/checkoutsuccess");
-      })
-      .catch((error) => {
-        console.log('Error ' + error);
-        //dispatch();
-      })
-      .finally(() => {
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
         console.log('Complete');
-      });
+      }
     },
   });
 
