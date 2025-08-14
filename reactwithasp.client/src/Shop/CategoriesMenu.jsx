@@ -32,12 +32,12 @@ function CategoriesMenu()
       dispatch(setCategories(response.data)); // response.data is already JSON
     })
     .catch((error) => {
-      console.error('Request failed after retries:', error);
+      //console.error('Request failed after retries:', error);
       setError(error);
       dispatch(setNoCategories()); // Failed to load categories
     })
     .finally(() => {
-      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      console.log('fetchCategories (and retries) completed.');
       setIsLoading(false);
     });
   }

@@ -73,12 +73,12 @@ function Shop()
       dispatch(setInStock(response.data)); // Dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
     })
     .catch((error) => {
-      console.error('Request failed after retries:', error);
+      //console.error('Request failed after retries:', error);
       setError(error);
       dispatch(setNoStock()); // Failed to load products
     })
     .finally(() => {
-      console.log('Request (and retries) completed. This runs regardless of success or failure.');
+      console.log('fetchProducts Request (and retries) completed.');
       setIsLoading(false);
     });
   }
