@@ -27,6 +27,7 @@ export const loginSlice = createSlice({
     setLogin: (state, action) => {
       if (action.payload == null) {
         state.user = null; // Log out
+        state.guest = null; // Also clear the guest
       } else {
         // Receive login information from server.
         state.user = action.payload;

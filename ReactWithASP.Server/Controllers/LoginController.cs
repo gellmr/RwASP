@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
 using System.Security.Claims;
@@ -29,9 +30,13 @@ namespace ReactWithASP.Server.Controllers
 
     // Generate a response indicating the user has successfully logged in
     [NonAction]
-    protected IActionResult LoginSuccessResponse(AppUser? appUser, bool isGoogle=false)
+    protected IActionResult LoginSuccessResponse(AppUser? appUser, Guid? guestId, bool isGoogle=false)
     {
-      //DeleteGuestCookie(); // Dont delete
+      if (guestId != null) {
+        cartLineRepo.ClearCartLines(guestId);
+      }
+      DeleteGuestCookie();
+
       return Ok(new
       {
         loginResult = "Success",

@@ -16,9 +16,18 @@ namespace ReactWithASP.Server.Controllers
     public ActionResult Get()
     {
       Guest guest = EnsureGuestFromCookieAndDb(null);
+      string? uid = GetLoggedInUserIdFromIdentityCookie();
 
-      // Get all CartLine rows for this Guest
-      IEnumerable<CartUpdateDTO> cartLinesDistinctByIsp = cartLineRepo.CartLines
+      // Look up cart lines for this user.
+      IEnumerable<CartLine> cartLines;
+      if (string.IsNullOrEmpty(uid)){
+        cartLines = cartLineRepo.CartLines.Where(line => line.GuestID == guest.ID);
+      }else{
+        cartLines = cartLineRepo.CartLines.Where(line => line.UserID == uid);
+      }
+
+      // Load the ISP's
+      List<CartUpdateDTO> cartLinesDistinctByIsp = cartLineRepo.WithIsps(cartLines)
       .DistinctBy(line => line.InStockProductID)
       .Select(cartLine => new CartUpdateDTO{
         cartLineID = (Int32)cartLine.ID,

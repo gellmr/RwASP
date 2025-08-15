@@ -113,7 +113,7 @@ namespace ReactWithASP.Server.Controllers
         if (uid != null){
           // Already logged in
           appUser = await _userManager.FindByIdAsync(uid);
-          return LoginSuccessResponse(appUser); // Tell the user they are already logged in.
+          return LoginSuccessResponse(appUser, guestId); // Tell the user they are already logged in.
         }
 
         // Not logged in yet...
@@ -149,7 +149,8 @@ namespace ReactWithASP.Server.Controllers
 
         await _signInManager.SignInAsync(appUser, isPersistent: PersistAfterBrowserClose); // Perform the login.
 
-        return LoginSuccessResponse(appUser, true); // Tell the user they are now logged in.
+        cartLineRepo.ClearCartLines(guestId);
+        return LoginSuccessResponse(appUser, guestId, true); // Tell the user they are now logged in.
       }
       catch (Exception ex)
       {

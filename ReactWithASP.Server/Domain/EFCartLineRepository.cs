@@ -17,12 +17,16 @@ namespace ReactWithASP.Server.Domain
 
     public IEnumerable<CartLine> CartLines{
       get{
-        IEnumerable<CartLine> cartLines = context.CartLines.ToList();
-        foreach (CartLine c in cartLines){
-          // Load the entities associated with this CartLine.
-          c.InStockProduct = context.InStockProducts.FirstOrDefault(p => p.ID == c.InStockProductID);
-        }
+        IEnumerable<CartLine> cartLines = context.CartLines;
         return cartLines;
+      }
+    }
+
+    // Chainable in lambda expression. Load the InStockProducts associated with each CartLine.
+    public IEnumerable<CartLine> WithIsps(IEnumerable<CartLine> lines){
+      foreach (CartLine c in lines){
+        c.InStockProduct = context.InStockProducts.FirstOrDefault(p => p.ID == c.InStockProductID);
+        yield return c;
       }
     }
 

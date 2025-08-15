@@ -7,5 +7,6 @@
     void ClearUserCartLines(string? uid);
     void RemoveById(Int32 cartLineIdRem);
     IEnumerable<CartLine> CartLines { get; }
+    public IEnumerable<CartLine> WithIsps(IEnumerable<CartLine> lines);
   }
 }

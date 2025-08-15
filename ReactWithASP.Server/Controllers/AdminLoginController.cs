@@ -87,7 +87,7 @@ namespace ReactWithASP.Server.Controllers
         if (uid != null){
           // Already logged in
           appUser = await _userManager.FindByIdAsync(vipUserId);
-          return LoginSuccessResponse(appUser); // Tell the user they are already logged in.
+          return LoginSuccessResponse(appUser, guestId); // Tell the user they are already logged in.
         }
 
         // Not logged in yet...
@@ -109,7 +109,8 @@ namespace ReactWithASP.Server.Controllers
         var result = await _signInManager.PasswordSignInAsync(appUser, vipPassword, PersistAfterBrowserClose, LockoutOnFailure); // Perform the login.
 
         if (result.Succeeded){
-          return LoginSuccessResponse(appUser); // Tell the user they are now logged in.
+          cartLineRepo.ClearCartLines(guestId);
+          return LoginSuccessResponse(appUser, guestId); // Tell the user they are now logged in.
         }
         if (result.RequiresTwoFactor){
           return this.StatusCode(StatusCodes.Status202Accepted, "Redirect the user to complete two-factor authentication");
