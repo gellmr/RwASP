@@ -8,7 +8,6 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router";
 import { clearCart } from '@/features/cart/cartSlice.jsx'
-import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
 
 const validationSchema = Yup.object({
   firstName:  Yup.string().min( 2, 'First Name must be at least 2 characters long.').required('First Name is required.')
@@ -123,20 +122,11 @@ const CheckoutFormik = () =>
         const url = window.location.origin + "/api/checkout/submit";
         const jsonData = { cart: structuredClone(cart), ...values };
         const options = { headers: { 'Content-Type': 'application/json' } };
-
         const response = await axiosInstance.post(url, jsonData, options);
-        console.log('Checkout Success:', response.data);
-
-        // Await the clearCart action.
         await dispatch(clearCart());
-
-        // Await the fetchMyOrders action before navigating.
-        await dispatch(fetchMyOrders({ uid: myUserId, gid: guestID }));
-
-        // This will only be called after the above two actions are complete.
         navigate("/checkoutsuccess");
       } catch (error) {
-        console.error('Error:', error);
+        //console.error('Error:', error);
       } finally {
         console.log('Complete');
       }
