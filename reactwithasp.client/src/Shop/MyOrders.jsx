@@ -19,16 +19,20 @@ const MyOrders = () =>
   const ordersThisPage = useSelector(state => state.myOrders.value);
 
   let full_name;
+  let order_email;
 
   const guest = useSelector(state => state.login.guest);
   const guestID = !nullOrUndefined(guest) ? guest.id : null;
   full_name = !nullOrUndefined(guest) ? guest.fullname : null;
+  order_email = !nullOrUndefined(guest) ? guest.email : order_email;
 
   const loginValue = useSelector(state => state.login.user);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
   full_name = !nullOrUndefined(loginValue) ? loginValue.fullname : full_name;
+  order_email = !nullOrUndefined(loginValue) ? loginValue.email : order_email;
   
   const fullname = full_name;
+  const email = !nullOrUndefined(order_email) ? order_email : '';
 
   const emptyMsgText1 = (myUserId) ? "(Logged in as " + loginValue.fullname + ")" : "(None at the moment)";
   const emptyMsgText2 = (myUserId) ? "You currently have no orders" : '';
@@ -174,12 +178,20 @@ const MyOrders = () =>
 
               {devMode && devShowAccountId()}
 
-              <Col xs={12} className="myOrdRow" style={{marginBottom:15}}>
+              <Col xs={12} className="myOrdRow" style={{}}>
                 <Row>
                   <Col xs={4} sm={3} className="">Full Name:</Col>
                   <Col xs={8} sm={9} className="">{fullname}</Col>
                 </Row>
               </Col>
+
+              <Col xs={12} className="myOrdRow" style={{ marginBottom: 15 }}>
+                <Row>
+                  <Col xs={4} sm={3} className="">Email:</Col>
+                  <Col xs={8} sm={9} className="">{email}</Col>
+                </Row>
+              </Col>
+
             </Col>
           </Row>
 

@@ -41,6 +41,7 @@ namespace ReactWithASP.Server.Controllers
           fullname = guest.FullName,
           firstname = guest.FirstName,
           lastname = guest.LastName,
+          email    = guest.Email,
         });
       }
       catch (Exception ex){

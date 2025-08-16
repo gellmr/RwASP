@@ -20,7 +20,7 @@ export const loginSlice = createSlice({
     // }
     user: null,
 
-    // The guest {id, fullname, firstname, lastname} ...or null if we ARE logged in.
+    // The guest {id, fullname, firstname, lastname, email} ...or null if we ARE logged in.
     guest: null,
   },
   reducers: {
