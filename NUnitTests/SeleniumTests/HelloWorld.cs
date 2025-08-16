@@ -9,37 +9,32 @@ namespace SeleniumTests
   {
     private IWebDriver driver;
 
+    // This variable holds the URL of your local application.
+    private const string appUrl = "https://localhost:5173";
+
     [SetUp]
     public void Setup()
     {
       driver = new ChromeDriver();
       driver.Manage().Window.Maximize();
+
+      // Navigate to the application localhost URL.
+      driver.Navigate().GoToUrl(appUrl);
     }
 
     [Test]
-    public void SearchForSelenium_TitleIsCorrect()
+    public void HomePage_LoadsSuccessfully_AndTitleIsCorrect()
     {
-      // Arrange
-      string searchKeyword = "Selenium";
-      string expectedTitle = "Selenium - Google Search";
-
-      // Act
-      // Navigate to Google's homepage.
-      driver.Navigate().GoToUrl("https://www.google.com");
-
-      // Find the search box element by its name attribute and type the keyword.
-      IWebElement searchBox = driver.FindElement(By.Name("q"));
-      searchBox.SendKeys(searchKeyword);
-      searchBox.Submit(); // This submits the search query.
-
-      // Wait for a moment to ensure the new page loads.
       System.Threading.Thread.Sleep(2000);
 
-      // Assert
-      // Verify the page title.
-      Assert.That(driver.Title, Is.EqualTo(expectedTitle), "The page title is not what was expected.");
+      Assert.That(driver.Title, Does.Contain("Shop"), "Home page title - incorrect.");
+
+      IWebElement heading = driver.FindElement(By.CssSelector("a.storeBrand"));
+
+      Assert.That(heading.Text, Is.EqualTo("SPORTS STORE"), "Heading text - incorrect.");
     }
 
+    // Runs after each test method to clean up resources.
     [TearDown]
     public void TearDown()
     {
