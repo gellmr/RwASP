@@ -2,12 +2,15 @@ import React from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { nullOrUndefined, isNullOrEmpty } from '@/MgUtility.js';
+import { checkoutAutofill } from '@/Autofill.js';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router";
 import { clearCart } from '@/features/cart/cartSlice.jsx'
+import { useState } from 'react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const validationSchema = Yup.object({
   firstName:  Yup.string().min( 2, 'First Name must be at least 2 characters long.').required('First Name is required.')
@@ -26,6 +29,8 @@ const CheckoutFormik = () =>
 {
   const dispatch = useDispatch();
   let navigate = useNavigate();
+
+  const [autoFillIdx, setAutoFillIdx] = useState(0);
 
   const cart = useSelector(state => state.cart.cartLines);
 
@@ -59,21 +64,11 @@ const CheckoutFormik = () =>
     shipEmail: nullOrUndefined(_email) ? '' : _email,
   };
 
-  const autoFill = async function () {
-    let _firstName = isNullOrEmpty(formik.values['firstName']) ? "John" : formik.values['firstName'];
-    let _lastName = isNullOrEmpty(formik.values['lastName']) ? "Doe" : formik.values['lastName'];
-    let _email = isNullOrEmpty(formik.values['shipEmail']) ? "test@example.com" : formik.values['shipEmail'];
-
-    formik.setFieldValue('firstName', _firstName);
-    formik.setFieldValue('lastName',  _lastName);
-    formik.setFieldValue('shipLine1', '123 River Gum Way');
-    formik.setFieldValue('shipLine2', 'Unit 10/150, Third Floor');
-    formik.setFieldValue('shipLine3', 'The Tall Apartment Building (Inc)');
-    formik.setFieldValue('shipCity',    'SpringField');
-    formik.setFieldValue('shipState',   'WA');
-    formik.setFieldValue('shipCountry', 'Australia');
-    formik.setFieldValue('shipZip',     '6525');
-    formik.setFieldValue('shipEmail', _email);
+  const autoFill = async function ()
+  {
+    let reset = checkoutAutofill(formik, autoFillIdx);
+    let i = reset ? 0 : autoFillIdx + 1;
+    setAutoFillIdx(i);
     await formik.validateForm(); // Wait for the form values to update
     markAllFieldsAsTouched(formik.values, formik.setTouched); // Trigger this so the error messages will clear
   }
@@ -148,6 +143,12 @@ const CheckoutFormik = () =>
     );
   }
 
+  const autoFillTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Click to autofill the form with some generated test values
+    </Tooltip>
+  );
+
   return (
     <form onSubmit={validateBeforeSubmit}>
       {formikTextInput('firstName', "First Name")}
@@ -164,9 +165,13 @@ const CheckoutFormik = () =>
       {formikTextInput('shipEmail', "Email", "email")}
 
       <div role="group" className="checkoutSubmitBtnGroup btn-group">
-        <button type="button" className="btn btn btn-light" onClick={autoFill}>
-          <i className="bi bi-list-check"></i>&nbsp;Autofill
-        </button>
+      
+        <OverlayTrigger placement="top" delay={{ show: 50, hide: 400 }} overlay={autoFillTooltip}>
+          <button type="button" className="btn btn btn-light" onClick={autoFill}>
+            <i className="bi bi-list-check"></i>&nbsp;Autofill
+          </button>
+        </OverlayTrigger>
+
         <button type="submit" className="btn btn-primary btn btn-success">Complete Order</button>
       </div>
 
