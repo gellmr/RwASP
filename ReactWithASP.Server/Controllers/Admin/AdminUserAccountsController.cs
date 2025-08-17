@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Domain;
+using ReactWithASP.Server.DTO;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
@@ -25,21 +26,26 @@ namespace ReactWithASP.Server.Controllers.Admin
     [Route("admin-guest-update")]
     public ActionResult UpdateGuest([FromBody] UserDTO userUpdate)
     {
-      UserDTO? revert = null;
       try
       {
-        // Update guest
-        string? gid = userUpdate.GuestID.ToString().ToLower();
-        Guest? g = _guestRepo.Guests.FirstOrDefault(g => g.ID.ToString().ToLower().Equals(gid));
-        revert = UserDTO.TryParse(g);
-        g.updateFullName(userUpdate.FullName);
-        g.Email = userUpdate.Email;
-        _guestRepo.SaveGuest(g);
+        // Look up Guest, update name and email, save
+        _guestRepo.UpdateWithTransaction(new GuestUpdateDTO{
+          ID        = (Guid)userUpdate.GuestID,
+          Email     = userUpdate.Email,
+          FirstName = MyExtensions.GetFirstName(userUpdate.FullName),
+          LastName  = MyExtensions.getLastName(userUpdate.FullName),
+          Picture   = userUpdate.Picture,
+        });
         return this.StatusCode(StatusCodes.Status200OK, new { Message = "Success updating guest", Persist = userUpdate });
       }
-      catch (Exception ex){
-
+      catch (GuestUpdateException ex)
+      {
+        UserDTO? revert = UserDTO.TryParse(ex.Original);
         return this.StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message, Revert = revert });
+      }
+      catch (Exception ex)
+      {
+        return this.StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message });
       }
     }
 
@@ -206,10 +212,10 @@ namespace ReactWithASP.Server.Controllers.Admin
         string? idsave = null;
         if (!string.IsNullOrEmpty(usertype) && usertype == "guest")
         {
-          Guest? g = _guestRepo.Guests.FirstOrDefault(g => g.ID.ToString().ToLower().Equals(idval));
-          g.Picture = pathToSave;
-          _guestRepo.SaveGuest(g);
-          idsave = g.ID.ToString().ToLower();
+          // Look up Guest, update picture, save
+          Guid gid = Guid.Parse(idval);
+          _guestRepo.UpdateWithTransaction(new GuestUpdateDTO{ ID = gid, Picture = pathToSave });
+          idsave = gid.ToString().ToLower();
         }
         else
         {
@@ -229,6 +235,11 @@ namespace ReactWithASP.Server.Controllers.Admin
           idsave = idsave,       // Id of the user or guest to save on client.
           debug = uploadsFolder  // Will be either C:\\path\\to\\RwASP\\reactwithasp.client\\public\\userpic   or   C:\\path\\to\\RwASP-wwwroot\\wwwroot\\userpic
         });
+      }
+      catch (GuestUpdateException ex)
+      {
+        UserDTO? revert = UserDTO.TryParse(ex.Original);
+        return this.StatusCode(StatusCodes.Status400BadRequest, new { Message = ex.Message, Revert = revert });
       }
       catch (Exception ex)
       {

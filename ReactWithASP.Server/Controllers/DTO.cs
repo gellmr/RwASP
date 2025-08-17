@@ -191,9 +191,9 @@ namespace ReactWithASP.Server.DTO
       public string? UserName { get; set; }
       public string? FullName { get; set; }
 
-      public static UserDTO TryParse(Guest g)
+      public static UserDTO TryParse(Guest? g)
       {
-        return new UserDTO{
+        return (g == null) ? null : new UserDTO{
           Id = null,
           GuestID = g.ID,
           Email = g.Email,
