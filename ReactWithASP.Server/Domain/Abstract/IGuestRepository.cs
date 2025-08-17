@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
+using ReactWithASP.Server.DTO;
 
 namespace ReactWithASP.Server.Domain.Abstract
 {
@@ -8,5 +9,6 @@ namespace ReactWithASP.Server.Domain.Abstract
     IDbContextTransaction BeginTransaction();
     void SaveGuest(Guest guest);
     Nullable<Guid> GuestExists(string email);
+    public Guest? UpdateWithTransaction(GuestUpdateDTO dto);
   }
 }

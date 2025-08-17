@@ -5,6 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ReactWithASP.Server.Domain
 {
+  public class GuestUpdateException : Exception{
+    public GuestUpdateException(string? message) : base(message) { }
+    public GuestUpdateException(string? message, Exception? inner) : base(message, inner) { }
+    public Guest? Original { get; set; }
+  }
+
   public class Guest
   {
     [Key]

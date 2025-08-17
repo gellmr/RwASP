@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using ReactWithASP.Server.Domain.Abstract;
+using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Domain
@@ -55,6 +56,46 @@ namespace ReactWithASP.Server.Domain
         return (Nullable<Guid>)guest.ID;
       }
       return null;
+    }
+
+    public Guest? UpdateWithTransaction(GuestUpdateDTO dto)
+    {
+      Guest? original = null;
+      using (var transaction = BeginTransaction())
+      {
+        try
+        {
+          // Look up Guest.
+          original = Guests.FirstOrDefault(g => g.ID.Equals(dto.ID));
+
+          if (original == null){
+            throw new Exception("Guest not found with ID " +  dto.ID);
+          }
+
+          // Update with incoming DTO values.
+          Guest? update = new Guest{
+            ID        = dto.ID,
+            Email     = dto.Email     ?? original.Email,
+            FirstName = dto.FirstName ?? original.FirstName,
+            LastName  = dto.LastName  ?? original.LastName,
+            Picture   = dto.Picture   ?? original.Picture,
+          };
+
+          // Save to database
+          context.SaveChanges();
+
+          transaction.Commit();
+
+          return original;
+        }
+        catch (Exception ex)
+        {
+          transaction.Rollback();
+          GuestUpdateException gError = new GuestUpdateException(ex.Message, ex.InnerException);
+          gError.Original = original;
+          throw gError;
+        }
+      }
     }
   }
 }
