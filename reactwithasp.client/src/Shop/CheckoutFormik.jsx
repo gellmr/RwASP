@@ -121,7 +121,7 @@ const CheckoutFormik = () =>
         await dispatch(clearCart());
         navigate("/checkoutsuccess");
       } catch (error) {
-        //console.error('Error:', error);
+        console.error('Error:', error);
       } finally {
         console.log('Complete');
       }

@@ -66,27 +66,38 @@ namespace ReactWithASP.Server.Domain
         try
         {
           // Look up Guest.
-          original = Guests.FirstOrDefault(g => g.ID.Equals(dto.ID));
-
-          if (original == null){
-            throw new Exception("Guest not found with ID " +  dto.ID);
+          Guest? guest = Guests.FirstOrDefault(g => g.ID.Equals(dto.ID));
+          
+          if (guest == null)
+          {
+            // Create for the first time
+            guest = new Guest
+            {
+              ID        = dto.ID,
+              Email     = dto.Email,
+              FirstName = dto.FirstName,
+              LastName  = dto.LastName,
+              Picture   = dto.Picture,
+            };
+            original = new Guest(guest);
+            context.Guests.Add(guest);
           }
-
-          // Update with incoming DTO values.
-          Guest? update = new Guest{
-            ID        = dto.ID,
-            Email     = dto.Email     ?? original.Email,
-            FirstName = dto.FirstName ?? original.FirstName,
-            LastName  = dto.LastName  ?? original.LastName,
-            Picture   = dto.Picture   ?? original.Picture,
-          };
+          else
+          {
+            // Update with incoming DTO values.
+            original = new Guest(guest);
+            guest.Email     = dto.Email     ?? guest.Email;
+            guest.FirstName = dto.FirstName ?? guest.FirstName;
+            guest.LastName  = dto.LastName  ?? guest.LastName;
+            guest.Picture   = dto.Picture   ?? guest.Picture;
+          }
 
           // Save to database
           context.SaveChanges();
 
           transaction.Commit();
 
-          return original;
+          return guest;
         }
         catch (Exception ex)
         {

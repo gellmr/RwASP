@@ -12,6 +12,18 @@ namespace ReactWithASP.Server.Domain
 
   public class Guest
   {
+    // Default constructor
+    public Guest(){ }
+
+    // Copy constructor
+    public Guest(Guest g) {
+      ID        = g.ID;
+      Email     = g.Email;
+      FirstName = g.FirstName;
+      LastName  = g.LastName;
+      Picture   = g.Picture;
+    }
+
     [Key]
     public Guid ID { get; set; }
     public string? Email { get; set; }

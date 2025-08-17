@@ -65,13 +65,14 @@ namespace ReactWithASP.Server.Controllers
           gid = Guid.NewGuid();
         }
 
-        Guest? guest = guestRepo.UpdateWithTransaction(new GuestUpdateDTO {
+        GuestUpdateDTO dto =  new GuestUpdateDTO {
           ID        = (Guid)gid,
-          Email     = guestUpdate.Email,
-          FirstName = guestUpdate.FirstName,
-          LastName  = guestUpdate.LastName,
-          Picture   = guestUpdate.Picture,
-        });
+          Email     = (guestUpdate != null) ? guestUpdate.Email     : null,
+          FirstName = (guestUpdate != null) ? guestUpdate.FirstName : null,
+          LastName  = (guestUpdate != null) ? guestUpdate.LastName  : null,
+          Picture   = (guestUpdate != null) ? guestUpdate.Picture   : null,
+        };
+        Guest? guest = guestRepo.UpdateWithTransaction(dto);
         
         // Persist ID to cookie.
         DeleteGuestCookie();
