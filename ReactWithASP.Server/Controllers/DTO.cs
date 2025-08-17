@@ -7,6 +7,15 @@ using System.Text.Json.Serialization;
 
 namespace ReactWithASP.Server.DTO
 {
+  public class GuestUpdateDTO
+  {
+    public Guid ID { get; set; }
+    public string? Email { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? Picture { get; set; }
+  }
+
   public class CartUpdateDTO
   {
     public Int32? cartLineID { get; set; }
@@ -171,10 +180,10 @@ namespace ReactWithASP.Server.DTO
     {
       public string? Email { get; set; }
       public bool? EmailConfirmed { get; set; }
-      // public Guest? Guest
+      
       public Guid? GuestID { get; set; }
       public string? Id { get; set; }
-      // public string? LockoutEnd
+      
       // Orders
       public string? PhoneNumber { get; set; }
       public bool? PhoneNumberConfirmed { get; set; }
