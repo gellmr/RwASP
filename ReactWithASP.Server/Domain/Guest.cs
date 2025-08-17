@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ReactWithASP.Server.Domain
@@ -33,28 +32,6 @@ namespace ReactWithASP.Server.Domain
         }
         else{ return FirstName + " " + LastName; // Both available.
         }
-      }
-    }
-
-    // Update firstname/lastname, given a string like "Eileen Ryan"
-    public void updateFullName(string? fullName)
-    {
-      if (string.IsNullOrWhiteSpace(fullName)){
-        throw new ArgumentException("Empty name");
-      }
-      if (string.IsNullOrEmpty(fullName)){
-        throw new ArgumentException("Empty name");
-      }
-      string[] names = fullName.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-      if (names.Length > 0){
-        FirstName = names[0];
-      }
-      // Assign the remaining parts to the last name
-      if (names.Length > 1){
-        LastName = string.Join(" ", names, 1, names.Length - 1);
-      }
-      else{
-        LastName = string.Empty;
       }
     }
   }

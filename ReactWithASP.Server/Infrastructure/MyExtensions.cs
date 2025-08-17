@@ -114,5 +114,35 @@ namespace ReactWithASP.Server.Infrastructure
       }
     }
 
+    public static string[] GetNameSegments(string? fullName)
+    {
+      if (string.IsNullOrWhiteSpace(fullName)){
+        throw new ArgumentException("Empty name");
+      }
+      if (string.IsNullOrEmpty(fullName)){
+        throw new ArgumentException("Empty name");
+      }
+      string[] names = fullName.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+      return names;
+    }
+
+    public static string? GetFirstName(string? fullName)
+    {
+      string[] names = MyExtensions.GetNameSegments(fullName);
+      if (names.Length > 0){
+        return names[0];
+      }
+      return string.Empty;
+    }
+
+    public static string? getLastName(string? fullName)
+    {
+      string[] names = MyExtensions.GetNameSegments(fullName);
+      if (names.Length > 1){
+        return string.Join(" ", names, 1, names.Length - 1);
+      }else{
+        return string.Empty;
+      }
+    }
   }
 }
