@@ -64,8 +64,8 @@ namespace ReactWithASP.Server.Controllers
         // Look up associated records, to display on the My Orders page.
         IList<Order> orders = ordersRepo.GetMyOrders( userInfo.uid, userInfo.gid ).ToList();
 
-        Guest g = (userInfo.gid == null) ? null : guestRepo.Guests.FirstOrDefault(g => g.ID.ToString().Equals(userInfo.gid.ToString()));
-        AppUser u = (userInfo.uid == null) ? null : await _userManager.FindByIdAsync(userInfo.uid.ToString());
+        Guest g = (userInfo.gid == null) ? null : guestRepo.Guests.FirstOrDefault(g => g.ID.Equals(userInfo.gid));
+        AppUser u = (userInfo.uid == null) ? null : await _userManager.FindByIdAsync(userInfo.uid);
         foreach (Order order in orders)
         {
           if (order.GuestID != null){
