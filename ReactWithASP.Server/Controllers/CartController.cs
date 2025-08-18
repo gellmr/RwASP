@@ -13,9 +13,13 @@ namespace ReactWithASP.Server.Controllers
     public CartController(ICartLineRepository rRepo, IGuestRepository gRepo, IInStockRepository pRepo, Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager) : base(rRepo, gRepo, pRepo, userManager){}
 
     [HttpGet] // GET api/cart
-    public ActionResult Get()
+    public async Task<ActionResult> Get()
     {
-      Guest guest = EnsureGuestFromCookieAndDb(null);
+      Guest? guest = await EnsureGuestFromCookieAndDb(null);
+      if (guest == null){
+        return this.StatusCode(StatusCodes.Status500InternalServerError, new { message = "Guest is null" });
+      }
+
       string? uid = GetLoggedInUserIdFromIdentityCookie();
 
       // Look up cart lines for this user.
@@ -47,15 +51,16 @@ namespace ReactWithASP.Server.Controllers
 
     [HttpPost]
     [Route("clear")] // POST api/cart/clear
-    public ActionResult Clear()
+    public async Task<ActionResult> Clear()
     {
       // Try to look up the guest. If no guest, create new guest.
-      Guest guest = EnsureGuestFromCookieAndDb(null);
-      Guid? gid = guest.ID;
+      Guest? guest = await EnsureGuestFromCookieAndDb(null);
+      if ( guest == null ){
+        return this.StatusCode(StatusCodes.Status500InternalServerError, new { message = "Guest is null" });
+      }
 
-      // Remove all CartLine records for this Guest ID.
-      cartLineRepo.ClearCartLines(gid);
-      
+      Guid? gid = guest.ID;
+      cartLineRepo.ClearCartLines(gid); // Remove all CartLine records for this Guest ID.
       return Ok(); // 200 ok
     }
 
@@ -79,7 +84,10 @@ namespace ReactWithASP.Server.Controllers
         else
         {
           // There is no logged in user. Try to look up the guest. If no guest, create new guest.
-          guest = EnsureGuestFromCookieAndDb(null);
+          guest = await EnsureGuestFromCookieAndDb(null);
+          if (guest == null){
+            return this.StatusCode(StatusCodes.Status500InternalServerError, new { message = "Guest is null" });
+          }
           guestId = guest.ID;
         }
       

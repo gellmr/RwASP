@@ -80,11 +80,14 @@ namespace ReactWithASP.Server.Controllers
           // Checkout submit by Guest
 
           // Save the submitted name and email values, to the guest record in database.
-          Guest guest = EnsureGuestFromCookieAndDb(new Guest{
+          Guest guest = await EnsureGuestFromCookieAndDb(new Guest{
             Email     = checkoutSubmit.ShipEmail,
             FirstName = checkoutSubmit.FirstName,
             LastName  = checkoutSubmit.LastName,
-          }); 
+          });
+          if (guest == null){
+            return this.StatusCode(StatusCodes.Status500InternalServerError, new { message = "Guest is null" });
+          }
           order1.GuestID = guest.ID;
           order1.Guest = guest;
           savedOk = ordersRepo.SaveOrder(order1);

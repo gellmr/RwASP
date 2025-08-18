@@ -5,10 +5,10 @@ namespace ReactWithASP.Server.Domain.Abstract
 {
   public interface IGuestRepository
   {
-    IEnumerable<Guest> Guests { get; }
-    IDbContextTransaction BeginTransaction();
+    IQueryable<Guest> Guests { get; }
+    Task<IDbContextTransaction> BeginTransactionAsync();
     void SaveGuest(Guest guest);
     Nullable<Guid> GuestExists(string email);
-    public Guest? UpdateWithTransaction(GuestUpdateDTO dto);
+    Task<Guest?> UpdateWithTransaction(GuestUpdateDTO dto);
   }
 }

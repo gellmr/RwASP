@@ -94,10 +94,13 @@ namespace ReactWithASP.Server.Controllers
         if (!ModelState.IsValid) {
           return BadRequest(ModelState);
         }
-        Guest guest = null;
+        Guest? guest = null;
         Guid? guestId = null;
-        guest = EnsureGuestFromCookieAndDb(null); // Touch cookie to ensure it exists.
-        guestId = (guest != null) ? guest.ID : null;
+        guest = await EnsureGuestFromCookieAndDb(null); // Touch cookie to ensure it exists.
+        if (guest == null){
+          return this.StatusCode(StatusCodes.Status500InternalServerError, new { message = "Guest is null" });
+        }
+        guestId = guest.ID;
         AppUser? appUser;
         string? uid = GetLoggedInUserIdFromIdentityCookie(); // See if there is a logged in user.
 

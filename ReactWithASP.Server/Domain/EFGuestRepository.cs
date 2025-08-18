@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Infrastructure;
+using System.Data;
 
 namespace ReactWithASP.Server.Domain
 {
@@ -15,15 +17,16 @@ namespace ReactWithASP.Server.Domain
       context = new StoreContext(_config);
     }
     
-    public IDbContextTransaction BeginTransaction(){
-      return context.Database.BeginTransaction();
+    public async Task<IDbContextTransaction> BeginTransactionAsync(){
+      return await context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
     }
 
-    public IEnumerable<Guest> Guests
+    // Must use IQueryable to support deferred execution in async methods
+    public IQueryable<Guest> Guests
     {
       get
       {
-        IEnumerable<Guest> guests = context.Guests.Where(g => g.ID != null); // Email, FirstName and LastName are allowed to be null.
+        IQueryable<Guest> guests = context.Guests.Where(g => g.ID != null); // Email, FirstName and LastName are allowed to be null.
         return guests;
       }
     }
@@ -58,16 +61,16 @@ namespace ReactWithASP.Server.Domain
       return null;
     }
 
-    public Guest? UpdateWithTransaction(GuestUpdateDTO dto)
+    public async Task<Guest?> UpdateWithTransaction(GuestUpdateDTO dto)
     {
       Guest? original = null;
-      using (var transaction = BeginTransaction())
+      await using (var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable))
       {
         try
         {
           // Look up Guest.
-          Guest? guest = Guests.FirstOrDefault(g => g.ID.Equals(dto.ID));
-          
+          Guest? guest = await Guests.FirstOrDefaultAsync(g => g.ID.Equals(dto.ID));
+
           if (guest == null)
           {
             // Create for the first time
@@ -93,15 +96,15 @@ namespace ReactWithASP.Server.Domain
           }
 
           // Save to database
-          context.SaveChanges();
+          await context.SaveChangesAsync();
 
-          transaction.Commit();
+          await transaction.CommitAsync();
 
           return guest;
         }
         catch (Exception ex)
         {
-          transaction.Rollback();
+          await transaction.RollbackAsync();
           GuestUpdateException gError = new GuestUpdateException(ex.Message, ex.InnerException);
           gError.Original = original;
           throw gError;

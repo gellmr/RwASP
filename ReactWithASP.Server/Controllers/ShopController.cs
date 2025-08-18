@@ -38,7 +38,7 @@ namespace ReactWithASP.Server.Controllers
     // If you pass a Guest object as argument, its values (if not null) will overwrite the ones that are in the database.
     // If you pass a Guest object will all null values except Email, only the Email value will be used to overwrite.
     // The Guest ID gets saved to the cookie before we return the finalised Guest object.
-    protected Guest EnsureGuestFromCookieAndDb(Guest? guestUpdate)
+    protected async Task<Guest?> EnsureGuestFromCookieAndDb(Guest? guestUpdate)
     {
       try
       {
@@ -72,7 +72,7 @@ namespace ReactWithASP.Server.Controllers
           LastName  = (guestUpdate != null) ? guestUpdate.LastName  : null,
           Picture   = (guestUpdate != null) ? guestUpdate.Picture   : null,
         };
-        Guest? guest = guestRepo.UpdateWithTransaction(dto);
+        Guest? guest = await guestRepo.UpdateWithTransaction(dto);
         
         // Persist ID to cookie.
         DeleteGuestCookie();

@@ -32,11 +32,11 @@ namespace ReactWithASP.Server.Controllers
     }
 
     [HttpGet("guest")] // GET /api/guest
-    public ActionResult FetchGuest()
+    public async Task<ActionResult> FetchGuest()
     {  
       try{
-        Guest guest = EnsureGuestFromCookieAndDb(null);
-        return Ok( new {
+        Guest? guest = await EnsureGuestFromCookieAndDb(null);
+        return (guest == null) ? this.StatusCode(StatusCodes.Status500InternalServerError, new { message = "Guest is null" }) : Ok( new {
           id = guest.ID,
           fullname = guest.FullName,
           firstname = guest.FirstName,
@@ -70,10 +70,14 @@ namespace ReactWithASP.Server.Controllers
         if (!ModelState.IsValid){
           return BadRequest(ModelState);
         }
-        Guest guest = null;
+        Guest? guest = null;
         Guid? guestId = null;
-        guest = EnsureGuestFromCookieAndDb(null); // Touch the cookie to ensure it exists.
-        guestId = (guest != null) ? guest.ID : null;
+        guest = await EnsureGuestFromCookieAndDb(null); // Touch the cookie to ensure it exists.
+        if (guest == null){
+          return this.StatusCode(StatusCodes.Status500InternalServerError, new { message = "Guest is null" });
+        }
+
+        guestId = guest.ID;
         AppUser ? appUser;
         string? uid = GetLoggedInUserIdFromIdentityCookie(); // See if there is a logged in user.
 
