@@ -24,7 +24,7 @@ namespace NUnitTests.SeleniumTests
       IWebElement heading = driver.FindElement(By.CssSelector("a.storeBrand"));
       IReadOnlyCollection<IWebElement> products = driver.FindElements(By.CssSelector(".productDetails"));
 
-      Assert.That(driver.Title,          Does.Contain("Shop"),             "Home page title is incorrect.");
+      Assert.That(driver.Title,          Does.Contain("Shop"),             "Home page - title is incorrect.");
       Assert.That(heading.Text,          Is.EqualTo("SPORTS STORE"),       "Heading text is incorrect.");
       Assert.That(products.First().Text, Does.Contain("Drink Bottle $20"), "First product is present.");
       Assert.That(products.Count,        Is.EqualTo(4),                    "4 products are on the page.");

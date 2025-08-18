@@ -21,7 +21,7 @@ namespace NUnitTests.SeleniumTests
         Assert.Fail(pageOrElementMissing);
       }
       IWebElement element = driver.FindElement(By.CssSelector(titleElement));
-      Assert.That(element.Text, Does.Contain("Cart is Empty"), "Cart page title is incorrect.");
+      Assert.That(element.Text, Does.Contain("Cart is Empty"), "Cart page - title is incorrect.");
     }
   }
 }
