@@ -115,7 +115,7 @@ const ShopLayout = () =>
         dispatch(setCart(response.data));
       })
       .catch((error) => {
-        //console.log(error);
+        console.log(error);
       })
       .finally(() => {
         console.log("fetchCart completed after retries.");
