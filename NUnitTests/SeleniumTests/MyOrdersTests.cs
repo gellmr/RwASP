@@ -12,6 +12,7 @@ namespace NUnitTests.SeleniumTests
     {
       driver.Navigate().GoToUrl(viteUrl + "/myorders");
       string titleElement = ".shopLayoutTransparent.bgOrderFullTransparent h2";
+      string noOrdersElement = ".ordersEmptyMsg";
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
@@ -22,7 +23,9 @@ namespace NUnitTests.SeleniumTests
         Assert.Fail(pageOrElementMissing);
       }
       IWebElement element = driver.FindElement(By.CssSelector(titleElement));
-      Assert.That(element.Text, Does.Contain("My Orders"), "My Orders page - title is incorrect.");
+      IWebElement noOrdElement = driver.FindElement(By.CssSelector(noOrdersElement));
+      Assert.That(element.Text,       Does.Contain("My Orders"),             "My Orders page - title is incorrect.");
+      Assert.That(noOrdElement.Text,  Does.Contain("(None at the moment)"),  "My Orders page - No Orders Message is incorrect.");
     }
   }
 }
