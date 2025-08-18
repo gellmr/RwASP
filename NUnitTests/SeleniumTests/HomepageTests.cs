@@ -19,7 +19,7 @@ namespace NUnitTests.SeleniumTests
         wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".productDetails")));
       }
       catch (WebDriverTimeoutException){
-        Assert.Fail("The application page did not load correctly, or the required element(s) were not found.");
+        Assert.Fail(pageOrElementMissing);
       }
       IWebElement heading = driver.FindElement(By.CssSelector("a.storeBrand"));
       IReadOnlyCollection<IWebElement> products = driver.FindElements(By.CssSelector(".productDetails"));

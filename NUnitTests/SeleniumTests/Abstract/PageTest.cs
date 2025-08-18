@@ -9,13 +9,11 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   public class PageTest
   {
-    // Declare a variable for the IWebDriver instance.
-    protected IWebDriver driver;
+    protected IWebDriver driver; // Declare a variable for the IWebDriver instance.
+    protected const string viteUrl = "https://localhost:5173"; // The URL of the Vite front-end, which is managed by the ViteTestFixture.
+    protected const string pageOrElementMissing = "The application page did not load correctly, or the required element(s) were not found.";
 
-    // The URL of the Vite front-end, which is managed by the ViteTestFixture.
-    protected const string viteUrl = "https://localhost:5173";
-
-    // The [SetUp] attribute runs before each individual test method.
+    // Runs before each individual test method.
     [SetUp]
     protected void Setup()
     {
