@@ -3,6 +3,9 @@ using OpenQA.Selenium.Chrome;
 
 namespace NUnitTests.SeleniumTests
 {
+  // The [TestFixture] attribute denotes a class that contains test methods.
+  // This test will automatically use the [SetUpFixture] to start the servers
+  // before any of its tests are executed.
   [TestFixture]
   public class PageTest
   {
