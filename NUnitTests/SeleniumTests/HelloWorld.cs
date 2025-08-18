@@ -26,11 +26,8 @@ namespace SeleniumTests
     public void HomePage_LoadsSuccessfully_AndTitleIsCorrect()
     {
       System.Threading.Thread.Sleep(2000);
-
       Assert.That(driver.Title, Does.Contain("Shop"), "Home page title - incorrect.");
-
       IWebElement heading = driver.FindElement(By.CssSelector("a.storeBrand"));
-
       Assert.That(heading.Text, Is.EqualTo("SPORTS STORE"), "Heading text - incorrect.");
     }
 
