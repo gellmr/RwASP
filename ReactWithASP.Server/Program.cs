@@ -107,7 +107,7 @@ using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
   try{
     var context = services.GetRequiredService<StoreContext>();
-    if (env.EnvironmentName == "Development"){
+    if (env.EnvironmentName == "Development" || env.EnvironmentName == "Test"){
       await context.Database.MigrateAsync();
     }
     var seedMarkerPath = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
