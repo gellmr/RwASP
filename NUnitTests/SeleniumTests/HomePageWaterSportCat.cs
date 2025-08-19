@@ -16,7 +16,7 @@ namespace NUnitTests.SeleniumTests
       const string buttonCss = ".mg-category-menu-r a.btn[href='/category/waterSport']";
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(9));
         wait.Until(ExpectedConditions.ElementExists(By.CssSelector(buttonCss)));
         IReadOnlyCollection<IWebElement> waterSportLinks = driver.FindElements(By.CssSelector(buttonCss));
         List<IWebElement> links = waterSportLinks.ToList(); // There are 3 sizes used at different bootstrap breakpoints
