@@ -1,6 +1,9 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using NUnitTests.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Net.NetworkInformation;
 
 namespace NUnitTests.SeleniumTests
 {
@@ -9,18 +12,24 @@ namespace NUnitTests.SeleniumTests
   {
     public string titleElement = ".shopLayoutTransparent h2";
     public string coSubmit = ".checkoutSubmitBtnGroup button[type=\"submit\"]";
+    public string autoBtn = ".checkoutSubmitBtnGroup button[type=\"button\"]";
     public string validationElement = ".error";
+    public string fieldElement = "input.form-control";
+    public string coSuccess = "#noShopLayout .shopLayoutTransparent";
+    public string myOrders = ".mgNavLinkBtn[href=\"/myorders\"]";
+    
+    IWebElement? myOrdBtn = null;
 
-    IWebElement v_firstName = null;
-    IWebElement v_lastName = null;
-    IWebElement v_line1 = null;
-    IWebElement v_line2 = null;
-    IWebElement v_line3 = null;
-    IWebElement v_city = null;
-    IWebElement v_state = null;
-    IWebElement v_country = null;
-    IWebElement v_zip = null;
-    IWebElement v_email = null;
+    IWebElement? v_firstName = null;
+    IWebElement? v_lastName = null;
+    IWebElement? v_line1 = null;
+    IWebElement? v_line2 = null;
+    IWebElement? v_line3 = null;
+    IWebElement? v_city = null;
+    IWebElement? v_state = null;
+    IWebElement? v_country = null;
+    IWebElement? v_zip = null;
+    IWebElement? v_email = null;
 
     string? s_firstName = null;
     string? s_lastName = null;
@@ -32,6 +41,17 @@ namespace NUnitTests.SeleniumTests
     string? s_country = null;
     string? s_zip = null;
     string? s_email = null;
+
+    string? c_firstName = null;
+    string? c_lastName = null;
+    string? c_line1 = null;
+    string? c_line2 = null;
+    string? c_line3 = null;
+    string? c_city = null;
+    string? c_state = null;
+    string? c_country = null;
+    string? c_zip = null;
+    string? c_email = null;
 
     public void GoToCheckout()
     {
@@ -73,6 +93,20 @@ namespace NUnitTests.SeleniumTests
       s_email = v_email.Text;
     }
 
+    public void GetFields(List<IWebElement> fields)
+    {
+      c_firstName = fields[0].Text;
+      c_lastName = fields[1].Text;
+      c_line1 = fields[2].Text;
+      c_line2 = fields[3].Text;
+      c_line3 = fields[4].Text;
+      c_city = fields[5].Text;
+      c_state = fields[6].Text;
+      c_country = fields[7].Text;
+      c_zip = fields[8].Text;
+      c_email = fields[9].Text;
+    }
+
     [Test]
     public void EmptyCheckoutPage_LoadsSuccessfully(){
       GoToCheckout();
@@ -107,6 +141,41 @@ namespace NUnitTests.SeleniumTests
       Assert.That(s_zip,     Does.Contain("Zip is required."),     "Checkout - zip     - validation - msg incorrect.");
 
       Assert.That(s_email, Does.Contain("Email is required."),     "Checkout - email   - validation - msg incorrect.");
+    }
+
+    [Test]
+    public void SubmitAutofill1_ShowsCheckoutSuccess()
+    {
+      GoToCheckout();
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      try
+      {
+        IWebElement autoButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(autoBtn)));
+        autoButton.Click();
+
+        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(fieldElement)));
+        IReadOnlyCollection<IWebElement> allFields = driver.FindElements(By.CssSelector(fieldElement));
+        List<IWebElement> fields = allFields.ToList();
+        GetFields(fields);
+
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(coSubmit)));
+        clickableButton.Click();
+
+        IWebElement coSuccessElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(coSuccess)));
+        string successText = TestHelpers.TrimAndFlattenString(coSuccessElement.Text);
+        Assert.That(successText, Does.Contain("Thanks!"), "Checkout - success - Title - incorrect.");
+        Assert.That(successText, Does.Contain("Your order has been submitted. We'll ship your goods as soon as possible."), "Checkout - success - Message - incorrect.");
+        Assert.That(successText, Does.Contain("Continue Shopping"), "Checkout - success - Button - incorrect.");
+        Assert.That(driver.Url, Does.Contain("/checkoutsuccess"), "Failed to reach checkout success page.");
+        
+        myOrdBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrders)));
+        wait.Until(ExpectedConditions.TextToBePresentInElement(myOrdBtn, "My Orders (1)"));
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("Timeout during SubmitEmpty_ShowsClientValidation");
+      }
+      Assert.That(myOrdBtn.Text, Does.Contain("My Orders (1)"), "Checkout - success - My Orders Button - incorrect.");
     }
   }
 }
