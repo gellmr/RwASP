@@ -8,7 +8,7 @@ using System.Net.NetworkInformation;
 namespace NUnitTests.SeleniumTests
 {
   [TestFixture]
-  internal class CheckoutTests: PageTest
+  public class CheckoutTests: PageTest
   {
     public string titleElement = ".shopLayoutTransparent h2";
     public string coSubmit = ".checkoutSubmitBtnGroup button[type=\"submit\"]";
@@ -17,41 +17,41 @@ namespace NUnitTests.SeleniumTests
     public string fieldElement = "input.form-control";
     public string coSuccess = "#noShopLayout .shopLayoutTransparent";
     public string myOrders = ".mgNavLinkBtn[href=\"/myorders\"]";
-    
-    IWebElement? myOrdBtn = null;
 
-    IWebElement? v_firstName = null;
-    IWebElement? v_lastName = null;
-    IWebElement? v_line1 = null;
-    IWebElement? v_line2 = null;
-    IWebElement? v_line3 = null;
-    IWebElement? v_city = null;
-    IWebElement? v_state = null;
-    IWebElement? v_country = null;
-    IWebElement? v_zip = null;
-    IWebElement? v_email = null;
+    public IWebElement? myOrdBtn = null;
 
-    string? s_firstName = null;
-    string? s_lastName = null;
-    string? s_line1 = null;
-    string? s_line2 = null;
-    string? s_line3 = null;
-    string? s_city = null;
-    string? s_state = null;
-    string? s_country = null;
-    string? s_zip = null;
-    string? s_email = null;
+    public IWebElement? v_firstName = null;
+    public IWebElement? v_lastName = null;
+    public IWebElement? v_line1 = null;
+    public IWebElement? v_line2 = null;
+    public IWebElement? v_line3 = null;
+    public IWebElement? v_city = null;
+    public IWebElement? v_state = null;
+    public IWebElement? v_country = null;
+    public IWebElement? v_zip = null;
+    public IWebElement? v_email = null;
 
-    string? c_firstName = null;
-    string? c_lastName = null;
-    string? c_line1 = null;
-    string? c_line2 = null;
-    string? c_line3 = null;
-    string? c_city = null;
-    string? c_state = null;
-    string? c_country = null;
-    string? c_zip = null;
-    string? c_email = null;
+    public string? s_firstName = null;
+    public string? s_lastName = null;
+    public string? s_line1 = null;
+    public string? s_line2 = null;
+    public string? s_line3 = null;
+    public string? s_city = null;
+    public string? s_state = null;
+    public string? s_country = null;
+    public string? s_zip = null;
+    public string? s_email = null;
+
+    public string? c_firstName = null;
+    public string? c_lastName = null;
+    public string? c_line1 = null;
+    public string? c_line2 = null;
+    public string? c_line3 = null;
+    public string? c_city = null;
+    public string? c_state = null;
+    public string? c_country = null;
+    public string? c_zip = null;
+    public string? c_email = null;
 
     public void GoToCheckout()
     {
