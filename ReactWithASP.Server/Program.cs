@@ -83,7 +83,6 @@ builder.Services.AddScoped<StoreContext, StoreContext>();
 builder.Services.AddScoped<MyEnv, MyEnv>();
 
 // -------------------------------------------------------------
-// Configure the HTTP Request pipeline
 
 var app = builder.Build();
 
