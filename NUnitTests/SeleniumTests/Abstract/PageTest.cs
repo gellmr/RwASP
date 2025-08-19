@@ -1,6 +1,14 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
+/* 
+ -------------------------------------------------------------------------------
+ To run Vite and Backend in Powershell instead of VS, cd to /reactwithasp.client
+ and /ReactWithASP.Server directories, and execute the following...
+ -------------------------------------------------------------------------------
+ npm run dev
+ dotnet run --urls "https://localhost:7225" --launch-profile "https"
+*/
 namespace NUnitTests.SeleniumTests
 {
   // The [TestFixture] attribute denotes a class that contains test methods.
