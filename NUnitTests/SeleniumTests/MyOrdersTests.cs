@@ -5,7 +5,7 @@ using SeleniumExtras.WaitHelpers;
 namespace NUnitTests.SeleniumTests
 {
   [TestFixture]
-  public class MyOrdersTests : PageTest
+  public class MyOrdersTests : CheckoutTests
   {
     [Test]
     public void EmptyMyOrdersPage_LoadsSuccessfully()
@@ -26,6 +26,12 @@ namespace NUnitTests.SeleniumTests
       IWebElement noOrdElement = driver.FindElement(By.CssSelector(noOrdersElement));
       Assert.That(element.Text,       Does.Contain("My Orders"),             "My Orders page - title is incorrect.");
       Assert.That(noOrdElement.Text,  Does.Contain("(None at the moment)"),  "My Orders page - No Orders Message is incorrect.");
+    }
+
+    [Test]
+    public void SubmitAutofill1_AppearsInMyOrders()
+    {
+      GoCheckoutAndSubmitAutofill(1);
     }
   }
 }

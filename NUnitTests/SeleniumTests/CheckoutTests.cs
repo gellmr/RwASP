@@ -107,6 +107,43 @@ namespace NUnitTests.SeleniumTests
       c_email = fields[9].Text;
     }
 
+    public void GoCheckoutAndSubmitAutofill(Int32 clickCount)
+    {
+      GoToCheckout();
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      try
+      {
+        // Click N times...
+        for(int i = 0; i < clickCount; i++) {
+          IWebElement autoButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(autoBtn)));
+          autoButton.Click();
+        }
+
+        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(fieldElement)));
+        IReadOnlyCollection<IWebElement> allFields = driver.FindElements(By.CssSelector(fieldElement));
+        List<IWebElement> fields = allFields.ToList();
+        GetFields(fields);
+
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(coSubmit)));
+        clickableButton.Click();
+
+        IWebElement coSuccessElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(coSuccess)));
+        string successText = TestHelpers.TrimAndFlattenString(coSuccessElement.Text);
+        Assert.That(successText, Does.Contain("Thanks!"), "Checkout - success - Title - incorrect.");
+        Assert.That(successText, Does.Contain("Your order has been submitted. We'll ship your goods as soon as possible."), "Checkout - success - Message - incorrect.");
+        Assert.That(successText, Does.Contain("Continue Shopping"), "Checkout - success - Button - incorrect.");
+        Assert.That(driver.Url, Does.Contain("/checkoutsuccess"), "Failed to reach checkout success page.");
+
+        myOrdBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrders)));
+        wait.Until(ExpectedConditions.TextToBePresentInElement(myOrdBtn, "My Orders (1)"));
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("Timeout during SubmitEmpty_ShowsClientValidation");
+      }
+      Assert.That(myOrdBtn.Text, Does.Contain("My Orders (1)"), "Checkout - success - My Orders Button - incorrect.");
+    }
+
     [Test]
     public void EmptyCheckoutPage_LoadsSuccessfully(){
       GoToCheckout();
@@ -146,36 +183,7 @@ namespace NUnitTests.SeleniumTests
     [Test]
     public void SubmitAutofill1_ShowsCheckoutSuccess()
     {
-      GoToCheckout();
-      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-      try
-      {
-        IWebElement autoButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(autoBtn)));
-        autoButton.Click();
-
-        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(fieldElement)));
-        IReadOnlyCollection<IWebElement> allFields = driver.FindElements(By.CssSelector(fieldElement));
-        List<IWebElement> fields = allFields.ToList();
-        GetFields(fields);
-
-        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(coSubmit)));
-        clickableButton.Click();
-
-        IWebElement coSuccessElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(coSuccess)));
-        string successText = TestHelpers.TrimAndFlattenString(coSuccessElement.Text);
-        Assert.That(successText, Does.Contain("Thanks!"), "Checkout - success - Title - incorrect.");
-        Assert.That(successText, Does.Contain("Your order has been submitted. We'll ship your goods as soon as possible."), "Checkout - success - Message - incorrect.");
-        Assert.That(successText, Does.Contain("Continue Shopping"), "Checkout - success - Button - incorrect.");
-        Assert.That(driver.Url, Does.Contain("/checkoutsuccess"), "Failed to reach checkout success page.");
-        
-        myOrdBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrders)));
-        wait.Until(ExpectedConditions.TextToBePresentInElement(myOrdBtn, "My Orders (1)"));
-      }
-      catch (WebDriverTimeoutException ex)
-      {
-        Assert.Fail("Timeout during SubmitEmpty_ShowsClientValidation");
-      }
-      Assert.That(myOrdBtn.Text, Does.Contain("My Orders (1)"), "Checkout - success - My Orders Button - incorrect.");
+      GoCheckoutAndSubmitAutofill(1);
     }
   }
 }
