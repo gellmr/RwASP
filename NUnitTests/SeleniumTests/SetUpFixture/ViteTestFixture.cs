@@ -14,16 +14,16 @@ namespace SeleniumTests
 {
   // The Visual Studio debugger attaches to the test host process after the initial NUnit setup phase, but before test methods run. This means it will hit breakpoints for a test method, but it does not attach early enough to hit breakpoints within a SetUpFixture class. To allow breakpoints to be hit for the SetUpFixture, uncomment the DebugTest class below. Then you can right-click and Debug the MyTest class, in Test Explorer, and it will run and hit breakpoints within the SetUpFixture. Don't try to also run normal tests this way. Once you have finished debugging the SetUpFixture, comment out the DebugTest class again.
 
-  [TestFixture]
-  public class DebugTest()
-  {
-    [Test]
-    public void MyTest()
-    {
-      // Add a breakpoint here
-      System.Diagnostics.Debugger.Break();
-    }
-  }
+  //[TestFixture]
+  //public class DebugTest()
+  //{
+  //  [Test]
+  //  public void MyTest()
+  //  {
+  //    // Add a breakpoint here
+  //    System.Diagnostics.Debugger.Break();
+  //  }
+  //}
 
   // This class is responsible for managing the lifecycle of both the Vite client and the .NET Core backend.
   // It uses the [SetUpFixture] attribute to run setup/teardown once for the entire test assembly.
@@ -55,10 +55,11 @@ namespace SeleniumTests
     }
 
     private async Task StartVite(){
+      TerminateExistingProcesses("node");
       // This runs "npm run dev" in the given working directory. It will cause Vite to launch.
       viteProcess = new Process{
         StartInfo = GetDefProcessInfo( new ProcessStartInfo{
-          FileName = "npm",
+          FileName = "C:/Program Files/nodejs/npm.cmd",
           Arguments = "run dev",
           //WorkingDirectory = "../reactwithasp.client", // Root of the SPA project.
           WorkingDirectory = "C:/Users/Michael Gell/source/repos/RwASP/reactwithasp.client", // Root of the SPA project.
@@ -69,12 +70,14 @@ namespace SeleniumTests
     }
 
     private async Task StartBackend(){
+      TerminateExistingProcesses("dotnet");
       // This executes the program "dotnet" in the given working directory, with some command line arguments.
       backendProcess = new Process{
         StartInfo = GetDefProcessInfo(new ProcessStartInfo{
           FileName = "dotnet",
           //Arguments = $"run --urls \"{backendUrl}\" --launch-profile https",
-          Arguments = $"run --urls \"{backendUrl}\"",
+          //Arguments = $"run --urls \"{backendUrl}\"",
+          Arguments = "run",
           WorkingDirectory = "C:/Users/Michael Gell/source/repos/RwASP/ReactWithASP.Server", // Root of the backend server project.
         })
       };
@@ -118,10 +121,8 @@ namespace SeleniumTests
     [OneTimeSetUp]
     public async Task OneTimeSetUp()
     {
-      Console.WriteLine("Terminating any existing server processes...");
-      TerminateExistingProcesses();
       await StartBackend();
-      //await StartVite();
+      await StartVite();
       Console.WriteLine("Both servers are ready. Tests can now begin.");
     }
 
@@ -147,18 +148,11 @@ namespace SeleniumTests
     }
 
     // A helper method to find and terminate existing server processes.
-    private void TerminateExistingProcesses()
-    {
+    private void TerminateExistingProcesses(string processName){
+      // "dotnet" - Find and kill existing .NET processes.
+      // "node"   - Find and kill existing Node.js processes (Vite runs on node).
       Int32 millis = 7000;
-
-      // Find and kill existing .NET processes.
-      foreach (var process in Process.GetProcessesByName("dotnet"))
-      {
-        try { process.Kill(true); process.WaitForExit(millis); } catch { }
-      }
-      // Find and kill existing Node.js processes (Vite runs on node).
-      foreach (var process in Process.GetProcessesByName("node"))
-      {
+      foreach (var process in Process.GetProcessesByName(processName)){
         try { process.Kill(true); process.WaitForExit(millis); } catch { }
       }
     }
