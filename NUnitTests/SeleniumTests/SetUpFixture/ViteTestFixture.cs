@@ -121,8 +121,8 @@ namespace SeleniumTests
     [OneTimeSetUp]
     public async Task OneTimeSetUp()
     {
-      await StartBackend();
-      await StartVite();
+      //await StartBackend();
+      //await StartVite();
       Console.WriteLine("Both servers are ready. Tests can now begin.");
     }
 
