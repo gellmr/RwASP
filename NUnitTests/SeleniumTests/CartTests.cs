@@ -52,7 +52,6 @@ namespace NUnitTests.SeleniumTests
       catch (WebDriverTimeoutException) { Assert.Fail(pageOrElementMissing); }
       if (smallBtn == null) { Assert.Fail("Cart (smallBtn) not found"); }
       if (medBtn == null) { Assert.Fail("Cart (medBtn) not found"); }
-
       // Here we only test for the updated text appearing in medBtn. TextToBePresentInElement fails if not visible on screen.
       try{
         wait.Until(ExpectedConditions.TextToBePresentInElement(medBtn,   cartHasOneItem));
