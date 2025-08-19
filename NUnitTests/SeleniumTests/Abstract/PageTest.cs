@@ -19,7 +19,7 @@ namespace NUnitTests.SeleniumTests
     {
       // Set up the ChromeDriver. This line launches a new Chrome browser window.
       driver = new ChromeDriver();
-      driver.Manage().Window.Maximize();
+      //driver.Manage().Window.Maximize();
     }
 
     // The [TearDown] attribute runs after each test method to clean up resources.
