@@ -94,10 +94,9 @@ namespace NUnitTests.SeleniumTests
     {
       ClickAddThenGoToCart();
       if (itemOneTitle == null){
-        Assert.Fail("Cart Page - Item One - not found");
-      }else {
-        Assert.That(itemOneTitle.Text, Does.Contain(cartPageItemOneSuccessText), "Cart Page - Item One - text incorrect.");
+        Assert.Fail("Cart Page - Item One - not found"); return;
       }
+      Assert.That(itemOneTitle.Text, Does.Contain(cartPageItemOneSuccessText), "Cart Page - Item One - text incorrect.");
     }
 
     //[Test]
