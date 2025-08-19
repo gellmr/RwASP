@@ -1,12 +1,16 @@
 ﻿using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using SeleniumExtras.WaitHelpers;
+using NUnitTests.Helpers;
 
 namespace NUnitTests.SeleniumTests
 {
   [TestFixture]
   internal class HomePageSoccerCat : PageTest
   {
+    public const string soccerGoalsThumbCss = ".mgImgThumb img[src=\"/thumbs/goals1.png\"]";
+    public const string soccerRowCss = ".inStockProductCanAdd";
+    
     [Test]
     public void ClickOnSoccer_NavigatesToCorrectPage()
     {
@@ -23,9 +27,16 @@ namespace NUnitTests.SeleniumTests
         IWebElement largeLink = links[2];
         IWebElement clickableLink = wait.Until(ExpectedConditions.ElementToBeClickable(largeLink));
         clickableLink.Click();
-        Assert.That(driver.Url, Does.Contain("/category/soccer"));
-        IReadOnlyCollection<IWebElement> products = driver.FindElements(By.CssSelector(".productDetails"));
-        Assert.That(products.First().Text, Does.Contain("Soccer Goals $1000"), "First product - is missing.");
+        // The thumbnail should take longest to load so wait for this...
+        IWebElement soccerGoals = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(soccerGoalsThumbCss)));
+        IReadOnlyCollection<IWebElement> soccerRows = driver.FindElements(By.CssSelector(soccerRowCss));
+        List<IWebElement> rows = soccerRows.ToList();
+        IWebElement row1 = rows[0];
+        string? soccerText = TestHelpers.TrimAndFlattenString(row1.Text);
+        Assert.That(driver.Url, Does.Contain("/category/soccer"), "Failed to reach soccer category");
+        Assert.That(soccerText, Does.Contain("Soccer Goals $1000"), "First product - Title is incorrect.");
+        Assert.That(soccerText, Does.Contain("One lightweight aluminium standard size impact foam coated soccer goal with netting."), "First product - Description is incorrect.");
+        Assert.That(soccerText, Does.Contain("Add to Cart"), "First product - Controls are incorrect.");
       }
       catch (WebDriverTimeoutException)
       {
