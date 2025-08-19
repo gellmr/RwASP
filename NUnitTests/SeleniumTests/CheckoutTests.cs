@@ -7,10 +7,11 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   internal class CheckoutTests: PageTest
   {
-    string titleElement = ".shopLayoutTransparent h2";
+    public string titleElement = ".shopLayoutTransparent h2";
+    public string coSubmit = ".checkoutSubmitBtnGroup button[type=\"submit\"]";
+    public string validationElement = ".error";
 
-    [Test]
-    public void EmptyCheckoutPage_LoadsSuccessfully()
+    IWebElement v_firstName = null;
     IWebElement v_lastName = null;
     IWebElement v_line1 = null;
     IWebElement v_line2 = null;
