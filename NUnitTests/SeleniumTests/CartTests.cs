@@ -12,6 +12,8 @@ namespace NUnitTests.SeleniumTests
     public string cartHasOneItem = "Cart: 1 Items";
     IWebElement smallBtn = null;
     IWebElement medBtn = null;
+    public string cartPageItemOneTitleCss = ".inCartProd .inCartItemText h6";
+    public const string cartPageItemOneSuccessText = "Drink Bottle $20";
 
     [Test]
     public void EmptyCartPage_LoadsSuccessfully()
@@ -61,6 +63,30 @@ namespace NUnitTests.SeleniumTests
         Assert.Fail("Cart (smallBtn/medBtn) - \"Cart: 1 Items\" text did not appear");
       }
       Assert.That(medBtn.Text,   Does.Contain(cartHasOneItem), "Cart (medBtn) - does not say 1 item.");
+    }
+
+    [Test]
+    public void AddToCart_ItemAppearsCartPage()
+    {
+      driver.Navigate().GoToUrl(viteUrl);
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      try{ ClickAddToCart(); }
+      catch (WebDriverTimeoutException){ Assert.Fail(pageOrElementMissing); }
+      if (smallBtn == null) { Assert.Fail("Cart (smallBtn) not found"); }
+      if (medBtn == null) { Assert.Fail("Cart (medBtn)   not found"); }
+      IWebElement itemOneTitle = null;
+      try {
+        wait.Until(ExpectedConditions.TextToBePresentInElement(medBtn, cartHasOneItem));
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(medBtn));
+        clickableButton.Click();
+        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(cartPageItemOneTitleCss)));
+        itemOneTitle = driver.FindElement(By.CssSelector(cartPageItemOneTitleCss));
+      }
+      catch (WebDriverTimeoutException){
+        Assert.Fail("AddToCart_ItemAppearsCartPage - test failed.");
+      }
+      if (itemOneTitle == null) { Assert.Fail("Cart Page - Item One - not found"); }
+      Assert.That(itemOneTitle.Text, Does.Contain(cartPageItemOneSuccessText), "Cart Page - Item One - text incorrect.");
     }
   }
 }
