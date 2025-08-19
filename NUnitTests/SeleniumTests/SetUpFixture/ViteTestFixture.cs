@@ -12,6 +12,18 @@ using System.Threading.Tasks;
 
 namespace SeleniumTests
 {
+  // The Visual Studio debugger attaches to the test host process after the initial NUnit setup phase, but before test methods run. This means it will hit breakpoints for a test method, but it does not attach early enough to hit breakpoints within a SetUpFixture class. To allow breakpoints to be hit for the SetUpFixture, uncomment the DebugTest class below. Then you can right-click and Debug the MyTest class, in Test Explorer, and it will run and hit breakpoints within the SetUpFixture. Don't try to also run normal tests this way. Once you have finished debugging the SetUpFixture, comment out the DebugTest class again.
+
+  [TestFixture]
+  public class DebugTest()
+  {
+    [Test]
+    public void MyTest()
+    {
+      // Add a breakpoint here
+      System.Diagnostics.Debugger.Break();
+    }
+  }
 
   // This class is responsible for managing the lifecycle of both the Vite client and the .NET Core backend.
   // It uses the [SetUpFixture] attribute to run setup/teardown once for the entire test assembly.
@@ -29,67 +41,87 @@ namespace SeleniumTests
     private const string viteUrl = "https://localhost:" + vitePort;   //  Vite SPA proxy
     private const string backendUrl = "https://localhost:" + dotNetPort; // .NET Core backend server
 
+    private ProcessStartInfo GetDefProcessInfo(ProcessStartInfo arg)
+    {
+      return new ProcessStartInfo{
+        FileName               = arg.FileName,
+        Arguments              = arg.Arguments,
+        WorkingDirectory       = arg.WorkingDirectory,
+        RedirectStandardOutput = true,
+        RedirectStandardError  = true,
+        UseShellExecute        = false,
+        CreateNoWindow         = true
+      };
+    }
+
+    private async Task StartVite(){
+      // This runs "npm run dev" in the given working directory. It will cause Vite to launch.
+      viteProcess = new Process{
+        StartInfo = GetDefProcessInfo( new ProcessStartInfo{
+          FileName = "npm",
+          Arguments = "run dev",
+          //WorkingDirectory = "../reactwithasp.client", // Root of the SPA project.
+          WorkingDirectory = "C:/Users/Michael Gell/source/repos/RwASP/reactwithasp.client", // Root of the SPA project.
+        })
+      };
+      StartProcess(viteProcess, "ViteSPA", "C:/temp/ViteSPA.txt");
+      await WaitForServerReady(viteUrl); // Wait for the Vite server to be ready.
+    }
+
+    private async Task StartBackend(){
+      // This executes the program "dotnet" in the given working directory, with some command line arguments.
+      backendProcess = new Process{
+        StartInfo = GetDefProcessInfo(new ProcessStartInfo{
+          FileName = "dotnet",
+          //Arguments = $"run --urls \"{backendUrl}\" --launch-profile https",
+          Arguments = $"run --urls \"{backendUrl}\"",
+          WorkingDirectory = "C:/Users/Michael Gell/source/repos/RwASP/ReactWithASP.Server", // Root of the backend server project.
+        })
+      };
+      StartProcess(backendProcess, "Backend", "C:/temp/Backend.txt");
+      await WaitForServerReady(backendUrl); // Wait for the backend to be ready before starting the frontend.
+    }
+
+    private void StartProcess(Process process, string? debugPrefix, string logfilepath)
+    {
+      Console.WriteLine("Starting " + debugPrefix + " process...");
+
+      var logFile = new StreamWriter(logfilepath, true); // `true` for append mode
+
+      process.OutputDataReceived += (sender, e) =>
+      {
+        if (e.Data != null)
+        {
+          // Write the output to both the console and the log file
+          Console.WriteLine($"[{debugPrefix}]: {e.Data}");
+          logFile.WriteLine($"[{debugPrefix}]: {e.Data}");
+          logFile.Flush(); // Flush the buffer to write immediately
+        }
+      };
+
+      process.ErrorDataReceived += (sender, e) =>
+      {
+        if (e.Data != null)
+        {
+          // Write the error output to both the console and the log file
+          Console.WriteLine($"[{debugPrefix} Error]: {e.Data}");
+          logFile.WriteLine($"[{debugPrefix} Error]: {e.Data}");
+          logFile.Flush();
+        }
+      };
+      process.Start();
+      process.BeginOutputReadLine();
+      process.BeginErrorReadLine();
+    }
+
     // This method runs once before any tests in the assembly.
     [OneTimeSetUp]
     public async Task OneTimeSetUp()
     {
       Console.WriteLine("Terminating any existing server processes...");
       TerminateExistingProcesses();
-
-      Console.WriteLine("Starting .NET Core backend server...");
-      // This executes the program "dotnet" in the given working directory, with some command line arguments.
-      backendProcess = new Process
-      {
-        StartInfo = new ProcessStartInfo
-        {
-          FileName = "dotnet",
-          Arguments = "run",
-          WorkingDirectory = "C:\\Users\\Michael Gell\\source\\repos\\RwASP\\ReactWithASP.Server", // Root of the backend server project.
-          RedirectStandardOutput = true,
-          RedirectStandardError = true,
-          UseShellExecute = false,
-          CreateNoWindow = true
-        }
-      };
-
-      // Hook up event handlers to capture and log the output. This is the key to debugging!
-      backendProcess.OutputDataReceived += (sender, e) => Console.WriteLine($"[Backend]: {e.Data}");
-      backendProcess.ErrorDataReceived += (sender, e) => Console.WriteLine($"[Backend Error]: {e.Data}");
-
-      backendProcess.Start();
-      backendProcess.BeginOutputReadLine();
-      backendProcess.BeginErrorReadLine();
-
-      // Wait for the backend to be ready before starting the frontend.
-      await WaitForServerReady(backendUrl);
-
-      Console.WriteLine("Starting Vite front-end server...");
-      // This runs "npm run dev" in the given working directory. It will cause Vite to launch.
-      viteProcess = new Process
-      {
-        StartInfo = new ProcessStartInfo
-        {
-          FileName = "npm",
-          Arguments = "run dev",
-          WorkingDirectory = "../reactwithasp.client", // Root of the SPA project.
-          RedirectStandardOutput = true,
-          RedirectStandardError = true,
-          UseShellExecute = false,
-          CreateNoWindow = true
-        }
-      };
-
-      // Hook up event handlers for the Vite process as well.
-      viteProcess.OutputDataReceived += (sender, e) => Console.WriteLine($"[Frontend]: {e.Data}");
-      viteProcess.ErrorDataReceived += (sender, e) => Console.WriteLine($"[Frontend Error]: {e.Data}");
-
-      viteProcess.Start();
-      viteProcess.BeginOutputReadLine();
-      viteProcess.BeginErrorReadLine();
-
-      // Wait for the Vite server to be ready.
-      await WaitForServerReady(viteUrl);
-
+      await StartBackend();
+      //await StartVite();
       Console.WriteLine("Both servers are ready. Tests can now begin.");
     }
 
@@ -117,15 +149,17 @@ namespace SeleniumTests
     // A helper method to find and terminate existing server processes.
     private void TerminateExistingProcesses()
     {
+      Int32 millis = 7000;
+
       // Find and kill existing .NET processes.
       foreach (var process in Process.GetProcessesByName("dotnet"))
       {
-        try { process.Kill(true); process.WaitForExit(5000); } catch { }
+        try { process.Kill(true); process.WaitForExit(millis); } catch { }
       }
       // Find and kill existing Node.js processes (Vite runs on node).
       foreach (var process in Process.GetProcessesByName("node"))
       {
-        try { process.Kill(true); process.WaitForExit(5000); } catch { }
+        try { process.Kill(true); process.WaitForExit(millis); } catch { }
       }
     }
 
