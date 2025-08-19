@@ -1,5 +1,6 @@
 {
   "profiles": {
+
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
@@ -11,6 +12,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5195"
     },
+
     "https": {
       "commandName": "Project",
       "launchBrowser": true,
@@ -22,6 +24,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7225"
     },
+
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
