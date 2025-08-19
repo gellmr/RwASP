@@ -37,15 +37,14 @@ namespace SeleniumTests
       TerminateExistingProcesses();
 
       Console.WriteLine("Starting .NET Core backend server...");
-      // Use 'dotnet run' to start the backend.
+      // This executes the program "dotnet" in the given working directory, with some command line arguments.
       backendProcess = new Process
       {
         StartInfo = new ProcessStartInfo
         {
           FileName = "dotnet",
           Arguments = "run",
-          // *** IMPORTANT: You must ensure this path is correct. ***
-          WorkingDirectory = "C:\\Users\\Michael Gell\\source\\repos\\RwASP\\ReactWithASP.Server",
+          WorkingDirectory = "C:\\Users\\Michael Gell\\source\\repos\\RwASP\\ReactWithASP.Server", // Root of the backend server project.
           RedirectStandardOutput = true,
           RedirectStandardError = true,
           UseShellExecute = false,
@@ -65,15 +64,14 @@ namespace SeleniumTests
       await WaitForServerReady(backendUrl);
 
       Console.WriteLine("Starting Vite front-end server...");
-      // Start the Vite development server using `npm run dev`.
+      // This runs "npm run dev" in the given working directory. It will cause Vite to launch.
       viteProcess = new Process
       {
         StartInfo = new ProcessStartInfo
         {
           FileName = "npm",
           Arguments = "run dev",
-          // *** IMPORTANT: Adjust this path to the root of your SPA project. ***
-          WorkingDirectory = "../reactwithasp.client",
+          WorkingDirectory = "../reactwithasp.client", // Root of the SPA project.
           RedirectStandardOutput = true,
           RedirectStandardError = true,
           UseShellExecute = false,
