@@ -9,11 +9,14 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   internal class HomePageWaterSportCat : PageTest
   {
+    public const string? waterSportCatButtonCss = ".mg-category-menu-r a.btn[href='/category/waterSport']";
+    public const string bottleThumbCss = ".mgImgThumb img[src=\"/thumbs/tilt-bottle.png\"]";
+    
     [Test]
     public void ClickOnWaterSport_NavigatesToCorrectPage()
     {
       driver.Navigate().GoToUrl(viteUrl);
-      const string buttonCss = ".mg-category-menu-r a.btn[href='/category/waterSport']";
+      const string buttonCss = waterSportCatButtonCss;
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(9));
@@ -25,6 +28,8 @@ namespace NUnitTests.SeleniumTests
         IWebElement largeLink = links[2];
         IWebElement waterSportLink = wait.Until(ExpectedConditions.ElementToBeClickable(largeLink));
         waterSportLink.Click();
+        // The thumbnail should take longest to load so wait for this...
+        IWebElement drinkBottle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(bottleThumbCss)));
         Assert.That(driver.Url, Does.Contain("/category/waterSport"));
       }
       catch (WebDriverTimeoutException)
