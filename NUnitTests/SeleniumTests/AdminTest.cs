@@ -12,6 +12,20 @@ namespace NUnitTests.SeleniumTests
     public const string loginUsernameFieldCss = "#formGroupEmail";
     public const string loginPasswordFieldCss = "#formGroupPassword";
     public const string loginSubmitCss = "#loginSubmit";
+    public const string backlogTitleCss = "#adminLayout h4.adminTitleBar";
+
+    public string? vipUsername;
+    public string? vipPassword;
+
+    public AdminTest(){
+      try{
+        vipUsername = TestConfiguration.Config.GetSection("Authentication:VIP:UserName").Value;
+        vipPassword = TestConfiguration.Config.GetSection("Authentication:VIP:Password").Value;
+      }
+      catch (Exception ex){
+        throw; // Configuration not available
+      }
+    }
 
     public void GoToLoginPage()
     {
@@ -34,9 +48,34 @@ namespace NUnitTests.SeleniumTests
 
     public void LoginAsVip()
     {
-      // Populate login fields
-      // Click login button
-      // Wait for backlog page to appear
+      IWebElement? usernameField = null;
+      IWebElement? passwordField = null;
+      IWebElement? backlogTitle = null;
+      try
+      {
+        // Populate login fields
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        usernameField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(loginUsernameFieldCss)));
+        usernameField.SendKeys(vipUsername);
+
+        passwordField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(loginPasswordFieldCss)));
+        passwordField.SendKeys(vipPassword);
+
+        // Click login button
+        IWebElement submitBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(loginSubmitCss)));
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(submitBtn));
+        clickableButton.Click();
+
+        // Wait for backlog page to appear
+        backlogTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(backlogTitleCss)));
+      }
+      catch (WebDriverTimeoutException)
+      {
+        Assert.Fail(pageOrElementMissing);
+      }
+      // Backlog page should have appeared.
+      if (backlogTitle == null) { Assert.Fail("Failed to reach backlog page."); return; }
+      Assert.That(backlogTitle.Text, Does.Contain("Orders Backlog"), "LoginAsVip - backlog page title is incorrect.");
     }
   }
 }

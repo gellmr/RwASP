@@ -11,7 +11,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 
-namespace SeleniumTests
+namespace NUnitTests.SeleniumTests
 {
   // The Visual Studio debugger attaches to the test host process after the initial NUnit setup phase, but before test methods run. This means it will hit breakpoints for a test method, but it does not attach early enough to hit breakpoints within a SetUpFixture class. To allow breakpoints to be hit for the SetUpFixture, uncomment the DebugTest class below. Then you can right-click and Debug the MyTest class, in Test Explorer, and it will run and hit breakpoints within the SetUpFixture. Don't try to also run normal tests this way. Once you have finished debugging the SetUpFixture, comment out the DebugTest class again.
 
@@ -31,8 +31,6 @@ namespace SeleniumTests
   [SetUpFixture]
   public class ViteTestFixture
   {
-    //private IWebDriver driver;
-
     private Process backendProcess; // Process for the .NET Core backend server.
     private Process viteProcess;    // Process for the Vite front-end server.
 
@@ -42,8 +40,6 @@ namespace SeleniumTests
     private const string viteUrl = "https://localhost:" + vitePort;   //  Vite SPA proxy
     private const string backendUrl = "https://localhost:" + dotNetPort; // .NET Core backend server
 
-    private IConfigurationRoot? _configuration;
-
     private void GetAppSettings()
     {
       try
@@ -51,12 +47,11 @@ namespace SeleniumTests
         string? projRootDir = MgUtility.FindProjectRoot();
         if (projRootDir == null) { throw new Exception("Could not find test project root directory");};
         string jsonFile = projRootDir + "/appSettings.json";
-        _configuration = new ConfigurationBuilder()
+        IConfiguration? configuration = new ConfigurationBuilder()
             .SetBasePath(TestContext.CurrentContext.TestDirectory)
             .AddJsonFile(jsonFile, optional: false, reloadOnChange: true)
             .Build();
-        string vipPassword = _configuration.GetSection("Authentication:VIP:Password").Value;
-        string vipUsername = _configuration.GetSection("Authentication:VIP:UserName").Value;
+        TestConfiguration.Config = configuration;
       }
       catch (Exception ex)
       {

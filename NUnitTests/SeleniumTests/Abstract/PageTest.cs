@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium.Chrome;
 
 /* 
@@ -11,6 +12,10 @@ using OpenQA.Selenium.Chrome;
 */
 namespace NUnitTests.SeleniumTests
 {
+  public static class TestConfiguration{
+    public static IConfiguration? Config { get; set; }
+  }
+
   // The [TestFixture] attribute denotes a class that contains test methods.
   // This test will automatically use the [SetUpFixture] to start the servers
   // before any of its tests are executed.
