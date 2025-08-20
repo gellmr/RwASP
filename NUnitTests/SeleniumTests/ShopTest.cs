@@ -17,6 +17,7 @@ namespace NUnitTests.SeleniumTests
     public IWebElement medCartBtn = null;
     public IWebElement? myOrdNavBtn = null;
     public IWebElement viewDetailsBtn = null;
+    public IWebElement? adminProdsNavBtn = null;
     public const string shopPlusCss = ".addToCartBtnGroup button i.bi-plus";
     public const string cartButtonCss = "a.mgNavLinkCartBtn";
     public const string cartHasOneItem = "Cart: 1 Items";
@@ -45,6 +46,12 @@ namespace NUnitTests.SeleniumTests
     public const string? backlogCurrentPageCss = "#adminLayout .wrapClearTable";
     public const string? backlogTopRowCss = "tr.backlogCursorRow";
     public string? backlogRow1TextResult = null; // Not const. Gets set later
+
+    public const string? adminProdNavLinkMed = "#adminLayout .navbar-collapse a[href=\"/admin/products\"]";
+    public const string? adminProdsTitleCss = "#adminLayout .adminCont h4.adminTitleBar";
+    public const string? adminProdsBottleImgCss = "#adminLayout .adminProductsAll .adminProdImage img[src=\"/thumbs/tilt-bottle.png\"]";
+    public const string? adminProdsBottleRowCss = "#adminLayout .adminProductsAll .adminProductRow";
+    public string? bottleRowTextResult = null; // Not const. Gets set later
 
     public void AddBottleToCart()
     {
@@ -189,6 +196,37 @@ namespace NUnitTests.SeleniumTests
       Assert.That(backlogRow1TextResult,           Does.Contain("John Doe"),   "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
       Assert.That(backlogRow1TextResult.ToLower(), Does.Contain(guidShort),    "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
       Assert.That(backlogRow1TextResult,           Does.Contain(expectedText), "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
+    }
+
+    public void GoToAdminProducts()
+    {
+      IWebElement? pageTitle = null;
+      IWebElement? bottleImage = null;
+      IReadOnlyCollection<IWebElement> productRows = null;
+      IWebElement? bottleRow = null;
+      try
+      {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        adminProdsNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(adminProdNavLinkMed)));
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(adminProdsNavBtn));
+        clickableButton.Click();
+        pageTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(adminProdsTitleCss)));
+        bottleImage = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(adminProdsBottleImgCss)));
+
+        // Get the bottle row text
+        bottleRow = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(adminProdsBottleRowCss)));
+        IReadOnlyCollection<IWebElement> bottleRows = driver.FindElements(By.CssSelector(adminProdsBottleRowCss));
+        List<IWebElement> rows = bottleRows.ToList();
+        IWebElement row1 = rows[0];
+        bottleRowTextResult = TestHelpers.TrimAndFlattenString(row1.Text);
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("Timeout during GoToAdminProducts");
+      }
+      if (pageTitle == null){ Assert.Fail("GoToAdminProducts - Page title not found"); return; }
+      if (bottleImage == null) { Assert.Fail("GoToAdminProducts - Bottle image not found"); return; }
+      Assert.That(pageTitle.Text, Does.Contain("Products"), "GoToAdminProducts - Page title - incorrect.");
     }
   }
 }
