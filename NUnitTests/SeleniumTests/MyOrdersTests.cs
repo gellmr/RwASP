@@ -31,7 +31,13 @@ namespace NUnitTests.SeleniumTests
     [Test]
     public void SubmitAutofill1_AppearsInMyOrders()
     {
-      GoCheckoutAndSubmitAutofill(1);
+      AddBottleToCart();
+      GoToCheckout();
+      SubmitAutofill(1);
+      // Go to My Orders
+      // Should see Drink Bottle
+      // Go to Order Detail
+      // Should see Drink Bottle Details
     }
   }
 }

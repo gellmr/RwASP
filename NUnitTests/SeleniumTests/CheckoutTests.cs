@@ -8,7 +8,7 @@ using System.Net.NetworkInformation;
 namespace NUnitTests.SeleniumTests
 {
   [TestFixture]
-  public class CheckoutTests: PageTest
+  public class CheckoutTests: ShopTest
   {
     public string titleElement = ".shopLayoutTransparent h2";
     public string coSubmit = ".checkoutSubmitBtnGroup button[type=\"submit\"]";
@@ -107,9 +107,8 @@ namespace NUnitTests.SeleniumTests
       c_email = fields[9].Text;
     }
 
-    public void GoCheckoutAndSubmitAutofill(Int32 clickCount)
+    public void SubmitAutofill(Int32 clickCount)
     {
-      GoToCheckout();
       var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
       try
       {
@@ -183,7 +182,9 @@ namespace NUnitTests.SeleniumTests
     [Test]
     public void SubmitAutofill1_ShowsCheckoutSuccess()
     {
-      GoCheckoutAndSubmitAutofill(1);
+      AddBottleToCart();
+      GoToCheckout();
+      SubmitAutofill(1);
     }
   }
 }
