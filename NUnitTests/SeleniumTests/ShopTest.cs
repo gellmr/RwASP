@@ -38,6 +38,10 @@ namespace NUnitTests.SeleniumTests
     public string? detailHeadInfoTextResult = null; // Not const. Gets set later
     public string? detailBodyInfoTextResult = null; // Not const. Gets set later
 
+    public const string? myOrdGuestGuidCss = ".myOrdersHeadInfo .guid";
+    public string? myOrdGuestGuid = null;      // Not const. Gets set later
+    public string? myOrdGuestGuidShort = null; // Not const. Gets set later
+
     public const string? backlogCurrentPageCss = "#adminLayout .wrapClearTable";
     public const string? backlogTopRowCss = "tr.backlogCursorRow";
     public string? backlogRow1TextResult = null; // Not const. Gets set later
@@ -80,6 +84,11 @@ namespace NUnitTests.SeleniumTests
         // Get Order head info
         IWebElement myOrdPageHeadInfo = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageHeadInfoCss)));
         ordHeadInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageHeadInfo.Text);
+
+        // Get Guest guid value
+        IWebElement guidEl = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdGuestGuidCss)));
+        myOrdGuestGuid = guidEl.Text;
+        try{ myOrdGuestGuidShort = myOrdGuestGuid.Split('-')[0]; } catch (Exception e) { myOrdGuestGuidShort = null; }
 
         // Get Order body details
         wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageBodyInfoCss)));
@@ -175,9 +184,11 @@ namespace NUnitTests.SeleniumTests
 
     public void ShouldSee_JohnDoe_BottleOrdBacklog()
     {
+      string? guidShort = myOrdGuestGuidShort.ToLower();
       string? expectedText = "Guest john@example.com 0.00 20.00 1 Drink Bottle OrderPlaced";
-      Assert.That(backlogRow1TextResult, Does.Contain("John Doe"),   "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
-      Assert.That(backlogRow1TextResult, Does.Contain(expectedText), "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
+      Assert.That(backlogRow1TextResult,           Does.Contain("John Doe"),   "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
+      Assert.That(backlogRow1TextResult.ToLower(), Does.Contain(guidShort),    "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
+      Assert.That(backlogRow1TextResult,           Does.Contain(expectedText), "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
     }
   }
 }
