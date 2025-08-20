@@ -28,6 +28,9 @@ namespace NUnitTests.SeleniumTests
     public const string joeAddress = "123 River Gum Way, Unit 10/150, Third Floor, The Tall Apartment Building (Inc), SpringField, WA, Australia, 6525";
     public const string myOrdPageViewDetailCss = ".myOrdersRect a.btn.myOrdViewDetBtn";
 
+    public string? headInfoTextResult = null; // Not const. Gets set later
+    public string? bodyInfoTextResult = null; // Not const. Gets set later
+
     public void AddBottleToCart()
     {
       try
@@ -52,8 +55,6 @@ namespace NUnitTests.SeleniumTests
     public void GoToMyOrders()
     {
       IWebElement myOrdPageTitle = null;
-      string? headInfoText = null;
-      string? bodyInfoText = null;
       IWebElement viewDetailsBtn = null;
       try
       {
@@ -66,36 +67,41 @@ namespace NUnitTests.SeleniumTests
         myOrdPageTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageTitleCss)));
         Assert.That(myOrdPageTitle.Text, Does.Contain("My Orders"), "GoToMyOrders - page title - incorrect.");
 
+        // Get Order head info
         IWebElement myOrdPageHeadInfo = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageHeadInfoCss)));
-        headInfoText = TestHelpers.TrimAndFlattenString(myOrdPageHeadInfo.Text);
+        headInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageHeadInfo.Text);
 
+        // Get Order body details
         wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageBodyInfoCss)));
         IReadOnlyCollection<IWebElement> items = driver.FindElements(By.CssSelector(myOrdPageBodyInfoCss));
         IWebElement myOrdPageBodyInfo = items.ToList()[1];
-        bodyInfoText = TestHelpers.TrimAndFlattenString(myOrdPageBodyInfo.Text);
+        bodyInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageBodyInfo.Text);
 
+        // Get View Details button
         viewDetailsBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageViewDetailCss)));
       }
       catch (WebDriverTimeoutException ex)
       {
         Assert.Fail("Timeout during GoToMyOrders");
       }
-      
-      Assert.That(headInfoText, Does.Contain("Account Type: Guest"),     "GoToMyOrders - headInfoText - incorrect.");
-      Assert.That(headInfoText, Does.Contain("Guest ID:"),               "GoToMyOrders - headInfoText - incorrect.");
-      Assert.That(headInfoText, Does.Contain("Full Name: John Doe"),     "GoToMyOrders - headInfoText - incorrect.");
-      Assert.That(headInfoText, Does.Contain("Email: john@example.com"), "GoToMyOrders - headInfoText - incorrect.");
-
-      Assert.That(bodyInfoText, Does.Contain("Order Number"),            "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoText, Does.Contain("Status OrderPlaced"),      "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoText, Does.Contain("Placed Date"),             "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoText, Does.Contain("Items Drink Bottle (x1)"), "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoText, Does.Contain("Total Items 1"),           "GoToMyOrders - bodyInfoText - incorrect.");
-
-      Assert.That(bodyInfoText, Does.Contain("Price Total $ 20"),        "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoText, Does.Contain("Ship To: " + joeAddress),   "GoToMyOrders - bodyInfoText - incorrect.");
-
       Assert.That(viewDetailsBtn.Text, Does.Contain("View Details"),      "GoToMyOrders - viewDetailsBtn - incorrect.");
+    }
+
+    public void ShouldSee_JohnDoe_BottleOrder()
+    {
+      Assert.That(headInfoTextResult, Does.Contain("Account Type: Guest"),     "GoToMyOrders - headInfoText - incorrect.");
+      Assert.That(headInfoTextResult, Does.Contain("Guest ID:"),               "GoToMyOrders - headInfoText - incorrect.");
+      Assert.That(headInfoTextResult, Does.Contain("Full Name: John Doe"),     "GoToMyOrders - headInfoText - incorrect.");
+      Assert.That(headInfoTextResult, Does.Contain("Email: john@example.com"), "GoToMyOrders - headInfoText - incorrect.");
+
+      Assert.That(bodyInfoTextResult, Does.Contain("Order Number"),            "GoToMyOrders - bodyInfoText - incorrect.");
+      Assert.That(bodyInfoTextResult, Does.Contain("Status OrderPlaced"),      "GoToMyOrders - bodyInfoText - incorrect.");
+      Assert.That(bodyInfoTextResult, Does.Contain("Placed Date"),             "GoToMyOrders - bodyInfoText - incorrect.");
+      Assert.That(bodyInfoTextResult, Does.Contain("Items Drink Bottle (x1)"), "GoToMyOrders - bodyInfoText - incorrect.");
+      Assert.That(bodyInfoTextResult, Does.Contain("Total Items 1"),           "GoToMyOrders - bodyInfoText - incorrect.");
+
+      Assert.That(bodyInfoTextResult, Does.Contain("Price Total $ 20"),        "GoToMyOrders - bodyInfoText - incorrect.");
+      Assert.That(bodyInfoTextResult, Does.Contain("Ship To: " + joeAddress),   "GoToMyOrders - bodyInfoText - incorrect.");
     }
   }
 }
