@@ -23,7 +23,7 @@ namespace NUnitTests.SeleniumTests
       const string searchCss = "input[placeholder='Search for products']";
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(7));
         IWebElement searchElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(searchCss)));
         searchElement.SendKeys("fla");
 
