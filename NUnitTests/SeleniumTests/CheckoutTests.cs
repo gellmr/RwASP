@@ -16,9 +16,6 @@ namespace NUnitTests.SeleniumTests
     public string validationElement = ".error";
     public string fieldElement = "input.form-control";
     public string coSuccess = "#noShopLayout .shopLayoutTransparent";
-    public string myOrders = ".mgNavLinkBtn[href=\"/myorders\"]";
-
-    public IWebElement? myOrdBtn = null;
 
     public IWebElement? v_firstName = null;
     public IWebElement? v_lastName = null;
@@ -135,14 +132,14 @@ namespace NUnitTests.SeleniumTests
         Assert.That(successText, Does.Contain("Continue Shopping"), "Checkout - success - Button - incorrect.");
         Assert.That(driver.Url, Does.Contain("/checkoutsuccess"), "Failed to reach checkout success page.");
 
-        myOrdBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrders)));
-        wait.Until(ExpectedConditions.TextToBePresentInElement(myOrdBtn, "My Orders (1)"));
+        myOrdNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdCssBtn)));
+        wait.Until(ExpectedConditions.TextToBePresentInElement(myOrdNavBtn, "My Orders (1)"));
       }
       catch (WebDriverTimeoutException ex)
       {
         Assert.Fail("Timeout during SubmitEmpty_ShowsClientValidation");
       }
-      Assert.That(myOrdBtn.Text, Does.Contain("My Orders (1)"), "Checkout - success - My Orders Button - incorrect.");
+      Assert.That(myOrdNavBtn.Text, Does.Contain("My Orders (1)"), "Checkout - success - My Orders Button - incorrect.");
     }
 
     [Test]
