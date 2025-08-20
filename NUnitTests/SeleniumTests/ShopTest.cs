@@ -16,6 +16,7 @@ namespace NUnitTests.SeleniumTests
     public IWebElement smallCartBtn = null;
     public IWebElement medCartBtn = null;
     public IWebElement? myOrdNavBtn = null;
+    public IWebElement viewDetailsBtn = null;
     public const string shopPlusCss = ".addToCartBtnGroup button i.bi-plus";
     public const string cartButtonCss = "a.mgNavLinkCartBtn";
     public const string cartHasOneItem = "Cart: 1 Items";
@@ -27,6 +28,7 @@ namespace NUnitTests.SeleniumTests
     public const string myOrdPageBodyInfoCss = ".myOrdersRect";
     public const string joeAddress = "123 River Gum Way, Unit 10/150, Third Floor, The Tall Apartment Building (Inc), SpringField, WA, Australia, 6525";
     public const string myOrdPageViewDetailCss = ".myOrdersRect a.btn.myOrdViewDetBtn";
+    public const string myOrdDetPageTitleCss = "#myOrdDetailPage h4.adminTitleBar";
 
     public string? headInfoTextResult = null; // Not const. Gets set later
     public string? bodyInfoTextResult = null; // Not const. Gets set later
@@ -55,7 +57,6 @@ namespace NUnitTests.SeleniumTests
     public void GoToMyOrders()
     {
       IWebElement myOrdPageTitle = null;
-      IWebElement viewDetailsBtn = null;
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
@@ -85,6 +86,26 @@ namespace NUnitTests.SeleniumTests
         Assert.Fail("Timeout during GoToMyOrders");
       }
       Assert.That(viewDetailsBtn.Text, Does.Contain("View Details"),      "GoToMyOrders - viewDetailsBtn - incorrect.");
+    }
+
+    public void GoToMyOrderDetail()
+    {
+      string? pageTitle = null;
+      try
+      {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        viewDetailsBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageViewDetailCss)));
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(viewDetailsBtn));
+        clickableButton.Click();
+        // Should see My Order Details page
+        IWebElement titleElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdDetPageTitleCss)));
+        pageTitle = titleElement.Text;
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("Timeout during GoToMyOrderDetail");
+      }
+      Assert.That(pageTitle, Does.Contain("Order #"), "GoToMyOrderDetail - page title - incorrect.");
     }
 
     public void ShouldSee_JohnDoe_BottleOrder()
