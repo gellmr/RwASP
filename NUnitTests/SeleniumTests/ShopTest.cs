@@ -23,21 +23,25 @@ namespace NUnitTests.SeleniumTests
 
     public const decimal inCartItemOneUnitPrice = 20M;
 
-    public void ClickAddToCart()
-    {
-      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-      wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(shopPlusCss)));
-      IWebElement plusButton = driver.FindElement(By.CssSelector(shopPlusCss));
-      IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(plusButton));
-      clickableButton.Click();
-      IReadOnlyCollection<IWebElement> cartButtons = driver.FindElements(By.CssSelector(cartButtonCss));
-      List<IWebElement> btns = cartButtons.ToList(); // There are 2 sizes used at different bootstrap breakpoints
-      smallCartBtn = btns[0];
-      medCartBtn = btns[1];
-    }
-
     public void AddBottleToCart()
     {
+      try
+      {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        IWebElement plusButton = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(shopPlusCss)));
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(plusButton));
+        clickableButton.Click();
+        IReadOnlyCollection<IWebElement> cartButtons = driver.FindElements(By.CssSelector(cartButtonCss));
+        List<IWebElement> btns = cartButtons.ToList(); // There are 2 sizes used at different bootstrap breakpoints
+        smallCartBtn = btns[0];
+        medCartBtn = btns[1];
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("Timeout during AddBottleToCart");
+      }
+      if (smallCartBtn == null) { Assert.Fail("Cart (smallCartBtn) not found"); }
+      if (medCartBtn == null) {   Assert.Fail("Cart (medCartBtn) not found"); }
     }
   }
 }

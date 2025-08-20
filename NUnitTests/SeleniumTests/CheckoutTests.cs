@@ -57,15 +57,17 @@ namespace NUnitTests.SeleniumTests
     {
       driver.Navigate().GoToUrl(viteUrl + "/checkout");
       var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-      try{
-        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(titleElement)));
+      IWebElement coTitleElement = null;
+      try
+      {
+        coTitleElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(titleElement)));
       }
       catch (WebDriverTimeoutException)
       {
         Assert.Fail(pageOrElementMissing); return;
       }
-      IWebElement element = driver.FindElement(By.CssSelector(titleElement));
-      Assert.That(element.Text, Does.Contain("Checkout"), "Checkout - title is incorrect.");
+      //IWebElement coTitleElement = driver.FindElement(By.CssSelector(titleElement));
+      Assert.That(coTitleElement.Text, Does.Contain("Checkout"), "Checkout - title is incorrect.");
     }
 
     public void GetValidations(List<IWebElement> vals)
@@ -182,7 +184,10 @@ namespace NUnitTests.SeleniumTests
     [Test]
     public void SubmitAutofill1_ShowsCheckoutSuccess()
     {
-      AddBottleToCart();
+      driver.Navigate().GoToUrl(viteUrl);
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      try { AddBottleToCart(); }
+      catch (WebDriverTimeoutException) { Assert.Fail(pageOrElementMissing); }
       GoToCheckout();
       SubmitAutofill(1);
     }

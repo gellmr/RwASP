@@ -36,10 +36,8 @@ namespace NUnitTests.SeleniumTests
     {
       driver.Navigate().GoToUrl(viteUrl);
       var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-      try { ClickAddToCart(); }
+      try { AddBottleToCart(); }
       catch (WebDriverTimeoutException) { Assert.Fail(pageOrElementMissing); }
-      if (smallCartBtn == null) { Assert.Fail("Cart (smallBtn) not found"); }
-      if (medCartBtn == null) { Assert.Fail("Cart (medBtn) not found"); }
       // Here we only test for the updated text appearing in medBtn. TextToBePresentInElement fails if not visible on screen.
       try{
         wait.Until(ExpectedConditions.TextToBePresentInElement(medCartBtn,   cartHasOneItem));
@@ -55,10 +53,8 @@ namespace NUnitTests.SeleniumTests
     {
       driver.Navigate().GoToUrl(viteUrl);
       var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-      try { ClickAddToCart(); }
+      try { AddBottleToCart(); }
       catch (WebDriverTimeoutException) { Assert.Fail(pageOrElementMissing); }
-      if (smallCartBtn == null) { Assert.Fail("Cart (smallBtn) not found"); }
-      if (medCartBtn == null) { Assert.Fail("Cart (medBtn)   not found"); }
       try
       {
         wait.Until(ExpectedConditions.TextToBePresentInElement(medCartBtn, cartHasOneItem));
@@ -107,7 +103,6 @@ namespace NUnitTests.SeleniumTests
       catch (WebDriverTimeoutException){
         Assert.Fail("Failed within Cart during IncrementInCart_QtyAndPriceUpdates test.");
       }
-      if (medCartBtn == null) {     Assert.Fail("Cart (medBtn)     not found"); return; }
       if (row1 == null) {       Assert.Fail("Cart (row1)       not found"); return; }
       if (summaryRow == null) { Assert.Fail("Cart (summaryRow) not found"); return; }
       string? row1Text    = TestHelpers.TrimAndFlattenString(row1.Text);
