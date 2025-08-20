@@ -99,7 +99,7 @@ const AdminUserAccounts = () =>
         </Col>
 
         <Col xs={12} className="adminUserAccDetailLinks">
-          <NavLink to={editLink} className={isCurrentUser ? "btn btn-light editCurrUser" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+          <NavLink to={editLink} className={isCurrentUser ? "btn btn-light editAccLink editCurrUser" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
             Edit Account <i className="bi bi-pencil-square"></i>
           </NavLink>
           <NavLink to={ordersLink} className={isCurrentUser ? "btn btn-light" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>

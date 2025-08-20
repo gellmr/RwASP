@@ -8,7 +8,6 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   public class AdminCustAccountsTest : AdminTest
   {
-    const string? editAccountButtonCss = "#adminLayout .currUserRow a.editCurrUser";
     const string? editPageUserPicCss = ".adminUserEditCurrPhoto";
     const string? editFullNameCss = "#editFullName";
     const string? editUserNameCss = "#editUserName";
@@ -53,7 +52,7 @@ namespace NUnitTests.SeleniumTests
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText), "Edit Admin - Administrator row not found.");
 
         // Wait until "Edit Account" button is visible and clickable
-        IWebElement editBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(editAccountButtonCss)));
+        IWebElement editBtn = row.FindElement(By.CssSelector(".editAccLink"));
 
         // Click to go to Edit Account
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(editBtn));
