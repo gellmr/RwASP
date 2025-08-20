@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+﻿using Microsoft.Extensions.Configuration;
 using NUnitTests.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -40,6 +41,28 @@ namespace SeleniumTests
 
     private const string viteUrl = "https://localhost:" + vitePort;   //  Vite SPA proxy
     private const string backendUrl = "https://localhost:" + dotNetPort; // .NET Core backend server
+
+    private IConfigurationRoot? _configuration;
+
+    private void GetAppSettings()
+    {
+      try
+      {
+        string? projRootDir = MgUtility.FindProjectRoot();
+        if (projRootDir == null) { throw new Exception("Could not find test project root directory");};
+        string jsonFile = projRootDir + "/appSettings.json";
+        _configuration = new ConfigurationBuilder()
+            .SetBasePath(TestContext.CurrentContext.TestDirectory)
+            .AddJsonFile(jsonFile, optional: false, reloadOnChange: true)
+            .Build();
+        string vipPassword = _configuration.GetSection("Authentication:VIP:Password").Value;
+        string vipUsername = _configuration.GetSection("Authentication:VIP:UserName").Value;
+      }
+      catch (Exception ex)
+      {
+        throw;
+      }
+    }
 
     private ProcessStartInfo GetDefProcessInfo(ProcessStartInfo arg)
     {
@@ -121,6 +144,7 @@ namespace SeleniumTests
     [OneTimeSetUp]
     public async Task OneTimeSetUp()
     {
+      GetAppSettings();
       //await StartBackend();
       //await StartVite();
       Console.WriteLine("Both servers are ready. Tests can now begin.");
