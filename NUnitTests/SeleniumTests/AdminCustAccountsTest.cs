@@ -17,6 +17,13 @@ namespace NUnitTests.SeleniumTests
     const string? editPhoneCss    = "#editPhone";
     const string? editEmailCss    = "#editEmail";
 
+    public string? fullName = null;
+    public string? userName = null;
+    public string? uid = null;
+    public string? gid = null;
+    public string? phone = null;
+    public string? email = null;
+
     [Test]
     public void LoginAsVip_ShouldSeeAdmin()
     {
@@ -34,12 +41,6 @@ namespace NUnitTests.SeleniumTests
       GoToLoginPage();
       LoginAsVip();
       GoToCustomerAccounts();
-      string? fullName = null;
-      string? userName = null;
-      string? uid  = null;
-      string? gid = null;
-      string? phone = null;
-      string? email = null;
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
@@ -60,18 +61,12 @@ namespace NUnitTests.SeleniumTests
 
         // Wait until the Edit Account page appears
         IWebElement editPageUserPic = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(editPageUserPicCss))); // The pic should take longest to load.
-
-        // Should see Aministrator details
-        fullName = GetInputVal(editFullNameCss);
-        userName = GetInputVal(editUserNameCss);
-        gid = (guestId != null) ? GetInputVal(editGuestIdCss) : null;
-        uid = (userId != null) ? GetInputVal(editUserIdCss) : null;
-        phone = GetInputVal(editPhoneCss);
-        email = GetInputVal(editEmailCss);
+        GetCustomerDetail();
       }
       catch (WebDriverTimeoutException ex){
         Assert.Fail("Edit Admin - Timeout occurred");
       }
+      // Should see Aministrator details
       Assert.That(fullName, Is.EqualTo("Administrator"),      "Edit Admin - Administrator fullName incorrect");
       Assert.That(userName, Is.EqualTo("user111"),            "Edit Admin - Administrator userName incorrect");
       if (gid != null){ Assert.That(gid, Is.EqualTo(guestId), "Edit Admin - Administrator gid incorrect"); }
@@ -79,6 +74,15 @@ namespace NUnitTests.SeleniumTests
       Assert.That(phone, Is.EqualTo("04 1234 4321"),          "Edit Admin - Administrator phone incorrect");
       Assert.That(email, Is.EqualTo("user-111@gmail.com"),    "Edit Admin - Administrator email incorrect");
     }
-    
+
+    public void GetCustomerDetail()
+    {
+      fullName = GetInputVal(editFullNameCss);
+      userName = GetInputVal(editUserNameCss);
+      gid = (guestId != null) ? GetInputVal(editGuestIdCss) : null;
+      uid = (userId != null) ? GetInputVal(editUserIdCss) : null;
+      phone = GetInputVal(editPhoneCss);
+      email = GetInputVal(editEmailCss);
+    }
   }
 }
