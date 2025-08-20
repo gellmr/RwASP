@@ -2,7 +2,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { nullOrUndefined, isNullOrEmpty } from '@/MgUtility.js';
-import { checkoutAutofill } from '@/Autofill.js';
+import { checkoutAutofill, checkoutValuesfill } from '@/Autofill.js';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import InputGroup from 'react-bootstrap/InputGroup';
 
@@ -72,9 +72,11 @@ const CheckoutFormik = () =>
       let reset = checkoutAutofill(formik, autoFillIdx);
       let i = reset ? 0 : autoFillIdx + 1;
       setAutoFillIdx(i);
-      await formik.validateForm(); // Wait for the form values to update
-      markAllFieldsAsTouched(formik.values, formik.setTouched); // Trigger this so the error messages will clear
+    } else {
+      checkoutValuesfill(formik, initVals);
     }
+    await formik.validateForm(); // Wait for the form values to update
+    markAllFieldsAsTouched(formik.values, formik.setTouched); // Trigger this so the error messages will clear
   }
 
   const markAllFieldsAsTouched = (values, setTouched) => {

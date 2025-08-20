@@ -55,4 +55,17 @@ const checkoutAutofill = function (formik, index)
   return index == autoVal.length - 1;
 }
 
-export { checkoutAutofill }
+const checkoutValuesfill = function (formik, initVals) {
+  formik.setFieldValue('firstName',   initVals.firstName   || "");
+  formik.setFieldValue('lastName',    initVals.lastName    || "");
+  formik.setFieldValue('shipLine1',   initVals.shipLine1   || "804 Wellington Street");
+  formik.setFieldValue('shipLine2',   initVals.shipLine2   || "");
+  formik.setFieldValue('shipLine3',   initVals.shipLine3   || "");
+  formik.setFieldValue('shipCity',    initVals.shipCity    || "Perth");
+  formik.setFieldValue('shipState',   initVals.shipState   || "WA");
+  formik.setFieldValue('shipCountry', initVals.shipCountry || "Australia");
+  formik.setFieldValue('shipZip',     initVals.shipZip     || "6000");
+  formik.setFieldValue('shipEmail',   initVals.shipEmail   || "");
+}
+
+export { checkoutAutofill, checkoutValuesfill }
