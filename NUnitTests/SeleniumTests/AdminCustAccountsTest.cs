@@ -47,20 +47,12 @@ namespace NUnitTests.SeleniumTests
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-        
-        // Wait until page says "(Logged in as) Administrator"
-        IWebElement? row = customerAccountLines[0]; // Get the first row
-        customerAccountLineResultText = TestHelpers.TrimAndFlattenString(row.Text);
+        customerAccountLineResultText = TestHelpers.TrimAndFlattenString(chosenCaRow.Text);
         string? expectedText = "(Logged in as) Administrator";
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText), "Edit Admin - Administrator row not found.");
-
-        // Wait until "Edit Account" button is visible and clickable
-        IWebElement editBtn = row.FindElement(By.CssSelector(editAccLinkCss));
-
-        // Click to go to Edit Account
+        IWebElement editBtn = chosenCaRow.FindElement(By.CssSelector(editAccLinkCss));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(editBtn));
         clickableButton.Click();
-
         // Wait until the Edit Account page appears
         IWebElement editPageUserPic = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(editPageUserPicCss))); // The pic should take longest to load.
         GetCustomerDetail();
@@ -99,15 +91,15 @@ namespace NUnitTests.SeleniumTests
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-        IWebElement? row = customerAccountLines[1]; // Get second row
-        customerAccountLineResultText = TestHelpers.TrimAndFlattenString(row.Text);
+        customerAccountLineResultText = TestHelpers.TrimAndFlattenString(chosenCaRow.Text);
         string? expectedText1 = "Full Name Eileen Ryan";
         string? expectedText2 = "Phone Email eileen.ryan@freesport.com Account Type Guest Edit Account View Orders";
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText1), "ShouldSeeGuest - EileenRyan - incorrect details.");
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText2), "ShouldSeeGuest - EileenRyan - incorrect details.");
-        IWebElement editBtn = row.FindElement(By.CssSelector(".editAccLink"));
+        IWebElement editBtn = chosenCaRow.FindElement(By.CssSelector(".editAccLink"));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(editBtn));
         clickableButton.Click();
+        // Wait until the Edit Account page appears
         IWebElement editPageUserPic = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(editPageUserPicCss))); // Longest load.
         GetCustomerDetail();
       }
