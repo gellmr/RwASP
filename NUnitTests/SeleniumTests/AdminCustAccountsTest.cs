@@ -42,11 +42,12 @@ namespace NUnitTests.SeleniumTests
       GoToLoginPage();
       LoginAsVip();
       GoToCustomerAccounts();
+      GetCustomerAccountLines();
+      GetAccountTypeAndId("Administrator");
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-        GetCustomerAccountLines();
-
+        
         // Wait until page says "(Logged in as) Administrator"
         IWebElement? row = customerAccountLines[0]; // Get the first row
         customerAccountLineResultText = TestHelpers.TrimAndFlattenString(row.Text);
@@ -84,6 +85,42 @@ namespace NUnitTests.SeleniumTests
       uid = (userId != null) ? GetInputVal(editUserIdCss) : null;
       phone = GetInputVal(editPhoneCss);
       email = GetInputVal(editEmailCss);
+    }
+
+    [Test]
+    public void EditAccount_ShouldSeeGuest_EileenRyan()
+    {
+      driver.Navigate().GoToUrl(viteUrl);
+      GoToLoginPage();
+      LoginAsVip();
+      GoToCustomerAccounts();
+      GetCustomerAccountLines();
+      GetAccountTypeAndId("Eileen Ryan");
+      try
+      {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        IWebElement? row = customerAccountLines[1]; // Get second row
+        customerAccountLineResultText = TestHelpers.TrimAndFlattenString(row.Text);
+        string? expectedText1 = "Full Name Eileen Ryan";
+        string? expectedText2 = "Phone Email eileen.ryan@freesport.com Account Type Guest Edit Account View Orders";
+        Assert.That(customerAccountLineResultText, Does.Contain(expectedText1), "ShouldSeeGuest - EileenRyan - incorrect details.");
+        Assert.That(customerAccountLineResultText, Does.Contain(expectedText2), "ShouldSeeGuest - EileenRyan - incorrect details.");
+        IWebElement editBtn = row.FindElement(By.CssSelector(".editAccLink"));
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(editBtn));
+        clickableButton.Click();
+        IWebElement editPageUserPic = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(editPageUserPicCss))); // Longest load.
+        GetCustomerDetail();
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("ShouldSeeGuest - EileenRyan - Timeout occurred");
+      }
+      // Should see Eileen Ryan
+      Assert.That(fullName, Is.EqualTo("Eileen Ryan"),               "ShouldSeeGuest - EileenRyan - Administrator fullName incorrect");
+      Assert.That(userName, Is.EqualTo("eileen-ryan-b42"),           "ShouldSeeGuest - EileenRyan - Administrator userName incorrect");
+      Assert.That(gid,      Is.EqualTo(guestId),                     "ShouldSeeGuest - EileenRyan - Administrator gid incorrect");
+      //Assert.That(phone,    Is.EqualTo("xx xxxx xxxx"),            "ShouldSeeGuest - EileenRyan - Administrator phone incorrect");
+      Assert.That(email,    Is.EqualTo("eileen.ryan@freesport.com"), "ShouldSeeGuest - EileenRyan - Administrator email incorrect");
     }
   }
 }

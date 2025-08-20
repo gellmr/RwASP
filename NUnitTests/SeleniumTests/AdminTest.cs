@@ -2,7 +2,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
-using System.Xml.Linq;
 
 namespace NUnitTests.SeleniumTests
 {
@@ -22,6 +21,7 @@ namespace NUnitTests.SeleniumTests
     public const string? custAccsPageTitleCss = ".adminCont h4.adminTitleBar";
 
     public List<IWebElement> customerAccountLines;
+    public IWebElement chosenCaRow;
     public const string? customerAccountLinesCss = ".adminUserAccRow";
     public string? customerAccountLineResultText = null; // Not const. Gets set later
 
@@ -29,7 +29,6 @@ namespace NUnitTests.SeleniumTests
     public string? guestId = null;   // Set if we are Guest. Else null
     public string? userId = null;    // Set if we are User.  Else null
 
-    public const string? accountTypeCss = ".accountTypeCell";
     public const string? idValFieldCss     = ".adminUserAccCell.mgGuid";
 
     public AdminTest(){
@@ -106,13 +105,6 @@ namespace NUnitTests.SeleniumTests
 
         // Wait for backlog page to appear
         pageTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(custAccsPageTitleCss)));
-
-        // Get the Account Type and Guest/User id value...
-        IWebElement accountType = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(accountTypeCss)));
-        loginType = accountType.Text; // "User" | "Guest"
-        IWebElement idValField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(idValFieldCss)));
-        guestId = (loginType == "Guest") ? idValField.Text : null ;
-        userId  = (loginType == "User")  ? idValField.Text : null;
       }
       catch (WebDriverTimeoutException ex)
       {
@@ -120,6 +112,39 @@ namespace NUnitTests.SeleniumTests
       }
       if (pageTitle == null) { Assert.Fail("Failed to reach customer accounts page."); return; }
       Assert.That(pageTitle.Text, Does.Contain("Customer Accounts"), "Customer accounts - page title is incorrect.");
+    }
+
+    public void GetAccountTypeAndId(string? fullname)
+    {
+      try
+      {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+
+        // Find the row with the fullname given
+        IWebElement parentContainer = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".adminContainUserAccRow")));
+        List<IWebElement> descendants = parentContainer.FindElements(By.CssSelector(".fullNameCell")).ToList();
+        IWebElement? fullnameElement = null;
+        foreach (IWebElement desc in descendants){
+          if (desc.Text == fullname){ fullnameElement = desc; break; }
+        }
+        if (fullnameElement == null){ Assert.Fail("Could not find Account Type and ID for given user/guest"); return; }
+        
+        // Get the enclosing element.
+        chosenCaRow = fullnameElement.FindElement(By.XPath("../../..")); // Up three levels
+
+        // Locate the account type field.
+        IWebElement accTypeField = chosenCaRow.FindElement(By.CssSelector(".accountTypeCell"));
+        IWebElement idValField = chosenCaRow.FindElement(By.CssSelector(".mgGuid"));
+
+        // Get the Account Type and Guest/User id value...
+        loginType = accTypeField.Text; // "User" | "Guest"
+        guestId = (loginType == "Guest") ? idValField.Text : null;
+        userId = (loginType == "User") ? idValField.Text : null;
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("Timeout during GetAccountTypeAndId");
+      }
     }
 
     public void GetCustomerAccountLines()
@@ -131,7 +156,7 @@ namespace NUnitTests.SeleniumTests
         customerAccountLines = accRows.ToList();
       }
       catch (WebDriverTimeoutException ex){
-        Assert.Fail("ShouldSee_Admin - Timeout occurred");
+        Assert.Fail("GetCustomerAccountLines - Timeout occurred");
       }
     }
 
