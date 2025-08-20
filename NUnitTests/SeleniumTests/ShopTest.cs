@@ -176,7 +176,7 @@ namespace NUnitTests.SeleniumTests
         IWebElement row1 = rows[0];
         backlogRow1TextResult = TestHelpers.TrimAndFlattenString(row1.Text);
       }
-      catch (Exception ex)
+      catch (WebDriverTimeoutException ex)
       {
         Assert.Fail("Timeout during GetBacklogPageValues");
       }
