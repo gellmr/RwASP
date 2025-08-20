@@ -126,7 +126,7 @@ const MyOrders = () =>
                 <Row>
                   <Col xs={4} sm={3} className=""></Col>
                   <Col xs={8} sm={9} style={{textAlign:'right', paddingBottom:10, paddingRight:25}}>
-                    <NavLink to={"/myorders/" + ord.id} className="btn btn-light" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+                    <NavLink to={"/myorders/" + ord.id} className="btn btn-light myOrdViewDetBtn" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
                       View Details <i className="bi bi-arrow-right-short"></i>
                     </NavLink>
                   </Col>
