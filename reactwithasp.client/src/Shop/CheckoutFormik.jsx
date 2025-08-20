@@ -64,13 +64,17 @@ const CheckoutFormik = () =>
     shipEmail: nullOrUndefined(_email) ? '' : _email,
   };
 
+  const useAutoFill = (nullOrUndefined(myUserId)) ? true : false;
+
   const autoFill = async function ()
   {
-    let reset = checkoutAutofill(formik, autoFillIdx);
-    let i = reset ? 0 : autoFillIdx + 1;
-    setAutoFillIdx(i);
-    await formik.validateForm(); // Wait for the form values to update
-    markAllFieldsAsTouched(formik.values, formik.setTouched); // Trigger this so the error messages will clear
+    if (useAutoFill) {
+      let reset = checkoutAutofill(formik, autoFillIdx);
+      let i = reset ? 0 : autoFillIdx + 1;
+      setAutoFillIdx(i);
+      await formik.validateForm(); // Wait for the form values to update
+      markAllFieldsAsTouched(formik.values, formik.setTouched); // Trigger this so the error messages will clear
+    }
   }
 
   const markAllFieldsAsTouched = (values, setTouched) => {
