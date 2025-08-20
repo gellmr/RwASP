@@ -228,5 +228,15 @@ namespace NUnitTests.SeleniumTests
       if (bottleImage == null) { Assert.Fail("GoToAdminProducts - Bottle image not found"); return; }
       Assert.That(pageTitle.Text, Does.Contain("Products"), "GoToAdminProducts - Page title - incorrect.");
     }
+    
+    // Get a field value from the input element 'value' attribute.
+    public string? GetInputVal(string? cssVal){
+      try{
+        IWebElement inputElement = driver.FindElement(By.CssSelector(cssVal));
+        return inputElement.GetAttribute("value");
+      }catch(Exception ex){
+        return null; // Element not found
+      }
+    }
   }
 }

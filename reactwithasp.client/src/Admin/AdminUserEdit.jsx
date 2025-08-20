@@ -89,7 +89,7 @@ function AdminUserEdit()
       <>
         <Col className="adminUserEditCell" xs={3}>User&nbsp;ID</Col>
         <Col xs={9} className="adminUserEditCell mgGuid" >
-          <Form.Control type="id" value={uid} readOnly disabled="disabled" />
+          <Form.Control type="id" id="editUserId" value={uid} readOnly disabled="disabled" />
         </Col>
       </>
     );
@@ -103,7 +103,7 @@ function AdminUserEdit()
       <>
         <Col className="adminUserEditCell" xs={3}>Guest&nbsp;ID</Col>
         <Col xs={9} className="adminUserEditCell mgGuid" >
-          <Form.Control type="id" value={gid} readOnly disabled="disabled" />
+          <Form.Control type="id" id="editGuestId" value={gid} readOnly disabled="disabled" />
         </Col>
       </>
     );
@@ -120,7 +120,7 @@ function AdminUserEdit()
       <>
         <Col className="adminUserEditCell" xs={3}>Phone</Col>
         <Col xs={9} className="adminUserEditCell">
-          <Form.Control type="phone" value={phoneVal} onChange={handlePhoneChange} />
+          <Form.Control type="phone" id="editPhone" value={phoneVal} onChange={handlePhoneChange} />
         </Col>
       </>
     );
@@ -156,12 +156,12 @@ function AdminUserEdit()
               <Row className="adminUserEditDetailsBox">
                 <Col className="adminUserEditCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col>
                 <Col xs={9} className="adminUserEditCell">
-                  <Form.Control type="name" value={user.fullName} onChange={handleFullnameChange} />
+                  <Form.Control type="name" id="editFullName" value={user.fullName} onChange={handleFullnameChange} />
                 </Col>
 
                 <Col className="adminUserEditCell" xs={3}>UserName</Col>
                 <Col xs={9} className="adminUserEditCell">
-                  <Form.Control type="id" value={user.userName} readOnly disabled="disabled" />
+                  <Form.Control type="id" id="editUserName" value={user.userName} readOnly disabled="disabled" />
                 </Col>
 
                 {userIdRow(user.id)}
@@ -172,7 +172,7 @@ function AdminUserEdit()
 
                 <Col className="adminUserEditCell" xs={3}>Email</Col>
                 <Col xs={9} className="adminUserEditCell">
-                  <Form.Control type="email" value={user.email} onChange={handleEmailChange} />
+                  <Form.Control type="email" id="editEmail" value={user.email} onChange={handleEmailChange} />
                 </Col>
               </Row>
             </Col>

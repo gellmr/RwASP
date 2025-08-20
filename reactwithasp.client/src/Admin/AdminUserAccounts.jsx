@@ -89,7 +89,7 @@ const AdminUserAccounts = () =>
             <Col className="adminUserAccCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserAccCell mgGuid">{idval}</Col>
             <Col className="adminUserAccCell" xs={3}>Phone</Col>                                             <Col xs={9} className="adminUserAccCell">{user.phoneNumber}</Col>
             <Col className="adminUserAccCell" xs={3}>Email</Col>                                             <Col xs={9} className="adminUserAccCell">{user.email}</Col>
-            <Col className="adminUserAccCell" xs={3}>Account Type</Col>                                      <Col xs={9} className="adminUserAccCell">{accountType}</Col>
+            <Col className="adminUserAccCell" xs={3}>Account Type</Col>                                      <Col xs={9} className="adminUserAccCell accountTypeCell">{accountType}</Col>
           </Row>
         </Col>
 
@@ -99,7 +99,7 @@ const AdminUserAccounts = () =>
         </Col>
 
         <Col xs={12} className="adminUserAccDetailLinks">
-          <NavLink to={editLink} className={isCurrentUser ? "btn btn-light" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+          <NavLink to={editLink} className={isCurrentUser ? "btn btn-light editCurrUser" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
             Edit Account <i className="bi bi-pencil-square"></i>
           </NavLink>
           <NavLink to={ordersLink} className={isCurrentUser ? "btn btn-light" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>

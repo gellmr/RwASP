@@ -25,6 +25,13 @@ namespace NUnitTests.SeleniumTests
     public const string? customerAccountLinesCss = ".adminUserAccRow";
     public string? customerAccountLineResultText = null; // Not const. Gets set later
 
+    public string? loginType = null; // Set to User or Guest when login occurs.
+    public string? guestId = null;   // Set if we are Guest. Else null
+    public string? userId = null;    // Set if we are User.  Else null
+
+    public const string? accountTypeCss = ".accountTypeCell";
+    public const string? idValFieldCss     = ".adminUserAccCell.mgGuid";
+
     public AdminTest(){
       try{
         vipUsername = TestConfiguration.Config.GetSection("Authentication:VIP:UserName").Value;
@@ -99,6 +106,13 @@ namespace NUnitTests.SeleniumTests
 
         // Wait for backlog page to appear
         pageTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(custAccsPageTitleCss)));
+
+        // Get the Account Type and Guest/User id value...
+        IWebElement accountType = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(accountTypeCss)));
+        loginType = accountType.Text; // "User" | "Guest"
+        IWebElement idValField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(idValFieldCss)));
+        guestId = (loginType == "Guest") ? idValField.Text : null ;
+        userId  = (loginType == "User")  ? idValField.Text : null;
       }
       catch (WebDriverTimeoutException ex)
       {
