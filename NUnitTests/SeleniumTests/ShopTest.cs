@@ -30,8 +30,13 @@ namespace NUnitTests.SeleniumTests
     public const string myOrdPageViewDetailCss = ".myOrdersRect a.btn.myOrdViewDetBtn";
     public const string myOrdDetPageTitleCss = "#myOrdDetailPage h4.adminTitleBar";
 
-    public string? headInfoTextResult = null; // Not const. Gets set later
-    public string? bodyInfoTextResult = null; // Not const. Gets set later
+    public const string myOrdDetPageHeadInfoCss = ".myOrdDetailImageHead";
+    public const string myOrdDetPageBodyInfoCss = ".myOrdDetailImageBody";
+
+    public string? ordHeadInfoTextResult = null; // Not const. Gets set later
+    public string? ordBodyInfoTextResult = null; // Not const. Gets set later
+    public string? detailHeadInfoTextResult = null; // Not const. Gets set later
+    public string? detailBodyInfoTextResult = null; // Not const. Gets set later
 
     public void AddBottleToCart()
     {
@@ -70,13 +75,13 @@ namespace NUnitTests.SeleniumTests
 
         // Get Order head info
         IWebElement myOrdPageHeadInfo = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageHeadInfoCss)));
-        headInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageHeadInfo.Text);
+        ordHeadInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageHeadInfo.Text);
 
         // Get Order body details
         wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageBodyInfoCss)));
         IReadOnlyCollection<IWebElement> items = driver.FindElements(By.CssSelector(myOrdPageBodyInfoCss));
         IWebElement myOrdPageBodyInfo = items.ToList()[1];
-        bodyInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageBodyInfo.Text);
+        ordBodyInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageBodyInfo.Text);
 
         // Get View Details button
         viewDetailsBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageViewDetailCss)));
@@ -97,9 +102,18 @@ namespace NUnitTests.SeleniumTests
         viewDetailsBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageViewDetailCss)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(viewDetailsBtn));
         clickableButton.Click();
+
         // Should see My Order Details page
         IWebElement titleElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdDetPageTitleCss)));
         pageTitle = titleElement.Text;
+
+        // Get head
+        IWebElement headInfo = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdDetPageHeadInfoCss)));
+        detailHeadInfoTextResult = TestHelpers.TrimAndFlattenString(headInfo.Text);
+
+        // Get body
+        IWebElement bodyInfo = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdDetPageBodyInfoCss)));
+        detailBodyInfoTextResult = TestHelpers.TrimAndFlattenString(bodyInfo.Text);
       }
       catch (WebDriverTimeoutException ex)
       {
@@ -110,19 +124,32 @@ namespace NUnitTests.SeleniumTests
 
     public void ShouldSee_JohnDoe_BottleOrder()
     {
-      Assert.That(headInfoTextResult, Does.Contain("Account Type: Guest"),     "GoToMyOrders - headInfoText - incorrect.");
-      Assert.That(headInfoTextResult, Does.Contain("Guest ID:"),               "GoToMyOrders - headInfoText - incorrect.");
-      Assert.That(headInfoTextResult, Does.Contain("Full Name: John Doe"),     "GoToMyOrders - headInfoText - incorrect.");
-      Assert.That(headInfoTextResult, Does.Contain("Email: john@example.com"), "GoToMyOrders - headInfoText - incorrect.");
+      Assert.That(ordHeadInfoTextResult, Does.Contain("Account Type: Guest"),     "JohnDoe_BottleOrder - headInfoText - incorrect.");
+      Assert.That(ordHeadInfoTextResult, Does.Contain("Guest ID:"),               "JohnDoe_BottleOrder - headInfoText - incorrect.");
+      Assert.That(ordHeadInfoTextResult, Does.Contain("Full Name: John Doe"),     "JohnDoe_BottleOrder - headInfoText - incorrect.");
+      Assert.That(ordHeadInfoTextResult, Does.Contain("Email: john@example.com"), "JohnDoe_BottleOrder - headInfoText - incorrect.");
 
-      Assert.That(bodyInfoTextResult, Does.Contain("Order Number"),            "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoTextResult, Does.Contain("Status OrderPlaced"),      "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoTextResult, Does.Contain("Placed Date"),             "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoTextResult, Does.Contain("Items Drink Bottle (x1)"), "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoTextResult, Does.Contain("Total Items 1"),           "GoToMyOrders - bodyInfoText - incorrect.");
+      Assert.That(ordBodyInfoTextResult, Does.Contain("Order Number"),            "JohnDoe_BottleOrder - bodyInfoText - incorrect.");
+      Assert.That(ordBodyInfoTextResult, Does.Contain("Status OrderPlaced"),      "JohnDoe_BottleOrder - bodyInfoText - incorrect.");
+      Assert.That(ordBodyInfoTextResult, Does.Contain("Placed Date"),             "JohnDoe_BottleOrder - bodyInfoText - incorrect.");
+      Assert.That(ordBodyInfoTextResult, Does.Contain("Items Drink Bottle (x1)"), "JohnDoe_BottleOrder - bodyInfoText - incorrect.");
+      Assert.That(ordBodyInfoTextResult, Does.Contain("Total Items 1"),           "JohnDoe_BottleOrder - bodyInfoText - incorrect.");
 
-      Assert.That(bodyInfoTextResult, Does.Contain("Price Total $ 20"),        "GoToMyOrders - bodyInfoText - incorrect.");
-      Assert.That(bodyInfoTextResult, Does.Contain("Ship To: " + joeAddress),   "GoToMyOrders - bodyInfoText - incorrect.");
+      Assert.That(ordBodyInfoTextResult, Does.Contain("Price Total $ 20"),        "JohnDoe_BottleOrder - bodyInfoText - incorrect.");
+      Assert.That(ordBodyInfoTextResult, Does.Contain("Ship To: " + joeAddress),  "JohnDoe_BottleOrder - bodyInfoText - incorrect.");
+    }
+
+    public void ShouldSee_JohnDoe_BottleOrdDetails()
+    {
+      Assert.That(detailHeadInfoTextResult, Does.Contain("Order Number"),           "JohnDoe_BottleOrdDetails - headInfo - incorrect.");
+      Assert.That(detailHeadInfoTextResult, Does.Contain("Status OrderPlaced"),     "JohnDoe_BottleOrdDetails - headInfo - incorrect.");
+      Assert.That(detailHeadInfoTextResult, Does.Contain("Placed Date"),            "JohnDoe_BottleOrdDetails - headInfo - incorrect.");
+      Assert.That(detailHeadInfoTextResult, Does.Contain("Price Total $ 20"),       "JohnDoe_BottleOrdDetails - headInfo - incorrect.");
+      Assert.That(detailHeadInfoTextResult, Does.Contain("Total Items 1"),          "JohnDoe_BottleOrdDetails - headInfo - incorrect.");
+      Assert.That(detailHeadInfoTextResult, Does.Contain("Ship to: " + joeAddress), "JohnDoe_BottleOrdDetails - headInfo - incorrect.");
+
+      Assert.That(detailBodyInfoTextResult, Does.Contain("Price Item Qty Total"),   "JohnDoe_BottleOrdDetails - bodyInfo - incorrect.");
+      Assert.That(detailBodyInfoTextResult, Does.Contain("$20 Drink Bottle 1 $20 1 $20"), "JohnDoe_BottleOrdDetails - bodyInfo - incorrect.");
     }
   }
 }

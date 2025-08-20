@@ -42,6 +42,7 @@ namespace NUnitTests.SeleniumTests
 
       // Go to Order Detail ...  Should see Drink Bottle Details
       GoToMyOrderDetail();
+      ShouldSee_JohnDoe_BottleOrdDetails();
     }
   }
 }
