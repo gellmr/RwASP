@@ -90,13 +90,12 @@ namespace ReactWithASP.Server.Controllers.Admin
           .Select( u => UserDTO.TryParse(u))
           .ToList();
 
-        List<UserDTO> guests = _guestRepo.Guests.Where(g =>
+        List<Guest> dguests = _guestRepo.Guests.Where(g =>
           !string.IsNullOrEmpty(g.Email) &&
           !string.IsNullOrEmpty(g.FirstName)
-          //&&
-          //!string.IsNullOrEmpty(g.LastName)
-        )
-        .Select(u => new UserDTO{
+        ).ToList();
+
+        List<UserDTO> guests = dguests.Select(u => new UserDTO{
           Email = u.Email,
           GuestID = u.ID,
           Id = null,
