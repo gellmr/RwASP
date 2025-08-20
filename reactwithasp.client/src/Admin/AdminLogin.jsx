@@ -85,8 +85,8 @@ function AdminLogin()
             {errMarkup}
             <Col xs={12} md={6}>
               <Form.Group className="mb-3" controlId="formGroupEmail" style={{ textAlign:"left"}}>
-                <Form.Label>&nbsp;&nbsp;Email address</Form.Label>
-                <Form.Control type="email" placeholder="Please enter your email address" onChange={emailChange} />
+                <Form.Label>&nbsp;&nbsp;Username</Form.Label>
+                <Form.Control type="email" placeholder="Please enter your username" onChange={emailChange} />
               </Form.Group>
             </Col>
             <Col xs={12} md={6}>
