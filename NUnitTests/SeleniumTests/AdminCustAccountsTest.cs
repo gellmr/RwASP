@@ -23,6 +23,8 @@ namespace NUnitTests.SeleniumTests
     public string? phone = null;
     public string? email = null;
 
+    const string editAccLinkCss = ".editAccLink";
+
     [Test]
     public void LoginAsVip_ShouldSeeAdmin()
     {
@@ -52,7 +54,7 @@ namespace NUnitTests.SeleniumTests
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText), "Edit Admin - Administrator row not found.");
 
         // Wait until "Edit Account" button is visible and clickable
-        IWebElement editBtn = row.FindElement(By.CssSelector(".editAccLink"));
+        IWebElement editBtn = row.FindElement(By.CssSelector(editAccLinkCss));
 
         // Click to go to Edit Account
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(editBtn));
