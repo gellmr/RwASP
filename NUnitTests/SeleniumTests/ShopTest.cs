@@ -38,6 +38,10 @@ namespace NUnitTests.SeleniumTests
     public string? detailHeadInfoTextResult = null; // Not const. Gets set later
     public string? detailBodyInfoTextResult = null; // Not const. Gets set later
 
+    public const string? backlogCurrentPageCss = "#adminLayout .wrapClearTable";
+    public const string? backlogTopRowCss = "tr.backlogCursorRow";
+    public string? backlogRow1TextResult = null; // Not const. Gets set later
+
     public void AddBottleToCart()
     {
       try
@@ -150,6 +154,30 @@ namespace NUnitTests.SeleniumTests
 
       Assert.That(detailBodyInfoTextResult, Does.Contain("Price Item Qty Total"),   "JohnDoe_BottleOrdDetails - bodyInfo - incorrect.");
       Assert.That(detailBodyInfoTextResult, Does.Contain("$20 Drink Bottle 1 $20 1 $20"), "JohnDoe_BottleOrdDetails - bodyInfo - incorrect.");
+    }
+
+    public void GetBacklogRow1Text()
+    {
+      try
+      {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(backlogCurrentPageCss)));
+        IReadOnlyCollection<IWebElement> bRows = driver.FindElements(By.CssSelector(backlogTopRowCss));
+        List<IWebElement> rows = bRows.ToList();
+        IWebElement row1 = rows[0];
+        backlogRow1TextResult = TestHelpers.TrimAndFlattenString(row1.Text);
+      }
+      catch (Exception ex)
+      {
+        Assert.Fail("Timeout during GetBacklogPageValues");
+      }
+    }
+
+    public void ShouldSee_JohnDoe_BottleOrdBacklog()
+    {
+      string? expectedText = "Guest john@example.com 0.00 20.00 1 Drink Bottle OrderPlaced";
+      Assert.That(backlogRow1TextResult, Does.Contain("John Doe"),   "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
+      Assert.That(backlogRow1TextResult, Does.Contain(expectedText), "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
     }
   }
 }

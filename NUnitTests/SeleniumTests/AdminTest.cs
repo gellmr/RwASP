@@ -68,6 +68,7 @@ namespace NUnitTests.SeleniumTests
 
         // Wait for backlog page to appear
         backlogTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(backlogTitleCss)));
+        GetBacklogRow1Text();
       }
       catch (WebDriverTimeoutException)
       {
