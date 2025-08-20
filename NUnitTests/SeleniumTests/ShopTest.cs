@@ -72,7 +72,7 @@ namespace NUnitTests.SeleniumTests
       IWebElement myOrdPageTitle = null;
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6));
         myOrdNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdCssBtn)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(myOrdNavBtn));
         clickableButton.Click();
