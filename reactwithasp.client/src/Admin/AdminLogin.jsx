@@ -94,7 +94,7 @@ function AdminLogin()
                 <Form.Label>&nbsp;&nbsp;Password</Form.Label>
                 <InputGroup>
                   <Form.Control type="password" placeholder="Enter your password" onChange={passwordChange} onKeyDown={handleKeyDown} />
-                  <Button variant="outline-primary" style={{ minWidth: 90 }} onClick={() => loginClick()}>Login</Button>
+                  <Button id="loginSubmit" variant="outline-primary" style={{ minWidth: 90 }} onClick={() => loginClick()}>Login</Button>
                 </InputGroup>
               </Form.Group>
             </Col>
