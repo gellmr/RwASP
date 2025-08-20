@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnitTests.Helpers;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System.Xml.Linq;
@@ -16,6 +17,12 @@ namespace NUnitTests.SeleniumTests
 
     public string? vipUsername;
     public string? vipPassword;
+
+    public const string? custAccsNavBtnCss = "#adminLayout .navbar-collapse a[href=\"/admin/useraccounts\"]";
+    public const string? custAccsPageTitleCss = ".adminCont h4.adminTitleBar";
+
+    public const string? adminAccLineCss = ".adminUserAccRow";
+    public string? customerAccountLineResultText = null; // Not const. Gets set later
 
     public AdminTest(){
       try{
@@ -77,6 +84,51 @@ namespace NUnitTests.SeleniumTests
       // Backlog page should have appeared.
       if (backlogTitle == null) { Assert.Fail("Failed to reach backlog page."); return; }
       Assert.That(backlogTitle.Text, Does.Contain("Orders Backlog"), "LoginAsVip - backlog page title is incorrect.");
+    }
+
+    public void GoToCustomerAccounts()
+    {
+      IWebElement? pageTitle = null;
+      try
+      {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        IWebElement custAccsNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(custAccsNavBtnCss)));
+        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(custAccsNavBtn));
+        clickableButton.Click();
+
+        // Wait for backlog page to appear
+        pageTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(custAccsPageTitleCss)));
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("Timeout during GoToCustomerAccounts");
+      }
+      if (pageTitle == null) { Assert.Fail("Failed to reach customer accounts page."); return; }
+      Assert.That(pageTitle.Text, Does.Contain("Customer Accounts"), "Customer accounts - page title is incorrect.");
+    }
+
+    public void ShouldSee_Admin_CustomerAccountLine()
+    {
+      IWebElement? row = null;
+      try
+      {
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+
+        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(adminAccLineCss)));
+        IReadOnlyCollection<IWebElement> accRows = driver.FindElements(By.CssSelector(adminAccLineCss));
+        List<IWebElement> rows = accRows.ToList();
+        row = rows[0]; // Get the first row
+        customerAccountLineResultText = TestHelpers.TrimAndFlattenString(row.Text);
+      }
+      catch (WebDriverTimeoutException ex)
+      {
+        Assert.Fail("ShouldSee_Admin - Timeout occurred");
+      }
+      if (row == null) { Assert.Fail("ShouldSee_Admin - Administrator row not found"); return; }
+      string? expectedText1 = "(Logged in as) Administrator User ID";
+      string? expectedText2 = "Phone 04 1234 4321 Email user-111@gmail.com Account Type User Edit Account View Orders";
+      Assert.That(customerAccountLineResultText, Does.Contain(expectedText1), "ShouldSee_Admin - Administrator row text is incorrect.");
+      Assert.That(customerAccountLineResultText, Does.Contain(expectedText2), "ShouldSee_Admin - Administrator row text is incorrect.");
     }
   }
 }
