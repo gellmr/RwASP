@@ -1,4 +1,5 @@
-﻿namespace NUnitTests.SeleniumTests
+﻿
+namespace NUnitTests.SeleniumTests
 {
   [TestFixture]
   public class AdminCustAccountsTest : AdminTest

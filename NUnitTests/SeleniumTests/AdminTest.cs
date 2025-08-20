@@ -21,7 +21,8 @@ namespace NUnitTests.SeleniumTests
     public const string? custAccsNavBtnCss = "#adminLayout .navbar-collapse a[href=\"/admin/useraccounts\"]";
     public const string? custAccsPageTitleCss = ".adminCont h4.adminTitleBar";
 
-    public const string? adminAccLineCss = ".adminUserAccRow";
+    public List<IWebElement> customerAccountLines;
+    public const string? customerAccountLinesCss = ".adminUserAccRow";
     public string? customerAccountLineResultText = null; // Not const. Gets set later
 
     public AdminTest(){
@@ -107,17 +108,27 @@ namespace NUnitTests.SeleniumTests
       Assert.That(pageTitle.Text, Does.Contain("Customer Accounts"), "Customer accounts - page title is incorrect.");
     }
 
+    public void GetCustomerAccountLines()
+    {
+      try{
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(customerAccountLinesCss)));
+        IReadOnlyCollection<IWebElement> accRows = driver.FindElements(By.CssSelector(customerAccountLinesCss));
+        customerAccountLines = accRows.ToList();
+      }
+      catch (WebDriverTimeoutException ex){
+        Assert.Fail("ShouldSee_Admin - Timeout occurred");
+      }
+    }
+
     public void ShouldSee_Admin_CustomerAccountLine()
     {
       IWebElement? row = null;
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-
-        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(adminAccLineCss)));
-        IReadOnlyCollection<IWebElement> accRows = driver.FindElements(By.CssSelector(adminAccLineCss));
-        List<IWebElement> rows = accRows.ToList();
-        row = rows[0]; // Get the first row
+        GetCustomerAccountLines();
+        row = customerAccountLines[0]; // Get the first row
         customerAccountLineResultText = TestHelpers.TrimAndFlattenString(row.Text);
       }
       catch (WebDriverTimeoutException ex)
