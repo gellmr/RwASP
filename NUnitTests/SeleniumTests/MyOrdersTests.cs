@@ -44,9 +44,9 @@ namespace NUnitTests.SeleniumTests
       GoToMyOrderDetail();
       ShouldSee_JohnDoe_BottleOrdDetails();
 
+      // Login as VIP... Should see John Doe Drink Bottle order in Backlog
       GoToLoginPage();
       LoginAsVip();
-      // Should see John Doe Drink Bottle order
     }
   }
 }
