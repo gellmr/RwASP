@@ -8,7 +8,7 @@ using System.Net.NetworkInformation;
 namespace NUnitTests.SeleniumTests
 {
   [TestFixture]
-  public class CheckoutTests: ShopTest
+  public class CheckoutTests: AdminTest
   {
     public string titleElement = ".shopLayoutTransparent h2";
     public string coSubmit = ".checkoutSubmitBtnGroup button[type=\"submit\"]";
