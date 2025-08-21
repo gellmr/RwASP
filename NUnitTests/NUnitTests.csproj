@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ReactWithASP.Server\ReactWithASP.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
