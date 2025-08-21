@@ -3,10 +3,12 @@ using ReactWithASP.Server.Infrastructure;
 
 namespace ReactWithASP.Server.Domain
 {
-  using System.ComponentModel.DataAnnotations;
-
+  
   public class Address
   {
+    [Key]
+    public Int32 ID { get; set; }
+
     [Display(Name = "Line 1")]
     [Required(ErrorMessage = "Please enter the first address line")]
     [RegularExpression(MyRegex.AddressLine1, ErrorMessage = "Invalid characters in address line.")]
