@@ -140,8 +140,7 @@ namespace NUnitTests.UnitTests
     }
 
     [Test]
-    public void GetDefaultWithLine2And3_ShouldBeValid()
-    {
+    public void GetDefaultWithLine2And3_ShouldBeValid(){
       Address address = AddressGen.GetDefault();
       address.Line2 = address.Line1;
       address.Line3 = address.Line1;
@@ -149,20 +148,19 @@ namespace NUnitTests.UnitTests
     }
 
     [Test]
-    public void GetDefaultWithLine2And3Null_ShouldBeValid()
-    {
+    public void GetDefaultWithLine2And3Null_ShouldBeValid(){
       Address address = AddressGen.GetDefault();
       address.Line2 = null;
       address.Line3 = null;
       ShouldBeValid(address);
     }
     [Test]
-    public void GetDefaultWithLine2And3Empty_ShouldBeValid()
-    {
+    public void GetDefaultWithLine2And3Empty_ShouldBeValid(){
       Address address = AddressGen.GetDefault();
       address.Line2 = string.Empty;
       address.Line3 = string.Empty;
       ShouldBeValid(address);
     }
+
   }
 }
