@@ -2,7 +2,7 @@
 
 namespace ReactWithASP.Server.Infrastructure
 {
-  public class MyRegex
+  public static class MyRegex
   {
     // String representation of a Guid
     public static string AppUserOrGuestId{ get { return
@@ -13,6 +13,11 @@ namespace ReactWithASP.Server.Infrastructure
     public static string GoogleSubject{ get { return
         "^[0-9]{20,255}$"
     ;}}
+
+    public const string AddressLine1              = @"^[a-zA-Z0-9\s\/.,#-]{1,100}$"; // Must have one character
+    public const string AddressLineN              = @"^[a-zA-Z0-9\s\/.,#-]{0,100}$"; // Can be empty
+    public const string AddressCityStateOrCountry = @"^[a-zA-Z0-9\s.,-]{2,50}$";
+    public const string AddressZipOrPostcode      = @"^\d{4}$"; // Exactly 4 digits
   }
 
   public static class PcreValidation
