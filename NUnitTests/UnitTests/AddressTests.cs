@@ -162,5 +162,25 @@ namespace NUnitTests.UnitTests
       ShouldBeValid(address);
     }
 
+    [Test]
+    public void GetDefaultWithCityNull_ShouldNotBeValid(){
+      Address address = AddressGen.GetDefault();
+      address.City = null;
+      ShouldNotBeValid(address);
+    }
+
+    [Test]
+    public void GetDefaultWithStateNull_ShouldNotBeValid(){
+      Address address = AddressGen.GetDefault();
+      address.State = null;
+      ShouldNotBeValid(address);
+    }
+
+    [Test]
+    public void GetDefaultWithCountryNull_ShouldNotBeValid(){
+      Address address = AddressGen.GetDefault();
+      address.Country = null;
+      ShouldNotBeValid(address);
+    }
   }
 }
