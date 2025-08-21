@@ -61,54 +61,48 @@ namespace ReactWithASP.Server.Domain
       return null;
     }
 
+    private async Task<Guest?> _UpdateWithTransaction(GuestUpdateDTO dto)
+    {
+      var strategy = context.Database.CreateExecutionStrategy();
+      return await strategy.ExecuteAsync(async () =>
+      {
+        // Begin the transaction inside the retriable block.
+        await using var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+        Guest? guest = await Guests.FirstOrDefaultAsync(g => g.ID.Equals(dto.ID));
+        if (guest == null)
+        {
+          guest = new Guest
+          {
+            ID = dto.ID,
+            Email = dto.Email,
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Picture = dto.Picture,
+          };
+          context.Guests.Add(guest);
+        }
+        else
+        {
+          guest.Email = dto.Email ?? guest.Email;
+          guest.FirstName = dto.FirstName ?? guest.FirstName;
+          guest.LastName = dto.LastName ?? guest.LastName;
+          guest.Picture = dto.Picture ?? guest.Picture;
+        }
+        await context.SaveChangesAsync();
+        await transaction.CommitAsync();
+        return guest; // Return the final result from the lambda.
+      });
+    }
+
     public async Task<Guest?> UpdateWithTransaction(GuestUpdateDTO dto)
     {
-      Guest? original = null;
-      await using (var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable))
-      {
-        try
-        {
-          // Look up Guest.
-          Guest? guest = await Guests.FirstOrDefaultAsync(g => g.ID.Equals(dto.ID));
-
-          if (guest == null)
-          {
-            // Create for the first time
-            guest = new Guest
-            {
-              ID        = dto.ID,
-              Email     = dto.Email,
-              FirstName = dto.FirstName,
-              LastName  = dto.LastName,
-              Picture   = dto.Picture,
-            };
-            original = new Guest(guest);
-            context.Guests.Add(guest);
-          }
-          else
-          {
-            // Update with incoming DTO values.
-            original = new Guest(guest);
-            guest.Email     = dto.Email     ?? guest.Email;
-            guest.FirstName = dto.FirstName ?? guest.FirstName;
-            guest.LastName  = dto.LastName  ?? guest.LastName;
-            guest.Picture   = dto.Picture   ?? guest.Picture;
-          }
-
-          // Save to database
-          await context.SaveChangesAsync();
-
-          await transaction.CommitAsync();
-
-          return guest;
-        }
-        catch (Exception ex)
-        {
-          await transaction.RollbackAsync();
-          GuestUpdateException gError = new GuestUpdateException(ex.Message, ex.InnerException);
-          gError.Original = original;
-          throw gError;
-        }
+      try{
+        Guest? guest = await _UpdateWithTransaction(dto);
+        return guest;
+      }
+      catch (Exception ex){
+        Console.WriteLine($" (UpdateWithTransaction) Fatal exception - retries exhausted. Msg: {ex.Message}");
+        throw;
       }
     }
   }
