@@ -86,7 +86,7 @@ namespace NUnitTests.UnitTests
       }
       catch (Exception ex)
       {
-        Console.WriteLine("ShouldBeValid() - An error occurred: " + ex.Message);
+        Console.WriteLine("ShouldNotBeValid() - An error occurred: " + ex.Message);
       }
     }
 
