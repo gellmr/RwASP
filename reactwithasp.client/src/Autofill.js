@@ -58,8 +58,8 @@ const checkoutAutofill = function (formik, index)
 const checkoutValuesfill = function (formik, initVals) {
   formik.setFieldValue('firstName',   initVals.firstName   || "");
   formik.setFieldValue('lastName',    initVals.lastName    || "");
-  formik.setFieldValue('shipLine1',   initVals.shipLine1   || "804 Wellington Street");
-  formik.setFieldValue('shipLine2',   initVals.shipLine2   || "");
+  formik.setFieldValue('shipLine1',   initVals.shipLine1   || "Unit 5, Level 10");
+  formik.setFieldValue('shipLine2',   initVals.shipLine2   || "95 Stirling Street");
   formik.setFieldValue('shipLine3',   initVals.shipLine3   || "");
   formik.setFieldValue('shipCity',    initVals.shipCity    || "Perth");
   formik.setFieldValue('shipState',   initVals.shipState   || "WA");
