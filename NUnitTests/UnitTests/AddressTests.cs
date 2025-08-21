@@ -1,4 +1,5 @@
-﻿using ReactWithASP.Server.Domain;
+﻿using Microsoft.Identity.Client;
+using ReactWithASP.Server.Domain;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,10 +12,12 @@ namespace NUnitTests.UnitTests
 
   public static class AddressGen
   {
+    public const string? validLine = "Unit 1/100, 3-3 #44 Main St."; // Uses all valid characters
+
     public static Address GetDefault()
     {
       return new Address {
-        Line1 = "Unit 1/100, 3-3 #44 Main St.",
+        Line1 = AddressGen.validLine,
         Line2 = null,
         Line3 = null,
         City = "Anytown",
@@ -142,8 +145,8 @@ namespace NUnitTests.UnitTests
     [Test]
     public void GetDefaultWithLine2And3_ShouldBeValid(){
       Address address = AddressGen.GetDefault();
-      address.Line2 = address.Line1;
-      address.Line3 = address.Line1;
+      address.Line2 = AddressGen.validLine;
+      address.Line3 = AddressGen.validLine;
       ShouldBeValid(address);
     }
 
