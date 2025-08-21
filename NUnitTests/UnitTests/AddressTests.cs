@@ -33,6 +33,21 @@ namespace NUnitTests.UnitTests
         Zip     = "9999"
       };
     }
+
+    public static Address GetInvalidWithXss()
+    {
+      string? xss = "<script>alert('XSS');</script>";
+      return new Address
+      {
+        Line1 = xss,
+        Line2 = xss,
+        Line3 = xss,
+        City = xss,
+        State = xss,
+        Country = xss,
+        Zip = xss
+      };
+    }
   }
 
   [TestFixture]
@@ -56,6 +71,25 @@ namespace NUnitTests.UnitTests
       }
     }
 
+    public void ShouldNotBeValid(Address address)
+    {
+      try
+      {
+        // Arrange
+        var validationContext = new ValidationContext(address, null, null);
+        var validationResults = new List<ValidationResult>();
+        // Act
+        bool isValid = Validator.TryValidateObject(address, validationContext, validationResults, true);
+        // Assert
+        Assert.That(isValid, Is.False);
+        Assert.That(validationResults, Is.Not.Empty);
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine("ShouldBeValid() - An error occurred: " + ex.Message);
+      }
+    }
+
     [Test]
     public void GetDefault_ShouldBeValid(){
       Address address = AddressGen.GetDefault();
@@ -68,6 +102,25 @@ namespace NUnitTests.UnitTests
       ShouldBeValid(address);
     }
 
+    [Test]
+    public void GetDefault_WithLine1Err_ShouldNotBeValid(){
+      Address address = AddressGen.GetDefault();
+      address.Line1 = address.Line1 + "<"; // illegal character
+      ShouldNotBeValid(address);
+    }
+
+    [Test]
+    public void GetDefault_WithEmptyLine1_ShouldNotBeValid(){
+      Address address = AddressGen.GetDefault();
+      address.Line1 = string.Empty;
+      ShouldNotBeValid(address);
+    }
+
+    [Test]
+    public void GetInvalidWithXss_ShouldNotBeValid(){
+      Address hackyAddress = AddressGen.GetInvalidWithXss();
+      ShouldNotBeValid(hackyAddress);
+    }
 
   }
 }
