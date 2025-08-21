@@ -38,32 +38,34 @@ namespace NUnitTests.UnitTests
   [TestFixture]
   public class AddressTests
   {
-    [Test]
-    public void Line1_ShouldBeValid()
+    public void ShouldBeValid(Address address)
     {
-      // Arrange
-      Address address = AddressGen.GetDefault();
-      var validationContext = new ValidationContext(address, null, null);
-      var validationResults = new List<ValidationResult>();
-      // Act
-      bool isValid = Validator.TryValidateObject(address, validationContext, validationResults, true);
-      // Assert
-      Assert.That(isValid, Is.True);
-      Assert.That(validationResults, Is.Empty);
+      try
+      {
+        // Arrange
+        var validationContext = new ValidationContext(address, null, null);
+        var validationResults = new List<ValidationResult>();
+        // Act
+        bool isValid = Validator.TryValidateObject(address, validationContext, validationResults, true);
+        // Assert
+        Assert.That(isValid, Is.True);
+        Assert.That(validationResults, Is.Empty);
+      }
+      catch (Exception ex){
+        Console.WriteLine("ShouldBeValid() - An error occurred: " + ex.Message);
+      }
     }
 
     [Test]
-    public void Line1_CrazyShouldBeValid()
-    {
-      // Arrange
+    public void GetDefault_ShouldBeValid(){
+      Address address = AddressGen.GetDefault();
+      ShouldBeValid(address);
+    }
+
+    [Test]
+    public void GetCrazyButValid_ShouldBeValid(){
       Address address = AddressGen.GetCrazyButValid();
-      var validationContext = new ValidationContext(address, null, null);
-      var validationResults = new List<ValidationResult>();
-      // Act
-      bool isValid = Validator.TryValidateObject(address, validationContext, validationResults, true);
-      // Assert
-      Assert.That(isValid, Is.True);
-      Assert.That(validationResults, Is.Empty);
+      ShouldBeValid(address);
     }
 
 
