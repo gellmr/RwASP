@@ -122,5 +122,19 @@ namespace NUnitTests.UnitTests
       ShouldNotBeValid(hackyAddress);
     }
 
+    [Test]
+    public void GetDefaultWithPostCodeTooShort_ShouldNotBeValid()
+    {
+      Address address = AddressGen.GetDefault();
+      address.Zip = "123";
+      ShouldNotBeValid(address);
+    }
+
+    [Test]
+    public void GetDefaultWithPostCodeTooLong_ShouldNotBeValid(){
+      Address address = AddressGen.GetDefault();
+      address.Zip = "12345";
+      ShouldNotBeValid(address);
+    }
   }
 }
