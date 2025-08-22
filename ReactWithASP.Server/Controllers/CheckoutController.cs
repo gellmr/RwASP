@@ -69,7 +69,7 @@ namespace ReactWithASP.Server.Controllers
           appUser = await _userManager.FindByIdAsync(uid);
           order1.AppUser = appUser;
           order1.UserID = uid;
-          savedOk = ordersRepo.SaveOrder(order1);
+          savedOk = await ordersRepo.SaveOrderAsync(order1);
           if (savedOk){
             cartLineRepo.ClearUserCartLines(order1.UserID); // Clear the cart of this user.
             return Ok(checkoutSubmit); // Respond with 200 OK, and automatically cast object to JSON for the response.
@@ -90,7 +90,7 @@ namespace ReactWithASP.Server.Controllers
           }
           order1.GuestID = guest.ID;
           order1.Guest = guest;
-          savedOk = ordersRepo.SaveOrder(order1);
+          savedOk = await ordersRepo.SaveOrderAsync(order1);
           if (savedOk){
             cartLineRepo.ClearCartLines(guest.ID); // Clear the cart of this guest.
             return Ok(checkoutSubmit); // Respond with 200 OK, and automatically cast object to JSON for the response.

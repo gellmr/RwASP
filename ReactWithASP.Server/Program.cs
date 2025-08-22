@@ -17,7 +17,18 @@ IHostEnvironment env = builder.Environment;
 // Load either Development or Production JSON config. (Not in source control)
 builder.Configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
-builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("StoreContext")));
+// Configure SQL Server to always use an execution strategy with retries.
+builder.Services.AddDbContext<StoreContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("StoreContext"),
+        sqlServerOptionsAction: sqlOptions =>
+        {
+          sqlOptions.EnableRetryOnFailure(
+              maxRetryCount: 10,
+              maxRetryDelay: TimeSpan.FromSeconds(30),
+              errorNumbersToAdd: null); // You can specify specific error numbers here
+        })
+);
 builder.Services.AddTransient<DataSeeder>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => { 
@@ -102,14 +113,19 @@ using (var scope = app.Services.CreateScope()){
     if (env.EnvironmentName == "Development" || env.EnvironmentName == "Test"){
       await context.Database.MigrateAsync();
     }
+    // If SeedOnStart is true, and deploy marker exists, then perform seeding and delete marker file.
     var seedMarkerPath = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
     bool execSeed = bool.Parse(builder.Configuration["SeedOnStart"]);
-    if (execSeed && File.Exists(seedMarkerPath))
-    {
+    if (false && execSeed && File.Exists(seedMarkerPath)){
       var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
       await seeder.Execute();
       File.Delete(seedMarkerPath);
     }
+
+    // Convert one line addresses into dto objects.
+    //var ordersRepository = services.GetRequiredService<IOrdersRepository>();
+    //AddressParser addressParser = new AddressParser(ordersRepository, context);
+    //await addressParser.Execute();
   }
   catch (Exception ex){
     var logger = services.GetRequiredService<ILogger<Program>>();

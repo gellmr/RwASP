@@ -38,6 +38,9 @@ namespace ReactWithASP.Server.Infrastructure
       .HasForeignKey(o => o.GuestID)
       .OnDelete(DeleteBehavior.Restrict);
 
+      //modelBuilder.Entity<Guest>()
+      //.HasOne(e => e.DefaultAddress);
+
       modelBuilder.Entity<OrderedProduct>()
       .HasOne(p => p.Order)
       .WithMany(o => o.OrderedProducts)

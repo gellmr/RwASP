@@ -20,17 +20,56 @@ namespace ReactWithASP.Server.Domain
     // ------------------------------------------------------------------------------
 
     // Return true if saved successfully.
-    bool IOrdersRepository.SaveOrder(Order order)
+    public async Task<bool> SaveOrderAsync(Order order)
     {
-      bool exists = (order.ID != null) && context.Orders.Any(o => o.ID == order.ID);
+      bool exists = (order.ID != null) && await context.Orders.AnyAsync(o => o.ID == order.ID);
       if (exists)
       {
         // Update
-        Order dbOrder = context.Orders.First(o => o.ID == order.ID);
-        // TODO - save the order
-        // TODO - save the order
-        // TODO - save the order
-        context.SaveChanges();
+        Order dbOrder = await context.Orders.FirstAsync(o => o.ID == order.ID);
+        
+        dbOrder.UserID = order.UserID;
+        dbOrder.GuestID = order.GuestID;
+
+        if(order.ShipAddressID == null){
+          // Create
+          dbOrder.ShipAddress = order.ShipAddress; // Allow database to auto assign dbOrder.ShipAddressID
+          context.Entry(dbOrder.ShipAddress).State = EntityState.Added;
+        }
+        else{
+          // Update
+          dbOrder.ShipAddress = order.ShipAddress;
+          context.Entry(dbOrder.ShipAddress).State = EntityState.Modified;
+          dbOrder.ShipAddressID = order.ShipAddressID;
+        }
+
+        if (order.BillAddressID == null){
+          // Create
+          dbOrder.BillAddress = order.BillAddress; // Allow database to auto assign dbOrder.BillAddressID
+          context.Entry(dbOrder.BillAddress).State = EntityState.Added;
+        }
+        else{
+          // Update
+          dbOrder.BillAddress = order.BillAddress;
+          context.Entry(dbOrder.BillAddress).State = EntityState.Modified;
+          dbOrder.BillAddressID = order.BillAddressID;
+        }
+
+        dbOrder.OrderPayments = order.OrderPayments;
+        dbOrder.OrderedProducts = order.OrderedProducts;
+
+        dbOrder.OrderPlacedDate     = order.OrderPlacedDate;
+        dbOrder.PaymentReceivedDate = order.PaymentReceivedDate;
+        dbOrder.ReadyToShipDate     = order.ReadyToShipDate;
+        dbOrder.ShipDate            = order.ShipDate;
+        dbOrder.ReceivedDate        = order.ReceivedDate;
+
+        dbOrder.BillingAddress  = string.Empty; // TODO Remove from schema
+        dbOrder.ShippingAddress = string.Empty; // TODO Remove from schema
+
+        dbOrder.OrderStatus = order.OrderStatus;
+
+        await context.SaveChangesAsync();
         return true;
       }
       else
@@ -48,7 +87,7 @@ namespace ReactWithASP.Server.Domain
         if (order.AppUser != null){
           context.Entry(order.AppUser).State = EntityState.Unchanged; // Dont create the user.
         }
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         return true;
       }
       return false;
@@ -120,9 +159,8 @@ namespace ReactWithASP.Server.Domain
       return LoadAllOrderedProducts(rowsGuest);
     }
 
-    public IEnumerable<Order>? GetAllOrders()
-    {
-      return context.Orders.AsEnumerable();
+    public async Task<IEnumerable<Order>?> GetAllOrdersAsync(){
+      return await context.Orders.ToListAsync();
     }
 
     // ------------------------------------------------------------------------------

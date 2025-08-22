@@ -1,0 +1,233 @@
+﻿using Microsoft.EntityFrameworkCore;
+using ReactWithASP.Server.Domain;
+using ReactWithASP.Server.Domain.Abstract;
+using System.Data;
+using System.Net;
+using System.Text.RegularExpressions;
+
+namespace ReactWithASP.Server.Infrastructure
+{
+  public class MyAddressDto
+  {
+    public string? Line1 { get; set; }
+    public string? Line2 { get; set; }
+    public string? Line3 { get; set; }
+    public string? City { get; set; }
+    public string? State { get; set; }
+    public string? Country { get; set; } = "Australia";
+    public string? Zip { get; set; }
+
+    public static Address ToAddress(MyAddressDto dto)
+    {
+      return new Address
+      {
+        Line1 = dto.Line1,
+        Line2 = dto.Line2,
+        Line3 = dto.Line3,
+        City = dto.City,
+        State = dto.State,  
+        Country = dto.Country,
+        Zip = dto.Zip
+      };
+    }
+  }
+
+  // For the OrderHasAddress migration (step3) I had to convert existing string address values for Order shipping / billing address
+  // into Address objects in a new table. Rather than change the seed data I have used the below script to read values from the database,
+  // parse them into Address objects, and save these linking to the existing Order. I then clear the string column to an empty string and
+  // will drop the column in the next migration.
+
+  // The parser logic was generated using Gemini and natural language pseudocode to describe the string address format and desired output.
+
+  public class AddressParser
+  {
+    IOrdersRepository ordersRepository { get; set; }
+    private StoreContext context;
+
+    private List<string> billAddresses = new List<string>();
+    private List<string> shipAddresses = new List<string>();
+
+    public AddressParser(IOrdersRepository oRepo, StoreContext ctx){
+      ordersRepository = oRepo;
+      context = ctx;
+    }
+
+    public async Task Execute()
+    {
+      await using var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+      try
+      {
+        IEnumerable<Order> allorders = await ordersRepository.GetAllOrdersAsync();
+        foreach (Order ord in allorders)
+        {
+          MyAddressDto billDto = ParseAddress(ord.BillingAddress);
+          MyAddressDto shipDto = ParseAddress(ord.ShippingAddress);
+          ord.BillAddress = MyAddressDto.ToAddress(billDto);
+          ord.ShipAddress = MyAddressDto.ToAddress(shipDto);
+          await ordersRepository.SaveOrderAsync(ord);
+        }
+        await transaction.CommitAsync();
+        Console.WriteLine("Transaction committed successfully.");
+      }
+      catch (Exception ex)
+      {
+        await transaction.RollbackAsync();
+        Console.WriteLine("Error during AddressParser.Execute... Transaction rolled back." + ex.ToString());
+      }
+    }
+
+    public List<MyAddressDto> ParseAddresses(List<string> addresses)
+    {
+      var result = new List<MyAddressDto>();
+      foreach (var address in addresses){
+        result.Add(ParseAddress(address));
+      }
+      return result;
+    }
+
+    public MyAddressDto ParseAddress(string address)
+    {
+      var stateRegex = new Regex(@"\b(WA|SA|NSW|VIC|QLD|NT|TAS|ACT)\b", RegexOptions.IgnoreCase);
+      var zipRegex = new Regex(@"\b\d{4}\b");
+
+      var dto = new MyAddressDto();
+
+      // Extract Zip (4 digits at the end) and State
+      var zipMatch = zipRegex.Matches(address).LastOrDefault();
+      if (zipMatch != null)
+      {
+        dto.Zip = zipMatch.Value;
+      }
+
+      var stateMatch = stateRegex.Matches(address).LastOrDefault();
+      if (stateMatch.Success)
+      {
+        dto.State = stateMatch.Value.ToUpper();
+      }
+
+      // Remove Zip and State from the string
+      var cleanAddress = address;
+
+      if (dto.Zip != null)
+      {
+        int lastIndex = cleanAddress.LastIndexOf(dto.Zip);
+        if (lastIndex >= 0)
+        {
+          cleanAddress = cleanAddress.Remove(lastIndex, dto.Zip.Length).Trim();
+        }
+      }
+
+      if (dto.State != null)
+      {
+        int lastIndex = cleanAddress.LastIndexOf(dto.State, StringComparison.OrdinalIgnoreCase);
+        if (lastIndex >= 0)
+        {
+          cleanAddress = cleanAddress.Remove(lastIndex, dto.State.Length).Trim();
+        }
+      }
+
+      // Split the remaining string by commas and spaces to find city and lines
+      var parts = cleanAddress.Split(new[] { ',', '.' }, StringSplitOptions.RemoveEmptyEntries)
+                               .Select(p => p.Trim())
+                               .Where(p => !string.IsNullOrEmpty(p))
+                               .ToList();
+
+      if (parts.Any())
+      {
+        // The last part is the City
+        dto.City = parts.Last();
+        parts.RemoveAt(parts.Count - 1);
+      }
+
+      // Assign Lines
+      if (parts.Count > 0)
+      {
+        dto.Line1 = parts[0];
+      }
+      if (parts.Count > 1)
+      {
+        dto.Line2 = parts[1];
+      }
+      if (parts.Count > 2)
+      {
+        dto.Line3 = string.Join(", ", parts.Skip(2));
+      }
+      return dto;
+    }
+
+    /*
+    Gemini prompt:
+    ------------------------------------------
+    Here are some example address values, as one line of text each
+
+    Unit 10, 24 Stewart St, Leave behind the door, Watch out for dog, He may bite you, I just bought a bicycle. Scarborough WA 6019
+    601 Hay St, Perth WA 6000
+    level 1/78 Murray St, Perth WA 6000
+    10/14 Murray St, Perth WA 6000
+    310 Hay St, East Perth WA 6004
+    Level 1/169 Hay St, East Perth WA 6004
+    24 Stewart St, Scarborough WA 6019
+    272 Rutland Ave, Welshpool WA 6106
+    24 Gympie Way, Willetton WA 6155
+    4 Klem Ave, Salter Point WA 6152
+    123 Thomas St, Subiaco WA 6008
+    35 Tuscan St, Rossmoyne WA 6148
+    8/2 Bradford St, Mount Lawley WA 6050
+    86 Vellgrove Ave, Parkwood WA 6147
+    391 Charles St, North Perth WA 6006
+    2 Maquire Rd, Hillarys WA 6025
+    17c Kingsway, Madeley WA 6065
+    37 Cassowary Dr, Ballajura WA 6066
+    19 Cobby Pl, Marangaroo WA 6064
+    20 Milly Ct, Malaga WA 6090
+    24 Norvills Retreat, Kiara WA 6054
+    17 Kennerly St, Cloverdale WA 6105
+    99 Kew St, Welshpool WA 6106
+    63 Bickley Rd, Cannington WA 6107
+    190 William St, Beckenham WA 6107
+    unit 5c/817 Beeliar Dr, Cockburn Central WA 6164
+    32 Amadeus Way, Success WA 6164
+
+    I need a C# script that will accept a list of List<string> as input, containing data similar to the above lines.
+
+    I need the C# script to parse each item and produce a list of myAddressDto objects like this:
+
+    class myAddressDto{
+      public string? Line1   {get; set;}
+      public string? Line2   {get; set;}
+      public string? Line3   {get; set;}
+      public string? City    {get; set;}
+      public string? State   {get; set;}
+      public string? Country {get; set;}
+      public string? Zip     {get; set;}
+    }
+
+    Resulting in a List<myAddressDto>
+
+    For each string input...
+
+    The country is always "Australia" but this is never found in the string. I want to just always used the value "Australia"
+    The last 4 digits of the input string is always a Zip (australian post code) eg 6004
+    Moving left within the string...
+    The State will be an Australian state like WA, SA, NSW, VIC, NT
+    There may or may not be a comma, or period separating items as we go leftwards.
+    The next items will together make Line1, Line2, Line3. There will always be Line1.
+    Line2 and Line3 may not be present. They may be separated by comma or period.
+    They will always occur in this order (left to right: Line1,Line2,Line3)
+    If there are more than 3 items, please combine the rightmost items together, to be Line3. including any commas or periods.
+
+    The total strings contain allowed characters:
+    a-z
+    A-Z
+    0-9
+    ,.-()/#
+    space
+
+    ------------------------------------------
+    */
+
+    // The above prompt generated an initial script which worked after some minor changes.
+    // I then adapted it to run in my Program.cs within a transaction to read from
+    // the database and transform the data.
+  }
+}
