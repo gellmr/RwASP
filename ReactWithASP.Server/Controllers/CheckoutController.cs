@@ -21,8 +21,11 @@ namespace ReactWithASP.Server.Controllers
     protected Order PopulateOrder(CheckoutSubmitDTO checkoutSubmit)
     {
       DateTimeOffset now = DateTimeOffset.Now;
-      string shipAddress = Order.ParseAddress(checkoutSubmit);
-      AddressDTO shipAddy = new AddressDTO{
+
+      Order order1 = new Order();
+      order1.OrderPlacedDate = now;
+
+      order1.BillAddress = new Address{
         Line1 = checkoutSubmit.ShipLine1,
         Line2 = checkoutSubmit.ShipLine2,
         Line3 = checkoutSubmit.ShipLine3,
@@ -31,10 +34,17 @@ namespace ReactWithASP.Server.Controllers
         Country = checkoutSubmit.ShipCountry,
         Zip = checkoutSubmit.ShipZip
       };
-      Order order1 = new Order();
-      order1.OrderPlacedDate = now;
-      order1.BillingAddress = shipAddress;
-      order1.ShippingAddress = shipAddress;
+
+      order1.ShipAddress = new Address{
+        Line1 = checkoutSubmit.ShipLine1,
+        Line2 = checkoutSubmit.ShipLine2,
+        Line3 = checkoutSubmit.ShipLine3,
+        City = checkoutSubmit.ShipCity,
+        State = checkoutSubmit.ShipState,
+        Country = checkoutSubmit.ShipCountry,
+        Zip = checkoutSubmit.ShipZip
+      };
+
       order1.OrderStatus = Order.ParseShippingState(ShippingState.OrderPlaced);
       // Create an ordered product for each cart line
       foreach (CartSubmitLineDTO line in checkoutSubmit.cart){

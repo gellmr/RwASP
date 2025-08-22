@@ -64,9 +64,6 @@ namespace ReactWithASP.Server.Domain
         dbOrder.ShipDate            = order.ShipDate;
         dbOrder.ReceivedDate        = order.ReceivedDate;
 
-        dbOrder.BillingAddress  = string.Empty; // TODO Remove from schema
-        dbOrder.ShippingAddress = string.Empty; // TODO Remove from schema
-
         dbOrder.OrderStatus = order.OrderStatus;
 
         await context.SaveChangesAsync();

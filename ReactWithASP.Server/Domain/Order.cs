@@ -59,10 +59,6 @@ namespace ReactWithASP.Server.Domain
     public Nullable<DateTimeOffset> ShipDate { get; set; }
     public Nullable<DateTimeOffset> ReceivedDate { get; set; }
 
-
-
-    public string BillingAddress { get; set; }
-    public string ShippingAddress { get; set; }
     public string OrderStatus { get; set; }
 
 
