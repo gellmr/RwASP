@@ -10,5 +10,6 @@ namespace ReactWithASP.Server.Domain.Abstract
     public IEnumerable<Order>? GetUserOrders(string? idval, string? usertype);
     public Order GetOrderById(int orderid);
     public IEnumerable<Order>? GetMyOrders(string? uid, Guid? gid);
+    public IEnumerable<Order>? GetAllOrders();
   }
 }

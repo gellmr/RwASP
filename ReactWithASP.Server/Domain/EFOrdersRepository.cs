@@ -120,6 +120,11 @@ namespace ReactWithASP.Server.Domain
       return LoadAllOrderedProducts(rowsGuest);
     }
 
+    public IEnumerable<Order>? GetAllOrders()
+    {
+      return context.Orders.AsEnumerable();
+    }
+
     // ------------------------------------------------------------------------------
     // Utility methods below are not part of repo interface
 
