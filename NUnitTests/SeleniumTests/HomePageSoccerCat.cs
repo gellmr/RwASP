@@ -25,6 +25,7 @@ namespace NUnitTests.SeleniumTests
         IWebElement smallLink = links[0];
         IWebElement medLink = links[1];
         IWebElement largeLink = links[2];
+        // Need to make sure we are on a large screen size, or clicking the large link will not work.
         IWebElement clickableLink = wait.Until(ExpectedConditions.ElementToBeClickable(largeLink));
         clickableLink.Click();
         // The thumbnail should take longest to load so wait for this...
