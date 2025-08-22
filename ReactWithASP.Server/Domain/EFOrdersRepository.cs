@@ -113,12 +113,14 @@ namespace ReactWithASP.Server.Domain
       }
       if (idval != null){
         if (usertype == "user"){
-          IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToLower().Equals(idval));
-          return LoadAllOrderedProducts(rowsUser);
+          IEnumerable<Order> ordersUser = context.Orders.Where(o => o.UserID.ToLower().Equals(idval));
+          LoadAssociatedRecordsForOrders(ordersUser);
+          return ordersUser;
         }
         else if (usertype == "guest"){
-          IEnumerable<Order> rowsUser = context.Orders.Where(o => o.GuestID.ToString().ToLower().Equals(idval));
-          return LoadAllOrderedProducts(rowsUser);
+          IEnumerable<Order> ordersGuest = context.Orders.Where(o => o.GuestID.ToString().ToLower().Equals(idval));
+          LoadAssociatedRecordsForOrders(ordersGuest);
+          return ordersGuest;
         }
       }
       return new List<Order>();
@@ -142,18 +144,21 @@ namespace ReactWithASP.Server.Domain
       
       if (uid != null && gid != null){
         // Look up orders, for the given guest and user ids.
-        IEnumerable<Order> rowsBoth = context.Orders.Where(o => o.UserID.ToLower().Equals(uid) || o.GuestID.Equals(gid));
-        return LoadAllOrderedProducts(rowsBoth);
+        IEnumerable<Order> ordersBoth = context.Orders.Where(o => o.UserID.ToLower().Equals(uid) || o.GuestID.Equals(gid));
+        LoadAssociatedRecordsForOrders(ordersBoth);
+        return ordersBoth;
       }
       else if(uid != null)
       {
         // Look up user orders
-        IEnumerable<Order> rowsUser = context.Orders.Where(o => o.UserID.ToLower().Equals(uid));
-        return LoadAllOrderedProducts(rowsUser);
+        IEnumerable<Order> userOrders = context.Orders.Where(o => o.UserID.ToLower().Equals(uid));
+        LoadAssociatedRecordsForOrders(userOrders);
+        return userOrders;
       }
       // Look up guest orders
-      IEnumerable<Order> rowsGuest = context.Orders.Where(o => o.GuestID.Equals(gid));
-      return LoadAllOrderedProducts(rowsGuest);
+      IEnumerable<Order> guestOrders = context.Orders.Where(o => o.GuestID.Equals(gid));
+      LoadAssociatedRecordsForOrders(guestOrders);
+      return guestOrders;
     }
 
     public async Task<IEnumerable<Order>?> GetAllOrdersAsync(){
@@ -190,13 +195,20 @@ namespace ReactWithASP.Server.Domain
       .ToList();
     }
 
-    protected IEnumerable<Order> LoadAllOrderedProducts(IEnumerable<Order> rows)
+    protected IEnumerable<Order> LoadAssociatedRecordsForOrders(IEnumerable<Order> rows)
     {
-      foreach (Order order in rows)
-      {
-        order.OrderedProducts = LoadOrderedProducts(order);
+      foreach (Order order in rows){
+        LoadAssociatedRecords(order);
       }
       return rows;
+    }
+
+    protected void LoadAssociatedRecords(Order order)
+    {
+      order.OrderedProducts = LoadOrderedProducts(order);
+      order.OrderPayments = LoadPayments(order);
+      order.BillAddress = context.Addresses.FirstOrDefault(adr => adr.ID == order.BillAddressID);
+      order.ShipAddress = context.Addresses.FirstOrDefault(adr => adr.ID == order.ShipAddressID);
     }
   }
 }

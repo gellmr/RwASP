@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import displayDate from '@/Shop/displayDate.jsx';
 import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx';
-import { nullOrUndefined } from '@/MgUtility.js';
+import { nullOrUndefined, oneLineAddress } from '@/MgUtility.js';
 
 import '@/MyOrders.css'
 
@@ -66,7 +66,12 @@ const MyOrders = () =>
     </>
   );
 
-  const orderRow = function (ord) {
+  const orderRow = function (ord)
+  {
+    const shipAddy = oneLineAddress(ord.shipAddress);
+    let bill = oneLineAddress(ord.billAddress);
+    const billAddy = (bill === shipAddy) ? "(same as shipping address)" : bill;
+    
     return (
       <Col xs={12} key={ord.id}>
         <div className="myOrdersRect">
@@ -114,11 +119,18 @@ const MyOrders = () =>
                   <Col xs={8} sm={9} className="">$ {ord.priceTotal}</Col>
                 </Row>
               </Col>
-
+              
               <Col xs={12} className="myOrdRow">
                 <Row>
                   <Col xs={4} sm={3} className="">Ship To:</Col>
-                  <Col xs={8} sm={9} className="shipToDetail">{ord.shippingAddress}</Col>
+                  <Col xs={8} sm={9} className="shipToDetail">{shipAddy}</Col>
+                </Row>
+              </Col>
+
+              <Col xs={12} className="myOrdRow">
+                <Row>
+                  <Col xs={4} sm={3} className="">Billing Address:</Col>
+                  <Col xs={8} sm={9} className="shipToDetail">{billAddy}</Col>
                 </Row>
               </Col>
 

@@ -22,13 +22,22 @@ export const fetchMyOrders = createAsyncThunk('myOrders/fetchMyOrders',
 export const myOrdersSlice = createSlice({
   name: 'myOrders',
   initialState: {
-    value: [] // Each entry is an Order that has been JSON serialised.
+    value: [] // Each entry is an Order
     //{
     //  accountType        'Guest'
     //  appUser             null
-    //  billingAddress     'Unit 10/150 Third Floor, 123 Streetname Bvd The Tall Apartment Building (Inc) MySuburb MyState MyCountry 6000'
-    //  guest
-    //  {
+    //  billAddress {
+    //    id           281
+    //    line1        "Unit 10"
+    //    line2        "24 Stewart Street"
+    //    line3        "Leave behind the door, Watch out for dog. Thanks"
+    //    city         "Balcatta"
+    //    state        "WA"
+    //    country      "Australia"
+    //    zip          "6000"
+    //  }
+    //  billAddressID  281
+    //  guest {
     //    email               'email@address.com'
     //    firstName           'FirstName'
     //    fullName            'FirstName LastName'
@@ -66,8 +75,18 @@ export const myOrdersSlice = createSlice({
     //  quantityTotal      3
     //  readyToShipDate    null
     //  receivedDate       null
+    //  shipAddress {
+    //    id           282
+    //    line1        "123 Rivergum way"
+    //    line2        ""
+    //    line3        ""
+    //    city         "Springfield"
+    //    state        "WA"
+    //    country      "Australia"
+    //    zip          "6525"
+    //  }
+    //  shipAddressID  282
     //  shipDate           null
-    //  shippingAddress   'Unit 10/150 Third Floor, 123 Streetname Bvd The Tall Apartment Building (Inc) MySuburb MyState MyCountry 6000'
     //  userID             null
     //  userOrGuestEmail  'email@address.com'
     //  userOrGuestId     '72699c8d.....................0c817a9'

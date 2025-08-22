@@ -16,4 +16,18 @@ function isNullOrEmpty(value) {
   return (value == null || (typeof value === 'string' && value.trim().length === 0));
 }
 
-export { nullOrUndefined, isNullOrEmpty }
+
+function oneLineAddress(address) {
+  if (nullOrUndefined(address)) { return ""; }
+  return (
+    address.line1 + ", " +
+    address.line2 + ", " +
+    address.line3 + ", " +
+    address.city + ", " +
+    address.state + ", " +
+    address.country + ", " +
+    address.zip
+  );
+}
+
+export { nullOrUndefined, isNullOrEmpty, oneLineAddress }
