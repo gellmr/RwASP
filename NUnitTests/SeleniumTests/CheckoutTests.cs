@@ -137,7 +137,7 @@ namespace NUnitTests.SeleniumTests
       }
       catch (WebDriverTimeoutException ex)
       {
-        Assert.Fail("Timeout during SubmitEmpty_ShowsClientValidation");
+        Assert.Fail("Timeout during SubmitEmpty_ShowsClientValidation " + ex.Message);
       }
       Assert.That(myOrdNavBtn.Text, Does.Contain("My Orders (1)"), "Checkout - success - My Orders Button - incorrect.");
     }

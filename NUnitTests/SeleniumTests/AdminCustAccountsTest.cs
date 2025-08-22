@@ -8,13 +8,13 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   public class AdminCustAccountsTest : AdminTest
   {
-    const string? editPageUserPicCss = ".adminUserEditCurrPhoto";
-    const string? editFullNameCss = "#editFullName";
-    const string? editUserNameCss = "#editUserName";
-    const string? editUserIdCss   = "#editUserId";
-    const string? editGuestIdCss  = "#editGuestId";
-    const string? editPhoneCss    = "#editPhone";
-    const string? editEmailCss    = "#editEmail";
+    const string editPageUserPicCss = ".adminUserEditCurrPhoto";
+    const string editFullNameCss = "#editFullName";
+    const string editUserNameCss = "#editUserName";
+    const string editUserIdCss   = "#editUserId";
+    const string editGuestIdCss  = "#editGuestId";
+    const string editPhoneCss    = "#editPhone";
+    const string editEmailCss    = "#editEmail";
 
     public string? fullName = null;
     public string? userName = null;
@@ -57,7 +57,7 @@ namespace NUnitTests.SeleniumTests
         IWebElement editPageUserPic = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(editPageUserPicCss))); // The pic should take longest to load.
         GetCustomerDetail();
       }
-      catch (WebDriverTimeoutException ex){
+      catch (WebDriverTimeoutException){
         Assert.Fail("Edit Admin - Timeout occurred");
       }
       // Should see Aministrator details
@@ -103,7 +103,7 @@ namespace NUnitTests.SeleniumTests
         IWebElement editPageUserPic = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(editPageUserPicCss))); // Longest load.
         GetCustomerDetail();
       }
-      catch (WebDriverTimeoutException ex)
+      catch (WebDriverTimeoutException)
       {
         Assert.Fail("ShouldSeeGuest - EileenRyan - Timeout occurred");
       }

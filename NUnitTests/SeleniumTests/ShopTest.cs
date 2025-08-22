@@ -13,10 +13,10 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   public class ShopTest : PageTest
   {
-    public IWebElement smallCartBtn = null;
-    public IWebElement medCartBtn = null;
+    public IWebElement? smallCartBtn = null;
+    public IWebElement? medCartBtn = null;
     public IWebElement? myOrdNavBtn = null;
-    public IWebElement viewDetailsBtn = null;
+    public IWebElement? viewDetailsBtn = null;
     public IWebElement? adminProdsNavBtn = null;
     public const string shopPlusCss = ".addToCartBtnGroup button i.bi-plus";
     public const string cartButtonCss = "a.mgNavLinkCartBtn";
@@ -76,7 +76,7 @@ namespace NUnitTests.SeleniumTests
 
     public void GoToMyOrders()
     {
-      IWebElement myOrdPageTitle = null;
+      IWebElement? myOrdPageTitle = null;
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6));
@@ -95,7 +95,7 @@ namespace NUnitTests.SeleniumTests
         // Get Guest guid value
         IWebElement guidEl = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdGuestGuidCss)));
         myOrdGuestGuid = guidEl.Text;
-        try{ myOrdGuestGuidShort = myOrdGuestGuid.Split('-')[0]; } catch (Exception e) { myOrdGuestGuidShort = null; }
+        try{ myOrdGuestGuidShort = myOrdGuestGuid.Split('-')[0]; } catch (Exception) { myOrdGuestGuidShort = null; }
 
         // Get Order body details
         wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageBodyInfoCss)));
@@ -106,7 +106,7 @@ namespace NUnitTests.SeleniumTests
         // Get View Details button
         viewDetailsBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageViewDetailCss)));
       }
-      catch (WebDriverTimeoutException ex)
+      catch (WebDriverTimeoutException)
       {
         Assert.Fail("Timeout during GoToMyOrders");
       }
@@ -135,7 +135,7 @@ namespace NUnitTests.SeleniumTests
         IWebElement bodyInfo = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdDetPageBodyInfoCss)));
         detailBodyInfoTextResult = TestHelpers.TrimAndFlattenString(bodyInfo.Text);
       }
-      catch (WebDriverTimeoutException ex)
+      catch (WebDriverTimeoutException)
       {
         Assert.Fail("Timeout during GoToMyOrderDetail");
       }
@@ -183,7 +183,7 @@ namespace NUnitTests.SeleniumTests
         IWebElement row1 = rows[0];
         backlogRow1TextResult = TestHelpers.TrimAndFlattenString(row1.Text);
       }
-      catch (WebDriverTimeoutException ex)
+      catch (WebDriverTimeoutException)
       {
         Assert.Fail("Timeout during GetBacklogPageValues");
       }
@@ -202,7 +202,7 @@ namespace NUnitTests.SeleniumTests
     {
       IWebElement? pageTitle = null;
       IWebElement? bottleImage = null;
-      IReadOnlyCollection<IWebElement> productRows = null;
+      IReadOnlyCollection<IWebElement>? productRows = null;
       IWebElement? bottleRow = null;
       try
       {

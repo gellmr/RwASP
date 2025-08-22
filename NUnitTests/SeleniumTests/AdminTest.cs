@@ -20,8 +20,8 @@ namespace NUnitTests.SeleniumTests
     public const string? custAccsNavBtnCss = "#adminLayout .navbar-collapse a[href=\"/admin/useraccounts\"]";
     public const string? custAccsPageTitleCss = ".adminCont h4.adminTitleBar";
 
-    public List<IWebElement> customerAccountLines;
-    public IWebElement chosenCaRow;
+    public List<IWebElement>? customerAccountLines = null;
+    public IWebElement? chosenCaRow = null;
     public const string? customerAccountLinesCss = ".adminUserAccRow";
     public string? customerAccountLineResultText = null; // Not const. Gets set later
 
@@ -36,7 +36,7 @@ namespace NUnitTests.SeleniumTests
         vipUsername = TestConfiguration.Config.GetSection("Authentication:VIP:UserName").Value;
         vipPassword = TestConfiguration.Config.GetSection("Authentication:VIP:Password").Value;
       }
-      catch (Exception ex){
+      catch (Exception){
         throw; // Configuration not available
       }
     }
@@ -106,7 +106,7 @@ namespace NUnitTests.SeleniumTests
         // Wait for backlog page to appear
         pageTitle = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(custAccsPageTitleCss)));
       }
-      catch (WebDriverTimeoutException ex)
+      catch (WebDriverTimeoutException)
       {
         Assert.Fail("Timeout during GoToCustomerAccounts");
       }
@@ -141,7 +141,7 @@ namespace NUnitTests.SeleniumTests
         guestId = (loginType == "Guest") ? idValField.Text : null;
         userId = (loginType == "User") ? idValField.Text : null;
       }
-      catch (WebDriverTimeoutException ex)
+      catch (WebDriverTimeoutException)
       {
         Assert.Fail("Timeout during GetAccountTypeAndId");
       }
@@ -155,7 +155,7 @@ namespace NUnitTests.SeleniumTests
         IReadOnlyCollection<IWebElement> accRows = driver.FindElements(By.CssSelector(customerAccountLinesCss));
         customerAccountLines = accRows.ToList();
       }
-      catch (WebDriverTimeoutException ex){
+      catch (WebDriverTimeoutException){
         Assert.Fail("GetCustomerAccountLines - Timeout occurred");
       }
     }
@@ -170,7 +170,7 @@ namespace NUnitTests.SeleniumTests
         row = customerAccountLines[0]; // Get the first row
         customerAccountLineResultText = TestHelpers.TrimAndFlattenString(row.Text);
       }
-      catch (WebDriverTimeoutException ex)
+      catch (WebDriverTimeoutException)
       {
         Assert.Fail("ShouldSee_Admin - Timeout occurred");
       }

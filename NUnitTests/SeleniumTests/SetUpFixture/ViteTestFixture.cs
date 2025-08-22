@@ -31,8 +31,8 @@ namespace NUnitTests.SeleniumTests
   [SetUpFixture]
   public class ViteTestFixture
   {
-    private Process backendProcess; // Process for the .NET Core backend server.
-    private Process viteProcess;    // Process for the Vite front-end server.
+    private Process? backendProcess; // Process for the .NET Core backend server.
+    private Process? viteProcess;    // Process for the Vite front-end server.
 
     private const string? vitePort = "5173";
     private const string? dotNetPort = "7225";
@@ -53,7 +53,7 @@ namespace NUnitTests.SeleniumTests
             .Build();
         TestConfiguration.Config = configuration;
       }
-      catch (Exception ex)
+      catch (Exception)
       {
         throw;
       }

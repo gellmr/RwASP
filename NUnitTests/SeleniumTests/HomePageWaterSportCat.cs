@@ -9,7 +9,7 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   internal class HomePageWaterSportCat : PageTest
   {
-    public const string? waterSportCatButtonCss = ".mg-category-menu-r a.btn[href='/category/waterSport']";
+    public const string waterSportCatButtonCss = ".mg-category-menu-r a.btn[href='/category/waterSport']";
     public const string bottleThumbCss = ".mgImgThumb img[src=\"/thumbs/tilt-bottle.png\"]";
     
     [Test]

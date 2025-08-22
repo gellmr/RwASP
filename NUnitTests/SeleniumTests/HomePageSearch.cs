@@ -12,7 +12,7 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   internal class HomePageSearch : PageTest
   {
-    public const string? searchResultsAreaCss = ".shopLayoutTransparent";
+    public const string searchResultsAreaCss = ".shopLayoutTransparent";
 
     [Test]
     public void TypeSearch_BringsProductResults()

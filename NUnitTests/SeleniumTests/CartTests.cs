@@ -8,7 +8,7 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   public class CartTests : ShopTest
   {
-    public IWebElement inCartItemOneTitle = null;
+    public IWebElement? inCartItemOneTitle = null;
 
     public const string inCartItemOneCssTitle = ".inCartProd .inCartItemText h6";
     public const string inCartItemOneSuccessText = "Drink Bottle $20";
@@ -87,8 +87,8 @@ namespace NUnitTests.SeleniumTests
       var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
       ClickAddThenGoToCart();
       if (inCartItemOneTitle == null){ Assert.Fail("Cart Page - Item One - not found"); return; }
-      IWebElement summaryRow = null;
-      IWebElement row1 = null;
+      IWebElement? summaryRow = null;
+      IWebElement? row1 = null;
       try
       {
         IReadOnlyCollection<IWebElement> cartRows = driver.FindElements(By.CssSelector(inCartRows));
