@@ -16,17 +16,22 @@ function isNullOrEmpty(value) {
   return (value == null || (typeof value === 'string' && value.trim().length === 0));
 }
 
+function addressSegment(seg, final=false) {
+  if (nullOrUndefined(seg)) { return ""; }
+  if (!final) { return seg + ", " }
+  return seg;
+}
 
 function oneLineAddress(address) {
   if (nullOrUndefined(address)) { return ""; }
   return (
-    address.line1 + ", " +
-    address.line2 + ", " +
-    address.line3 + ", " +
-    address.city + ", " +
-    address.state + ", " +
-    address.country + ", " +
-    address.zip
+    addressSegment(address.line1) +
+    addressSegment(address.line2) +
+    addressSegment(address.line3) +
+    addressSegment(address.city) +
+    addressSegment(address.state) +
+    addressSegment(address.country) +
+    addressSegment(address.zip, true)
   );
 }
 

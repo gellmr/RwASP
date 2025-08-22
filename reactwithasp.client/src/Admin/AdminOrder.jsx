@@ -7,7 +7,7 @@ import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
-import { nullOrUndefined } from '@/MgUtility.js';
+import { nullOrUndefined, oneLineAddress } from '@/MgUtility.js';
 import Accordion from 'react-bootstrap/Accordion';
 import BackLink from "@/Shop/BackLink";
 
@@ -108,6 +108,12 @@ function AdminOrder ()
     const payReceived = myOrd.orderPaymentsReceived;
     const payOutstand = myOrd.priceTotal - myOrd.orderPaymentsReceived;
 
+    const shipAddy = oneLineAddress(myOrd.shipAddress);
+    let bill = oneLineAddress(myOrd.billAddress);
+    const billAddy = nullOrUndefined(bill) ? "" : (
+      (bill === shipAddy) ? "(same as shipping address)" : bill
+    );
+
     return (
       <>
         <Row id="adminOrderPage">
@@ -141,13 +147,19 @@ function AdminOrder ()
                   </NavLink>
                 </Col>
               </Row>
+
               <Row>
                 <Col xs={5}>Account Type:</Col>      <Col xs={7}>{myOrd.accountType}</Col>
               </Row>
 
-              <Row><Col xs={5}>&nbsp;</Col><Col xs={7}>&nbsp;</Col></Row>
+              <Row style={{ marginTop: 15 }}>
+                <Col xs={5}>Shipping Address:</Col> <Col xs={7}>{shipAddy}</Col>
+              </Row>
+              <Row>
+                <Col xs={5}>Billing Address:</Col> <Col xs={7}>{billAddy}</Col>
+              </Row>
 
-              <Row style={{ color: '#6873df', fontWeight: 400 }}>
+              <Row style={{ color: '#6873df', fontWeight: 400, marginTop: 15 }}>
                 <Col xs={5}>Payments Received:</Col> <Col xs={7}>${payReceived}</Col>
               </Row>
               <Row style={{ color: '#ff8000', fontWeight: 500 }}>
@@ -186,28 +198,6 @@ function AdminOrder ()
                 {orderDetailFootMarkup()}
               </Row>
             </div>
-
-            <Accordion defaultActiveKey={['0']} >
-              <Accordion.Item eventKey="0">
-                <Accordion.Header>Shipping Details</Accordion.Header>
-                <Accordion.Body className="collapseDeet">
-                  <Row>
-                    <Col xs={12}>{myOrd.shippingAddress}</Col>
-                  </Row>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-
-            {/*<Accordion>*/}
-            {/*  <Accordion.Item eventKey="0">*/}
-            {/*    <Accordion.Header>Billing Details</Accordion.Header>*/}
-            {/*    <Accordion.Body className="collapseDeet">*/}
-            {/*      <Row>*/}
-            {/*        <Col xs={12}>{myOrd.billingAddress}</Col>*/}
-            {/*      </Row>*/}
-            {/*    </Accordion.Body>*/}
-            {/*  </Accordion.Item>*/}
-            {/*</Accordion>*/}
 
           </Col>
           <Col xs={0} sm={1} md={2} lg={3}></Col>

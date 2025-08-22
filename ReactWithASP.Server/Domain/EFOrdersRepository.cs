@@ -132,8 +132,7 @@ namespace ReactWithASP.Server.Domain
       if (order == null){
         throw new ArgumentException("Could not load Order with orderid " + orderid);
       }
-      order.OrderedProducts = LoadOrderedProducts(order);
-      order.OrderPayments = LoadPayments(order);
+      LoadAssociatedRecords(order);
       return order;
     }
 
