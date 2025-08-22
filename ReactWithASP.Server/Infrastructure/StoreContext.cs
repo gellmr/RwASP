@@ -18,6 +18,7 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<CartLine> CartLines { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Guest> Guests { get; set; }
+    public DbSet<Address> Addresses { get; set; }
     public DbSet<OrderPayment> OrderPayments { get; set; }
     public DbSet<AdminOrderRow> AdminOrderRows { get; set; } // Keyless (Stored Procedure)
 
@@ -37,6 +38,12 @@ namespace ReactWithASP.Server.Infrastructure
       .WithMany(u => u.Orders)
       .HasForeignKey(o => o.GuestID)
       .OnDelete(DeleteBehavior.Restrict);
+
+      modelBuilder.Entity<Order>()
+      .HasOne(o => o.ShipAddress);
+
+      modelBuilder.Entity<Order>()
+      .HasOne(o => o.BillAddress);
 
       //modelBuilder.Entity<Guest>()
       //.HasOne(e => e.DefaultAddress);
