@@ -75,6 +75,11 @@ const AdminUserAccounts = () =>
     const editLink = "/admin/" + usertype + "/" + idval + "/edit";
     const ordersLink = "/admin/" + usertype + "/" + idval + "/orders";
 
+    const phoneRow = nullOrUndefined(user.phoneNumber) ? <></> : ( <>
+        <Col className="adminUserAccCell" xs={3}>Phone</Col> <Col xs={9} className="adminUserAccCell">{user.phoneNumber}</Col>
+      </>
+    );
+
     return (
       <Row key={idval} className={isCurrentUser ? "adminUserAccRow currUserRow" : 'adminUserAccRow'}>
 
@@ -87,7 +92,7 @@ const AdminUserAccounts = () =>
           <Row className="adminUserAccDetailsBox">
             <Col className="adminUserAccCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col> <Col xs={9} className="adminUserAccCell fullNameCell">{user.fullName}</Col>
             <Col className="adminUserAccCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserAccCell mgGuid">{idval}</Col>
-            <Col className="adminUserAccCell" xs={3}>Phone</Col>                                             <Col xs={9} className="adminUserAccCell">{user.phoneNumber}</Col>
+            {phoneRow}
             <Col className="adminUserAccCell" xs={3}>Email</Col>                                             <Col xs={9} className="adminUserAccCell">{user.email}</Col>
             <Col className="adminUserAccCell" xs={3}>Account Type</Col>                                      <Col xs={9} className="adminUserAccCell accountTypeCell">{accountType}</Col>
           </Row>

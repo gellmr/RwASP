@@ -93,7 +93,7 @@ namespace NUnitTests.SeleniumTests
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
         customerAccountLineResultText = TestHelpers.TrimAndFlattenString(chosenCaRow.Text);
         string? expectedText1 = "Full Name Eileen Ryan";
-        string? expectedText2 = "Phone Email eileen.ryan@freesport.com Account Type Guest Edit Account View Orders";
+        string? expectedText2 = "Email eileen.ryan@freesport.com Account Type Guest Edit Account View Orders";
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText1), "ShouldSeeGuest - EileenRyan - incorrect details.");
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText2), "ShouldSeeGuest - EileenRyan - incorrect details.");
         IWebElement editBtn = chosenCaRow.FindElement(By.CssSelector(".editAccLink"));
