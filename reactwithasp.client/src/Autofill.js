@@ -41,31 +41,26 @@ const autoVal = [
 
 const checkoutAutofill = function (formik, index)
 {
-  const vals = autoVal[index];
-  formik.setFieldValue('firstName',   vals.firstName);
-  formik.setFieldValue('lastName',    vals.lastName);
-  formik.setFieldValue('shipLine1',   vals.shipLine1 );
-  formik.setFieldValue('shipLine2',   vals.shipLine2 );
-  formik.setFieldValue('shipLine3',   vals.shipLine3 );
-  formik.setFieldValue('shipCity',    vals.shipCity );
-  formik.setFieldValue('shipState',   vals.shipState );
-  formik.setFieldValue('shipCountry', vals.shipCountry );
-  formik.setFieldValue('shipZip',     vals.shipZip );
-  formik.setFieldValue('shipEmail',   vals.shipEmail );
+  const newValues = autoVal[index];
+  formik.setValues(newValues, true); // Await formik values to update. Run validation.
   return index == autoVal.length - 1;
 }
 
-const checkoutValuesfill = function (formik, initVals) {
-  formik.setFieldValue('firstName',   initVals.firstName   || "");
-  formik.setFieldValue('lastName',    initVals.lastName    || "");
-  formik.setFieldValue('shipLine1',   initVals.shipLine1   || "Unit 5, Level 10");
-  formik.setFieldValue('shipLine2',   initVals.shipLine2   || "95 Stirling Street");
-  formik.setFieldValue('shipLine3',   initVals.shipLine3   || "");
-  formik.setFieldValue('shipCity',    initVals.shipCity    || "Perth");
-  formik.setFieldValue('shipState',   initVals.shipState   || "WA");
-  formik.setFieldValue('shipCountry', initVals.shipCountry || "Australia");
-  formik.setFieldValue('shipZip',     initVals.shipZip     || "6000");
-  formik.setFieldValue('shipEmail',   initVals.shipEmail   || "");
+const checkoutValuesfill = function (formik, initVals)
+{
+  const newValues = {
+    'firstName': initVals.firstName || "",
+    'lastName':  initVals.lastName  || "",
+    'shipLine1': initVals.shipLine1 || "Unit 5, Level 10",
+    'shipLine2': initVals.shipLine2 || "95 Stirling Street",
+    'shipLine3': initVals.shipLine3 || "",
+    'shipCity':  initVals.shipCity  || "Perth",
+    'shipState': initVals.shipState || "WA",
+    'shipCountry': initVals.shipCountry || "Australia",
+    'shipZip':     initVals.shipZip     || "6000",
+    'shipEmail':   initVals.shipEmail   || ""
+  };
+  formik.setValues(newValues, true); // Await formik values to update. Run validation.
 }
 
 export { checkoutAutofill, checkoutValuesfill }

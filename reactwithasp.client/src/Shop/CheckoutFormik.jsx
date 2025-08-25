@@ -66,17 +66,24 @@ const CheckoutFormik = () =>
 
   const useAutoFill = (nullOrUndefined(myUserId)) ? true : false;
 
+
   const autoFill = async function ()
   {
+    // Clicked the autofill button.
     if (useAutoFill) {
-      let reset = checkoutAutofill(formik, autoFillIdx);
-      let i = reset ? 0 : autoFillIdx + 1;
-      setAutoFillIdx(i);
+      let reset = checkoutAutofill(formik, autoFillIdx); let i = reset ? 0 : autoFillIdx + 1; setAutoFillIdx(i);
     } else {
       checkoutValuesfill(formik, initVals);
     }
-    await formik.validateForm(); // Wait for the form values to update
-    markAllFieldsAsTouched(formik.values, formik.setTouched); // Trigger this so the error messages will clear
+    try
+    {
+      const formikErrors = formik.errors;
+      if (Object.keys(formikErrors).length > 0) {
+        console.error("Autofill resulted in errors.");
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred during validation:", error);
+    }
   }
 
   const markAllFieldsAsTouched = (values, setTouched) => {
