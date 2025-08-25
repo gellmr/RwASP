@@ -110,22 +110,25 @@ using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
   try{
     var context = services.GetRequiredService<StoreContext>();
-    if (env.EnvironmentName == "Development" || env.EnvironmentName == "Test"){
-      await context.Database.MigrateAsync();
+    var deployMarker = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
+    if (File.Exists(deployMarker))
+    {
+      if (bool.Parse(builder.Configuration["OnStart:Migrate"])){
+        if (env.EnvironmentName == "Development" || env.EnvironmentName == "Test"){
+          await context.Database.MigrateAsync();
+        }
+      }
+      if (bool.Parse(builder.Configuration["OnStart:Seed"])){
+        var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+        await seeder.Execute();
+      }
+      if (bool.Parse(builder.Configuration["OnStart:DataConversion"])){
+        var ordersRepository = services.GetRequiredService<IOrdersRepository>();
+        AddressParser addressParser = new AddressParser(ordersRepository, context);
+        await addressParser.Execute();
+      }
+      File.Delete(deployMarker);
     }
-    // If SeedOnStart is true, and deploy marker exists, then perform seeding and delete marker file.
-    var seedMarkerPath = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
-    bool execSeed = bool.Parse(builder.Configuration["SeedOnStart"]);
-    if (false && execSeed && File.Exists(seedMarkerPath)){
-      var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-      await seeder.Execute();
-      File.Delete(seedMarkerPath);
-    }
-
-    // Convert one line addresses into dto objects.
-    //var ordersRepository = services.GetRequiredService<IOrdersRepository>();
-    //AddressParser addressParser = new AddressParser(ordersRepository, context);
-    //await addressParser.Execute();
   }
   catch (Exception ex){
     var logger = services.GetRequiredService<ILogger<Program>>();
