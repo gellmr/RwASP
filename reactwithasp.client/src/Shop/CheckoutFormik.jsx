@@ -97,6 +97,9 @@ const CheckoutFormik = () =>
         return;
       }
       formik.handleSubmit(e); // Pass to formik onSubmit function.
+    })
+    .catch(validationError => {
+      console.error("Validation failed:", validationError);
     });
   };
 
