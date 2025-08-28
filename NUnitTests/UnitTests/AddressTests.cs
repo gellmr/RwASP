@@ -40,8 +40,8 @@ namespace NUnitTests.UnitTests
 
     [Test]
     public void GetInvalidWithXss_ShouldNotBeValid(){
-      Address hackyAddress = AddressGen.GetInvalidWithXss();
-      ShouldNotBeValid(hackyAddress);
+      Address addressWithXss = AddressGen.GetInvalidWithXss();
+      ShouldNotBeValid(addressWithXss);
     }
 
     [Test]
