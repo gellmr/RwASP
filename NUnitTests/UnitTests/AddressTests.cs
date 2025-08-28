@@ -12,43 +12,6 @@ namespace NUnitTests.UnitTests
   [TestFixture]
   public class AddressTests
   {
-    public void ShouldBeValid(Address address)
-    {
-      try
-      {
-        // Arrange
-        var validationContext = new ValidationContext(address, null, null);
-        var validationResults = new List<ValidationResult>();
-        // Act
-        bool isValid = Validator.TryValidateObject(address, validationContext, validationResults, true);
-        // Assert
-        Assert.That(isValid, Is.True);
-        Assert.That(validationResults, Is.Empty);
-      }
-      catch (Exception ex){
-        Console.WriteLine("ShouldBeValid() - An error occurred: " + ex.Message);
-      }
-    }
-
-    public void ShouldNotBeValid(Address address)
-    {
-      try
-      {
-        // Arrange
-        var validationContext = new ValidationContext(address, null, null);
-        var validationResults = new List<ValidationResult>();
-        // Act
-        bool isValid = Validator.TryValidateObject(address, validationContext, validationResults, true);
-        // Assert
-        Assert.That(isValid, Is.False);
-        Assert.That(validationResults, Is.Not.Empty);
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine("ShouldNotBeValid() - An error occurred: " + ex.Message);
-      }
-    }
-
     [Test]
     public void GetDefault_ShouldBeValid(){
       Address address = AddressGen.GetDefault();
@@ -56,8 +19,8 @@ namespace NUnitTests.UnitTests
     }
 
     [Test]
-    public void GetCrazyButValid_ShouldBeValid(){
-      Address address = AddressGen.GetCrazyButValid();
+    public void GetValidWithRegexLimit_ShouldBeValid(){
+      Address address = AddressGen.GetValidWithRegexLimit();
       ShouldBeValid(address);
     }
 
@@ -139,8 +102,53 @@ namespace NUnitTests.UnitTests
       address.Country = null;
       ShouldNotBeValid(address);
     }
+
+    // Reusable helper method
+    public void ShouldBeValid(Address address)
+    {
+      try
+      {
+        // Arrange
+        var validationContext = new ValidationContext(address, null, null);
+        var validationResults = new List<ValidationResult>();
+
+        // Act
+        bool isValid = Validator.TryValidateObject(address, validationContext, validationResults, true);
+
+        // Assert
+        Assert.That(isValid, Is.True);
+        Assert.That(validationResults, Is.Empty);
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine("ShouldBeValid() - An error occurred: " + ex.Message);
+      }
+    }
+
+    // Reusable helper method
+    public void ShouldNotBeValid(Address address)
+    {
+      try
+      {
+        // Arrange
+        var validationContext = new ValidationContext(address, null, null);
+        var validationResults = new List<ValidationResult>();
+
+        // Act
+        bool isValid = Validator.TryValidateObject(address, validationContext, validationResults, true);
+
+        // Assert
+        Assert.That(isValid, Is.False);
+        Assert.That(validationResults, Is.Not.Empty);
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine("ShouldNotBeValid() - An error occurred: " + ex.Message);
+      }
+    }
   }
 
+  // This class generates various Address instances for testing purposes.
   public static class AddressGen
   {
     public const string? validLine = "Unit 1/100, 3-3 #44 Main St."; // Uses all valid characters
@@ -162,7 +170,7 @@ namespace NUnitTests.UnitTests
 
     // This address uses all valid characters, and is very long, but still valid.
     // It is designed to test the limits of the regex.
-    public static Address GetCrazyButValid()
+    public static Address GetValidWithRegexLimit()
     {
       return new Address
       {
