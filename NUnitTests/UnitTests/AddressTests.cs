@@ -9,52 +9,6 @@ using System.Threading.Tasks;
 
 namespace NUnitTests.UnitTests
 {
-
-  public static class AddressGen
-  {
-    public const string? validLine = "Unit 1/100, 3-3 #44 Main St."; // Uses all valid characters
-
-    public static Address GetDefault()
-    {
-      return new Address {
-        Line1 = AddressGen.validLine,
-        Line2 = null,
-        Line3 = null,
-        City = "Anytown",
-        State = "WA",
-        Country = "Australia",
-        Zip = "1234"
-      };
-    }
-
-    public static Address GetCrazyButValid()
-    {
-      return new Address
-      {
-        Line1   = "P.O. Box 45-A,    ////....----####aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa100",
-        City    = "The 1000 Island Province - Island 33, Peninsula 2.",
-        State   = "The 1000 Island Province - Island 33, Peninsula 2.",
-        Country = "The 1000 Island Province - Island 33, Peninsula 2.",
-        Zip     = "9999"
-      };
-    }
-
-    public static Address GetInvalidWithXss()
-    {
-      string? xss = "<script>alert('XSS');</script>";
-      return new Address
-      {
-        Line1 = xss,
-        Line2 = xss,
-        Line3 = xss,
-        City = xss,
-        State = xss,
-        Country = xss,
-        Zip = xss
-      };
-    }
-  }
-
   [TestFixture]
   public class AddressTests
   {
@@ -184,6 +138,57 @@ namespace NUnitTests.UnitTests
       Address address = AddressGen.GetDefault();
       address.Country = null;
       ShouldNotBeValid(address);
+    }
+  }
+
+  public static class AddressGen
+  {
+    public const string? validLine = "Unit 1/100, 3-3 #44 Main St."; // Uses all valid characters
+
+    // This is a typical valid address.
+    public static Address GetDefault()
+    {
+      return new Address
+      {
+        Line1 = AddressGen.validLine,
+        Line2 = null,
+        Line3 = null,
+        City = "Anytown",
+        State = "WA",
+        Country = "Australia",
+        Zip = "1234"
+      };
+    }
+
+    // This address uses all valid characters, and is very long, but still valid.
+    // It is designed to test the limits of the regex.
+    public static Address GetCrazyButValid()
+    {
+      return new Address
+      {
+        Line1 = "P.O. Box 45-A,    ////....----####aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa100",
+        City = "The 1000 Island Province - Island 33, Peninsula 2.",
+        State = "The 1000 Island Province - Island 33, Peninsula 2.",
+        Country = "The 1000 Island Province - Island 33, Peninsula 2.",
+        Zip = "9999"
+      };
+    }
+
+    // This address contains XSS attack code in every field, which should be caught by validation.
+    // It is designed to check that a typical XSS attack is caught by the regex.
+    public static Address GetInvalidWithXss()
+    {
+      string? xss = "<script>alert('XSS');</script>";
+      return new Address
+      {
+        Line1 = xss,
+        Line2 = xss,
+        Line3 = xss,
+        City = xss,
+        State = xss,
+        Country = xss,
+        Zip = xss
+      };
     }
   }
 }
