@@ -42,8 +42,6 @@ namespace ReactWithASP.Server.Infrastructure
   --------------------------------------------------------------
   Here are some example address values, as one line of text each
 
-  (I pasted these directly from the database)
-
   Unit 10, 24 Stewart St, Leave behind the door, Watch out for dog, He may bite you, I just bought a bicycle. Scarborough WA 6019
   601 Hay St, Perth WA 6000
   level 1/78 Murray St, Perth WA 6000
