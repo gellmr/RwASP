@@ -89,7 +89,7 @@ namespace ReactWithASP.Server.Infrastructure
   For each string input...
 
   The country is always "Australia" but this is never found in the string. I want to just always use the value "Australia"
-  The last 4 digits of the input string is always a Zip (australian post code) eg 6004
+  The last 4 digits of the input string is always a Zip (Australian post code) eg 6004
   Moving left within the string...
   The State will be an Australian state like WA, SA, NSW, VIC, NT
   There may or may not be a comma, or period separating items as we go leftwards.
