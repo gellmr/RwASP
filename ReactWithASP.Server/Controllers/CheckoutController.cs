@@ -25,6 +25,11 @@ namespace ReactWithASP.Server.Controllers
       Order order1 = new Order();
       order1.OrderPlacedDate = now;
 
+      string addr = Order.ParseAddress(checkoutSubmit);
+      order1.BillingAddress = addr;
+      order1.ShippingAddress = addr;
+
+      /*
       order1.BillAddress = new Address{
         Line1 = checkoutSubmit.ShipLine1,
         Line2 = checkoutSubmit.ShipLine2,
@@ -44,6 +49,7 @@ namespace ReactWithASP.Server.Controllers
         Country = checkoutSubmit.ShipCountry,
         Zip = checkoutSubmit.ShipZip
       };
+      */
 
       order1.OrderStatus = Order.ParseShippingState(ShippingState.OrderPlaced);
       // Create an ordered product for each cart line

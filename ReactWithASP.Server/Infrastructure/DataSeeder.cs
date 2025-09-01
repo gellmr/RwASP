@@ -363,8 +363,10 @@ namespace ReactWithASP.Server.Infrastructure
         ReadyToShipDate = GetOrderDateTime(dto.ReadyToShipDate),
         ShipDate = GetOrderDateTime(dto.ShipDate),
         ReceivedDate = GetOrderDateTime(dto.ReceivedDate),
-        //BillingAddress = dto.BillingAddress ?? string.Empty,
-        //ShippingAddress = dto.ShippingAddress ?? string.Empty,
+        
+        BillingAddress = dto.BillingAddress ?? string.Empty,
+        ShippingAddress = dto.ShippingAddress ?? string.Empty,
+
         OrderStatus = dto.OrderStatus ?? string.Empty,
       };
       if (user == null)
