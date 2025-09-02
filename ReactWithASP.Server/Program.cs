@@ -122,11 +122,11 @@ using (var scope = app.Services.CreateScope()){
         var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
         await seeder.Execute();
       }
-      if (bool.Parse(builder.Configuration["OnStart:DataConversion"])){
-        var ordersRepository = services.GetRequiredService<IOrdersRepository>();
-        AddressParser addressParser = new AddressParser(ordersRepository, context);
-        await addressParser.Execute();
-      }
+      //if (bool.Parse(builder.Configuration["OnStart:DataConversion"])){
+      //  var ordersRepository = services.GetRequiredService<IOrdersRepository>();
+      //  AddressParser addressParser = new AddressParser(ordersRepository, context);
+      //  await addressParser.Execute();
+      //}
       File.Delete(deployMarker);
     }
   }
