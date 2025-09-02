@@ -208,10 +208,9 @@ namespace ReactWithASP.Server.Domain
     {
       order.OrderedProducts = LoadOrderedProducts(order);
       order.OrderPayments = LoadPayments(order);
-      /*
+      /**/
       order.BillAddress = context.Addresses.FirstOrDefault(adr => adr.ID == order.BillAddressID);
       order.ShipAddress = context.Addresses.FirstOrDefault(adr => adr.ID == order.ShipAddressID);
-      */
     }
   }
 }
