@@ -31,8 +31,8 @@ namespace ReactWithASP.Server.Domain
         dbOrder.UserID = order.UserID;
         dbOrder.GuestID = order.GuestID;
 
-        /*
-        if(order.ShipAddressID == null){
+        /**/
+        if (order.ShipAddressID == null){
           // Create
           dbOrder.ShipAddress = order.ShipAddress; // Allow database to auto assign dbOrder.ShipAddressID
           context.Entry(dbOrder.ShipAddress).State = EntityState.Added;
@@ -55,7 +55,7 @@ namespace ReactWithASP.Server.Domain
           context.Entry(dbOrder.BillAddress).State = EntityState.Modified;
           dbOrder.BillAddressID = order.BillAddressID;
         }
-        */
+        
 
         dbOrder.OrderPayments = order.OrderPayments;
         dbOrder.OrderedProducts = order.OrderedProducts;

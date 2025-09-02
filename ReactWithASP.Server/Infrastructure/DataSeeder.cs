@@ -363,10 +363,11 @@ namespace ReactWithASP.Server.Infrastructure
         ReadyToShipDate = GetOrderDateTime(dto.ReadyToShipDate),
         ShipDate = GetOrderDateTime(dto.ShipDate),
         ReceivedDate = GetOrderDateTime(dto.ReceivedDate),
-        
+        /* 
+         * Requires migration step 2 (or earlier) to run the DataSeeder.
         BillingAddress = dto.BillingAddress ?? string.Empty,
         ShippingAddress = dto.ShippingAddress ?? string.Empty,
-
+        */
         OrderStatus = dto.OrderStatus ?? string.Empty,
       };
       if (user == null)

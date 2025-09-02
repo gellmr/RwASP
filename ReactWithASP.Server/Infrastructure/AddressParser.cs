@@ -125,6 +125,7 @@ namespace ReactWithASP.Server.Infrastructure
       context = ctx;
     }
 
+    /*
     public async Task Execute()
     {
       await using var transaction = await context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
@@ -135,10 +136,10 @@ namespace ReactWithASP.Server.Infrastructure
         {
           MyAddressDto billDto = ParseAddress(ord.BillingAddress);
           MyAddressDto shipDto = ParseAddress(ord.ShippingAddress);
-          /*
+          
           ord.BillAddress = MyAddressDto.ToAddress(billDto);
           ord.ShipAddress = MyAddressDto.ToAddress(shipDto);
-          */
+          
           await ordersRepository.SaveOrderAsync(ord);
         }
         await transaction.CommitAsync();
@@ -150,6 +151,7 @@ namespace ReactWithASP.Server.Infrastructure
         Console.WriteLine("Error during AddressParser.Execute... Transaction rolled back." + ex.ToString());
       }
     }
+    */
 
     public List<MyAddressDto> ParseAddresses(List<string> addresses)
     {
