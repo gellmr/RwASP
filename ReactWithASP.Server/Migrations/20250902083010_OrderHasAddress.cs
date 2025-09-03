@@ -6,151 +6,234 @@ namespace ReactWithASP.Server.Migrations
   {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-      // Step 1: Add new columns, named "ShipAddressID" and "BillAddressID" to Orders table. Column type is nullable int.
-      migrationBuilder.AddColumn<int>(name: "BillAddressID", table: "Orders", type: "int", nullable: true);
-      migrationBuilder.AddColumn<int>(name: "ShipAddressID", table: "Orders", type: "int", nullable: true);
+      // Perform migration step 3 using SQL. This includes Parse existing address string data and insert to Address table.
 
-      // Step 2: Create a new table named "Addresses"
-      migrationBuilder.CreateTable(
-          name: "Addresses",
-          columns: table => new
-          {
-            ID = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:Identity", "111, 1"),
-            Line1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            Line3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            Zip = table.Column<string>(type: "nvarchar(max)", nullable: false)
-          },
-          constraints: table =>
-          {
-            table.PrimaryKey("PK_Addresses", x => x.ID); // Use ID column as primary key for this table.
-          });
-
-      // Step 3: Create an index, on the ShipAddressID and BillAddressID columns of Orders table.
-      migrationBuilder.CreateIndex(name: "IX_Orders_BillAddressID", table: "Orders", column: "BillAddressID");
-      migrationBuilder.CreateIndex(name: "IX_Orders_ShipAddressID", table: "Orders", column: "ShipAddressID");
-
-      // Step 4: Create foreign key constraints.
-      migrationBuilder.AddForeignKey(
-          name: "FK_Orders_Addresses_BillAddressID", // Orders.BillAddressID *---1 Addresses.ID
-          table: "Orders",                // Dependent table. This will have the foreign key column.
-          column: "BillAddressID",        // This is the name of the foreign key column we are creating in Orders table.
-          principalTable: "Addresses",    // Principal table, which the foreign key column refers to.
-          principalColumn: "ID");         // Primary key which the foreign key column refers to.
-      migrationBuilder.AddForeignKey(
-          name: "FK_Orders_Addresses_ShipAddressID", // Orders.ShipAddressID *---1 Addresses.ID
-          table: "Orders",                // Dependent table. This will have the foreign key column.
-          column: "ShipAddressID",        // This is the name of the foreign key column we are creating in Orders table.
-          principalTable: "Addresses",    // Principal table, which the foreign key column refers to.
-          principalColumn: "ID");         // Primary key which the foreign key column refers to.
-
-      // Step 5: Transform data using SQL. Parse and insert the data.
       string sql = @"
-                -- Create a temporary table to hold parsed addresses before inserting them into the Addresses table.
-                -- This allows us to handle both Billing and Shipping addresses in one pass.
-                CREATE TABLE #ParsedAddresses (
-                    OrderID INT,
-                    IsShipping BIT,
-                    Line1 NVARCHAR(MAX),
-                    Line2 NVARCHAR(MAX),
-                    Line3 NVARCHAR(MAX),
-                    City NVARCHAR(MAX),
-                    State NVARCHAR(MAX),
-                    Zip NVARCHAR(MAX)
-                );
+        -- This was created with 'script-migration' and then needed some adjustments with the help of Gemini.
+        -- This will migrate us to AFTER Migration Step 3 'OrderHasAddress'
 
-                -- Insert parsed Shipping addresses into the temporary table.
-                -- This logic parses from right to left, which is more reliable for addresses.
-                INSERT INTO #ParsedAddresses (OrderID, IsShipping, Line1, Line2, Line3, City, State, Zip)
-                SELECT
-                    ID as OrderID,
-                    1, -- This flag indicates a shipping address
-                    -- Line1: This is the first segment of the address string.
-                    CASE
-                        -- Case where there are at least two address lines
-                        WHEN CHARINDEX(',', ShippingAddress, CHARINDEX(',', ShippingAddress) + 1) > 0 THEN TRIM(SUBSTRING(ShippingAddress, 1, CHARINDEX(',', ShippingAddress) - 1))
-                        -- Case where there is only one address line before the City/State/Zip
-                        ELSE TRIM(SUBSTRING(ShippingAddress, 1, LEN(ShippingAddress) - CHARINDEX(',', REVERSE(ShippingAddress)) - CHARINDEX(' ', REVERSE(SUBSTRING(ShippingAddress, 1, LEN(ShippingAddress) - CHARINDEX(',', REVERSE(ShippingAddress)))))))
-                    END,
-                    -- Line2: The second segment of the address string.
-                    CASE
-                        WHEN CHARINDEX(',', ShippingAddress, CHARINDEX(',', ShippingAddress) + 1) > 0 THEN TRIM(SUBSTRING(ShippingAddress, CHARINDEX(',', ShippingAddress) + 1, CHARINDEX(',', ShippingAddress, CHARINDEX(',', ShippingAddress) + 1) - CHARINDEX(',', ShippingAddress) - 1))
-                        ELSE NULL
-                    END,
-                    -- Line3: Combines the third and any subsequent segments.
-                    CASE
-                        WHEN CHARINDEX(',', ShippingAddress, CHARINDEX(',', ShippingAddress, CHARINDEX(',', ShippingAddress, CHARINDEX(',', ShippingAddress) + 1) + 1)) > 0 THEN TRIM(SUBSTRING(ShippingAddress, CHARINDEX(',', ShippingAddress, CHARINDEX(',', ShippingAddress) + 1) + 1, LEN(ShippingAddress) - CHARINDEX(',', REVERSE(ShippingAddress)) - (CHARINDEX(',', ShippingAddress, CHARINDEX(',', ShippingAddress) + 1) + 1)))
-                        ELSE NULL
-                    END,
-                    -- City: The part before the State/Zip code.
-                    TRIM(SUBSTRING(ShippingAddress, LEN(ShippingAddress) - CHARINDEX(' ', REVERSE(ShippingAddress), CHARINDEX(' ', REVERSE(ShippingAddress), LEN(ShippingAddress) - CHARINDEX(',', REVERSE(ShippingAddress)) - CHARINDEX(' ', REVERSE(SUBSTRING(ShippingAddress, 1, LEN(ShippingAddress) - CHARINDEX(',', REVERSE(ShippingAddress))))))) + 1, LEN(ShippingAddress) - CHARINDEX(' ', REVERSE(ShippingAddress)) - (LEN(ShippingAddress) - CHARINDEX(' ', REVERSE(ShippingAddress), CHARINDEX(' ', REVERSE(ShippingAddress), LEN(ShippingAddress) - CHARINDEX(',', REVERSE(ShippingAddress)) - CHARINDEX(' ', REVERSE(SUBSTRING(ShippingAddress, 1, LEN(ShippingAddress) - CHARINDEX(',', REVERSE(ShippingAddress))))))) + 1))),
-                    -- State: The two-letter code before the Zip.
-                    TRIM(SUBSTRING(ShippingAddress, LEN(ShippingAddress) - CHARINDEX(' ', REVERSE(ShippingAddress)) + 2, CHARINDEX(' ', REVERSE(ShippingAddress)) - 1)),
-                    -- Zip: The last 4 digits after the last space.
-                    TRIM(RIGHT(ShippingAddress, 4))
-                FROM Orders
-                WHERE ShippingAddress IS NOT NULL AND LEN(ShippingAddress) > 0;
+        USE [RwaspDatabase]
+        GO
 
-                -- Insert parsed Billing addresses into the temporary table.
-                -- This logic is identical to the shipping address parsing.
-                INSERT INTO #ParsedAddresses (OrderID, IsShipping, Line1, Line2, Line3, City, State, Zip)
-                SELECT
-                    ID as OrderID,
-                    0, -- This flag indicates a billing address
-                    CASE
-                        WHEN CHARINDEX(',', BillingAddress, CHARINDEX(',', BillingAddress) + 1) > 0 THEN TRIM(SUBSTRING(BillingAddress, 1, CHARINDEX(',', BillingAddress) - 1))
-                        ELSE TRIM(SUBSTRING(BillingAddress, 1, LEN(BillingAddress) - CHARINDEX(',', REVERSE(BillingAddress)) - CHARINDEX(' ', REVERSE(SUBSTRING(BillingAddress, 1, LEN(BillingAddress) - CHARINDEX(',', REVERSE(BillingAddress)))))))
-                    END,
-                    CASE
-                        WHEN CHARINDEX(',', BillingAddress, CHARINDEX(',', BillingAddress) + 1) > 0 THEN TRIM(SUBSTRING(BillingAddress, CHARINDEX(',', BillingAddress) + 1, CHARINDEX(',', BillingAddress, CHARINDEX(',', BillingAddress) + 1) - CHARINDEX(',', BillingAddress) - 1))
-                        ELSE NULL
-                    END,
-                    CASE
-                        WHEN CHARINDEX(',', BillingAddress, CHARINDEX(',', BillingAddress, CHARINDEX(',', BillingAddress, CHARINDEX(',', BillingAddress) + 1) + 1)) > 0 THEN TRIM(SUBSTRING(BillingAddress, CHARINDEX(',', BillingAddress, CHARINDEX(',', BillingAddress) + 1) + 1, LEN(BillingAddress) - CHARINDEX(',', REVERSE(BillingAddress)) - (CHARINDEX(',', BillingAddress, CHARINDEX(',', BillingAddress) + 1) + 1)))
-                        ELSE NULL
-                    END,
-                    TRIM(SUBSTRING(BillingAddress, LEN(BillingAddress) - CHARINDEX(' ', REVERSE(BillingAddress), CHARINDEX(' ', REVERSE(BillingAddress), LEN(BillingAddress) - CHARINDEX(',', REVERSE(BillingAddress)) - CHARINDEX(' ', REVERSE(SUBSTRING(BillingAddress, 1, LEN(BillingAddress) - CHARINDEX(',', REVERSE(BillingAddress))))))) + 1, LEN(BillingAddress) - CHARINDEX(' ', REVERSE(BillingAddress)) - (LEN(BillingAddress) - CHARINDEX(' ', REVERSE(BillingAddress), CHARINDEX(' ', REVERSE(BillingAddress), LEN(BillingAddress) - CHARINDEX(',', REVERSE(BillingAddress)) - CHARINDEX(' ', REVERSE(SUBSTRING(BillingAddress, 1, LEN(BillingAddress) - CHARINDEX(',', REVERSE(BillingAddress))))))) + 1))),
-                    TRIM(SUBSTRING(BillingAddress, LEN(BillingAddress) - CHARINDEX(' ', REVERSE(BillingAddress)) + 2, CHARINDEX(' ', REVERSE(BillingAddress)) - 1)),
-                    TRIM(RIGHT(BillingAddress, 4))
-                FROM Orders
-                WHERE BillingAddress IS NOT NULL AND LEN(BillingAddress) > 0;
+        BEGIN TRANSACTION;
 
-                -- Insert distinct addresses from the temporary table into the permanent Addresses table.
-                -- We use a second temporary table to map the original OrderID to the new AddressID.
-                CREATE TABLE #AddressIDMap (
-                    OriginalOrderID INT,
-                    IsShipping BIT,
-                    NewAddressID INT
-                );
-                
-                INSERT INTO Addresses (Line1, Line2, Line3, City, State, Country, Zip)
-                OUTPUT T.OrderID, T.IsShipping, inserted.ID
-                INTO #AddressIDMap
-                SELECT DISTINCT
-                    Line1, Line2, Line3, City, State, 'Australia', Zip
-                FROM #ParsedAddresses AS T;
+        -- Create the User-Defined Function to parse addresses
+        IF OBJECT_ID('dbo.ParseAddress') IS NOT NULL
+        DROP FUNCTION dbo.ParseAddress;
+        GO
 
-                -- Update the Orders table with the new foreign keys.
-                -- We use the #AddressIDMap to ensure each Order is updated with its correct new address ID.
-                UPDATE O
-                SET
-                    O.ShipAddressID = CASE WHEN M.IsShipping = 1 THEN M.NewAddressID ELSE O.ShipAddressID END,
-                    O.BillAddressID = CASE WHEN M.IsShipping = 0 THEN M.NewAddressID ELSE O.BillAddressID END
-                FROM Orders AS O
-                JOIN #AddressIDMap AS M ON O.OrderID = M.OriginalOrderID;
+        CREATE FUNCTION dbo.ParseAddress (@AddressString NVARCHAR(MAX))
+        RETURNS @ParsedAddress TABLE (
+            Line1 NVARCHAR(MAX),
+            Line2 NVARCHAR(MAX),
+            Line3 NVARCHAR(MAX),
+            City NVARCHAR(MAX),
+            State NVARCHAR(MAX),
+            Zip NVARCHAR(MAX)
+        )
+        AS
+        BEGIN
+            INSERT INTO @ParsedAddress (Line1, Line2, Line3, City, State, Zip)
+            SELECT
+                -- Line1
+                CASE
+                    WHEN CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) > 0 THEN TRIM(SUBSTRING(@AddressString, 1, CHARINDEX(',', @AddressString) - 1))
+                    ELSE TRIM(SUBSTRING(@AddressString, 1,
+                        CASE
+                            WHEN (LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))) < 1
+                            THEN 0
+                            ELSE LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))
+                        END
+                    ))
+                END,
+                -- Line2
+                CASE
+                    WHEN CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) > 0 THEN TRIM(SUBSTRING(@AddressString, CHARINDEX(',', @AddressString) + 1, CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) - CHARINDEX(',', @AddressString) - 1))
+                    ELSE NULL
+                END,
+                -- Line3
+                CASE
+                    WHEN CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) + 1)) > 0 THEN TRIM(SUBSTRING(@AddressString, CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) + 1,
+                        CASE
+                            WHEN (LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - (CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) + 1)) < 1
+                            THEN 0
+                            ELSE LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - (CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) + 1)
+                        END
+                    ))
+                    ELSE NULL
+                END,
+                -- City
+                TRIM(SUBSTRING(@AddressString,
+                    CASE WHEN LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString), CHARINDEX(' ', REVERSE(@AddressString), LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - CHARINDEX(' ', REVERSE(SUBSTRING(@AddressString, 1, LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))))))) + 1 < 1
+                    THEN 1
+                    ELSE LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString), CHARINDEX(' ', REVERSE(@AddressString), LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - CHARINDEX(' ', REVERSE(SUBSTRING(@AddressString, 1, LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))))))) + 1
+                    END,
+                    CASE WHEN (LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString)) - (LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString), CHARINDEX(' ', REVERSE(@AddressString), LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - CHARINDEX(' ', REVERSE(SUBSTRING(@AddressString, 1, LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))))))) + 1)) < 1
+                    THEN 0
+                    ELSE LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString)) - (LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString), CHARINDEX(' ', REVERSE(@AddressString), LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - CHARINDEX(' ', REVERSE(SUBSTRING(@AddressString, 1, LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))))))) + 1)
+                    END
+                )),
+                -- State
+                TRIM(SUBSTRING(@AddressString,
+                    CASE WHEN LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString)) + 2 < 1 THEN 1 ELSE LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString)) + 2 END,
+                    CASE WHEN CHARINDEX(' ', REVERSE(@AddressString)) - 1 < 1 THEN 0 ELSE CHARINDEX(' ', REVERSE( @AddressString)) - 1 END
+                )),
+                -- Zip
+                CASE WHEN LEN(@AddressString) < 4 THEN NULL ELSE TRIM(RIGHT(@AddressString, 4)) END;
 
-                -- Clean up the temporary tables.
-                DROP TABLE #ParsedAddresses;
-                DROP TABLE #AddressIDMap;
+            RETURN;
+        END;
+        GO
+
+        ALTER TABLE [Orders] ADD [BillAddressID] int NULL;
+
+        ALTER TABLE [Orders] ADD [ShipAddressID] int NULL;
+
+        CREATE TABLE [Addresses] (
+            [ID] int NOT NULL IDENTITY(111, 1),
+            [Line1] nvarchar(max) NOT NULL,
+            [Line2] nvarchar(max) NULL,
+            [Line3] nvarchar(max) NULL,
+            [City] nvarchar(max) NOT NULL,
+            [State] nvarchar(max) NOT NULL,
+            [Country] nvarchar(max) NOT NULL,
+            [Zip] nvarchar(max) NOT NULL,
+            CONSTRAINT [PK_Addresses] PRIMARY KEY ([ID])
+        );
+
+        CREATE INDEX [IX_Orders_BillAddressID] ON [Orders] ([BillAddressID]);
+
+        CREATE INDEX [IX_Orders_ShipAddressID] ON [Orders] ([ShipAddressID]);
+
+        ALTER TABLE [Orders] ADD CONSTRAINT [FK_Orders_Addresses_BillAddressID] FOREIGN KEY ([BillAddressID]) REFERENCES [Addresses] ([ID]);
+
+        ALTER TABLE [Orders] ADD CONSTRAINT [FK_Orders_Addresses_ShipAddressID] FOREIGN KEY ([ShipAddressID]) REFERENCES [Addresses] ([ID]);
+
+        -- Create a temporary table to hold parsed addresses before inserting them into the Addresses table.
+        CREATE TABLE #ParsedAddresses (
+            OrderID INT,
+            IsShipping BIT,
+            Line1 NVARCHAR(MAX),
+            Line2 NVARCHAR(MAX),
+            Line3 NVARCHAR(MAX),
+            City NVARCHAR(MAX),
+            State NVARCHAR(MAX),
+            Zip NVARCHAR(MAX)
+        );
+
+        -- Use the UDF with CROSS APPLY to parse shipping and billing addresses
+        INSERT INTO #ParsedAddresses (OrderID, IsShipping, Line1, Line2, Line3, City, State, Zip)
+        SELECT
+            O.ID as OrderID,
+            1 AS IsShipping,
+            PA.Line1,
+            PA.Line2,
+            PA.Line3,
+            PA.City,
+            PA.State,
+            PA.Zip
+        FROM Orders AS O
+        CROSS APPLY dbo.ParseAddress(O.ShippingAddress) AS PA
+        WHERE O.ShippingAddress IS NOT NULL AND LEN(O.ShippingAddress) > 0;
+
+        INSERT INTO #ParsedAddresses (OrderID, IsShipping, Line1, Line2, Line3, City, State, Zip)
+        SELECT
+            O.ID as OrderID,
+            0 AS IsShipping,
+            PA.Line1,
+            PA.Line2,
+            PA.Line3,
+            PA.City,
+            PA.State,
+            PA.Zip
+        FROM Orders AS O
+        CROSS APPLY dbo.ParseAddress(O.BillingAddress) AS PA
+        WHERE O.BillingAddress IS NOT NULL AND LEN(O.BillingAddress) > 0;
+
+
+        -- 1. Insert distinct addresses into the permanent Addresses table.
+        CREATE TABLE #NewAddresses (
+            NewAddressID INT,
+            Line1 NVARCHAR(MAX),
+            Line2 NVARCHAR(MAX),
+            Line3 NVARCHAR(MAX),
+            City NVARCHAR(MAX),
+            State NVARCHAR(MAX),
+            Country NVARCHAR(MAX),
+            Zip NVARCHAR(MAX)
+        );
+
+        INSERT INTO Addresses (Line1, Line2, Line3, City, State, Country, Zip)
+        OUTPUT inserted.ID, inserted.Line1, inserted.Line2, inserted.Line3, inserted.City, inserted.State, inserted.Country, inserted.Zip
+        INTO #NewAddresses
+        SELECT DISTINCT Line1, Line2, Line3, City, State, 'Australia', Zip
+        FROM #ParsedAddresses;
+
+        -- 2. Create the mapping table by joining the temporary tables.
+        CREATE TABLE #AddressIDMap (
+            OriginalOrderID INT,
+            IsShipping BIT,
+            NewAddressID INT
+        );
+
+        INSERT INTO #AddressIDMap (OriginalOrderID, IsShipping, NewAddressID)
+        SELECT
+            pa.OrderID,
+            pa.IsShipping,
+            na.NewAddressID
+        FROM #ParsedAddresses AS pa
+        JOIN #NewAddresses AS na ON
+            pa.Line1 = na.Line1 AND
+            ISNULL(pa.Line2, '') = ISNULL(na.Line2, '') AND
+            ISNULL(pa.Line3, '') = ISNULL(na.Line3, '') AND
+            pa.City = na.City AND
+            pa.State = na.State AND
+            pa.Zip = na.Zip;
+
+        -- 3. Update the Orders table with the new foreign keys.
+        UPDATE O
+        SET
+            O.ShipAddressID = CASE WHEN M.IsShipping = 1 THEN M.NewAddressID ELSE O.ShipAddressID END,
+            O.BillAddressID = CASE WHEN M.IsShipping = 0 THEN M.NewAddressID ELSE O.BillAddressID END
+        FROM Orders AS O
+        JOIN #AddressIDMap AS M ON O.ID = M.OriginalOrderID;
+
+        -- 4. Clean up the temporary tables.
+        DROP TABLE #ParsedAddresses;
+        DROP TABLE #AddressIDMap;
+        DROP TABLE #NewAddresses;
+
+
+        DECLARE @var sysname;
+        SELECT @var = [d].[name]
+        FROM [sys].[default_constraints] [d]
+        INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+        WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Orders]') AND [c].[name] = N'BillingAddress');
+        IF @var IS NOT NULL EXEC(N'ALTER TABLE [Orders] DROP CONSTRAINT [' + @var + '];');
+        ALTER TABLE [Orders] DROP COLUMN [BillingAddress];
+
+        DECLARE @var1 sysname;
+        SELECT @var1 = [d].[name]
+        FROM [sys].[default_constraints] [d]
+        INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+        WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Orders]') AND [c].[name] = N'ShippingAddress');
+        IF @var1 IS NOT NULL EXEC(N'ALTER TABLE [Orders] DROP CONSTRAINT [' + @var1 + '];');
+        ALTER TABLE [Orders] DROP COLUMN [ShippingAddress];
+
+        -- DONT DO THIS. It is done automatically by EF Core.
+        --INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+        --VALUES (N'20250902083010_OrderHasAddress', N'9.0.6');
+
+        IF @@ERROR <> 0
+        BEGIN
+            ROLLBACK TRANSACTION;
+        END
+        ELSE
+        BEGIN
+            COMMIT TRANSACTION;
+        END
             ";
       migrationBuilder.Sql(sql);
-
-      // Step 6: Drop the old string columns from Orders table.
-      migrationBuilder.DropColumn(name: "BillingAddress", table: "Orders");
-      migrationBuilder.DropColumn(name: "ShippingAddress", table: "Orders");
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
