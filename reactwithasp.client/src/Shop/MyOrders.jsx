@@ -68,8 +68,8 @@ const MyOrders = () =>
 
   const orderRow = function (ord)
   {
-    const shipAddy = oneLineAddress(ord.shipAddress);
-    let bill = oneLineAddress(ord.billAddress);
+    const shipAddy = !nullOrUndefined(ord.shippingAddress) ? ord.shippingAddress : oneLineAddress(ord.shipAddress);
+    let bill       = !nullOrUndefined(ord.billingAddress)  ? ord.billingAddress  : oneLineAddress(ord.billAddress);
     const billAddy = (bill === shipAddy) ? "(same as shipping address)" : bill;
     
     return (

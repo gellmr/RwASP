@@ -39,13 +39,13 @@ namespace ReactWithASP.Server.Infrastructure
       .HasForeignKey(o => o.GuestID)
       .OnDelete(DeleteBehavior.Restrict);
 
-      /**/
+      /*
       modelBuilder.Entity<Order>()
       .HasOne(o => o.ShipAddress);
 
       modelBuilder.Entity<Order>()
       .HasOne(o => o.BillAddress);
-      
+      */
 
       //modelBuilder.Entity<Guest>()
       //.HasOne(e => e.DefaultAddress);

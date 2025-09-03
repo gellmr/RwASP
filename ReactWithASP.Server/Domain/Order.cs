@@ -34,7 +34,7 @@ namespace ReactWithASP.Server.Domain
     public virtual Guest Guest { get; set; } // navigation property.
     public Nullable<Guid> GuestID { get; set; } // foreign key value to use, for Guests table. Null if the user was logged in when they placed order.
 
-    /**/
+    /*
     // ShipAddress 1-----1 Order
     [ForeignKey("ShipAddressID")] // Use the value of our ShipAddressID as foreign key to the Address table.
     public virtual Address? ShipAddress { get; set; } // Navigation property.
@@ -45,7 +45,7 @@ namespace ReactWithASP.Server.Domain
     [ForeignKey("BillAddressID")] // Use the value of our BillAddressID as foreign key to the Address table.
     public virtual Address? BillAddress { get; set; } // Navigation property.
     public Int32? BillAddressID { get; set; } // The PK from Address table
-    
+    */
 
 
     public virtual IList<OrderPayment> OrderPayments { get; set; }
@@ -60,10 +60,10 @@ namespace ReactWithASP.Server.Domain
     public Nullable<DateTimeOffset> ReceivedDate { get; set; }
 
 
-    /*
+    /**/
     public string BillingAddress { get; set; }
     public string ShippingAddress { get; set; }
-    */
+    
 
     public string OrderStatus { get; set; }
 

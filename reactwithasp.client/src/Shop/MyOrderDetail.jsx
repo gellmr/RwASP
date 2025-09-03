@@ -7,7 +7,7 @@ import Image from 'react-bootstrap/Image';
 import displayDate from '@/Shop/displayDate.jsx'
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import BackLink from "@/Shop/BackLink";
-import { oneLineAddress } from '@/MgUtility.js';
+import { nullOrUndefined, oneLineAddress } from '@/MgUtility.js';
 
 import '@/MyOrderDetail.css'
 
@@ -17,8 +17,8 @@ function MyOrderDetail()
   const orders = useSelector(state => state.myOrders.value);
   const ord = (orders && orders.length > 0) && orders.find(o => o.id.toString() === orderid);
 
-  const shipAddy = oneLineAddress(ord.shipAddress);
-  let bill = oneLineAddress(ord.billAddress);
+  const shipAddy = !nullOrUndefined(ord.shippingAddress) ? ord.shippingAddress : oneLineAddress(ord.shipAddress);
+  let bill = !nullOrUndefined(ord.billingAddress) ? ord.billingAddress : oneLineAddress(ord.billAddress);
   const billAddy = (bill === shipAddy) ? "(same as shipping address)" : bill;
 
   const noOrderMarkup = () => (

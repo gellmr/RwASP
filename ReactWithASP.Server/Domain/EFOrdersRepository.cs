@@ -31,7 +31,13 @@ namespace ReactWithASP.Server.Domain
         dbOrder.UserID = order.UserID;
         dbOrder.GuestID = order.GuestID;
 
-        /**/
+        // Migration 2 code:
+        // Create / Update
+        dbOrder.ShippingAddress = order.ShippingAddress;
+        dbOrder.BillingAddress = order.BillingAddress;
+
+        /*
+        // Migration 3 code:
         if (order.ShipAddressID == null){
           // Create
           dbOrder.ShipAddress = order.ShipAddress; // Allow database to auto assign dbOrder.ShipAddressID
@@ -55,7 +61,7 @@ namespace ReactWithASP.Server.Domain
           context.Entry(dbOrder.BillAddress).State = EntityState.Modified;
           dbOrder.BillAddressID = order.BillAddressID;
         }
-        
+        */
 
         dbOrder.OrderPayments = order.OrderPayments;
         dbOrder.OrderedProducts = order.OrderedProducts;
@@ -208,9 +214,10 @@ namespace ReactWithASP.Server.Domain
     {
       order.OrderedProducts = LoadOrderedProducts(order);
       order.OrderPayments = LoadPayments(order);
-      /**/
+      /*
       order.BillAddress = context.Addresses.FirstOrDefault(adr => adr.ID == order.BillAddressID);
       order.ShipAddress = context.Addresses.FirstOrDefault(adr => adr.ID == order.ShipAddressID);
+      */
     }
   }
 }
