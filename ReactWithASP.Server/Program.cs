@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
@@ -113,21 +115,29 @@ using (var scope = app.Services.CreateScope()){
     var deployMarker = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
     if (File.Exists(deployMarker))
     {
-      if (bool.Parse(builder.Configuration["OnStart:Migrate"])){
-        if (env.EnvironmentName == "Development" || env.EnvironmentName == "Test"){
-          await context.Database.MigrateAsync();
+      if (bool.Parse(builder.Configuration["OnStart:Migrate"]) && bool.Parse(builder.Configuration["OnStart:Seed"]))
+      {
+        // Execute migration 1 and 2
+        var migrator = context.GetInfrastructure().GetService<IMigrator>();
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        var migrationsToApply = pendingMigrations.Take(2).ToList();
+        foreach (var migrationName in migrationsToApply){
+          await migrator.MigrateAsync(migrationName);
         }
-      }
-      if (bool.Parse(builder.Configuration["OnStart:Seed"])){
+
+        // Seed after migration 2
         var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
         await seeder.Execute();
+
+        // Execute remaining migrations...
+        pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        migrationsToApply = pendingMigrations.ToList();
+        foreach (var migrationName in migrationsToApply){
+          await migrator.MigrateAsync(migrationName);
+        }
+
+        File.Delete(deployMarker);
       }
-      //if (bool.Parse(builder.Configuration["OnStart:DataConversion"])){
-      //  var ordersRepository = services.GetRequiredService<IOrdersRepository>();
-      //  AddressParser addressParser = new AddressParser(ordersRepository, context);
-      //  await addressParser.Execute();
-      //}
-      File.Delete(deployMarker);
     }
   }
   catch (Exception ex){

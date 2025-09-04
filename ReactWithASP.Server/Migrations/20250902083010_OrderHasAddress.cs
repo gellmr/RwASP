@@ -6,108 +6,130 @@ namespace ReactWithASP.Server.Migrations
   {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-      // Perform migration step 3 using SQL. This includes Parse existing address string data and insert to Address table.
+      // Step 1: Add new columns, named "ShipAddressID" and "BillAddressID" to Orders table. Column type is nullable int.
+      migrationBuilder.AddColumn<int>(name: "BillAddressID", table: "Orders", type: "int", nullable: true);
+      migrationBuilder.AddColumn<int>(name: "ShipAddressID", table: "Orders", type: "int", nullable: true);
 
+      // Step 2: Create a new table named "Addresses"
+      migrationBuilder.CreateTable(
+        name: "Addresses",
+        columns: table => new
+        {
+          ID = table.Column<int>(type: "int", nullable: false).Annotation("SqlServer:Identity", "111, 1"),
+          Line1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
+          Line2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+          Line3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+          City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+          State = table.Column<string>(type: "nvarchar(max)", nullable: false),
+          Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+          Zip = table.Column<string>(type: "nvarchar(max)", nullable: false)
+        },
+        constraints: table =>
+        {
+          table.PrimaryKey("PK_Addresses", x => x.ID); // Use ID column as primary key for this table.
+        }
+      );
+
+      // Step 3: Create an index, on the ShipAddressID and BillAddressID columns of Orders table.
+      migrationBuilder.CreateIndex(name: "IX_Orders_BillAddressID", table: "Orders", column: "BillAddressID");
+      migrationBuilder.CreateIndex(name: "IX_Orders_ShipAddressID", table: "Orders", column: "ShipAddressID");
+
+      // Step 4: Create foreign key constraints.
+      migrationBuilder.AddForeignKey(
+          name: "FK_Orders_Addresses_BillAddressID", // Orders.BillAddressID *---1 Addresses.ID
+          table: "Orders",                // Dependent table. This will have the foreign key column.
+          column: "BillAddressID",        // This is the name of the foreign key column we are creating in Orders table.
+          principalTable: "Addresses",    // Principal table, which the foreign key column refers to.
+          principalColumn: "ID");         // Primary key which the foreign key column refers to.
+      migrationBuilder.AddForeignKey(
+          name: "FK_Orders_Addresses_ShipAddressID", // Orders.ShipAddressID *---1 Addresses.ID
+          table: "Orders",                // Dependent table. This will have the foreign key column.
+          column: "ShipAddressID",        // This is the name of the foreign key column we are creating in Orders table.
+          principalTable: "Addresses",    // Principal table, which the foreign key column refers to.
+          principalColumn: "ID");         // Primary key which the foreign key column refers to.
+
+      /*
+      These manual steps must be performed before you try to execute migration 3 (OrderHasAddress).
+      
+      (Manual steps)
+
+      fn_ParseAddressLine1 etc below are compiled UDF functions from a separate class library project that is compiled to a dll and registered with SQL Server.
+
+      You need to place the AddressParser.dll in a location that can be ready by SQL Server.
+      For example, C:\db-backups
+      
+      You need to tell SQL Server to trust the dll. First get the hash value of the dll using this Powershell command:
+      (Get-FileHash -Path "./AddressParser.dll" -Algorithm SHA512).Hash | Out-File "OutputFile.txt"
+
+      This results in a hash value in "OutputFile.txt" eg E4754563...5E3B24F3
+
+      Now go into SQL Server and run the following SQL statement. This tells SQL Server to trust the dll.
+      Note you must add 0x to the start of the hash.
+
+      -- EXEC sp_add_trusted_assembly
+      --   @hash = 0xE4754563...5E3B24F3,
+      --   @description = N'AddressParser';
+
+      Note - you must also have CLR integration enabled on your database. This only needs to be done once. Execute the following SQL:
+      -- EXEC sp_configure 'clr enabled', 1;
+      -- RECONFIGURE;
+
+      (End of manual steps)
+
+      Now you should be able to run migration 3, which includes the SQL statements below.
+      These call the UDF functions we have enabled.
+       */
+
+      // Step 5: Transform data using SQL. Parse and insert the data.
       string sql = @"
-        -- This was created with 'script-migration' and then needed some adjustments with the help of Gemini.
-        -- This will migrate us to AFTER Migration Step 3 'OrderHasAddress'
+        -- SQL to create the UDFs.
 
-        USE [RwaspDatabase]
+        -- Drop existing functions and assembly if they exist
+        IF OBJECT_ID('dbo.fn_ParseAddressZip') IS NOT NULL DROP FUNCTION dbo.fn_ParseAddressZip;
+        IF OBJECT_ID('dbo.fn_ParseAddressState') IS NOT NULL DROP FUNCTION dbo.fn_ParseAddressState;
+        IF OBJECT_ID('dbo.fn_ParseAddressCity') IS NOT NULL DROP FUNCTION dbo.fn_ParseAddressCity;
+        IF OBJECT_ID('dbo.fn_ParseAddressLine3') IS NOT NULL DROP FUNCTION dbo.fn_ParseAddressLine3;
+        IF OBJECT_ID('dbo.fn_ParseAddressLine2') IS NOT NULL DROP FUNCTION dbo.fn_ParseAddressLine2;
+        IF OBJECT_ID('dbo.fn_ParseAddressLine1') IS NOT NULL DROP FUNCTION dbo.fn_ParseAddressLine1;
+        IF EXISTS(SELECT 1 FROM sys.assemblies WHERE name = 'AddressParser') DROP ASSEMBLY AddressParser;
         GO
 
-        BEGIN TRANSACTION;
-
-        -- Create the User-Defined Function to parse addresses
-        IF OBJECT_ID('dbo.ParseAddress') IS NOT NULL
-        DROP FUNCTION dbo.ParseAddress;
+        -- Create the new assembly from the compiled C# DLL. Note, the DLL must be compiled in release mode.
+        CREATE ASSEMBLY AddressParser
+        FROM 'C:\db-backups\AddressParser.dll'
+        WITH PERMISSION_SET = SAFE;
         GO
 
-        CREATE FUNCTION dbo.ParseAddress (@AddressString NVARCHAR(MAX))
-        RETURNS @ParsedAddress TABLE (
-            Line1 NVARCHAR(MAX),
-            Line2 NVARCHAR(MAX),
-            Line3 NVARCHAR(MAX),
-            City NVARCHAR(MAX),
-            State NVARCHAR(MAX),
-            Zip NVARCHAR(MAX)
-        )
-        AS
-        BEGIN
-            INSERT INTO @ParsedAddress (Line1, Line2, Line3, City, State, Zip)
-            SELECT
-                -- Line1
-                CASE
-                    WHEN CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) > 0 THEN TRIM(SUBSTRING(@AddressString, 1, CHARINDEX(',', @AddressString) - 1))
-                    ELSE TRIM(SUBSTRING(@AddressString, 1,
-                        CASE
-                            WHEN (LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))) < 1
-                            THEN 0
-                            ELSE LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))
-                        END
-                    ))
-                END,
-                -- Line2
-                CASE
-                    WHEN CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) > 0 THEN TRIM(SUBSTRING(@AddressString, CHARINDEX(',', @AddressString) + 1, CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) - CHARINDEX(',', @AddressString) - 1))
-                    ELSE NULL
-                END,
-                -- Line3
-                CASE
-                    WHEN CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) + 1)) > 0 THEN TRIM(SUBSTRING(@AddressString, CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) + 1,
-                        CASE
-                            WHEN (LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - (CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) + 1)) < 1
-                            THEN 0
-                            ELSE LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - (CHARINDEX(',', @AddressString, CHARINDEX(',', @AddressString) + 1) + 1)
-                        END
-                    ))
-                    ELSE NULL
-                END,
-                -- City
-                TRIM(SUBSTRING(@AddressString,
-                    CASE WHEN LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString), CHARINDEX(' ', REVERSE(@AddressString), LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - CHARINDEX(' ', REVERSE(SUBSTRING(@AddressString, 1, LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))))))) + 1 < 1
-                    THEN 1
-                    ELSE LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString), CHARINDEX(' ', REVERSE(@AddressString), LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - CHARINDEX(' ', REVERSE(SUBSTRING(@AddressString, 1, LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))))))) + 1
-                    END,
-                    CASE WHEN (LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString)) - (LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString), CHARINDEX(' ', REVERSE(@AddressString), LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - CHARINDEX(' ', REVERSE(SUBSTRING(@AddressString, 1, LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))))))) + 1)) < 1
-                    THEN 0
-                    ELSE LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString)) - (LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString), CHARINDEX(' ', REVERSE(@AddressString), LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString)) - CHARINDEX(' ', REVERSE(SUBSTRING(@AddressString, 1, LEN(@AddressString) - CHARINDEX(',', REVERSE(@AddressString))))))) + 1)
-                    END
-                )),
-                -- State
-                TRIM(SUBSTRING(@AddressString,
-                    CASE WHEN LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString)) + 2 < 1 THEN 1 ELSE LEN(@AddressString) - CHARINDEX(' ', REVERSE(@AddressString)) + 2 END,
-                    CASE WHEN CHARINDEX(' ', REVERSE(@AddressString)) - 1 < 1 THEN 0 ELSE CHARINDEX(' ', REVERSE( @AddressString)) - 1 END
-                )),
-                -- Zip
-                CASE WHEN LEN(@AddressString) < 4 THEN NULL ELSE TRIM(RIGHT(@AddressString, 4)) END;
-
-            RETURN;
-        END;
+        -- Create the SQL User-Defined Functions for each C# method
+        CREATE FUNCTION dbo.fn_ParseAddressLine1(@address NVARCHAR(MAX))
+        RETURNS NVARCHAR(MAX)
+        AS EXTERNAL NAME AddressParser.AddressParser.ParseLine1;
         GO
 
-        ALTER TABLE [Orders] ADD [BillAddressID] int NULL;
+        CREATE FUNCTION dbo.fn_ParseAddressLine2(@address NVARCHAR(MAX))
+        RETURNS NVARCHAR(MAX)
+        AS EXTERNAL NAME AddressParser.AddressParser.ParseLine2;
+        GO
 
-        ALTER TABLE [Orders] ADD [ShipAddressID] int NULL;
+        CREATE FUNCTION dbo.fn_ParseAddressLine3(@address NVARCHAR(MAX))
+        RETURNS NVARCHAR(MAX)
+        AS EXTERNAL NAME AddressParser.AddressParser.ParseLine3;
+        GO
 
-        CREATE TABLE [Addresses] (
-            [ID] int NOT NULL IDENTITY(111, 1),
-            [Line1] nvarchar(max) NOT NULL,
-            [Line2] nvarchar(max) NULL,
-            [Line3] nvarchar(max) NULL,
-            [City] nvarchar(max) NOT NULL,
-            [State] nvarchar(max) NOT NULL,
-            [Country] nvarchar(max) NOT NULL,
-            [Zip] nvarchar(max) NOT NULL,
-            CONSTRAINT [PK_Addresses] PRIMARY KEY ([ID])
-        );
+        CREATE FUNCTION dbo.fn_ParseAddressCity(@address NVARCHAR(MAX))
+        RETURNS NVARCHAR(MAX)
+        AS EXTERNAL NAME AddressParser.AddressParser.ParseCity;
+        GO
 
-        CREATE INDEX [IX_Orders_BillAddressID] ON [Orders] ([BillAddressID]);
+        CREATE FUNCTION dbo.fn_ParseAddressState(@address NVARCHAR(MAX))
+        RETURNS NVARCHAR(MAX)
+        AS EXTERNAL NAME AddressParser.AddressParser.ParseState;
+        GO
 
-        CREATE INDEX [IX_Orders_ShipAddressID] ON [Orders] ([ShipAddressID]);
-
-        ALTER TABLE [Orders] ADD CONSTRAINT [FK_Orders_Addresses_BillAddressID] FOREIGN KEY ([BillAddressID]) REFERENCES [Addresses] ([ID]);
-
-        ALTER TABLE [Orders] ADD CONSTRAINT [FK_Orders_Addresses_ShipAddressID] FOREIGN KEY ([ShipAddressID]) REFERENCES [Addresses] ([ID]);
+        CREATE FUNCTION dbo.fn_ParseAddressZip(@address NVARCHAR(MAX))
+        RETURNS NVARCHAR(MAX)
+        AS EXTERNAL NAME AddressParser.AddressParser.ParseZip;
+        GO
 
         -- Create a temporary table to hold parsed addresses before inserting them into the Addresses table.
         CREATE TABLE #ParsedAddresses (
@@ -121,37 +143,36 @@ namespace ReactWithASP.Server.Migrations
             Zip NVARCHAR(MAX)
         );
 
-        -- Use the UDF with CROSS APPLY to parse shipping and billing addresses
+        -- Insert parsed Shipping addresses into the temporary table using the CLR functions.
+        -- We use the scalar UDFs to call the C# regex logic for each address component.
         INSERT INTO #ParsedAddresses (OrderID, IsShipping, Line1, Line2, Line3, City, State, Zip)
         SELECT
             O.ID as OrderID,
             1 AS IsShipping,
-            PA.Line1,
-            PA.Line2,
-            PA.Line3,
-            PA.City,
-            PA.State,
-            PA.Zip
+            dbo.fn_ParseAddressLine1(O.ShippingAddress),
+            dbo.fn_ParseAddressLine2(O.ShippingAddress),
+            dbo.fn_ParseAddressLine3(O.ShippingAddress),
+            dbo.fn_ParseAddressCity(O.ShippingAddress),
+            dbo.fn_ParseAddressState(O.ShippingAddress),
+            dbo.fn_ParseAddressZip(O.ShippingAddress)
         FROM Orders AS O
-        CROSS APPLY dbo.ParseAddress(O.ShippingAddress) AS PA
-        WHERE O.ShippingAddress IS NOT NULL AND LEN(O.ShippingAddress) > 0;
+        WHERE dbo.fn_ParseAddressLine1(O.ShippingAddress) IS NOT NULL;
 
+        -- Insert parsed Billing addresses into the temporary table using the CLR functions.
         INSERT INTO #ParsedAddresses (OrderID, IsShipping, Line1, Line2, Line3, City, State, Zip)
         SELECT
             O.ID as OrderID,
             0 AS IsShipping,
-            PA.Line1,
-            PA.Line2,
-            PA.Line3,
-            PA.City,
-            PA.State,
-            PA.Zip
+            dbo.fn_ParseAddressLine1(O.BillingAddress),
+            dbo.fn_ParseAddressLine2(O.BillingAddress),
+            dbo.fn_ParseAddressLine3(O.BillingAddress),
+            dbo.fn_ParseAddressCity(O.BillingAddress),
+            dbo.fn_ParseAddressState(O.BillingAddress),
+            dbo.fn_ParseAddressZip(O.BillingAddress)
         FROM Orders AS O
-        CROSS APPLY dbo.ParseAddress(O.BillingAddress) AS PA
-        WHERE O.BillingAddress IS NOT NULL AND LEN(O.BillingAddress) > 0;
+        WHERE dbo.fn_ParseAddressLine1(O.BillingAddress) IS NOT NULL;
 
-
-        -- 1. Insert distinct addresses into the permanent Addresses table.
+        -- Insert distinct addresses into the permanent Addresses table and get the new IDs.
         CREATE TABLE #NewAddresses (
             NewAddressID INT,
             Line1 NVARCHAR(MAX),
@@ -169,7 +190,7 @@ namespace ReactWithASP.Server.Migrations
         SELECT DISTINCT Line1, Line2, Line3, City, State, 'Australia', Zip
         FROM #ParsedAddresses;
 
-        -- 2. Create the mapping table by joining the temporary tables.
+        -- Create the mapping table by joining the temporary tables.
         CREATE TABLE #AddressIDMap (
             OriginalOrderID INT,
             IsShipping BIT,
@@ -190,7 +211,7 @@ namespace ReactWithASP.Server.Migrations
             pa.State = na.State AND
             pa.Zip = na.Zip;
 
-        -- 3. Update the Orders table with the new foreign keys.
+        -- Update the Orders table with the new foreign keys.
         UPDATE O
         SET
             O.ShipAddressID = CASE WHEN M.IsShipping = 1 THEN M.NewAddressID ELSE O.ShipAddressID END,
@@ -198,42 +219,16 @@ namespace ReactWithASP.Server.Migrations
         FROM Orders AS O
         JOIN #AddressIDMap AS M ON O.ID = M.OriginalOrderID;
 
-        -- 4. Clean up the temporary tables.
+        -- Clean up the temporary tables.
         DROP TABLE #ParsedAddresses;
         DROP TABLE #AddressIDMap;
         DROP TABLE #NewAddresses;
-
-
-        DECLARE @var sysname;
-        SELECT @var = [d].[name]
-        FROM [sys].[default_constraints] [d]
-        INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-        WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Orders]') AND [c].[name] = N'BillingAddress');
-        IF @var IS NOT NULL EXEC(N'ALTER TABLE [Orders] DROP CONSTRAINT [' + @var + '];');
-        ALTER TABLE [Orders] DROP COLUMN [BillingAddress];
-
-        DECLARE @var1 sysname;
-        SELECT @var1 = [d].[name]
-        FROM [sys].[default_constraints] [d]
-        INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-        WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Orders]') AND [c].[name] = N'ShippingAddress');
-        IF @var1 IS NOT NULL EXEC(N'ALTER TABLE [Orders] DROP CONSTRAINT [' + @var1 + '];');
-        ALTER TABLE [Orders] DROP COLUMN [ShippingAddress];
-
-        -- DONT DO THIS. It is done automatically by EF Core.
-        --INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-        --VALUES (N'20250902083010_OrderHasAddress', N'9.0.6');
-
-        IF @@ERROR <> 0
-        BEGIN
-            ROLLBACK TRANSACTION;
-        END
-        ELSE
-        BEGIN
-            COMMIT TRANSACTION;
-        END
-            ";
+        ";
       migrationBuilder.Sql(sql);
+
+      // Step 6: Drop the old string columns from Orders table.
+      migrationBuilder.DropColumn(name: "BillingAddress", table: "Orders");
+      migrationBuilder.DropColumn(name: "ShippingAddress", table: "Orders");
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
