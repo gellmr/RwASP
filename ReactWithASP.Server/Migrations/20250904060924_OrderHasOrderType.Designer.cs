@@ -12,8 +12,8 @@ using ReactWithASP.Server.Infrastructure;
 namespace ReactWithASP.Server.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250902083010_OrderHasAddress")]
-    partial class OrderHasAddress
+    [Migration("20250904060924_OrderHasOrderType")]
+    partial class OrderHasOrderType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,56 +281,6 @@ namespace ReactWithASP.Server.Migrations
                     b.ToTable("InStockProducts");
                 });
 
-            modelBuilder.Entity("ReactWithASP.Server.Domain.Order", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("BillingAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("GuestID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset?>("OrderPlacedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("OrderStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("PaymentReceivedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("ReadyToShipDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("ReceivedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("ShipDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("ShippingAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("GuestID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("ReactWithASP.Server.Domain.OrderPayment", b =>
                 {
                     b.Property<int>("ID")
@@ -427,6 +377,57 @@ namespace ReactWithASP.Server.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ReactWithASP.Server.Domain.UOrder", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<Guid?>("GuestID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("OrderPlacedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderType")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<DateTimeOffset?>("PaymentReceivedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("ReadyToShipDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("ReceivedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("ShipDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("GuestID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Orders", (string)null);
+
+                    b.HasDiscriminator<string>("OrderType").HasValue("UOrder");
+
+                    b.UseTphMappingStrategy();
+                });
+
             modelBuilder.Entity("ReactWithASP.Server.Infrastructure.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -503,6 +504,38 @@ namespace ReactWithASP.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ReactWithASP.Server.Domain.Order", b =>
+                {
+                    b.HasBaseType("ReactWithASP.Server.Domain.UOrder");
+
+                    b.Property<int?>("BillAddressID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShipAddressID")
+                        .HasColumnType("int");
+
+                    b.HasIndex("BillAddressID");
+
+                    b.HasIndex("ShipAddressID");
+
+                    b.HasDiscriminator().HasValue("OrderV2");
+                });
+
+            modelBuilder.Entity("ReactWithASP.Server.Domain.OrderV1", b =>
+                {
+                    b.HasBaseType("ReactWithASP.Server.Domain.UOrder");
+
+                    b.Property<string>("BillingAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("OrderV1");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -577,7 +610,33 @@ namespace ReactWithASP.Server.Migrations
                     b.Navigation("InStockProduct");
                 });
 
-            modelBuilder.Entity("ReactWithASP.Server.Domain.Order", b =>
+            modelBuilder.Entity("ReactWithASP.Server.Domain.OrderPayment", b =>
+                {
+                    b.HasOne("ReactWithASP.Server.Domain.UOrder", "Order")
+                        .WithMany("OrderPayments")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ReactWithASP.Server.Domain.OrderedProduct", b =>
+                {
+                    b.HasOne("ReactWithASP.Server.Domain.InStockProduct", "InStockProduct")
+                        .WithMany()
+                        .HasForeignKey("InStockProductID");
+
+                    b.HasOne("ReactWithASP.Server.Domain.UOrder", "Order")
+                        .WithMany("OrderedProducts")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("InStockProduct");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ReactWithASP.Server.Domain.UOrder", b =>
                 {
                     b.HasOne("ReactWithASP.Server.Domain.Guest", "Guest")
                         .WithMany("Orders")
@@ -594,32 +653,6 @@ namespace ReactWithASP.Server.Migrations
                     b.Navigation("Guest");
                 });
 
-            modelBuilder.Entity("ReactWithASP.Server.Domain.OrderPayment", b =>
-                {
-                    b.HasOne("ReactWithASP.Server.Domain.Order", "Order")
-                        .WithMany("OrderPayments")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("ReactWithASP.Server.Domain.OrderedProduct", b =>
-                {
-                    b.HasOne("ReactWithASP.Server.Domain.InStockProduct", "InStockProduct")
-                        .WithMany()
-                        .HasForeignKey("InStockProductID");
-
-                    b.HasOne("ReactWithASP.Server.Domain.Order", "Order")
-                        .WithMany("OrderedProducts")
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("InStockProduct");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("ReactWithASP.Server.Infrastructure.AppUser", b =>
                 {
                     b.HasOne("ReactWithASP.Server.Domain.Guest", "Guest")
@@ -629,12 +662,27 @@ namespace ReactWithASP.Server.Migrations
                     b.Navigation("Guest");
                 });
 
+            modelBuilder.Entity("ReactWithASP.Server.Domain.Order", b =>
+                {
+                    b.HasOne("ReactWithASP.Server.Domain.Address", "BillAddress")
+                        .WithMany()
+                        .HasForeignKey("BillAddressID");
+
+                    b.HasOne("ReactWithASP.Server.Domain.Address", "ShipAddress")
+                        .WithMany()
+                        .HasForeignKey("ShipAddressID");
+
+                    b.Navigation("BillAddress");
+
+                    b.Navigation("ShipAddress");
+                });
+
             modelBuilder.Entity("ReactWithASP.Server.Domain.Guest", b =>
                 {
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("ReactWithASP.Server.Domain.Order", b =>
+            modelBuilder.Entity("ReactWithASP.Server.Domain.UOrder", b =>
                 {
                     b.Navigation("OrderPayments");
 

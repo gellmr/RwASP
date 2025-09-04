@@ -49,13 +49,13 @@ namespace ReactWithASP.Server.Migrations
           principalColumn: "ID");         // Primary key which the foreign key column refers to.
 
       /*
-      These manual steps must be performed before you try to execute migration 3 (OrderHasAddress).
+      These manual steps must be performed before you try to execute this migration (OrderHasAddress).
       
       (Manual steps)
 
       fn_ParseAddressLine1 etc below are compiled UDF functions from a separate class library project that is compiled to a dll and registered with SQL Server.
 
-      You need to place the AddressParser.dll in a location that can be ready by SQL Server.
+      You need to place the AddressParser.dll in a location that can be read by SQL Server.
       For example, C:\db-backups
       
       You need to tell SQL Server to trust the dll. First get the hash value of the dll using this Powershell command:
@@ -76,7 +76,7 @@ namespace ReactWithASP.Server.Migrations
 
       (End of manual steps)
 
-      Now you should be able to run migration 3, which includes the SQL statements below.
+      Now you should be able to execute this migration which includes the SQL statements below.
       These call the UDF functions we have enabled.
        */
 
@@ -219,6 +219,12 @@ namespace ReactWithASP.Server.Migrations
         FROM Orders AS O
         JOIN #AddressIDMap AS M ON O.ID = M.OriginalOrderID;
 
+        -- Update the discriminator column for all successfully migrated orders.
+        UPDATE O
+        SET O.OrderType = 'OrderV2'
+        FROM Orders AS O
+        WHERE O.ShipAddressID IS NOT NULL OR O.BillAddressID IS NOT NULL;
+
         -- Clean up the temporary tables.
         DROP TABLE #ParsedAddresses;
         DROP TABLE #AddressIDMap;
@@ -246,7 +252,8 @@ namespace ReactWithASP.Server.Migrations
                     -- CONCAT_WS is used for a cleaner join with a separator, ignoring nulls.
                     -- This ensures that if a line is null, it won't add an extra comma.
                     O.ShippingAddress = CONCAT_WS(', ', A_Ship.Line1, A_Ship.Line2, A_Ship.Line3, A_Ship.City, A_Ship.State, A_Ship.Zip),
-                    O.BillingAddress = CONCAT_WS(', ', A_Bill.Line1, A_Bill.Line2, A_Bill.Line3, A_Bill.City, A_Bill.State, A_Bill.Zip)
+                    O.BillingAddress = CONCAT_WS(', ', A_Bill.Line1, A_Bill.Line2, A_Bill.Line3, A_Bill.City, A_Bill.State, A_Bill.Zip),
+                    O.OrderType = 'OrderV1'
                 FROM Orders AS O
                 LEFT JOIN Addresses AS A_Ship ON O.ShipAddressID = A_Ship.ID
                 LEFT JOIN Addresses AS A_Bill ON O.BillAddressID = A_Bill.ID;
@@ -267,6 +274,7 @@ namespace ReactWithASP.Server.Migrations
       // Step 1: Remove the XxxxAddressID column that we added in Step 1
       migrationBuilder.DropColumn(name: "BillAddressID", table: "Orders");
       migrationBuilder.DropColumn(name: "ShipAddressID", table: "Orders");
+
     }
   }
 }

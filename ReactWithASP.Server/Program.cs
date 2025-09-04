@@ -117,17 +117,21 @@ using (var scope = app.Services.CreateScope()){
     {
       if (bool.Parse(builder.Configuration["OnStart:Migrate"]) && bool.Parse(builder.Configuration["OnStart:Seed"]))
       {
-        // Execute migration 1 and 2
+        // Execute migrations 1 2 3
         var migrator = context.GetInfrastructure().GetService<IMigrator>();
         var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-        var migrationsToApply = pendingMigrations.Take(2).ToList();
+        var migrationsToApply = pendingMigrations.Take(3).ToList();
+        bool performSeeding = false;
         foreach (var migrationName in migrationsToApply){
           await migrator.MigrateAsync(migrationName);
+          performSeeding = true;
         }
 
-        // Seed after migration 2
-        var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-        await seeder.Execute();
+        // Seed after migration 3
+        if(performSeeding){
+          var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+          await seeder.Execute();
+        }
 
         // Execute remaining migrations...
         pendingMigrations = await context.Database.GetPendingMigrationsAsync();
