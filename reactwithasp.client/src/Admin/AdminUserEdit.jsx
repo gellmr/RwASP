@@ -30,11 +30,7 @@ function AdminUserEdit()
   
   const loginValue = useSelector(state => state.login.user);
   const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
-
   const navigate = useNavigate();
-  if (loginValue === null) {
-    //navigate('/admin');
-  }
 
   useEffect(() => {
     fetchAccount();
