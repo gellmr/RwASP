@@ -3,9 +3,14 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations.Internal;
+using Microsoft.Extensions.Configuration;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
+using System.Runtime;
 
 // -------------------------------------------------------------
 // Add Services to the DI container.
@@ -108,25 +113,32 @@ app.MapControllers();
 // Create database if does not exist, and apply pending migrations. Run seed data.
 using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
-  try{
+  try
+  {
     var context = services.GetRequiredService<StoreContext>();
     var deployMarker = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
+    List<string> migrationSteps = builder.Configuration.GetSection("OnStart:Migrations").Get<List<string>>();
     if (File.Exists(deployMarker))
     {
-      if (bool.Parse(builder.Configuration["OnStart:Migrate"])){
-        if (env.EnvironmentName == "Development" || env.EnvironmentName == "Test"){
-          await context.Database.MigrateAsync();
+      if (migrationSteps != null && migrationSteps.Count > 0)
+      {
+        var migrator = context.GetInfrastructure().GetService<IMigrator>();
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        List<string> migrationsToApply = pendingMigrations.ToList();
+        foreach (string step in migrationSteps)
+        {
+          if (step == "seed"){
+            var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+            await seeder.Execute();
+          }
+          else
+          {
+            int idx = int.Parse(step);
+            string migrationName = migrationsToApply[idx-1];
+            await migrator.MigrateAsync(migrationName);
+          }
         }
       }
-      if (bool.Parse(builder.Configuration["OnStart:Seed"])){
-        var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-        await seeder.Execute();
-      }
-      //if (bool.Parse(builder.Configuration["OnStart:DataConversion"])){
-      //  var ordersRepository = services.GetRequiredService<IOrdersRepository>();
-      //  AddressParser addressParser = new AddressParser(ordersRepository, context);
-      //  await addressParser.Execute();
-      //}
       File.Delete(deployMarker);
     }
   }

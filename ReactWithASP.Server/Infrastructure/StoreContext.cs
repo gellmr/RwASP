@@ -16,36 +16,46 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<OrderedProduct> OrderedProducts { get; set; }
     public DbSet<InStockProduct> InStockProducts { get; set; }
     public DbSet<CartLine> CartLines { get; set; }
+    public DbSet<OrderV1> LegacyOrders { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Guest> Guests { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<OrderPayment> OrderPayments { get; set; }
     public DbSet<AdminOrderRow> AdminOrderRows { get; set; } // Keyless (Stored Procedure)
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder){
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
       base.OnModelCreating(modelBuilder);
-      // Define relationships here to enable Eager Loading of associated records...
 
-      // Configure the relationship between Order and AppUser
-      modelBuilder.Entity<Order>()
-      .HasOne(o => o.AppUser)             // An Order has one User
-      .WithMany(u => u.Orders)            // AppUser can have many Orders
-      .HasForeignKey(o => o.UserID)       // The foreign key is UserID in Order
-      .OnDelete(DeleteBehavior.Restrict); // Or .Cascade, depending on your needs. Restrict is often safer to prevent accidental deletions
+      // Configure TPH inheritance
+      modelBuilder.Entity<UOrder>()
+        .ToTable("Orders") // Map to Orders table
+        .HasDiscriminator<string>("OrderType") // Add a discriminator column
+        .HasValue<OrderV1>("OrderV1") // The value to use for legacy orders
+        .HasValue<Order>("OrderV2");  // The value to use for current orders
 
-      modelBuilder.Entity<Order>()
+      modelBuilder.Entity<UOrder>()
+      .HasOne(o => o.AppUser)
+      .WithMany(u => u.Orders)
+      .HasForeignKey(o => o.UserID)
+      .OnDelete(DeleteBehavior.Restrict);
+
+      modelBuilder.Entity<UOrder>()
       .HasOne(o => o.Guest)
       .WithMany(u => u.Orders)
       .HasForeignKey(o => o.GuestID)
       .OnDelete(DeleteBehavior.Restrict);
 
-      /*
+      modelBuilder.Entity<OrderV1>().HasBaseType<UOrder>(); // Legacy
+      modelBuilder.Entity<Order>().HasBaseType<UOrder>();   // Current
+
+      /**/
       modelBuilder.Entity<Order>()
       .HasOne(o => o.ShipAddress);
 
       modelBuilder.Entity<Order>()
       .HasOne(o => o.BillAddress);
-      */
+      
 
       //modelBuilder.Entity<Guest>()
       //.HasOne(e => e.DefaultAddress);

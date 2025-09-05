@@ -7,7 +7,7 @@ namespace ReactWithASP.Server.Infrastructure
 {
   public class AppUser: IdentityUser
   {
-    public virtual ICollection<Order> Orders { get; set; }
+    public virtual ICollection<UOrder> Orders { get; set; }
 
     [ForeignKey("GuestID")]
     public virtual Guest Guest { get; set; } // Navigation property.
