@@ -96,7 +96,7 @@ namespace ReactWithASP.Server.Infrastructure
     public static IList<InStockProduct> InStockProducts;
 
     public static List<OrderSeederDTO> orderDTOs;
-    public static IList<OrderV1> Orders;
+    public static IList<Order> Orders;
 
     public static List<OrderedProductSeederDTO> orderedProductDTOs;
     public static IList<OrderedProduct> OrderedProducts;
@@ -149,7 +149,7 @@ namespace ReactWithASP.Server.Infrastructure
         _context.OrderPayments.RemoveRange(_context.OrderPayments);
         _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
         _context.InStockProducts.RemoveRange(_context.InStockProducts);
-        _context.LegacyOrders.RemoveRange(_context.LegacyOrders);
+        _context.Orders.RemoveRange(_context.Orders);
         _context.Users.RemoveRange(_context.Users);
         _context.CartLines.RemoveRange(_context.CartLines);
         _context.Guests.RemoveRange(_context.Guests);
@@ -213,7 +213,7 @@ namespace ReactWithASP.Server.Infrastructure
       try
       {
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[Orders] ON;");
-        Orders = new List<OrderV1>();
+        Orders = new List<Order>();
         orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
         for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[Orders] OFF;");
@@ -355,7 +355,7 @@ namespace ReactWithASP.Server.Infrastructure
       Guid? userId = dto.UserID;
       Guid? guestId = dto.GuestID;
       AppUser? user = AppUsers.FirstOrDefault(u => (Guid.Parse(u.Id) == userId) );
-      OrderV1 order = new OrderV1
+      Order order = new Order
       {
         ID = dto.ID,
         OrderPlacedDate = GetOrderDateTime(dto.OrderPlacedDate),
@@ -386,7 +386,7 @@ namespace ReactWithASP.Server.Infrastructure
       }
       // Save the order
       Orders.Add(order);
-      _context.LegacyOrders.Add(order);
+      _context.Orders.Add(order);
       _context.SaveChanges();
     }
 
@@ -395,7 +395,7 @@ namespace ReactWithASP.Server.Infrastructure
       OrderedProductSeederDTO dto = orderedProductDTOs[idx];
 
       InStockProduct isp = InStockProducts.FirstOrDefault(p => p.ID == dto.InStockProductID); // lookup navigation object
-      OrderV1 order = Orders.FirstOrDefault(o => o.ID == dto.OrderID);                        // lookup navigation object
+      Order order = Orders.FirstOrDefault(o => o.ID == dto.OrderID);                          // lookup navigation object
       OrderedProduct op = new OrderedProduct
       {
         ID = dto.ID,
@@ -412,7 +412,7 @@ namespace ReactWithASP.Server.Infrastructure
     {
       OrderPaymentSeederDTO dto = orderPaymentDTOs[idx];
 
-      OrderV1 order = Orders.FirstOrDefault(o => o.ID == dto.OrderID); // lookup navigation object
+      Order order = Orders.FirstOrDefault(o => o.ID == dto.OrderID); // lookup navigation object
       OrderPayment payment = new OrderPayment
       {
         ID = dto.ID,

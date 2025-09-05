@@ -12,7 +12,7 @@ namespace ReactWithASP.Server.Domain
 
 
     [ForeignKey("OrderID")] // use the value of OrderID as foreign key to the Orders table.
-    public virtual UOrder? Order { get; set; }  // navigation property.
+    public virtual Order? Order { get; set; }  // navigation property.
     public Nullable<Int32> OrderID { get; set; } // foreign key value to use, for Orders table.
 
 

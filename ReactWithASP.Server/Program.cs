@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
@@ -115,33 +113,21 @@ using (var scope = app.Services.CreateScope()){
     var deployMarker = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
     if (File.Exists(deployMarker))
     {
-      if (bool.Parse(builder.Configuration["OnStart:Migrate"]) && bool.Parse(builder.Configuration["OnStart:Seed"]))
-      {
-        // Execute migrations 1 2 3
-        var migrator = context.GetInfrastructure().GetService<IMigrator>();
-        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-        var migrationsToApply = pendingMigrations.Take(3).ToList();
-        bool performSeeding = false;
-        foreach (var migrationName in migrationsToApply){
-          await migrator.MigrateAsync(migrationName);
-          performSeeding = true;
+      if (bool.Parse(builder.Configuration["OnStart:Migrate"])){
+        if (env.EnvironmentName == "Development" || env.EnvironmentName == "Test"){
+          await context.Database.MigrateAsync();
         }
-
-        // Seed after migration 3
-        if(performSeeding){
-          var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-          await seeder.Execute();
-        }
-
-        // Execute remaining migrations...
-        pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-        migrationsToApply = pendingMigrations.ToList();
-        foreach (var migrationName in migrationsToApply){
-          await migrator.MigrateAsync(migrationName);
-        }
-
-        File.Delete(deployMarker);
       }
+      if (bool.Parse(builder.Configuration["OnStart:Seed"])){
+        var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+        await seeder.Execute();
+      }
+      //if (bool.Parse(builder.Configuration["OnStart:DataConversion"])){
+      //  var ordersRepository = services.GetRequiredService<IOrdersRepository>();
+      //  AddressParser addressParser = new AddressParser(ordersRepository, context);
+      //  await addressParser.Execute();
+      //}
+      File.Delete(deployMarker);
     }
   }
   catch (Exception ex){
