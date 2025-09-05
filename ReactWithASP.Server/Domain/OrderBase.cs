@@ -4,7 +4,6 @@ using System.Text;
 using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Infrastructure;
 
-
 namespace ReactWithASP.Server.Domain
 {
   public enum ShippingState
@@ -17,41 +16,23 @@ namespace ReactWithASP.Server.Domain
     Received
   }
 
-  public class Order
+  public abstract class OrderBase
   {
     [Key]
     public Nullable<Int32> ID { get; set; } // primary key for Order
-
 
     // AppUser 1-----* Order
     [ForeignKey("UserID")] // use the value of UserID as foreign key to the AspNetUsers table.
     public virtual AppUser AppUser { get; set; } // navigation property.
     public string? UserID { get; set; } // foreign key value to use, for AspNetUsers table.
 
-
     // Guest 1-----* Order
     [ForeignKey("GuestID")] // use the value of GuestID as foreign key to the Guests table.
     public virtual Guest Guest { get; set; } // navigation property.
     public Nullable<Guid> GuestID { get; set; } // foreign key value to use, for Guests table. Null if the user was logged in when they placed order.
 
-    /*
-    // ShipAddress 1-----1 Order
-    [ForeignKey("ShipAddressID")] // Use the value of our ShipAddressID as foreign key to the Address table.
-    public virtual Address? ShipAddress { get; set; } // Navigation property.
-    public Int32? ShipAddressID { get; set; } // The PK from Address table
-
-
-    // BillAddress 1-----1 Order
-    [ForeignKey("BillAddressID")] // Use the value of our BillAddressID as foreign key to the Address table.
-    public virtual Address? BillAddress { get; set; } // Navigation property.
-    public Int32? BillAddressID { get; set; } // The PK from Address table
-    */
-
-
     public virtual IList<OrderPayment> OrderPayments { get; set; }
     public virtual IList<OrderedProduct> OrderedProducts { get; set; }
-
-
 
     public Nullable<DateTimeOffset> OrderPlacedDate { get; set; }
     public Nullable<DateTimeOffset> PaymentReceivedDate { get; set; }
@@ -59,21 +40,14 @@ namespace ReactWithASP.Server.Domain
     public Nullable<DateTimeOffset> ShipDate { get; set; }
     public Nullable<DateTimeOffset> ReceivedDate { get; set; }
 
-
-    /**/
-    public string BillingAddress { get; set; }
-    public string ShippingAddress { get; set; }
-    
-
     public string OrderStatus { get; set; }
-
-
 
     [NotMapped]
     public string UserOrGuestId
     {
       get { return string.IsNullOrEmpty(UserID) ? GuestID.ToString() : UserID; }
     }
+
     [NotMapped]
     public string UserOrGuestName
     {
@@ -89,11 +63,13 @@ namespace ReactWithASP.Server.Domain
         }
       }
     }
+
     [NotMapped]
     public string AccountType
     {
       get { return (GuestID != null) ? "Guest" : "User"; }
     }
+
     [NotMapped]
     public string UserOrGuestEmail
     {
@@ -107,6 +83,7 @@ namespace ReactWithASP.Server.Domain
         return string.Empty;
       }
     }
+
     [NotMapped]
     public string ItemString
     {
@@ -141,21 +118,6 @@ namespace ReactWithASP.Server.Domain
       }
     }
 
-    public Order()
-    {
-      GuestID = null;
-      UserID = null;
-      ID = null;
-      OrderedProducts = new List<OrderedProduct>();
-    }
-
-    public Order(int orderID, string userID, Nullable<Guid> guestID)
-    {
-      GuestID = guestID;
-      UserID = userID;
-      ID = orderID;
-      OrderedProducts = new List<OrderedProduct>();
-    }
 
     [NotMapped]
     public Decimal OrderPaymentsReceived

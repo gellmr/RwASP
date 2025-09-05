@@ -18,6 +18,7 @@ function isNullOrEmpty(value) {
 
 function addressSegment(seg, final=false) {
   if (nullOrUndefined(seg)) { return ""; }
+  if (isNullOrEmpty(seg)) { return ""; }
   if (!final) { return seg + ", " }
   return seg;
 }
