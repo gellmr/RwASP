@@ -12,9 +12,8 @@ namespace ReactWithASP.Server.Infrastructure
    * I copied some address values from the database and wrote english instructions to describe how I wanted them to be parsed
    * from right to left, specifying rules to align with variations I expected in the data. Gemini generated a C# script in a couple
    * of seconds and I ran it in my project. It worked almost the way I wanted. With just a few minor changes I got it working
-   * correctly. The development time took about 30 minutes. 
-   * This script can only be used until migration 4 (OrderHasAddress) when I created an Address table and migrated the string
-   * values out of the Order table. The below parser is retained in this project, for compatibility with migrations 1 - 3.
+   * correctly. The development time took about 30 minutes.
+   * You must be on migration 1, 2 or 3 to use this script.
   */
 
   /*
