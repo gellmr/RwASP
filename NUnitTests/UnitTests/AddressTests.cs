@@ -174,7 +174,7 @@ namespace NUnitTests.UnitTests
     {
       return new Address
       {
-        Line1 = "P.O. Box 45-A,    ////....----####aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa100",
+        Line1 = "P.O. Box 45-A,    ////....----####abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg100",
         City = "The 1000 Island Province - Island 33, Peninsula 2.",
         State = "The 1000 Island Province - Island 33, Peninsula 2.",
         Country = "The 1000 Island Province - Island 33, Peninsula 2.",
