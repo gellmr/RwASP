@@ -33,9 +33,10 @@ namespace ReactWithASP.Server.Infrastructure
             foreach (string pending in pendingMigrations)
             {
               await migrator.MigrateAsync(pending);
-              if (pending.Equals(Configuration["OnStart:Seedafter"]))
+              string seedAfter = Configuration["OnStart:SeedAfter"];
+              if (pending.Equals(seedAfter))
               {
-                await Seeder.Execute();
+                await Seeder.Execute(seedAfter);
               }
             }
           }
@@ -44,7 +45,8 @@ namespace ReactWithASP.Server.Infrastructure
       }
       catch (Exception ex)
       {
-        // An error occurred while migrating the database
+        // An error occurred while migrating / seeding.
+        // Migrations might not all have completed.
       }
     }
   }

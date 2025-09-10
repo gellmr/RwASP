@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using ReactWithASP.Server.Domain;
-using ReactWithASP.Server.DTO.RandomUserme;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace ReactWithASP.Server.Infrastructure
 {
@@ -27,7 +25,6 @@ namespace ReactWithASP.Server.Infrastructure
     public Guid? GuestID { get; set; }
     public string? Email {get; set;}
     public bool EmailConfirmed { get; set; }
-    //public string? PasswordHash { get; set; }
     public string? SecurityStamp { get; set; }
     public string? PhoneNumber { get; set; }
     public bool PhoneNumberConfirmed {get; set; }
@@ -36,7 +33,6 @@ namespace ReactWithASP.Server.Infrastructure
     public bool LockoutEnabled { get; set; }
     public Int32 AccessFailedCount { get; set; }
     public string? UserName { get; set; }
-
     public string? Picture { get; set; }
   }
 
@@ -80,7 +76,6 @@ namespace ReactWithASP.Server.Infrastructure
     private Microsoft.AspNetCore.Identity.RoleManager<IdentityRole> _roleManager;
 
     protected RandomUserMeApiClient _userMeService;
-    //public static List<UserDTO> usermeDTOs;
 
     public static ILookupNormalizer _normalizer;
     public static IPasswordHasher<AppUser> _hasher;
@@ -121,10 +116,8 @@ namespace ReactWithASP.Server.Infrastructure
       _userMeService = userMeService;
     }
 
-    public async Task Execute()
+    public async Task Execute(string seedAfterMigrationName)
     {
-      //usermeDTOs = await _userMeService.GetUsersAsync();
-
       Console.WriteLine("Begin transaction for data seeding...");
       await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
       try
@@ -137,6 +130,7 @@ namespace ReactWithASP.Server.Infrastructure
       {
         await transaction.RollbackAsync();
         Console.WriteLine($"Error seeding data: {ex.Message}");
+        throw;
       }
     }
 
@@ -207,6 +201,7 @@ namespace ReactWithASP.Server.Infrastructure
       catch (Exception ex)
       {
         Debug.WriteLine(ex.Message);
+        throw;
       }
 
       // Populate Orders
@@ -221,6 +216,7 @@ namespace ReactWithASP.Server.Infrastructure
       catch(Exception ex)
       {
         Debug.WriteLine(ex.Message);
+        throw;
       }
 
       // Populate InStockProducts
@@ -235,6 +231,7 @@ namespace ReactWithASP.Server.Infrastructure
       catch (Exception ex)
       {
         Debug.WriteLine(ex.Message);
+        throw;
       }
 
       // Populate OrderedProducts
@@ -249,6 +246,7 @@ namespace ReactWithASP.Server.Infrastructure
       catch (Exception ex)
       {
         Debug.WriteLine(ex.Message);
+        throw;
       }
 
       // Populate OrderPayments
@@ -263,6 +261,7 @@ namespace ReactWithASP.Server.Infrastructure
       catch (Exception ex)
       {
         Debug.WriteLine(ex.Message);
+        throw;
       }
 
       // Finished adding records.
