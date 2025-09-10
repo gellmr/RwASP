@@ -6,5 +6,7 @@
 
     public string BillingAddress { get; set; }
     public string ShippingAddress { get; set; }
+
+    public OrderV1(UOrder ord) : base(ord) { }
   }
 }

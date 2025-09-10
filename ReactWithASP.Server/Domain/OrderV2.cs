@@ -15,5 +15,7 @@ namespace ReactWithASP.Server.Domain
     [ForeignKey("BillAddressID")] // Use the value of our BillAddressID as foreign key to the Address table.
     public virtual Address? BillAddress { get; set; } // Navigation property.
     public Int32? BillAddressID { get; set; } // The PK from Address table
+
+    public Order(UOrder ord) : base(ord) {}
   }
 }
