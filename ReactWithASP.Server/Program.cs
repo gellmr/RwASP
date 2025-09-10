@@ -97,6 +97,7 @@ builder.Services.AddScoped<IGuestRepository, EFGuestRepository>();
 builder.Services.AddScoped<StoreContext, StoreContext>();
 builder.Services.AddScoped<MyEnv, MyEnv>();
 builder.Services.AddScoped<CustomMigrator, CustomMigrator>();
+builder.Services.AddScoped<DataSeeder, DataSeeder>();
 
 // -------------------------------------------------------------
 

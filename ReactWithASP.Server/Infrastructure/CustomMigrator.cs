@@ -9,12 +9,14 @@ namespace ReactWithASP.Server.Infrastructure
     StoreContext Context;
     string ContentRootPath;
     IConfiguration Configuration;
+    DataSeeder Seeder;
 
-    public CustomMigrator(StoreContext context, IHostEnvironment env, IConfiguration config)
+    public CustomMigrator(StoreContext context, IHostEnvironment env, IConfiguration config, DataSeeder seeder)
     {
       Context = context;
       ContentRootPath = env.ContentRootPath;
       Configuration = config;
+      Seeder = seeder;
     }
 
     public async Task Execute()
@@ -31,6 +33,10 @@ namespace ReactWithASP.Server.Infrastructure
             foreach (string pending in pendingMigrations)
             {
               await migrator.MigrateAsync(pending);
+              if (pending.Equals(Configuration["OnStart:Seedafter"]))
+              {
+                await Seeder.Execute();
+              }
             }
           }
           File.Delete(deployMarker);
