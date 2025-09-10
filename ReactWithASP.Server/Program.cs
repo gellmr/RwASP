@@ -34,7 +34,6 @@ builder.Services.AddDbContext<StoreContext>(options =>
               errorNumbersToAdd: null); // You can specify specific error numbers here
         })
 );
-builder.Services.AddTransient<DataSeeder>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => { 
   options.SignIn.RequireConfirmedAccount = true;
@@ -97,6 +96,7 @@ builder.Services.AddScoped<IInStockRepository, EFInStockRepository>();
 builder.Services.AddScoped<IGuestRepository, EFGuestRepository>();
 builder.Services.AddScoped<StoreContext, StoreContext>();
 builder.Services.AddScoped<MyEnv, MyEnv>();
+builder.Services.AddScoped<CustomMigrator, CustomMigrator>();
 
 // -------------------------------------------------------------
 
@@ -110,42 +110,10 @@ app.UseAuthorization();
 app.UseSession();
 app.MapControllers();
 
-// Create database if does not exist, and apply pending migrations. Run seed data.
 using (var scope = app.Services.CreateScope()){
   var services = scope.ServiceProvider;
-  try
-  {
-    var context = services.GetRequiredService<StoreContext>();
-    var deployMarker = Path.Combine(app.Environment.ContentRootPath, "deploy_marker.txt");
-    List<string> migrationSteps = builder.Configuration.GetSection("OnStart:Migrations").Get<List<string>>();
-    if (File.Exists(deployMarker))
-    {
-      if (migrationSteps != null && migrationSteps.Count > 0)
-      {
-        var migrator = context.GetInfrastructure().GetService<IMigrator>();
-        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-        List<string> migrationsToApply = pendingMigrations.ToList();
-        foreach (string step in migrationSteps)
-        {
-          if (step == "seed"){
-            var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-            await seeder.Execute();
-          }
-          else
-          {
-            int idx = int.Parse(step);
-            string migrationName = migrationsToApply[idx-1];
-            await migrator.MigrateAsync(migrationName);
-          }
-        }
-      }
-      File.Delete(deployMarker);
-    }
-  }
-  catch (Exception ex){
-    var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error occurred while migrating the database.");
-  }
+  var custMigrator = services.GetRequiredService<CustomMigrator>();
+  await custMigrator.Execute();
 }
 
 app.MapFallbackToFile("/index.html");
