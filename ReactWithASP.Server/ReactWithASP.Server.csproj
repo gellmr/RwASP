@@ -13,6 +13,12 @@
     <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
   </PropertyGroup>
 
+  <!-- Disable launching Vite, for GitHub Action runner -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <SpaProxyServerUrl></SpaProxyServerUrl>
+    <SpaProxyLaunchCommand></SpaProxyLaunchCommand>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.70.0" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
