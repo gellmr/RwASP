@@ -213,7 +213,7 @@ namespace ReactWithASP.Server.Controllers.Admin
         {
           // Look up Guest, update picture, save
           Guid gid = Guid.Parse(idval);
-          _guestRepo.UpdateWithTransaction(new GuestUpdateDTO{ ID = gid, Picture = pathToSave });
+          await _guestRepo.UpdateWithTransaction(new GuestUpdateDTO{ ID = gid, Picture = pathToSave });
           idsave = gid.ToString().ToLower();
         }
         else
