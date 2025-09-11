@@ -37,5 +37,5 @@ jobs:
     # Directly call the msdeploy.exe tool that is pre-installed on the GitHub-hosted runner
     - name: Deploy to IIS using msdeploy.exe
       run: |
-        & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:contentPath='${{env.PUBLISH_OUTPUT}}' -dest:contentPath='${{secrets.IIS_SITE_NAME_PROP}}', computerName='${{secrets.WEBDEPLOY_SERVER}}', userName='${{secrets.WEBDEPLOY_USERNAME}}', password='${{secrets.WEBDEPLOY_PASSWORD}}', AuthType='Basic' -AllowUntrusted=true
+        & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:contentPath='${{env.PUBLISH_OUTPUT}}' -dest:contentPath='${{secrets.IIS_SITE_NAME_PROP}}',computerName='${{secrets.WEBDEPLOY_SERVER}}',userName='${{secrets.WEBDEPLOY_USERNAME}}',password='${{secrets.WEBDEPLOY_PASSWORD}}',AuthType='Basic' -AllowUntrusted=true
       shell: pwsh
