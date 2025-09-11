@@ -1,0 +1,46 @@
+name: Deploy .NET Core App to IIS on Windows Server
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_PATH: 'ReactWithASP.Server/ReactWithASP.Server.csproj' # Your project's .csproj file
+  PUBLISH_OUTPUT: './publish-output' # Location within the runner's C drive, to publish to. So a later step can find the files.
+
+jobs:
+  build_and_deploy:
+    runs-on: windows-latest
+
+    # Here we specify the GitHub actions which we want to execute in the runner environment.
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2 # This action clones the repo into the runner vm.
+
+    # This action sets up the .NET Core SDK in the runner vm environment.
+    # Specify what version to install.
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '8.0.x'
+
+    # Command that fetches all the NuGet packages.
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+
+    # Compiles the code, and collects all necessary files into a single folder.
+    # Output to a folder within the runner's C drive so a later step can find the files.
+    - name: Build and Publish
+      run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Debug --output ${{ env.PUBLISH_OUTPUT }}
+
+    # This step is highly dependent on your specific setup.
+    # A common method is to use a deployment tool like Web Deploy.
+    - name: Deploy to IIS
+      uses: microsoft/web-deploy-action@v1
+      with:
+        msdeploy-server: ${{ secrets.PRODUCTION_SERVER }}
+        msdeploy-username: ${{ secrets.WEBDEPLOY_USERNAME }}
+        msdeploy-password: ${{ secrets.WEBDEPLOY_PASSWORD }}
+        msdeploy-path: ${{ secrets.IIS_SITE_NAME_PROP }} # The 'Site name' property within IIS. GitHub Actions will push to the 'Physical path' that is configured in IIS for this Site name.
+        package-path: ${{ env.PUBLISH_OUTPUT }} # Location of the files produced by dotnet publish.
