@@ -74,7 +74,7 @@ namespace ReactWithASP.Server.Controllers.Admin
     }
 
     [HttpGet("admin-useraccounts")]
-    public async Task<ActionResult> GetUserAccounts()
+    public ActionResult GetUserAccounts()
     {
       try
       {
@@ -120,7 +120,7 @@ namespace ReactWithASP.Server.Controllers.Admin
     }
 
     [HttpGet("admin-guest-edit/{idval}")]
-    public async Task<ActionResult> GetGuestAccount(string? idval)
+    public ActionResult GetGuestAccount(string? idval)
     {
       try
       {
