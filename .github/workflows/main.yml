@@ -32,7 +32,7 @@ jobs:
     # Compiles the code, and collects all necessary files into a single folder.
     # Output to a folder within the runner's C drive so a later step can find the files.
     - name: Build and Publish
-      run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Debug --output ${{ env.PUBLISH_OUTPUT }}
+      run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --output ${{ env.PUBLISH_OUTPUT }}
 
     # This step is highly dependent on your specific setup.
     # A common method is to use a deployment tool like Web Deploy.
