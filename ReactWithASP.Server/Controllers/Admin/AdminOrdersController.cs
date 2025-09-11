@@ -57,8 +57,8 @@ namespace ReactWithASP.Server.Controllers.Admin
           return Ok(new { orders = sorted }); // Automatically cast object to JSON.
         }
       }
-      catch(Exception ex){
-        int a = 1;
+      catch(Exception){
+        // Handle exception
       }
       return BadRequest(new { errMessage="Something went wrong." });
     }
