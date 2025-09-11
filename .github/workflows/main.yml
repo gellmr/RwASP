@@ -37,7 +37,10 @@ jobs:
     # This step is highly dependent on your specific setup.
     # A common method is to use a deployment tool like Web Deploy.
     - name: Deploy to IIS
-      uses: azure/webapps-deploy@v2
+      uses: microsoft/web-deploy-action@v1
       with:
-        publish-profile: ${{ secrets.PRODUCTION_PUBLISH_PROFILE }}
-        package: ${{ env.PUBLISH_OUTPUT }} # Location of the files produced by dotnet publish.
+        msdeploy-server:   ${{ secrets.MS_DEPLOY_SERVER }}
+        msdeploy-username: ${{ secrets.WEBDEPLOY_USERNAME }}
+        msdeploy-password: ${{ secrets.WEBDEPLOY_PASSWORD }}
+        msdeploy-path:     ${{ secrets.MS_DEPLOY_PATH }}
+        package-path:      ${{ env.PUBLISH_OUTPUT }} # Location of the files produced by dotnet publish.
