@@ -33,7 +33,8 @@ jobs:
     # Output to a folder within the runner's C drive so a later step can find the files.
     - name: Build and Publish
       shell: pwsh
-      run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --output ${{ env.PUBLISH_OUTPUT }} /p:WebPublishMethod=Package /p:PackageAsSingleFile=true
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }} --configuration Release /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:PublishDir=${{ env.PUBLISH_OUTPUT }}
   
     # Directly call the msdeploy.exe tool that is pre-installed on the GitHub-hosted runner
     - name: Deploy to IIS using msdeploy.exe
