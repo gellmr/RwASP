@@ -34,13 +34,19 @@ jobs:
     - name: Build and Publish
       run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --output ${{ env.PUBLISH_OUTPUT }}
 
-    # This step is highly dependent on your specific setup.
-    # A common method is to use a deployment tool like Web Deploy.
-    - name: Deploy to IIS
-      uses: azure/webapps-deploy@v2
-      with:
-        publish-url:       ${{ secrets.MS_DEPLOY_SERVER }}
-        msdeploy-username: ${{ secrets.WEBDEPLOY_USERNAME }}
-        msdeploy-password: ${{ secrets.WEBDEPLOY_PASSWORD }}
-        msdeploy-site:     ${{ secrets.IIS_SITE_NAME_PROP }}
-        package: ${{ env.PUBLISH_OUTPUT }} # Location of the files produced by dotnet publish.
+    # Directly call the msdeploy.exe tool that is pre-installed on the GitHub-hosted runner
+    - name: Deploy to IIS using msdeploy.exe
+      run: |
+        # Path to the msdeploy.exe tool on the GitHub-hosted runner
+        $webDeployPath = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+
+        # Full command to deploy
+        & $webDeployPath -verb:sync -source:contentPath='${{ env.PUBLISH_OUTPUT }}' `
+        -dest:contentPath='${{ secrets.IIS_SITE_NAME_PROP }}',`
+        computerName='https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }}',`
+        userName='${{ secrets.WEBDEPLOY_USERNAME }}',`
+        password='${{ secrets.WEBDEPLOY_PASSWORD }}',`
+        AuthType='Basic' `
+        -enableRule:DoNotDeleteRule `
+        -disableRule:AppOffline `
+      shell: pwsh
