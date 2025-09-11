@@ -25,6 +25,14 @@ namespace ReactWithASP.Server.DTO
 
   public class IspDTO
   {
+    public IspDTO(){
+      id          = 0;
+      title       = string.Empty;
+      description = string.Empty;
+      price       = 0.0M;
+      category    = 0;
+      image       = string.Empty;
+    }
     public Int32 id { get; set; }
 
     [RegularExpression(@"^[A-Za-z0-9\s\-\.\,\(\)\+\?\:]{1,50}$", ErrorMessage = "Please use alphanumeric, spaces, dashes, period, comma, plus symbol, question mark, colon, parentheses, 1-50 characters")]
@@ -96,50 +104,50 @@ namespace ReactWithASP.Server.DTO
     public string? ShipEmail { get; set; }
 
     public Guid? guestID { get; set; }
-    public List<CartSubmitLineDTO> cart { get; set; }
+    public List<CartSubmitLineDTO>? cart { get; set; }
   }
 
   public class ConfirmGoogleAuthDTO
   {
     [Required(ErrorMessage = "clientId is required")]
-    public string clientId { get; set; } // eg about 72 characters long "08mvd3ih...a3m7c6t.apps.googleusercontent.com"
+    public string? clientId { get; set; } // eg about 72 characters long "08mvd3ih...a3m7c6t.apps.googleusercontent.com"
 
     [Required(ErrorMessage = "credential is required")]
-    public string credential { get; set; } // eg about 998 characters long. Has 3 sections separated by period (.) Eg, "eyJhbGciOiJSUzI1NiIs.ImtpZCI6Ijg4MjUwM2E1.ZmQ1NmU5ZjczNGRmYmE1Y"
+    public string? credential { get; set; } // eg about 998 characters long. Has 3 sections separated by period (.) Eg, "eyJhbGciOiJSUzI1NiIs.ImtpZCI6Ijg4MjUwM2E1.ZmQ1NmU5ZjczNGRmYmE1Y"
 
     [Required(ErrorMessage = "select_by is required")]
-    public string select_by { get; set; } // eg about 3 characters long "btn"
+    public string? select_by { get; set; } // eg about 3 characters long "btn"
   }
 
   public class AdminLoginSubmitDTO
   {
     [Required(ErrorMessage = "username is required")]
-    public string username { get; set; }
+    public string? username { get; set; }
 
     [Required(ErrorMessage = "password is required")]
-    public string password { get; set; }
+    public string? password { get; set; }
   }
 
   public class GoogleAppUserDTO
   {
     [Required(ErrorMessage = "Subject is required")]
-    public string Subject { get; set; }
+    public string? Subject { get; set; }
 
     [Required(ErrorMessage = "Email is required")]
-    public string Email { get; set; }
+    public string? Email { get; set; }
 
     [Required(ErrorMessage = "GivenName is required")]
-    public string GivenName { get; set; }
+    public string? GivenName { get; set; }
 
     [Required(ErrorMessage = "FamilyName is required")]
-    public string FamilyName { get; set; }
+    public string? FamilyName { get; set; }
 
     [Required(ErrorMessage = "FullName is required")]
-    public string FullName { get; set; }
+    public string? FullName { get; set; }
 
-    public string Picture { get; set; }
+    public string? Picture { get; set; }
 
-    public string UserName { get; set; } // Generated, eg "diana-walters-e35"
+    public string? UserName { get; set; } // Generated, eg "diana-walters-e35"
   }
 
   public class OrderSlugDTO // Used to render rows on the Admin Orders page.
@@ -191,7 +199,7 @@ namespace ReactWithASP.Server.DTO
       public string? UserName { get; set; }
       public string? FullName { get; set; }
 
-      public static UserDTO TryParse(Guest? g)
+      public static UserDTO? TryParse(Guest? g)
       {
         return (g == null) ? null : new UserDTO{
           Id = null,
