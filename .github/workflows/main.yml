@@ -34,7 +34,7 @@ jobs:
     - name: Build and Publish
       shell: pwsh
       run: |
-        dotnet publish ${{ env.PROJECT_PATH }} --configuration Release /p:WebPublishMethod=Package /p:PackageAsSingleFile=true
+        dotnet publish ${{ env.PROJECT_PATH }} --configuration Release /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:PublishProvider=MSDeploy
   
     # Directly call the msdeploy.exe tool that is pre-installed on the GitHub-hosted runner
     - name: Deploy to IIS using msdeploy.exe
