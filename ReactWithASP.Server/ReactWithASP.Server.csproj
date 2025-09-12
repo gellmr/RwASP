@@ -38,6 +38,15 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <!--
+    <Content Include="appsettings.json" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="appsettings.Production.json" CopyToPublishDirectory="PreserveNewest" />
+    -->
+    <Content Remove="appsettings.Test.json" />
+    <Content Remove="appsettings.Development.json" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\reactwithasp.client\reactwithasp.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
