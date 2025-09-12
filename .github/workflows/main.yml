@@ -40,7 +40,7 @@ jobs:
       shell: pwsh
       run: |
         $deploycmd = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
-        $publishPath = "$env:GITHUB_WORKSPACE\ReactWithASP.Server\bin\Release\net8.0\ReactWithASP.Server.zip"
+        $publishPath = "$env:GITHUB_WORKSPACE\ReactWithASP.Server\bin\Release\net8.0"
         $siteName = "${{ secrets.IIS_SITE_NAME_PROP }}"
         $destFolder = "${{ secrets.WEBDEPLOY_DESTFOLDER }}"
         $compName= "https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }}"
