@@ -7,7 +7,6 @@ on:
 
 env:
   PROJECT_PATH: 'ReactWithASP.Server\ReactWithASP.Server.csproj' # Your project's .csproj file
-  PUBLISH_OUTPUT: '.\publish-output' # Location within the runner's C drive, to publish to. So a later step can find the files.
 
 jobs:
   build_and_deploy:
@@ -46,4 +45,4 @@ jobs:
         $compName= "https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }}"
         $myuser= "${{ secrets.WEBDEPLOY_USERNAME }}"
         $mypass= "${{ secrets.WEBDEPLOY_PASSWORD }}"
-        & "$deploycmd" -verb:sync -source:iisApp="$publishPath" -dest:iisApp="$siteName,computerName=$compName,userName=$myuser,password=$mypass,AuthType=Basic,dirPath=$destFolder" -enableRule:setAcl -allowUntrusted
+        & "$deploycmd" -verb:sync -source:iisApp="$publishPath" -dest:iisApp="$siteName,computerName=$compName,userName=$myuser,password=$mypass,AuthType=Basic" -allowUntrusted
