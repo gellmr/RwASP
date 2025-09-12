@@ -5,7 +5,8 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>..\reactwithasp.client</SpaRoot>
@@ -21,12 +22,17 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <Content Remove="appsettings.Test.json" />
-    <Content Remove="appsettings.Development.json" />
+    <Content Include="appsettings.json"            CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="appsettings.Production.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content   Remove="appsettings.Test.json" />
+    <Content   Remove="appsettings.Development.json" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-    <Content Remove="appsettings.Production.json" />
+    <Content Include="appsettings.json"             CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="appsettings.Test.json"        CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="appsettings.Development.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content   Remove="appsettings.Production.json" />
   </ItemGroup>
 
   <ItemGroup>
