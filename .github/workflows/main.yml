@@ -33,7 +33,7 @@ jobs:
       run: |
         # Create appsettings.json
         '${{ secrets.BASE_APPSETTINGS_JSON }}' | Out-File -FilePath "ReactWithASP.Server/appsettings.json" -Encoding utf8
-        
+
         # Create appsettings.Production.json
         '${{ secrets.PRODUCTION_APPSETTINGS_JSON }}' | Out-File -FilePath "ReactWithASP.Server/appsettings.Production.json" -Encoding utf8
 
@@ -54,4 +54,4 @@ jobs:
         $compName    = "https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }}"
         $myuser      = "${{ secrets.WEBDEPLOY_USERNAME }}"
         $mypass      = "${{ secrets.WEBDEPLOY_PASSWORD }}"
-        & "$deploycmd" -verb:sync -source:iisApp="$publishPath" -dest:iisApp="$siteName,computerName=$compName,userName=$myuser,password=$mypass,AuthType=Basic" -allowUntrusted
+        & "$deploycmd" -verb:sync -source:iisApp="$publishPath" -dest:iisApp="$siteName,computerName=$compName,userName=$myuser,password=$mypass,AuthType=Basic" -enableRule:AppOffline -allowUntrusted
