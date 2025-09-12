@@ -54,5 +54,5 @@ jobs:
         $compName    = "https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }}"
         $myuser      = "${{ secrets.WEBDEPLOY_USERNAME }}"
         $mypass      = "${{ secrets.WEBDEPLOY_PASSWORD }}"
-        $skipPattern = "^.*\\wwwroot\\userpic$"
+        $skipPattern = "^wwwroot\\userpic$"
         & "$deploycmd" -verb:sync -source:iisApp="$publishPath" -dest:iisApp="$siteName,computerName=$compName,userName=$myuser,password=$mypass,AuthType=Basic" -enableRule:AppOffline -allowUntrusted -skip:objectName=dirPath,absolutePath=$skipPattern
