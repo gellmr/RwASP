@@ -53,4 +53,4 @@ jobs:
         $compName= "https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }}"
         $myuser= "${{ secrets.WEBDEPLOY_USERNAME }}"
         $mypass= "${{ secrets.WEBDEPLOY_PASSWORD }}"
-        & "$deploycmd" -verb:sync -source:package="$publishPath" -dest:dirPath="$destFolder",computerName="$compName",userName="$myuser",password="$mypass",AuthType=Basic -enableRule:setAcl -allowUntrusted
+        & "$deploycmd" -verb:sync -source:package="$publishPath" -dest:dirPath="$destFolder,computerName=$compName,userName=$myuser,password=$mypass,AuthType=Basic" -enableRule:setAcl -allowUntrusted
