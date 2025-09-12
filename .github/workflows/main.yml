@@ -41,4 +41,4 @@ jobs:
       shell: pwsh
       run: |
         $publishPath = "$env:GITHUB_WORKSPACE\ReactWithASP.Server\bin\Release\net8.0\ReactWithASP.Server.zip"
-        & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="$publishPath" -dest:sitemanifest='${{ secrets.IIS_SITE_NAME_PROP }}',computerName='https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd',userName='${{ secrets.WEBDEPLOY_USERNAME }}',password='${{ secrets.WEBDEPLOY_PASSWORD }}',AuthType='Basic' -enableRule:setAcl -AllowUntrusted=true
+        & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="$publishPath" -dest:sitemanifest='${{ secrets.IIS_SITE_NAME_PROP }}',computerName='https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd',userName='${{ secrets.WEBDEPLOY_USERNAME }}',password='${{ secrets.WEBDEPLOY_PASSWORD }}',AuthType='Basic'
