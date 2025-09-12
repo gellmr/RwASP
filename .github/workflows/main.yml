@@ -28,6 +28,15 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ${{ env.PROJECT_PATH }}
 
+    - name: Create appsettings.json files
+      shell: pwsh
+      run: |
+        # Create appsettings.json
+        '${{ secrets.BASE_APPSETTINGS_JSON }}' | Out-File -FilePath "ReactWithASP.Server/appsettings.json" -Encoding utf8
+        
+        # Create appsettings.Production.json
+        '${{ secrets.PRODUCTION_APPSETTINGS_JSON }}' | Out-File -FilePath "ReactWithASP.Server/appsettings.Production.json" -Encoding utf8
+
     # Compiles the code, and collects all necessary files into a single folder.
     # Output to a folder within the runner's C drive so a later step can find the files.
     - name: Build and Publish
