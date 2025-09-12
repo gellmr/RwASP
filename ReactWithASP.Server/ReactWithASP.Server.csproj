@@ -5,7 +5,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <!--<EnableDefaultContentItems>false</EnableDefaultContentItems>-->
 
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -22,17 +22,17 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <Content Include="appsettings.json"            CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!--<Content Include="appsettings.json"            CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="appsettings.Production.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-    <Content Include="$(SpaRoot)wwwroot\**"                                               CopyToPublishDirectory="Always" />
+    <Content Include="$(SpaRoot)wwwroot\**"                                               CopyToPublishDirectory="Always" />-->
     <Content   Remove="appsettings.Test.json" />
     <Content   Remove="appsettings.Development.json" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-    <Content Include="appsettings.json"             CopyToOutputDirectory="PreserveNewest" />
+    <!--<Content Include="appsettings.json"             CopyToOutputDirectory="PreserveNewest" />
     <Content Include="appsettings.Test.json"        CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="appsettings.Development.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="appsettings.Development.json" CopyToOutputDirectory="PreserveNewest" />-->
     <Content   Remove="appsettings.Production.json" />
   </ItemGroup>
 
