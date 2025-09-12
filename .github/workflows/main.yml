@@ -34,23 +34,16 @@ jobs:
     - name: Build and Publish
       shell: pwsh
       run: |
-        dotnet publish ${{ env.PROJECT_PATH }} --configuration Release /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:PublishProvider=MSDeploy
-  
-    # Directly call the msdeploy.exe tool that is pre-installed on the GitHub-hosted runner
-    #- name: Deploy to IIS using msdeploy.exe
-    #  shell: pwsh
-    #  run: |
-    #    $publishPath = "$env:GITHUB_WORKSPACE\ReactWithASP.Server\bin\Release\net8.0\ReactWithASP.Server.zip"
-    #    $destFolder = "${{ secrets.WEBDEPLOY_DESTFOLDER }}"
-    #    & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" -verb:sync -source:package="$publishPath" -dest:iisApp=${{ secrets.IIS_SITE_NAME_PROP }},computerName=https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }},userName=${{ secrets.WEBDEPLOY_USERNAME }},password=${{ secrets.WEBDEPLOY_PASSWORD }},AuthType=Basic -enableRule:setAcl -allowUntrusted
+        dotnet publish ${{ env.PROJECT_PATH }} --configuration Release /p:WebPublishMethod=FileSystem /p:PublishProvider=MSDeploy
 
     - name: Deploy to IIS using msdeploy.exe
       shell: pwsh
       run: |
         $deploycmd = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
         $publishPath = "$env:GITHUB_WORKSPACE\ReactWithASP.Server\bin\Release\net8.0\ReactWithASP.Server.zip"
+        $siteName = "${{ secrets.IIS_SITE_NAME_PROP }}"
         $destFolder = "${{ secrets.WEBDEPLOY_DESTFOLDER }}"
         $compName= "https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }}"
         $myuser= "${{ secrets.WEBDEPLOY_USERNAME }}"
         $mypass= "${{ secrets.WEBDEPLOY_PASSWORD }}"
-        & "$deploycmd" -verb:sync -source:package="$publishPath" -dest:dirPath="$destFolder,computerName=$compName,userName=$myuser,password=$mypass,AuthType=Basic" -enableRule:setAcl -allowUntrusted
+        & "$deploycmd" -verb:sync -source:iisApp="$publishPath" -dest:iisApp="$siteName,computerName=$compName,userName=$myuser,password=$mypass,AuthType=Basic,dirPath=$destFolder" -enableRule:setAcl -allowUntrusted
