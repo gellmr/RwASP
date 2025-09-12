@@ -24,6 +24,7 @@
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <Content Include="appsettings.json"            CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="appsettings.Production.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="$(SpaRoot)wwwroot\**"                                               CopyToPublishDirectory="Always" />
     <Content   Remove="appsettings.Test.json" />
     <Content   Remove="appsettings.Development.json" />
   </ItemGroup>
