@@ -9,6 +9,7 @@ import AdminTitleBar from "@/Admin/AdminTitleBar";
 import BackLink from "@/Shop/BackLink";
 import { nullOrUndefined, oneLineAddress } from '@/MgUtility.js';
 import MyOrdersShowAccountInfo from '@/Shop/MyOrdersShowAccountInfo.jsx';
+import { useMyOrdersAccountInfoProps } from '@/Shop/useMyOrdersAccountInfoProps';
 
 import '@/MyOrderDetail.css'
 
@@ -17,16 +18,10 @@ function MyOrderDetail()
   const { orderid } = useParams();
   const orders = useSelector(state => state.myOrders.value);
   const ord = (orders && orders.length > 0) && orders.find(o => o.id.toString() === orderid);
-
   const shipAddy = !nullOrUndefined(ord.shippingAddress) ? ord.shippingAddress : oneLineAddress(ord.shipAddress);
   let bill = !nullOrUndefined(ord.billingAddress) ? ord.billingAddress : oneLineAddress(ord.billAddress);
   const billAddy = (bill === shipAddy) ? "(same as shipping address)" : bill;
-
-  const devMode = (import.meta.env.DEV); // true if environment is development
-  const accType = "refactor";
-  const idval = "refactor";
-  const fullname = "refactor";
-  const email = "refactor";
+  const { fullname, email, accType, idval, myUserId, guestID, devMode } = useMyOrdersAccountInfoProps();
 
   const noOrderMarkup = () => (
     <>

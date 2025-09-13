@@ -8,6 +8,7 @@ import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx';
 import { nullOrUndefined, oneLineAddress } from '@/MgUtility.js';
 import PaginationLinks from "@/Shop/PaginationLinks";
 import MyOrdersShowAccountInfo from '@/Shop/MyOrdersShowAccountInfo.jsx';
+import { useMyOrdersAccountInfoProps } from '@/Shop/useMyOrdersAccountInfoProps';
 
 import '@/MyOrders.css'
 
@@ -16,35 +17,12 @@ const MyOrders = () =>
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const { page } = useParams();
-
   const dispatch = useDispatch();
-
   const ordersThisPage = useSelector(state => state.myOrders.value);
-
-  let full_name;
-  let order_email;
-
-  const guest = useSelector(state => state.login.guest);
-  const guestID = !nullOrUndefined(guest) ? guest.id : null;
-  full_name = !nullOrUndefined(guest) ? guest.fullname : null;
-  order_email = !nullOrUndefined(guest) ? guest.email : order_email;
-
   const loginValue = useSelector(state => state.login.user);
-  const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
-  full_name = !nullOrUndefined(loginValue) ? loginValue.fullname : full_name;
-  order_email = !nullOrUndefined(loginValue) ? loginValue.email : order_email;
-  
-  const fullname = full_name;
-  const email = !nullOrUndefined(order_email) ? order_email : '';
-
+  const { fullname, email, accType, idval, myUserId, guestID, devMode } = useMyOrdersAccountInfoProps();
   const emptyMsgText1 = (myUserId) ? "(Logged in as " + loginValue.fullname + ")" : "(None at the moment)";
   const emptyMsgText2 = (myUserId) ? "You currently have no orders" : '';
-
-  // "Guest" | "User" | null
-  const accType = !nullOrUndefined(guestID) ? "Guest" : (!nullOrUndefined(loginValue) ? loginValue.loginType : null );
-  const idval   = !nullOrUndefined(guestID) ? guestID : (!nullOrUndefined(myUserId)   ? myUserId : null) ;
-
-  const devMode = (import.meta.env.DEV); // true if environment is development
 
   useEffect(() => {
     if (!nullOrUndefined(ordersThisPage) && Array.isArray(ordersThisPage)) {
