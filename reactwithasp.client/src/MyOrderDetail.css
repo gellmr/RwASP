@@ -3,6 +3,12 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
+.myOrderDetailLines {
+  /*border: 3px dashed red;*/
+  height: 1160px;
+  margin-top:10px;
+}
+
 #myOrdDetailPage {
   /*color: coral !important;*/
   font-size: 11px;

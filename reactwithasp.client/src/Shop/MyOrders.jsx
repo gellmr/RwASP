@@ -7,6 +7,7 @@ import displayDate from '@/Shop/displayDate.jsx';
 import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx';
 import { nullOrUndefined, oneLineAddress } from '@/MgUtility.js';
 import PaginationLinks from "@/Shop/PaginationLinks";
+import MyOrdersShowAccountInfo from '@/Shop/MyOrdersShowAccountInfo.jsx';
 
 import '@/MyOrders.css'
 
@@ -184,55 +185,12 @@ const MyOrders = () =>
     (ordersThisPage.length === 0) ? noOrdersMarkup() : mapOrders(ordersThisPage)
   )));
 
-  const devShowAccountId = function () {
-    return (
-      <Col xs={12} className="myOrdRow">
-        <Row>
-          <Col xs={4} sm={3} className="">{accType} ID:</Col>
-          <Col xs={8} sm={9} className="guid">{idval}</Col>
-        </Row>
-      </Col>
-    );
-  }
-
   const accountInfo = function () {
     if (!ordersThisPage || ordersThisPage.length === 0) {
       return (<></>);
     }
     return (
-      <Col xs={12}>
-        <div className="myOrdersRect myOrdersHeadInfo">
-          <Row>
-            <Col xs={12}>
-
-              <Col xs={12} className="myOrdRow">
-                <Row>
-                  <Col xs={4} sm={3} className="">Account Type:</Col>
-                  <Col xs={8} sm={9} className="">{accType}</Col>
-                </Row>
-              </Col>
-
-              {devMode && devShowAccountId()}
-
-              <Col xs={12} className="myOrdRow" style={{}}>
-                <Row>
-                  <Col xs={4} sm={3} className="">Full Name:</Col>
-                  <Col xs={8} sm={9} className="">{fullname}</Col>
-                </Row>
-              </Col>
-
-              <Col xs={12} className="myOrdRow" style={{ marginBottom: 15 }}>
-                <Row>
-                  <Col xs={4} sm={3} className="">Email:</Col>
-                  <Col xs={8} sm={9} className="">{email}</Col>
-                </Row>
-              </Col>
-
-            </Col>
-          </Row>
-
-        </div>
-      </Col>
+      <MyOrdersShowAccountInfo accType={accType} idval={idval} fullname={fullname} email={email} devMode={devMode} />
     );
   }
 

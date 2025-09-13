@@ -8,6 +8,7 @@ import displayDate from '@/Shop/displayDate.jsx'
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import BackLink from "@/Shop/BackLink";
 import { nullOrUndefined, oneLineAddress } from '@/MgUtility.js';
+import MyOrdersShowAccountInfo from '@/Shop/MyOrdersShowAccountInfo.jsx';
 
 import '@/MyOrderDetail.css'
 
@@ -21,6 +22,12 @@ function MyOrderDetail()
   let bill = !nullOrUndefined(ord.billingAddress) ? ord.billingAddress : oneLineAddress(ord.billAddress);
   const billAddy = (bill === shipAddy) ? "(same as shipping address)" : bill;
 
+  const devMode = (import.meta.env.DEV); // true if environment is development
+  const accType = "refactor";
+  const idval = "refactor";
+  const fullname = "refactor";
+  const email = "refactor";
+
   const noOrderMarkup = () => (
     <>
       <h5 style={{ marginTop: 12 }}>(No Order ID)</h5>
@@ -29,6 +36,12 @@ function MyOrderDetail()
       </div>
     </>
   );
+
+  const accountInfo = function (){
+    return (
+      <MyOrdersShowAccountInfo accType={accType} idval={idval} fullname={fullname} email={email} devMode={devMode} />
+    );
+  }
 
   const markup = (ord === undefined) ? noOrderMarkup() : (
     <Col xs={12} key={ord.id}>
@@ -173,11 +186,14 @@ function MyOrderDetail()
   return (
     <>
       <Row id="myOrdDetailPage">
-        <Col xs={12}>
+        <Col xs={12} style={{marginBottom:6}}>
           <AdminTitleBar titleText={"Order #" + orderid} construction={false} />
         </Col>
-        <BackLink textPos="left" />
-        {markup}
+        {accountInfo()}
+        <div className="myOrderDetailLines">
+          <BackLink textPos="left" />
+          {markup}
+        </div>
       </Row>
     </>
   );
