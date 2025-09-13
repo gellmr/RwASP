@@ -3,6 +3,11 @@
 /* =============     SMALLER THAN xs      ================= */
 /* ======================================================== */
 
+.myOrdersLines{
+  /*border:3px dashed red;*/
+  height:1160px;
+}
+
 .myOrdersRect {
   margin-top: 10px;
   border-radius: 10px;

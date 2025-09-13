@@ -54,8 +54,8 @@ createRoot(document.getElementById('root')).render(
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/:page?" element={<Shop />} />
             <Route path="/category/:category/:page?" element={<Shop />} />
-            <Route path="/myorders" element={<MyOrders />} />
-            <Route path="/myorders/:orderid" element={<MyOrderDetail />} />
+            <Route path="/myorders/:page?" element={<MyOrders />} />
+            <Route path="/myorder/:orderid" element={<MyOrderDetail />} />
           </Route>
 
           <Route element={<NoShopLayout />}>

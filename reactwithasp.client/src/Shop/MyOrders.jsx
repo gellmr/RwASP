@@ -1,11 +1,12 @@
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { NavLink } from "react-router";
+import { NavLink, useParams } from "react-router";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import displayDate from '@/Shop/displayDate.jsx';
 import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx';
 import { nullOrUndefined, oneLineAddress } from '@/MgUtility.js';
+import PaginationLinks from "@/Shop/PaginationLinks";
 
 import '@/MyOrders.css'
 
@@ -13,6 +14,7 @@ const MyOrders = () =>
 {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { page } = useParams();
 
   const dispatch = useDispatch();
 
@@ -138,7 +140,7 @@ const MyOrders = () =>
                 <Row>
                   <Col xs={4} sm={3} className=""></Col>
                   <Col xs={8} sm={9} style={{textAlign:'right', paddingBottom:10, paddingRight:25}}>
-                    <NavLink to={"/myorders/" + ord.id} className="btn btn-light myOrdViewDetBtn" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
+                    <NavLink to={"/myorder/" + ord.id} className="btn btn-light myOrdViewDetBtn" style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
                       View Details <i className="bi bi-arrow-right-short"></i>
                     </NavLink>
                   </Col>
@@ -152,13 +154,35 @@ const MyOrders = () =>
     );
   }
 
+  const mapOrders = function (ordersThisPage) {
+    const ordersPerPage = 3;
+    const ordersCount = ordersThisPage.length;
+    const wholePages = Math.floor(ordersCount / ordersPerPage); // eg 10 / 3 == 3
+    const extraLines = ordersCount % ordersPerPage;             // eg 10 % 3 == 1
+    const extraPage = (extraLines == 0 ? 0 : 1);                // eg 1 if there are extraLines
+    const numPages = wholePages + extraPage;
+    const pageIntP = nullOrUndefined(page) ? 1 : page;
+    const myRoute = "/myorders/";
+    const startIndex = (pageIntP - 1) * ordersPerPage;
+    const endIndex = startIndex + ordersPerPage;
+    const ordersToDisplay = ordersThisPage.slice(startIndex, endIndex); // Get only the orders for the current page
+    return (
+      <div className="myOrdersLines" style={{ marginTop: 10 }}>
+        <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
+        <div style={{ marginBottom: 10 }}>
+          {ordersThisPage && ordersToDisplay.map(ord => orderRow(ord))}
+        </div>
+        <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
+      </div>
+    );
+  }
+
   const rowsMarkup =
     (isLoading) ? <div className="fetchErr">Loading...</div> : (
     (error) ? <div className="fetchErr">Error: {error.message}</div> : (
     (!ordersThisPage) ? <div className="fetchErr">( Could not find any Orders! )</div> : (
-    (ordersThisPage.length === 0) ? noOrdersMarkup() : (
-      ordersThisPage && ordersThisPage.map(ord => orderRow(ord))
-  ))));
+    (ordersThisPage.length === 0) ? noOrdersMarkup() : mapOrders(ordersThisPage)
+  )));
 
   const devShowAccountId = function () {
     return (
