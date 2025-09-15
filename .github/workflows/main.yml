@@ -19,6 +19,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3 # This action clones the repo into the runner vm.
 
+    # Frontend build...
+    ###################
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
@@ -26,6 +28,23 @@ jobs:
         cache: 'npm'
         cache-dependency-path: ${{ env.CLIENT_PATH }}\package-lock.json
 
+    - name: Install and Build Frontend (Vite)
+      working-directory: ${{ env.CLIENT_PATH }}
+      run: |
+        npm install
+        npm run build
+      env:
+        VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+        VITE_CSRF_HEADER_NAME: ${{ secrets.VITE_CSRF_HEADER_NAME }}
+
+    - name: Create Marker File
+      shell: pwsh
+      run: |
+        # Create a marker file in the Vite build output directory
+        Set-Content -Path "${{ github.workspace }}\${{ env.CLIENT_PATH }}\dist\build_marker.txt" -Value "Vite build completed successfully"
+
+    # Server build...
+    #################
     # This action sets up the .NET Core SDK in the runner vm environment.
     # Specify what version to install.
     - name: Setup .NET Core SDK
@@ -46,16 +65,6 @@ jobs:
         # Create appsettings.Production.json
         '${{ secrets.PRODUCTION_APPSETTINGS_JSON }}' | Out-File -FilePath "ReactWithASP.Server/appsettings.Production.json" -Encoding utf8
 
-    - name: Install and Build Frontend (Vite)
-      working-directory: ${{ env.CLIENT_PATH }}
-      run: |
-        echo "Environment Variable Passed: $env:VITE_GOOGLE_CLIENT_ID"
-        npm install
-        npm run build
-      env:
-        VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
-        VITE_CSRF_HEADER_NAME: ${{ secrets.VITE_CSRF_HEADER_NAME }}
-
     # Compiles the code, and collects all necessary files into a single folder.
     # Output to a folder within the runner's C drive so a later step can find the files.
     - name: Build and Publish Backend (.NET)
@@ -63,6 +72,17 @@ jobs:
       run: |
         dotnet publish ${{ env.PROJECT_PATH }} --configuration Release -o ${{ env.PUBLISH_DIR }} /p:WebPublishMethod=FileSystem /p:PublishProvider=MSDeploy /p:NoClientBuild=true
 
+    - name: Check for Marker File
+      shell: pwsh
+      run: |
+        # Test-Path checks for the existence of a file or folder
+        if (-Not (Test-Path "${{ github.workspace }}\${{ env.PUBLISH_DIR }}\wwwroot\build_marker.txt")) {
+          Write-Host "##vso[task.logissue type=error]Marker file not found in wwwroot! The server build may have failed to include client assets."
+          exit 1
+        }
+
+    # Deploy...
+    ###########
     - name: Deploy to IIS using msdeploy.exe
       shell: pwsh
       run: |
