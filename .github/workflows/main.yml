@@ -6,7 +6,9 @@ on:
       - main
 
 env:
-  PROJECT_PATH: 'ReactWithASP.Server\ReactWithASP.Server.csproj' # Your project's .csproj file
+  PROJECT_PATH: 'ReactWithASP.Server\ReactWithASP.Server.csproj'
+  PUBLISH_DIR:  'ReactWithASP.Server\bin\Release\net8.0\publish'
+  CLIENT_PATH:  'reactwithasp.client'
 
 jobs:
   build_and_deploy:
@@ -15,17 +17,24 @@ jobs:
     # Here we specify the GitHub actions which we want to execute in the runner environment.
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2 # This action clones the repo into the runner vm.
+      uses: actions/checkout@v3 # This action clones the repo into the runner vm.
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: ${{ env.CLIENT_PATH }}\package-lock.json
 
     # This action sets up the .NET Core SDK in the runner vm environment.
     # Specify what version to install.
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.x'
 
     # Command that fetches all the NuGet packages.
-    - name: Restore dependencies
+    - name: Restore .NET dependencies
       run: dotnet restore ${{ env.PROJECT_PATH }}
 
     - name: Create appsettings.json files
@@ -37,18 +46,27 @@ jobs:
         # Create appsettings.Production.json
         '${{ secrets.PRODUCTION_APPSETTINGS_JSON }}' | Out-File -FilePath "ReactWithASP.Server/appsettings.Production.json" -Encoding utf8
 
+    - name: Install and Build Frontend (Vite)
+      working-directory: ${{ env.CLIENT_PATH }}
+      run: |
+        npm install
+        npm run build
+      env:
+        VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+        VITE_CSRF_HEADER_NAME: ${{ secrets.VITE_CSRF_HEADER_NAME }}
+
     # Compiles the code, and collects all necessary files into a single folder.
     # Output to a folder within the runner's C drive so a later step can find the files.
-    - name: Build and Publish
+    - name: Build and Publish Backend (.NET)
       shell: pwsh
       run: |
-        dotnet publish ${{ env.PROJECT_PATH }} --configuration Release /p:WebPublishMethod=FileSystem /p:PublishProvider=MSDeploy
+        dotnet publish ${{ env.PROJECT_PATH }} --configuration Release -o ${{ env.PUBLISH_DIR }} /p:WebPublishMethod=FileSystem /p:PublishProvider=MSDeploy /p:NoClientBuild=true
 
     - name: Deploy to IIS using msdeploy.exe
       shell: pwsh
       run: |
         $deploycmd   = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
-        $publishPath = "$env:GITHUB_WORKSPACE\ReactWithASP.Server\bin\Release\net8.0\publish"
+        $publishPath = "${{ github.workspace }}\${{ env.PUBLISH_DIR }}"
         $siteName    = "${{ secrets.IIS_SITE_NAME_PROP }}"
         $destFolder  = "${{ secrets.WEBDEPLOY_DESTFOLDER }}"
         $compName    = "https://${{ secrets.WEBDEPLOY_SERVER }}/msdeploy.axd?site=${{ secrets.IIS_SITE_NAME_PROP }}"
