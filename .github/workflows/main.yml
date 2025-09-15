@@ -9,6 +9,7 @@ env:
   PROJECT_PATH: 'ReactWithASP.Server\ReactWithASP.Server.csproj'
   PUBLISH_DIR:  'ReactWithASP.Server\bin\Release\net8.0\publish'
   CLIENT_PATH:  'reactwithasp.client'
+  SERVER_WWWROOT_PATH: 'ReactWithASP.Server\wwwroot'
 
 jobs:
   build_and_deploy:
@@ -64,6 +65,12 @@ jobs:
 
         # Create appsettings.Production.json
         '${{ secrets.PRODUCTION_APPSETTINGS_JSON }}' | Out-File -FilePath "ReactWithASP.Server/appsettings.Production.json" -Encoding utf8
+
+    - name: Copy Frontend Assets
+      shell: pwsh
+      run: |
+        # Copy the contents of the Vite build folder into the server's wwwroot
+        Copy-Item -Path "${{ env.CLIENT_PATH }}\dist\*" -Destination "${{ env.SERVER_WWWROOT_PATH }}" -Recurse -Force
 
     # Compiles the code, and collects all necessary files into a single folder.
     # Output to a folder within the runner's C drive so a later step can find the files.
