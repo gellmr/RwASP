@@ -49,6 +49,7 @@ jobs:
     - name: Install and Build Frontend (Vite)
       working-directory: ${{ env.CLIENT_PATH }}
       run: |
+        echo "Environment Variable Passed: $env:VITE_GOOGLE_CLIENT_ID"
         npm install
         npm run build
       env:
