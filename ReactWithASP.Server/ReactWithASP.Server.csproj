@@ -54,6 +54,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <!-- In release mode this block is ignored. Having a project reference will cause the two projects to both build, when we are running in development. We want to disable this when running in CI so that the server build will not overwrite the frontend built that is performed separately by GitHub action steps. The frontend build needs to inject values from environment vars which are not present during the server build. If we allow both to run then the server build will produce a second, conflicting frontend build which is missing the env values.-->
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <ProjectReference Include="..\reactwithasp.client\reactwithasp.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

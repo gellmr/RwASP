@@ -66,9 +66,6 @@ createRoot(document.getElementById('root')).render(
     </Provider>
   </GoogleOAuthProvider>
 
-  <div style={{ border: '3px dashed red' }}>VITE_GOOGLE_CLIENT_ID:
-    <span>{import.meta.env.VITE_GOOGLE_CLIENT_ID}</span>
-  </div>
   </PersistGate>
   </Provider>
   //</StrictMode>
