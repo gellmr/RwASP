@@ -69,6 +69,14 @@ jobs:
     - name: Copy Frontend Assets
       shell: pwsh
       run: |
+        # Create the destination directory if it doesn't exist
+        if (-Not (Test-Path "${{ env.SERVER_WWWROOT_PATH }}")) {
+          New-Item -Path "${{ env.SERVER_WWWROOT_PATH }}" -ItemType Directory
+        }
+
+        # Remove all existing files and subdirectories from wwwroot
+        Remove-Item -Path "${{ env.SERVER_WWWROOT_PATH }}\*" -Recurse -Force
+
         # Copy the contents of the Vite build folder into the server's wwwroot
         Copy-Item -Path "${{ env.CLIENT_PATH }}\dist\*" -Destination "${{ env.SERVER_WWWROOT_PATH }}" -Recurse -Force
 
