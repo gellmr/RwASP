@@ -42,7 +42,7 @@ jobs:
       shell: pwsh
       run: |
         # Create a marker file in the Vite build output directory
-        Set-Content -Path "${{ github.workspace }}\${{ env.CLIENT_PATH }}\dist\build_marker.txt" -Value "Vite build completed successfully. VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}"
+        Set-Content -Path "${{ github.workspace }}\${{ env.CLIENT_PATH }}\dist\build_marker.txt" -Value "Vite build completed successfully"
 
     # Server build...
     #################
