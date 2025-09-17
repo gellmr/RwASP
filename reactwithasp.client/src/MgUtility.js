@@ -36,4 +36,11 @@ function oneLineAddress(address) {
   );
 }
 
-export { nullOrUndefined, isNullOrEmpty, oneLineAddress }
+// See if response.data contains the given error message string.
+function responseError(axiosError, messageString) {
+  if (axiosError.response && axiosError.response.data == messageString) {
+    return true;
+  }
+}
+
+export { nullOrUndefined, isNullOrEmpty, oneLineAddress, responseError }
