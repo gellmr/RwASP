@@ -5,7 +5,7 @@ function LogInButton() {
   return (
     <>
       <NavLink to="/admin" className="mgNavLinkBtn" style={{ textWrapMode:"nowrap" }}>
-        Admin Login
+        Admin <i className="bi bi-gear-fill"></i>
       </NavLink>
     </>
   );

@@ -77,7 +77,7 @@ function AdminLogin()
 
   const pageMarkup = (
     <>
-      <h4>Admin Login</h4>
+      <h4>Admin Console</h4>
       {/* <ConstructionBanner /> */}
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Form className="mg-admin-login-form">
