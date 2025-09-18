@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 
 import "bootstrap/dist/css/bootstrap.css";
 
-import MgNavBar from "@/Nav/SiteNavBar";
+import SiteNavBar from "@/Nav/SiteNavBar";
 import CurrUserNavLink from "@/Nav/Links/CurrUserNavLink";
 import AdminLink from "@/Nav/Links/AdminLink";
 import ShopButton from "@/Nav/Links/ShopButton";
@@ -27,12 +27,12 @@ const AdminLayout = () =>
     <>
       <Container fluid id="adminLayout" className="adminBgBase adminBg1">
         <Row>
-          <MgNavBar showCart={false} useFluid={true} brandText="Admin Console" linkTo="/admin/orders">
+          <SiteNavBar showCart={false} useFluid={true} brandText="Admin Console" linkTo="/admin/orders">
             <ShopButton withBackArrow={showBackArrow} />
             <VL />
             <AdminLink />
             <CurrUserNavLink />
-          </MgNavBar>
+          </SiteNavBar>
         </Row>
 
         <Outlet />

@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col'
 
 import "bootstrap/dist/css/bootstrap.css";
 
-import MgNavBar from "@/Nav/SiteNavBar";
+import SiteNavBar from "@/Nav/SiteNavBar";
 import CurrUserNavLink from "@/Nav/Links/CurrUserNavLink";
 import AdminLink from "@/Nav/Links/AdminLink";
 import ShopButton from "@/Nav/Links/ShopButton";
@@ -19,12 +19,12 @@ const NoShopLayout = () => {
     <>
       <Container id="noShopLayout" className="soccerBaseBg" style={{ border: '' }}>
         <Row>
-          <MgNavBar>
+          <SiteNavBar>
             <ShopButton withBackArrow={false} />
             <VL />
             <AdminLink />
             <CurrUserNavLink />
-          </MgNavBar>
+          </SiteNavBar>
         </Row>
 
         <Row>

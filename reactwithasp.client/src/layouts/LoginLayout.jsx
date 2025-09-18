@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 
 import "bootstrap/dist/css/bootstrap.css";
 
-import MgNavBar from "@/Nav/SiteNavBar";
+import SiteNavBar from "@/Nav/SiteNavBar";
 import CurrUserNavLink from "@/Nav/Links/CurrUserNavLink";
 import AdminLink from "@/Nav/Links/AdminLink";
 import ShopButton from "@/Nav/Links/ShopButton";
@@ -25,12 +25,12 @@ const LoginLayout = () =>
     <>
       <Container id="loginLayout" style={{ border: '' }}>
         <Row>
-          <MgNavBar showCart={false}>
+          <SiteNavBar showCart={false}>
             <ShopButton withBackArrow={showBackArrow} />
             <VL />
             <AdminLink />
             <CurrUserNavLink />
-          </MgNavBar>
+          </SiteNavBar>
         </Row>
 
         <Row>
