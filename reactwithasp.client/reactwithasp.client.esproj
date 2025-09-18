@@ -16,7 +16,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\features\inStock\" />
-    <Folder Include="src\CurrUser\" />
     <Folder Include="src\features\myOrders\" />
     <Folder Include="src\features\myOrder\" />
   </ItemGroup>

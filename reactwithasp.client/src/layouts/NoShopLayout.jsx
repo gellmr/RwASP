@@ -6,12 +6,12 @@ import Col from 'react-bootstrap/Col'
 
 import "bootstrap/dist/css/bootstrap.css";
 
-import MgNavBar from "@/main/MgNavBar";
-import CategoriesMenu from "@/Shop/CategoriesMenu";
-import ShopButton from "@/Shop/ShopButton";
-import AdminLink from "@/Admin/AdminLink";
-import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
-import VL from "@/Shop/VL";
+import MgNavBar from "@/Nav/SiteNavBar";
+import CurrUserNavLink from "@/Nav/Links/CurrUserNavLink";
+import AdminLink from "@/Nav/Links/AdminLink";
+import ShopButton from "@/Nav/Links/ShopButton";
+import VL from "@/Nav/Links/VL";
+
 import Footer from "@/Shop/Footer";
 
 const NoShopLayout = () => {

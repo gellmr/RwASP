@@ -4,9 +4,9 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from "react-router";
-import CartBtn from "@/Shop/CartBtn";
+import CartBtn from "@/Nav/Links/CartBtn";
 
-const MgNavBar = ({ children, showCart=true, useFluid=false, brandText="SPORTS STORE", linkTo="/" }) => {
+const SiteNavBar = ({ children, showCart=true, useFluid=false, brandText="SPORTS STORE", linkTo="/" }) => {
   const CartButtonMarkup = showCart && <CartBtn isSmall={true} />;
   return (
     <>
@@ -29,4 +29,4 @@ const MgNavBar = ({ children, showCart=true, useFluid=false, brandText="SPORTS S
   );
 }
 
-export default MgNavBar;
+export default SiteNavBar;

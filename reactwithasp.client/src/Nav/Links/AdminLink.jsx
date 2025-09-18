@@ -1,10 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
-import { NavLink } from "react-router";
-import VL from "@/Shop/VL";
 import { useLocation } from 'react-router';
-import CartBtn from "@/Shop/CartBtn";
 import { useState, useEffect } from 'react';
+import { NavLink } from "react-router";
+import CartBtn from "@/Nav/Links/CartBtn";
+import VL from "@/Nav/Links/VL";
+
 
 const AdminLink = () =>
 {

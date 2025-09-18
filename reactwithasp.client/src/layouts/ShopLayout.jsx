@@ -12,19 +12,20 @@ import Col from 'react-bootstrap/Col'
 
 import "bootstrap/dist/css/bootstrap.css";
 
-import MgNavBar from "@/main/MgNavBar";
 import CategoriesMenu from "@/Shop/CategoriesMenu";
-import CurrUserNavLink from "@/CurrUser/CurrUserNavLink";
-import AdminLink from '@/Admin/AdminLink';
 import EnvName from "@/Shop/EnvName";
-import ShopButton from "@/Shop/ShopButton";
 import Footer from "@/Shop/Footer";
-import VL from "@/Shop/VL";
 import { useParams } from 'react-router';
 import { useLocation } from 'react-router';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
 import { nullOrUndefined } from '@/MgUtility.js';
+
+import SiteNavBar from "@/Nav/SiteNavBar";
+import ShopButton from "@/Nav/Links/ShopButton";
+import CurrUserNavLink from "@/Nav/Links/CurrUserNavLink";
+import AdminLink from '@/Nav/Links/AdminLink';
+import VL from "@/Nav/Links/VL";
 
 const ShopLayout = () =>
 {
@@ -129,12 +130,12 @@ const ShopLayout = () =>
     <div >
       <Container id="shopLayout" className={backCss} style={{ border: '' }}>
         <Row>
-          <MgNavBar>
+          <SiteNavBar>
             <ShopButton withBackArrow={false} />
             <VL />
             <AdminLink />
             <CurrUserNavLink />
-          </MgNavBar>
+          </SiteNavBar>
         </Row>
 
         <Row className="shopMain">

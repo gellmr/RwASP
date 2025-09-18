@@ -1,5 +1,5 @@
-import LogInButton from "@/Shop/LogInButton";
-import LogOutButton from "@/Shop/LogOutButton";
+import LogInButton from "@/Nav/Links/LogInButton";
+import LogOutButton from "@/Nav/Links/LogOutButton";
 import { useSelector } from 'react-redux'
 
 function CurrUserNavLink()
