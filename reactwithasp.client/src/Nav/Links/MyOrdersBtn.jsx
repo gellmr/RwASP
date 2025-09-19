@@ -1,13 +1,16 @@
 import ResponsiveLink from '@/Nav/Links/ResponsiveLink';
 
-function LogInButton()
-{
+function MyOrdersBtn({ orderCount }) {
+  
   const tinyMarkup = () => (
-    <>Admin</>
+    <>Orders{orderCount}</>
   );
 
   const markup = () => (
-    <>Admin&nbsp;Console</>
+    <>
+      {/* &nbsp;<i className="bi bi-box-seam"></i> */}
+      My&nbsp;Orders{orderCount}
+    </>
   );
 
   return (
@@ -15,8 +18,8 @@ function LogInButton()
       tinyMarkup={markup}
       smallMarkup={tinyMarkup}
       markup={markup}
-      toRoute="/admin"
+      toRoute="/myorders"
     />
   );
 }
-export default LogInButton;
+export default MyOrdersBtn;

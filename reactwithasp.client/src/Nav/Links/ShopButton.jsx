@@ -1,27 +1,35 @@
-import { NavLink } from "react-router";
+import ResponsiveLink from '@/Nav/Links/ResponsiveLink';
 
-function ShopButton({ withBackArrow })
+function ShopButton({ withBackArrow=false})
 {
-  const backToShopMarkup = function (text) {
-    return (
-      <>
-        <span className="mgAdminNavHideMD">Back to</span>&nbsp;Shop
-      </>
-    );
-  }
+  const iconElement = withBackArrow ? <>
+    <i className="bi bi-arrow-left-short"></i>&nbsp;
+  </> : <></>;
+  const text = "Shop";
+  const longText = withBackArrow ? <>Back&nbsp;to&nbsp;Shop</> : "Shop";
+  const tinyContent  = <>{iconElement}{longText}</>;
+  const smallContent = <>{iconElement}{text}</>;
+  const content      = <>{iconElement}{longText}</>;
 
-  const iconElement = withBackArrow ? <i className="bi bi-arrow-left-short"></i> : <></>;
-  const linkText = withBackArrow ? backToShopMarkup() : "Shop";
+  const tinyMarkup = () => (
+    <>{tinyContent}</>
+  );
+
+  const smallMarkup = () => (
+    <>{smallContent}</>
+  );
+
+  const markup = () => (
+    <>{content}</>
+  );
 
   return (
-    <>
-      <NavLink to="/" className="mgNavLinkBtn backToShopBtn" style={{ textWrapMode: "nowrap" }}>
-        <span style={{ minWidth:45, display: "inline-block", textAlign:"left" }}>
-          {iconElement}
-          {linkText}
-        </span>
-      </NavLink>
-    </>
+    <ResponsiveLink
+      tinyMarkup={tinyMarkup}
+      smallMarkup={smallMarkup}
+      markup={markup}
+      toRoute="/"
+    />
   );
 }
 export default ShopButton;

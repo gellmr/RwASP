@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import ResponsiveLink from '@/Nav/Links/ResponsiveLink';
 import { useNavigate } from "react-router";
 import { useDispatch } from 'react-redux'
 import { setLogin } from '@/features/login/loginSlice.jsx'
@@ -26,13 +26,22 @@ function LogOutButton()
     });
   };
 
+  const tinyMarkup = () => (
+    <>Logout</>
+  );
+
+  const markup = () => (
+    <>Logout&nbsp;Admin</>
+  );
+
   return (
-    <>
-      <NavLink to="/admin-logout" className="mgNavLinkBtn mgAdminNavLinks" onClick={logoutClick} style={{ textWrapMode:"nowrap" }}>
-        Logout
-        <span className="mgAdminNavHideMD">&nbsp;Admin</span>
-      </NavLink>
-    </>
+    <ResponsiveLink
+      clickCallBack={logoutClick}
+      tinyMarkup={markup}
+      smallMarkup={tinyMarkup}
+      markup={markup}
+      toRoute="/admin-logout"
+    />
   );
 }
 export default LogOutButton;

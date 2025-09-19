@@ -1,0 +1,76 @@
+
+
+.useResponsiveLink.xs {
+  /*color: red;*/
+}
+.useResponsiveLink.sm {
+  /*color: yellow;*/
+}
+.useResponsiveLink.md {
+  /*color: lime;*/
+}
+
+.useResponsiveLink
+{
+  text-decoration:none;
+  text-wrap-mode:nowrap;
+  font-size: 12px;
+  padding:12px;
+}
+.useResponsiveLink.active {
+  color: #ffd298
+}
+
+.hideInlineBlockXXs{
+  display:none;
+}
+
+/* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
+/* ===== Custom Breakpoint - hideInlineBlockXXs ==== */
+/* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
+
+@media (min-width: 350px) {
+  .hideInlineBlockXXs {
+    display: inline-block;
+  }
+}
+
+/* ================================================= */
+/* =========             SMALL            ========== */
+/* ================================================= */
+
+@media (min-width: 576px) {
+  .useResponsiveLink {
+    font-size: 12px;
+  }
+}
+
+/* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
+/* ======= Custom Breakpoint - MD-INERMEDIATE ====== */
+/* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
+
+@media (min-width: 708px) {
+  .useResponsiveLink {
+    font-size: 12px;
+  }
+}
+
+/* ================================================= */
+/* =========            MEDIUM            ========== */
+/* ================================================= */
+
+@media (min-width: 768px) {
+  .useResponsiveLink {
+    font-size: 13px;
+  }
+}
+
+/* ================================================= */
+/* =========             LARGE            ========== */
+/* ================================================= */
+
+@media (min-width: 992px) {
+  .useResponsiveLink {
+    font-size: 16px;
+  }
+}

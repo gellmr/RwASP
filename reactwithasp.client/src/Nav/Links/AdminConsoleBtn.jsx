@@ -2,7 +2,7 @@ import LogInButton from "@/Nav/Links/LogInButton";
 import LogOutButton from "@/Nav/Links/LogOutButton";
 import { useSelector } from 'react-redux'
 
-function CurrUserNavLink()
+function AdminConsoleBtn()
 {
   const login = useSelector(state => state.login.user);
   const isLoggedIn = (login !== null);
@@ -18,9 +18,8 @@ function CurrUserNavLink()
 
   return (
     <div className="mgCurrUserNav">
-      {/*<a className="mgNavLinkBtn">Current&nbsp;User</a>*/}
       {loginOutBtn()}
     </div>
   );
 }
-export default CurrUserNavLink;
+export default AdminConsoleBtn;

@@ -1,7 +1,7 @@
 import ResponsiveLink from '@/Nav/Links/ResponsiveLink';
 
-function LogInButton()
-{
+function AdminPagesBtn({ orderCount }) {
+
   const tinyMarkup = () => (
     <>Admin</>
   );
@@ -15,8 +15,8 @@ function LogInButton()
       tinyMarkup={markup}
       smallMarkup={tinyMarkup}
       markup={markup}
-      toRoute="/admin"
+      toRoute="/admin/orders/1"
     />
   );
 }
-export default LogInButton;
+export default AdminPagesBtn;

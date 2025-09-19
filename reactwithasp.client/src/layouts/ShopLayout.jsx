@@ -20,12 +20,7 @@ import { useLocation } from 'react-router';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import { fetchMyOrders } from '@/features/myOrders/myOrdersSlice.jsx'
 import { nullOrUndefined } from '@/MgUtility.js';
-
 import SiteNavBar from "@/Nav/SiteNavBar";
-import ShopButton from "@/Nav/Links/ShopButton";
-import CurrUserNavLink from "@/Nav/Links/CurrUserNavLink";
-import AdminLink from '@/Nav/Links/AdminLink';
-import VL from "@/Nav/Links/VL";
 
 const ShopLayout = () =>
 {
@@ -130,12 +125,7 @@ const ShopLayout = () =>
     <div >
       <Container id="shopLayout" className={backCss} style={{ border: '' }}>
         <Row>
-          <SiteNavBar>
-            <ShopButton withBackArrow={false} />
-            <VL />
-            <AdminLink />
-            <CurrUserNavLink />
-          </SiteNavBar>
+          <SiteNavBar />
         </Row>
 
         <Row className="shopMain">
