@@ -9,7 +9,7 @@ function SmallCartBtn() {
   const s = cartTotalItems == 1 ? "" : "s";
 
   const markup = () => (
-    <div style={{ color: "", marginRight:10}}>
+    <div style={{ color: ""}}>
       <i className="bi bi-cart3" style={{ marginRight: 4, display: "inline-block"}}></i>
       Cart:&nbsp;{cartTotalItems}<HideInlineBlockXXs>&nbsp;Item{s}</HideInlineBlockXXs>
     </div>

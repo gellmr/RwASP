@@ -7,6 +7,7 @@ function ShopButton({ withBackArrow=false})
   </> : <></>;
   const text = "Shop";
   const longText = withBackArrow ? <>Back&nbsp;to&nbsp;Shop</> : "Shop";
+
   const tinyContent  = <>{iconElement}{longText}</>;
   const smallContent = <>{iconElement}{text}</>;
   const content      = <>{iconElement}{longText}</>;

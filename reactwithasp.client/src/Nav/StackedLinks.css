@@ -1,0 +1,66 @@
+.stackedLinks .vl {
+  border-left: 1px solid rgb(65 93 135);
+  display: inline-block;
+  margin-left: 3px;
+  width: 2px;
+  display: none;
+}
+.stackedLinks {
+  /*border: 1px dashed magenta;*/
+}
+.stackedLink {
+  display: block;
+  text-align:left;
+}
+.stackedLink {
+  display: block;
+}
+.stackedLink.linkB {
+  display: none;
+}
+
+/* \/\/\/\/\/\/\/\/\/\/\/\/\ */
+@media (min-width: 440px) {
+  .stackedLinks {
+    /*border: 1px dashed cyan;*/
+  }
+  .stackedLink.linkC {
+    display: none;
+  }
+}
+
+/* \/\/\/\/\/\/\/\/\/\/\/\/\ */
+@media (min-width: 505px) {
+  .stackedLinks {
+    /*border: 1px dashed lime;*/
+  }
+  .stackedLink.linkA {
+    display: none;
+  }
+}
+
+/* ========= SMALL ========== */
+@media (min-width: 576px) {
+  .stackedLinks {
+    /*border: 1px dashed white;*/
+  }
+  .stackedLink {
+    display: inline-block;
+  }
+  .stackedLinks .vl {
+    display: inline-block;
+  }
+
+  .stackedLink.linkA {
+    display: inline-block;
+  }
+  .stackedLink.linkB {
+    display: inline-block;
+  }
+  .stackedLink.linkC {
+    display: inline-block;
+  }
+  .stackedLink.linkD {
+    display: inline-block;
+  }
+}

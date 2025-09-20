@@ -16,6 +16,8 @@
   text-wrap-mode:nowrap;
   font-size: 12px;
   padding:12px;
+  padding-left:10px;
+  padding-right:10px;
 }
 .useResponsiveLink.active {
   color: #ffd298

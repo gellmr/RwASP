@@ -1,0 +1,48 @@
+.inlineLinks .vl {
+  border-left: 1px solid rgb(65 93 135);
+  display: inline-block;
+  margin-left: 3px;
+  width: 2px;
+}
+.inlineLinks {
+  /*border: 1px dashed magenta;*/
+}
+.inlineLink{
+  display:inline-block;
+}
+.inlineLink.linkA{
+  display:none;
+}
+.inlineLink.linkC {
+  display: none;
+}
+.inlineLink.linkD {
+  display: none;
+}
+
+/* \/\/\/\/\/\/\/\/\/\/\/\/\ */
+@media (min-width: 440px) {
+  .inlineLinks {
+    /*border: 1px dashed cyan;*/
+  }
+  .inlineLink.linkC {
+    display: inline-block;
+  }
+}
+
+/* \/\/\/\/\/\/\/\/\/\/\/\/\ */
+@media (min-width: 505px) {
+  .inlineLinks {
+    /*border: 1px dashed lime;*/
+  }
+  .inlineLink.linkA {
+    display: inline-block;
+  }
+}
+
+/* ========= SMALL ========== */
+@media (min-width: 576px) {
+  .inlineLinks {
+    border: 1px dashed red;
+  }
+}

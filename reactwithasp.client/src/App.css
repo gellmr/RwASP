@@ -98,9 +98,6 @@
 
 
 
-.vl {
-  display: none;
-}
 .mg-category-menu-r.btn-group-vertical a {
   text-align: left;
   border-radius: 0px;
@@ -569,13 +566,6 @@ th, td {
   }
   .kayakBg {
     background-image: url("/bg/kayak-bg5revXsTall.jpg");
-  }
-  .vl {
-    border-left: 1px solid rgb(65 93 135);
-    display: inline-block;
-    margin-left: 3px;
-    /*background-color: darkslategrey;*/
-    width: 2px;
   }
   .mgAdminNavHideMD {
     display: none;
