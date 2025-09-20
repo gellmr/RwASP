@@ -536,6 +536,9 @@ th, td {
   background-color: #eff7ff63;
   border-radius: 10px;
 }
+.shopSearchResult {
+  min-height: 670px;
+}
 .loginErrStyle {
   color: #8d8bbe;
   font-size: 16px;

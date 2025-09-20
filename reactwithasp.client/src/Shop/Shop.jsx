@@ -107,7 +107,6 @@ function Shop()
         price={prod.price}
         category={prod.category}
         cartLineID={prod.cartLineID}>
-        {/*<span style={{ backgroundColor: "red", color: "white" }}>&nbsp;{prod.cartLineID}</span>*/}
       </InStockProductCanAdd>
     )
   )));
@@ -118,11 +117,12 @@ function Shop()
   return (
     <>
       <ProductSearchBox />
-      <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
-      {/* !inStockProdThisPage || inStockProdThisPage.length === 0 && <div className="fetchErr">( Search returned no results )</div> */}
-      {markup}
-      <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
-      {gotItems && <div style={{ marginTop: "20px" }}><ProceedCartBtn /></div>}
+      <div className="shopSearchResult">
+        <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
+        {markup}
+        <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
+        {gotItems && <div style={{ marginTop: "20px" }}><ProceedCartBtn /></div>}
+      </div>
     </>
   );
 }
