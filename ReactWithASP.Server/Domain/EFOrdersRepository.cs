@@ -104,7 +104,7 @@ namespace ReactWithASP.Server.Domain
       string? backlogSearchDate = null;
       string? backlogSearchTime = null;
       /*
-      */
+       * This prevents the other text matches from working. Disable for now.
       if (!string.IsNullOrEmpty(backlogSearch))
       {
         // Define all expected formats
@@ -132,6 +132,7 @@ namespace ReactWithASP.Server.Domain
           backlogSearchTime = parsedDateTimeOffset.ToString("HH:mm:ss");
         }
       }
+      */
       // Call the stored procedure with the new separate parameters
       IEnumerable<AdminOrderRow> rows = await context.AdminOrderRows
           .FromSqlInterpolated($"EXEC GetAdminOrders {pageNum}, {12}, {backlogSearch}, {backlogSearchDate}, {backlogSearchTime}")
