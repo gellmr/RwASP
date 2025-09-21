@@ -83,8 +83,9 @@ namespace ReactWithASP.Server.Migrations
 	          OR CAST((guest.ID) AS NVARCHAR(50)) LIKE @Search
 	          OR (CASE WHEN guest.ID IS NOT NULL THEN 'Guest' ELSE 'User' END) LIKE @Search
 	          OR (CASE WHEN guest.ID IS NOT NULL THEN (guest.Email) ELSE (usr.Email) END) LIKE @Search
-            OR CONVERT(NVARCHAR(10), ord.[OrderPlacedDate], 120) LIKE @BacklogSearchDate + '%'
-            OR CONVERT(NVARCHAR(8),  ord.[OrderPlacedDate], 108) LIKE @BacklogSearchTime + '%'
+            --OR CONVERT(NVARCHAR(10), ord.[OrderPlacedDate], 120) LIKE @BacklogSearchDate + '%'
+            --OR CONVERT(NVARCHAR(8),  ord.[OrderPlacedDate], 108) LIKE @BacklogSearchTime + '%'
+            OR CAST((ord.[OrderPlacedDate]) AS NVARCHAR(50)) LIKE @Search
             OR CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN 0 ELSE ordWPay.PaymentReceived END) AS NVARCHAR(50)) LIKE @Search
             OR CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN rpay.InvoiceTot ELSE (rpay.InvoiceTot - ordWPay.PaymentReceived) END) AS NVARCHAR(50)) LIKE @Search
 	          OR CAST((opQty.ItemsOrdered) AS NVARCHAR(50)) LIKE @Search
