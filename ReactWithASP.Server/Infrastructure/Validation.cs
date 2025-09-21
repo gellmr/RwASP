@@ -4,6 +4,11 @@ namespace ReactWithASP.Server.Infrastructure
 {
   public static class MyRegex
   {
+    // Restrictive regex for filtering the Orders Backlog
+    public static string BacklogSearchOkayRegex{ get { return
+        @"^[a-zA-Z0-9][a-zA-Z0-9\-\.\@\_\+\:\/\s]{0,249}$"
+    ;}}
+
     // String representation of a Guid
     public static string AppUserOrGuestId{ get { return
        @"^[a-zA-Z0-9]{8}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{12}$"
@@ -26,7 +31,7 @@ namespace ReactWithASP.Server.Infrastructure
     //   Validate the given string against a regex, using .NET PCRE
     //   We are only looking for malicious input.
     //   Null or empty strings are valid.
-    public static bool ValidString(this string input, string validationPattern)
+    public static bool ValidString(this string? input, string validationPattern)
     {
       if (!string.IsNullOrEmpty(input))
       {

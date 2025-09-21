@@ -6,7 +6,7 @@ namespace ReactWithASP.Server.Domain.Abstract
   public interface IOrdersRepository
   {
     public Task<bool> SaveOrderAsync(Order order);
-    Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum);
+    Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum, string? backlogSearch);
     public IEnumerable<Order>? GetUserOrders(string? idval, string? usertype);
     public Order GetOrderById(int orderid);
     public IEnumerable<Order>? GetMyOrders(string? uid, Guid? gid);

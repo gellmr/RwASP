@@ -17,13 +17,18 @@ namespace ReactWithASP.Server.Controllers.Admin
     }
 
     [HttpGet("admin-orders/{pageNum}")]    // GET "/api/admin-orders"
-    public async Task<IActionResult> GetOrders(Int32 pageNum = 1)
+    public async Task<IActionResult> GetOrders(Int32 pageNum = 1, string? bs = null)
     {
+      string error = string.Empty;
       try
       {
-        IEnumerable<AdminOrderRow> rows = await orderRepo.GetOrdersWithUsersAsync(pageNum);
+        if (bs != null){ bs = bs.Trim(); }
+        if (!(PcreValidation.ValidString(bs, MyRegex.BacklogSearchOkayRegex))){
+          return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid search string");
+        }
+        IEnumerable<AdminOrderRow> rows = await orderRepo.GetOrdersWithUsersAsync(pageNum, bs);
         if (rows == null || !rows.Any()){
-          BadRequest(new { errMessage = "Something went wrong. Records not found." });
+          return BadRequest(new { errMessage = "Something went wrong. Records not found." });
         }
         else
         {
@@ -38,10 +43,10 @@ namespace ReactWithASP.Server.Controllers.Admin
           }
         }
       }
-      catch(Exception){
-        // Handle exception
+      catch(Exception ex){
+        error = ex.Message;
       }
-      return BadRequest(new { errMessage="Something went wrong." });
+      return BadRequest(new { errMessage = "Something went wrong. " + error });
     }
   }
 }

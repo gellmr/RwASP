@@ -7,7 +7,8 @@ import inStockReducer from '@/features/inStock/inStockSlice.jsx'
 import categoriesReducer from '@/features/categories/categoriesSlice.jsx'
 import cartReducer    from '@/features/cart/cartSlice.jsx'
 import searchReducer  from '@/features/search/searchSlice.jsx'
-import adminOrdersReducer from '@/features/admin/orders/adminOrdersSlice.jsx'
+import adminOrdersReducer   from '@/features/admin/orders/adminOrdersSlice.jsx'
+import backlogSearchReducer from '@/features/admin/orders/backlogSearch.jsx'
 import adminProductsReducer from '@/features/admin/products/adminProductsSlice.jsx'
 import adminUserAccountsReducer from '@/features/admin/useraccounts/adminUserAccountsSlice.jsx'
 import adminUserOrdersReducer from '@/features/admin/userorders/adminUserOrdersSlice.jsx'
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   cart:               cartReducer,
   search:             searchReducer,
   adminOrders:        adminOrdersReducer,
+  backlogSearch:      backlogSearchReducer,
   adminProducts:      adminProductsReducer,
   adminUserAccounts:  adminUserAccountsReducer,
   adminUserOrders:    adminUserOrdersReducer,

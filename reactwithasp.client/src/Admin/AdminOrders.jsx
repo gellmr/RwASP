@@ -1,15 +1,18 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { setAdminOrders } from '@/features/admin/orders/adminOrdersSlice.jsx'
+import { setBacklogSearch } from '@/features/admin/orders/backlogSearch.jsx'
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate } from "react-router";
 import Table from 'react-bootstrap/Table'
+import SearchInput from "@/Search/SearchInput";
 import PaginationLinks from "@/Shop/PaginationLinks";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Spinner from 'react-bootstrap/Spinner';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { nullOrUndefined } from '@/MgUtility.js';
 
 import '@/AdminOrders.css'
 
@@ -26,29 +29,45 @@ function AdminOrders()
   const pageIntP = (page !== undefined) ? page : 1; // 1 = first page
   const myRoute = "/admin/orders/";
 
+  const backlogSearch = useSelector(state => state.backlogSearch.value);
+  const searchRevert = useSelector(state => state.backlogSearch.revert);
+
+  useEffect(() => {
+    dispatch(setBacklogSearch(""));
+  }, []);
+
   useEffect(() => {
     fetchAdminOrders();
-  }, [page]);
+  }, [page, backlogSearch]);
 
   async function fetchAdminOrders()
-  { 
+  {
     console.log("Try to load Orders for /admin/orders page...");
     setError("");
     setIsLoading(true);
-    const query = (pageIntP !== undefined) ? "/" + pageIntP : "";
-    const url = window.location.origin + "/api/admin-orders" + query;
+    const bpage = (pageIntP === undefined) ? ("") : ("/" + pageIntP);
+    const bs = backlogSearch.trim();
+    const query = nullOrUndefined(bs) ? ("") : "?bs=" + encodeURIComponent(bs);
+    const url = window.location.origin + "/api/admin-orders" + bpage + query;
     axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
       dispatch(setAdminOrders(response.data.orders));
     })
-    .catch((err) => {
+    .catch((err) =>
+    {
       if (err.status == 401) {
         console.log("User not logged in. Redirect to login page...");
         navigate('/admin');
-      } else {
-        if (err.response !== undefined) {
+      }
+      else
+      {
+        if (err.response.data == 'Invalid search string'){
+          dispatch(setBacklogSearch(searchRevert));
+        }
+        else if (err.response !== undefined){
           setError(err.response.data.errMessage);
-        } else {
+        }
+        else{
           setError("Something went wrong");
         }
       }
@@ -98,8 +117,16 @@ function AdminOrders()
     <span className="d-inline-block d-lg-none d-xl-none responsiveScrollsRight">( Responsive table scrolls right )&nbsp;<i className="bi bi-arrow-right"></i></span>
   );
 
+  const handleSearchChange = (str) => {
+    dispatch(setBacklogSearch(str));
+  };
+
   const pageMarkup = (
     <div className="adminOrderPMarkup">
+      <div className="backlogSearchCont">
+        <SearchInput parentHandleInputChange={handleSearchChange} initVal={backlogSearch} placeholder="Search backlog" />
+      </div>
+      {responsiveMessage}
       <div className="adminOrderPagin">
         <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
       </div>
@@ -158,9 +185,7 @@ function AdminOrders()
       <Col sm={12} className="adminCont">
 
         <div className="adminOrdersOuter">
-          <AdminTitleBar titleText="Orders Backlog" construction={false}>
-            {responsiveMessage}
-          </AdminTitleBar>
+          <AdminTitleBar titleText="Orders Backlog" construction={false} />
           {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
         </div>
 

@@ -97,19 +97,12 @@ namespace ReactWithASP.Server.Domain
       return false;
     }
 
-    public async Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum)
+    public async Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum, string? backlogSearch)
     {
       IEnumerable<AdminOrderRow> rows = await context.AdminOrderRows
-        .FromSqlInterpolated($"EXEC GetAdminOrders {pageNum}, {12}")
+        .FromSqlInterpolated($"EXEC GetAdminOrders   {pageNum}, {12}, {backlogSearch}")
         .ToListAsync();
       return rows;
-      //// Eagerly load the associated records for this Order...
-      //IEnumerable<Order> orders = context.Orders
-      //  .Include(o => o.AppUser)
-      //  .Include(o => o.Guest)
-      //  .Include(o => o.OrderPayments)
-      //  .Include(o => o.OrderedProducts).ThenInclude(op => op.InStockProduct);
-      //return orders;
     }
 
     public IEnumerable<Order>? GetUserOrders(string? idval, string? usertype)
