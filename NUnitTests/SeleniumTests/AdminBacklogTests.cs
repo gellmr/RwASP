@@ -15,6 +15,28 @@ namespace NUnitTests.SeleniumTests
     public string? pagLink2Css = "a[href=\"/admin/orders/2\"]";
     public string? backLogRowCss = "tr.backlogCursorRow";
 
+    //[Test]
+    //public void BacklogPage_Search_OrderPlaced()
+    //{
+    //  // Date parsing behavior needs work.
+    //  GoToBackLog();
+    //  const string searchCss = "input[placeholder='Search backlog']";
+    //  try
+    //  {
+    //    var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+    //    // Enter a search string to see if the OrderPlaced column is searchable.
+    //    IWebElement searchElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(searchCss)));
+    //    searchElement.SendKeys("18/09/2025");
+    //    // Should see 3 results
+    //    // 18/09/2025 7:49:35 PM +08:00  109 user111  392943d5...            User  user-111@gmail.com 0.00  15.00   1 Thinking Cap  OrderPlaced
+    //    // 18/09/2025 6:07:37 PM +08:00  108 John Doe            D7AC05A9... Guest john@example.com   0.00  100.00  1 Life Jacket OrderPlaced
+    //    // 18/09/2025 6:00:44 PM +08:00  107 John Doe            D7AC05A9... Guest john@example.com   0.00  90.00   1 Chess Pieces - Full Set OrderPlaced
+    //  }
+    //  catch (WebDriverTimeoutException){
+    //    Assert.Fail("BacklogPage_SearchByOrderPlaced - Timeout occurred");
+    //  }
+    //}
+
     [Test]
     public void BacklogPage_PaginationShouldWork()
     {
