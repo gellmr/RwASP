@@ -3,6 +3,7 @@ using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Domain.StoredProc;
 using ReactWithASP.Server.DTO.MyOrders;
 using ReactWithASP.Server.Infrastructure;
+using System.Globalization;
 
 namespace ReactWithASP.Server.Domain
 {
@@ -99,9 +100,40 @@ namespace ReactWithASP.Server.Domain
 
     public async Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum, string? backlogSearch)
     {
+      // Initialize date and time strings as null
+      string? backlogSearchDate = null;
+      string? backlogSearchTime = null;
+      if (!string.IsNullOrEmpty(backlogSearch))
+      {
+        // Define all expected formats
+        string[] dformats = new string[] {
+          "yyyy-MM-dd HH:mm:ss", // Full date and time
+          "yyyy-MM-dd",          // Date only
+          "HH:mm:ss",            // Time only
+          "h:mm:ss tt",          // Time only (12-hour)
+          "dd/MM/yyyy h:mm:ss tt",
+          "dd/MM/yyyy H:mm:ss",
+          "dd/MM/yyyy",
+          "d/M/yyyy",
+        };
+        // Try to parse the user's input into a DateTimeOffset
+        if (DateTimeOffset.TryParseExact(
+            backlogSearch,
+            dformats,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out DateTimeOffset parsedDateTimeOffset)
+        )
+        {
+          // If parsing is successful, format the DateTimeOffset into separate strings
+          backlogSearchDate = parsedDateTimeOffset.ToString("yyyy-MM-dd");
+          backlogSearchTime = parsedDateTimeOffset.ToString("HH:mm:ss");
+        }
+      }
+      // Call the stored procedure with the new separate parameters
       IEnumerable<AdminOrderRow> rows = await context.AdminOrderRows
-        .FromSqlInterpolated($"EXEC GetAdminOrders   {pageNum}, {12}, {backlogSearch}")
-        .ToListAsync();
+          .FromSqlInterpolated($"EXEC GetAdminOrders {pageNum}, {12}, {backlogSearch}, {backlogSearchDate}, {backlogSearchTime}")
+          .ToListAsync();
       return rows;
     }
 

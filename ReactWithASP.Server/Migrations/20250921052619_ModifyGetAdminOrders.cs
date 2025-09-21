@@ -12,6 +12,7 @@ namespace ReactWithASP.Server.Migrations
       migrationBuilder.Sql(@"
         ALTER PROCEDURE [dbo].GetAdminOrders
           @PageNumber INT, @PageSize INT, @BacklogSearch NVARCHAR(250) = NULL
+         ,@BacklogSearchDate NVARCHAR(50) = NULL, @BacklogSearchTime NVARCHAR(50) = NULL
         AS
         BEGIN
           DECLARE @skip INT = (@PageNumber - 1) * @PageSize;
@@ -94,8 +95,10 @@ namespace ReactWithASP.Server.Migrations
 	          OR
             (CASE WHEN guest.ID IS NOT NULL THEN (guest.Email) ELSE (usr.Email) END) LIKE @Search
             OR
-	          CAST((ord.[OrderPlacedDate]) AS NVARCHAR(50)) LIKE @Search
-	          OR
+            CONVERT(NVARCHAR(10), ord.[OrderPlacedDate], 120) LIKE @BacklogSearchDate + '%'
+            OR
+            CONVERT(NVARCHAR(8),  ord.[OrderPlacedDate], 108) LIKE @BacklogSearchTime + '%'
+            OR
 	          CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN 0 ELSE ordWPay.PaymentReceived END) AS NVARCHAR(50)) LIKE @Search
             OR
             CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN rpay.InvoiceTot ELSE (rpay.InvoiceTot - ordWPay.PaymentReceived) END) AS NVARCHAR(50)) LIKE @Search

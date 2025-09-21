@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Controllers.Admin;
 using ReactWithASP.Server.Domain.Abstract;
-using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Domain.StoredProc;
+using ReactWithASP.Server.DTO;
 using ReactWithASP.Server.Infrastructure;
-using Microsoft.AspNetCore.Identity;
 
 namespace ReactWithASP.Server.Controllers.Admin
 {
@@ -27,8 +27,10 @@ namespace ReactWithASP.Server.Controllers.Admin
           return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid search string");
         }
         IEnumerable<AdminOrderRow> rows = await orderRepo.GetOrdersWithUsersAsync(pageNum, bs);
-        if (rows == null || !rows.Any()){
-          return BadRequest(new { errMessage = "Something went wrong. Records not found." });
+        if (rows == null || !rows.Any())
+        {
+          // No results
+          return Ok(new { orders = new List<OrderSlugDTO>() });
         }
         else
         {
