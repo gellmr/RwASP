@@ -6,6 +6,7 @@
 }
 .inlineLinks {
   /*border: 1px dashed magenta;*/
+  margin-right:2px;
 }
 .inlineLink{
   display:inline-block;
