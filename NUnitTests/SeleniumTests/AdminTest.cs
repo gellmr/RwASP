@@ -17,11 +17,13 @@ namespace NUnitTests.SeleniumTests
     public string? vipUsername;
     public string? vipPassword;
 
-    public const string? custAccsNavBtnCss = "#adminLayout .navbar-collapse a[href=\"/admin/useraccounts\"]";
+    public const string? custAccsNavBtnCss = "#adminLayout nav#navBar .stackedLinks a.useResponsiveLink.md[href=\"/admin/useraccounts\"]";
     public const string? custAccsPageTitleCss = ".adminCont h4.adminTitleBar";
 
     public List<IWebElement>? customerAccountLines = null;
     public IWebElement? chosenCaRow = null;
+    public IWebElement? editBtn = null;
+
     public const string? customerAccountLinesCss = ".adminUserAccRow";
     public string? customerAccountLineResultText = null; // Not const. Gets set later
 
@@ -57,7 +59,7 @@ namespace NUnitTests.SeleniumTests
       }
       // Login page should have appeared.
       if (title == null) { Assert.Fail("Failed to reach login page."); return; }
-      Assert.That(title.Text, Does.Contain("Admin Login"), "GoToLoginPage - title is incorrect.");
+      Assert.That(title.Text, Does.Contain("Admin Console"), "GoToLoginPage - title is incorrect.");
     }
 
     public void LoginAsVip()
@@ -120,17 +122,18 @@ namespace NUnitTests.SeleniumTests
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
 
-        // Find the row with the fullname given
-        IWebElement parentContainer = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(".adminContainUserAccRow")));
-        List<IWebElement> descendants = parentContainer.FindElements(By.CssSelector(".fullNameCell")).ToList();
-        IWebElement? fullnameElement = null;
-        foreach (IWebElement desc in descendants){
-          if (desc.Text == fullname){ fullnameElement = desc; break; }
-        }
-        if (fullnameElement == null){ Assert.Fail("Could not find Account Type and ID for given user/guest"); return; }
-        
-        // Get the enclosing element.
-        chosenCaRow = fullnameElement.FindElement(By.XPath("../../..")); // Up three levels
+        // Scroll to image
+        string imgCss = ".adminUserAccRow[data-fullname=\"" + fullname + "\"] img.adminUserAccCurrPhoto";
+        driver.scrollTo(imgCss);
+
+        // Get the row using the full name data attribute
+        string fullNameDataCss = ".adminUserAccRow[data-fullname=\"" + fullname + "\"]";
+        chosenCaRow = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(fullNameDataCss)));
+        if (chosenCaRow == null) { Assert.Fail("Could not find Account Type and ID for given user/guest"); return; }
+
+        // Get the edit button
+        string editAccCss = ".adminUserAccRow[data-fullname=\"" + fullname + "\"] .editAccLink";
+        editBtn = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(editAccCss)));
 
         // Locate the account type field.
         IWebElement accTypeField = chosenCaRow.FindElement(By.CssSelector(".accountTypeCell"));

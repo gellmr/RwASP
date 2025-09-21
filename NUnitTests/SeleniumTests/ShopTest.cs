@@ -13,17 +13,16 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   public class ShopTest : PageTest
   {
-    public IWebElement? smallCartBtn = null;
     public IWebElement? medCartBtn = null;
     public IWebElement? myOrdNavBtn = null;
     public IWebElement? viewDetailsBtn = null;
     public IWebElement? adminProdsNavBtn = null;
     public const string shopPlusCss = ".addToCartBtnGroup button i.bi-plus";
-    public const string cartButtonCss = "a.mgNavLinkCartBtn";
-    public const string cartHasOneItem = "Cart: 1 Items";
-    public const string cartHasTwoItem = "Cart: 2 Items";
+    public const string cartButtonCss = ".stackedLinks a.useResponsiveLink.md[href=\"/cart\"]";
+    public const string cartHasOneItem = "Cart: 1";
+    public const string cartHasTwoItem = "Cart: 2";
     public const decimal inCartItemOneUnitPrice = 20M;
-    public const string myOrdCssBtn = ".mgNavLinkBtn[href=\"/myorders\"]";
+    public const string myOrdCssBtn = ".stackedLinks a.useResponsiveLink.md[href=\"/myorders\"]";
     public const string myOrdPageTitleCss = ".shopLayoutTransparent h2";
     public const string myOrdPageHeadInfoCss = ".myOrdersHeadInfo.myOrdersHeadInfo";
     public const string myOrdPageBodyInfoCss = ".myOrdersRect";
@@ -47,7 +46,7 @@ namespace NUnitTests.SeleniumTests
     public const string? backlogTopRowCss = "tr.backlogCursorRow";
     public string? backlogRow1TextResult = null; // Not const. Gets set later
 
-    public const string? adminProdNavLinkMed = "#adminLayout .navbar-collapse a[href=\"/admin/products\"]";
+    public const string? adminProdNavLinkMed = "#adminLayout nav#navBar .stackedLinks a.useResponsiveLink.md[href=\"/admin/products\"]";
     public const string? adminProdsTitleCss = "#adminLayout .adminCont h4.adminTitleBar";
     public const string? adminProdsBottleImgCss = "#adminLayout .adminProductsAll .adminProdImage img[src=\"/thumbs/tilt-bottle.png\"]";
     public const string? adminProdsBottleRowCss = "#adminLayout .adminProductsAll .adminProductRow";
@@ -63,14 +62,12 @@ namespace NUnitTests.SeleniumTests
         clickableButton.Click();
         IReadOnlyCollection<IWebElement> cartButtons = driver.FindElements(By.CssSelector(cartButtonCss));
         List<IWebElement> btns = cartButtons.ToList(); // There are 2 sizes used at different bootstrap breakpoints
-        smallCartBtn = btns[0];
-        medCartBtn = btns[1];
+        medCartBtn = btns[0];
       }
       catch (WebDriverTimeoutException ex)
       {
         Assert.Fail("Timeout during AddBottleToCart");
       }
-      if (smallCartBtn == null) { Assert.Fail("Cart (smallCartBtn) not found"); }
       if (medCartBtn == null) {   Assert.Fail("Cart (medCartBtn) not found"); }
     }
 

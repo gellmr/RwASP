@@ -1,7 +1,8 @@
 ﻿using NUnitTests.Helpers;
-using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using System.Xml.Linq;
 
 namespace NUnitTests.SeleniumTests
 {
@@ -96,9 +97,8 @@ namespace NUnitTests.SeleniumTests
         string? expectedText2 = "Email eileen.ryan@freesport.com Account Type Guest Edit Account View Orders";
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText1), "ShouldSeeGuest - EileenRyan - incorrect details.");
         Assert.That(customerAccountLineResultText, Does.Contain(expectedText2), "ShouldSeeGuest - EileenRyan - incorrect details.");
-        IWebElement editBtn = chosenCaRow.FindElement(By.CssSelector(".editAccLink"));
-        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(editBtn));
-        clickableButton.Click();
+        editBtn.Click();
+
         // Wait until the Edit Account page appears
         IWebElement editPageUserPic = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(editPageUserPicCss))); // Longest load.
         GetCustomerDetail();

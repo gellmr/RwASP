@@ -33,8 +33,11 @@ namespace NUnitTests.SeleniumTests
         wait.Until(ExpectedConditions.TextToBePresentInElement(searchResultsArea, expectedText1));
         wait.Until(ExpectedConditions.TextToBePresentInElement(searchResultsArea, expectedText2));
 
-        IReadOnlyCollection<IWebElement> products = driver.FindElements(By.CssSelector(".productDetails"));
+        IReadOnlyCollection<IWebElement> products = wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.CssSelector(".productDetails")));
         List<IWebElement> prods = products.ToList();
+        if (prods.Count < 2){
+          Assert.Fail("BringsProductResults - Expected at least two products, but found less.");
+        }
         product1 = prods[0];
         product2 = prods[1];
       }

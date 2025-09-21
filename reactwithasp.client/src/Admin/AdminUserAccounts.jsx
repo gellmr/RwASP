@@ -81,7 +81,7 @@ const AdminUserAccounts = () =>
     );
 
     return (
-      <Row key={idval} className={isCurrentUser ? "adminUserAccRow currUserRow" : 'adminUserAccRow'}>
+      <Row key={idval} className={isCurrentUser ? "adminUserAccRow currUserRow" : 'adminUserAccRow'} data-fullname={user.fullName}>
 
         {/*large*/}
         <Col xs={4} className="adminUserAccCell d-none d-sm-flex adminUserAccImage adminUserAccLarge">
