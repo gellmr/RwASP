@@ -6,7 +6,7 @@ namespace ReactWithASP.Server.Infrastructure
   {
     // Restrictive regex for filtering the Orders Backlog
     public static string BacklogSearchOkayRegex{ get { return
-        @"^[a-zA-Z0-9][a-zA-Z0-9\-\.\@\_\+\:\/\s]{0,249}$"
+        @"^[a-zA-Z0-9\-\.\@\_\+\:\/\s]{0,250}$"
     ;}}
 
     // String representation of a Guid
