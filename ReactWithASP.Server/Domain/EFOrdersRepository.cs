@@ -103,16 +103,18 @@ namespace ReactWithASP.Server.Domain
       // Initialize date and time strings as null
       string? backlogSearchDate = null;
       string? backlogSearchTime = null;
+      /*
+      */
       if (!string.IsNullOrEmpty(backlogSearch))
       {
         // Define all expected formats
         string[] dformats = new string[] {
-          "yyyy-MM-dd HH:mm:ss", // Full date and time
-          "yyyy-MM-dd",          // Date only
-          "HH:mm:ss",            // Time only
-          "h:mm:ss tt",          // Time only (12-hour)
           "dd/MM/yyyy h:mm:ss tt",
+          "yyyy-MM-dd HH:mm:ss", // Full date and time
           "dd/MM/yyyy H:mm:ss",
+          "yyyy-MM-dd",          // Date only
+          "h:mm:ss tt",          // Time only (12-hour)
+          "HH:mm:ss",            // Time only
           "dd/MM/yyyy",
           "d/M/yyyy",
         };

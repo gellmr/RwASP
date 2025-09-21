@@ -18,6 +18,69 @@ namespace ReactWithASP.Server.Migrations
           DECLARE @skip INT = (@PageNumber - 1) * @PageSize;
           DECLARE @Search NVARCHAR(252);
           SET @Search = '%' + @BacklogSearch + '%';
+          -- A variable to check if the search parameters returned any rows
+          DECLARE @HasMatch BIT = 0;
+
+
+
+
+          -- HasMatch query. Set flag to true if any of our search parameters produce a result.
+          -- This is the same code as our main query, but without the SELECT list, order by, offset, or fetch.
+          -- It uses the parameters to try and match values in the data. If anything is found there will be a non zero row count.
+          -- We get the top 1 and if it exists we set the HasMatch flag to true.
+          -- This flag is used in the main query, to allow us to return all records if no search parameters produced a match.
+
+          SELECT TOP 1 @HasMatch = 1
+          FROM [RwaspDatabase].[dbo].Orders as ord
+          LEFT JOIN (      
+            SELECT ord.ID as 'ord#', SUM(op.Quantity) AS 'ItemsOrdered' FROM [RwaspDatabase].[dbo].Orders ord LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID GROUP BY ord.ID
+          ) as opQty on ord.ID = opQty.[ord#]
+          LEFT JOIN (
+            SELECT ord.ID as 'ord#', SUM(isp.Price * op.Quantity) as 'InvoiceTot'--
+            FROM [RwaspDatabase].[dbo].Orders as ord
+            LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID
+            LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
+            GROUP BY ord.ID
+          ) as rpay on ord.ID = rpay.[ord#]
+          LEFT JOIN (
+            SELECT mto.ID as 'OrderID', SUM(sub.[pay.Amount]) as 'PaymentReceived'
+            FROM [RwaspDatabase].[dbo].Orders as mto
+            INNER JOIN (
+              SELECT ord.ID as 'OrderID', pay.ID AS 'pay.ID', pay.Amount as 'pay.Amount'
+              FROM [RwaspDatabase].[dbo].[OrderPayments] as pay
+            LEFT JOIN [RwaspDatabase].[dbo].Orders as ord on pay.OrderID = ord.ID
+              GROUP BY ord.ID, pay.ID, pay.Amount
+            )
+            as sub ON mto.ID = sub.OrderID
+            GROUP BY mto.ID
+          ) AS ordWPay ON ord.ID = ordWPay.OrderID
+          LEFT JOIN [RwaspDatabase].[dbo].[AspNetUsers] AS usr ON ord.UserID = usr.Id
+          LEFT JOIN [RwaspDatabase].[dbo].[Guests] AS guest ON ord.GuestID = guest.ID
+          LEFT JOIN(
+            SELECT ord.ID as 'ord#', STRING_AGG ( isp.Title, ', ' ) as 'Items' FROM [RwaspDatabase].[dbo].Orders ord
+            LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
+            GROUP BY ord.ID
+          ) As ispTitles ON ispTitles.[ord#] = ord.ID
+          WHERE @BacklogSearch IS NOT NULL AND (
+            CAST(ord.ID AS NVARCHAR(10)) LIKE @Search
+            OR (CASE WHEN usr.UserName IS NOT NULL THEN (usr.UserName) ELSE (guest.FirstName + ' ' + guest.LastName) END) LIKE @Search
+            OR CAST((usr.Id) AS NVARCHAR(50)) LIKE @Search
+            OR CAST((guest.ID) AS NVARCHAR(50)) LIKE @Search
+            OR (CASE WHEN guest.ID IS NOT NULL THEN 'Guest' ELSE 'User' END) LIKE @Search
+            OR (CASE WHEN guest.ID IS NOT NULL THEN (guest.Email) ELSE (usr.Email) END) LIKE @Search
+            OR CONVERT(NVARCHAR(10), ord.[OrderPlacedDate], 120) LIKE @BacklogSearchDate + '%'
+            OR CONVERT(NVARCHAR(8),  ord.[OrderPlacedDate], 108) LIKE @BacklogSearchTime + '%'
+            OR CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN 0 ELSE ordWPay.PaymentReceived END) AS NVARCHAR(50)) LIKE @Search
+            OR CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN rpay.InvoiceTot ELSE (rpay.InvoiceTot - ordWPay.PaymentReceived) END) AS NVARCHAR(50)) LIKE @Search
+            OR CAST((opQty.ItemsOrdered) AS NVARCHAR(50)) LIKE @Search
+            OR (ispTitles.Items) LIKE @Search
+            OR (ord.OrderStatus) LIKE @Search
+          );
+          -- End of HasMatch query
+
+
+
+          -- Now, execute the main query.
           SELECT ord.ID as 'OrderID',
             CASE WHEN usr.UserName IS NOT NULL THEN (usr.UserName) ELSE (guest.FirstName + ' ' + guest.LastName) END AS 'Username',
             CASE WHEN usr.Id IS NOT NULL THEN (usr.Id) END AS 'UserID',
@@ -31,14 +94,12 @@ namespace ReactWithASP.Server.Migrations
             ispTitles.Items as Items,
             ord.OrderStatus
           FROM [RwaspDatabase].[dbo].Orders as ord
-
           LEFT JOIN (
             -- {ord#, ItemsOrdered} Aggregated ordered product quantity.
             --  1     322        
             --  2     21        
             SELECT ord.ID as 'ord#', SUM(op.Quantity) AS 'ItemsOrdered' FROM [RwaspDatabase].[dbo].Orders ord LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID GROUP BY ord.ID
           ) as opQty on ord.ID = opQty.[ord#]
-
           LEFT JOIN (
             -- {ord#, InvoiceTot} Aggregated price and quantity.
             --  1     5153        
@@ -49,7 +110,6 @@ namespace ReactWithASP.Server.Migrations
             LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
             GROUP BY ord.ID
           ) as rpay on ord.ID = rpay.[ord#]
-
           LEFT JOIN (
             -- {OrderID, PaymentReceived} Aggregated payment values for orders with payments received.
             --  1        3000             
@@ -69,49 +129,33 @@ namespace ReactWithASP.Server.Migrations
             as sub ON mto.ID = sub.OrderID
             GROUP BY mto.ID
           ) AS ordWPay ON ord.ID = ordWPay.OrderID
-
           LEFT JOIN [RwaspDatabase].[dbo].[AspNetUsers] AS usr ON ord.UserID = usr.Id
-
           LEFT JOIN [RwaspDatabase].[dbo].[Guests] AS guest ON ord.GuestID = guest.ID
-
           LEFT JOIN(
             -- {ord#, Items} String aggregated product titles, for each order. Eg 'Speed Chess Timer, Thinking Cap, Hydralite, Soccer Ball'
             SELECT ord.ID as 'ord#', STRING_AGG ( isp.Title, ', ' ) as 'Items' FROM [RwaspDatabase].[dbo].Orders ord
             LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
             GROUP BY ord.ID
           ) As ispTitles ON ispTitles.[ord#] = ord.ID
-
-          WHERE @BacklogSearch IS NULL OR
-          (
+          WHERE @BacklogSearch IS NULL OR @HasMatch = 0 OR (
             CAST(ord.ID AS NVARCHAR(10)) LIKE @Search
-            OR
-            (CASE WHEN usr.UserName IS NOT NULL THEN (usr.UserName) ELSE (guest.FirstName + ' ' + guest.LastName) END) LIKE @Search
-            OR
-	          CAST((usr.Id) AS NVARCHAR(50)) LIKE @Search
-	          OR
-	          CAST((guest.ID) AS NVARCHAR(50)) LIKE @Search
-	          OR
-	          (CASE WHEN guest.ID IS NOT NULL THEN 'Guest' ELSE 'User' END) LIKE @Search
-	          OR
-            (CASE WHEN guest.ID IS NOT NULL THEN (guest.Email) ELSE (usr.Email) END) LIKE @Search
-            OR
-            CONVERT(NVARCHAR(10), ord.[OrderPlacedDate], 120) LIKE @BacklogSearchDate + '%'
-            OR
-            CONVERT(NVARCHAR(8),  ord.[OrderPlacedDate], 108) LIKE @BacklogSearchTime + '%'
-            OR
-	          CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN 0 ELSE ordWPay.PaymentReceived END) AS NVARCHAR(50)) LIKE @Search
-            OR
-            CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN rpay.InvoiceTot ELSE (rpay.InvoiceTot - ordWPay.PaymentReceived) END) AS NVARCHAR(50)) LIKE @Search
-	          OR
-	          CAST((opQty.ItemsOrdered) AS NVARCHAR(50)) LIKE @Search
-	          OR
-	          (ispTitles.Items) LIKE @Search
-	          OR
-	          (ord.OrderStatus) LIKE @Search
+            OR (CASE WHEN usr.UserName IS NOT NULL THEN (usr.UserName) ELSE (guest.FirstName + ' ' + guest.LastName) END) LIKE @Search
+            OR CAST((usr.Id) AS NVARCHAR(50)) LIKE @Search
+	          OR CAST((guest.ID) AS NVARCHAR(50)) LIKE @Search
+	          OR (CASE WHEN guest.ID IS NOT NULL THEN 'Guest' ELSE 'User' END) LIKE @Search
+	          OR (CASE WHEN guest.ID IS NOT NULL THEN (guest.Email) ELSE (usr.Email) END) LIKE @Search
+            OR CONVERT(NVARCHAR(10), ord.[OrderPlacedDate], 120) LIKE @BacklogSearchDate + '%'
+            OR CONVERT(NVARCHAR(8),  ord.[OrderPlacedDate], 108) LIKE @BacklogSearchTime + '%'
+            OR CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN 0 ELSE ordWPay.PaymentReceived END) AS NVARCHAR(50)) LIKE @Search
+            OR CAST((CASE WHEN ordWPay.PaymentReceived IS NULL THEN rpay.InvoiceTot ELSE (rpay.InvoiceTot - ordWPay.PaymentReceived) END) AS NVARCHAR(50)) LIKE @Search
+	          OR CAST((opQty.ItemsOrdered) AS NVARCHAR(50)) LIKE @Search
+	          OR (ispTitles.Items) LIKE @Search
+	          OR (ord.OrderStatus) LIKE @Search
           )
           ORDER BY ord.OrderPlacedDate DESC, ord.UserID ASC, ord.ID DESC
           OFFSET @skip ROWS
-          FETCH NEXT @PageSize ROWS ONLY
+          FETCH NEXT @PageSize ROWS ONLY;
+
         END;
       ");
     }
