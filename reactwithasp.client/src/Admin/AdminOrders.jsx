@@ -130,6 +130,10 @@ function AdminOrders()
       <div className="adminOrderPagin">
         <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
       </div>
+
+      {/* Render the table if we have search results */}
+      {adminOrders && adminOrders.length > 0 ? (
+
       <div className="wrapClearTable">
         <div className="wrapLeftClearTable"></div>
         <div className="wrapTable">
@@ -151,8 +155,9 @@ function AdminOrders()
                 <th>OrderStatus</th>
               </tr>
             </thead>
+
             <tbody>
-              {adminOrders && adminOrders.length > 0 && adminOrders.map(line =>
+              { adminOrders.map(line =>
                 <tr key={line.id} className="backlogCursorRow" onClick={handleClickBacklogRow} data-orderid={line.id}>
                   <td>{line.orderPlacedDate}</td>
                   <td>{line.id}</td>
@@ -169,11 +174,18 @@ function AdminOrders()
                 </tr>
               )}
             </tbody>
+
           </Table>
           <div className="wrapLeftTable"></div>
         </div>
         <div className="wrapLeftClearTable"></div>
       </div>
+
+      ):(
+        // Display a message when no records are found
+        <div style={{ display: "flex", justifyContent: "center" }}>No records found</div>
+      )}
+
       <div className="adminOrderPagin">
         <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
       </div>
