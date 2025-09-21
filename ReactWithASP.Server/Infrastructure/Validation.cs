@@ -6,7 +6,7 @@ namespace ReactWithASP.Server.Infrastructure
   {
     // String representation of a Guid
     public static string AppUserOrGuestId{ get { return
-        "^[a-zA-Z0-9]{8}\\-[a-zA-Z0-9]{4}\\-[a-zA-Z0-9]{4}\\-[a-zA-Z0-9]{4}\\-[a-zA-Z0-9]{12}$"
+       @"^[a-zA-Z0-9]{8}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{4}\-[a-zA-Z0-9]{12}$"
     ;}}
 
     // String representation of a Google Subject ID
