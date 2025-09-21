@@ -20,7 +20,6 @@ function AdminOrders()
 {
   const dispatch = useDispatch();
   const adminOrders = useSelector(state => state.adminOrders.lines);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -43,8 +42,6 @@ function AdminOrders()
   async function fetchAdminOrders()
   {
     console.log("Try to load Orders for /admin/orders page...");
-    setError("");
-    setIsLoading(true);
     const bpage = (pageIntP === undefined) ? ("") : ("/" + pageIntP);
     const bs = backlogSearch.trim();
     const query = nullOrUndefined(bs) ? ("") : "?bs=" + encodeURIComponent(bs);
@@ -74,8 +71,6 @@ function AdminOrders()
     })
     .finally(() => {
       console.log('Finished attempts to load records for /admin/orders page.');
-      // setError("Could not load records.");
-      setIsLoading(false);
     });
   }
 
@@ -198,7 +193,7 @@ function AdminOrders()
 
         <div className="adminOrdersOuter">
           <AdminTitleBar titleText="Orders Backlog" construction={false} />
-          {isLoading ? loadingMarkup() : (error ? errMarkup : pageMarkup)}
+          {error ? errMarkup : pageMarkup}
         </div>
 
         <div className="mgFooter" style={{ marginTop: 38 }}>Built with React / Redux and .NET Core 8.0</div>
