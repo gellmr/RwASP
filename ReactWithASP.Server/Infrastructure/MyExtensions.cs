@@ -61,6 +61,7 @@ namespace ReactWithASP.Server.Infrastructure
 
   public static class MyExtensions
   {
+    public static string DefaultOrderPlacedDateFormat = "dd/MM/yyyy h:mm:ss tt zzz";
     public static string SessionGuestID = "SessionGuestID";
     public static string GuestCookieName = "ReactMikeGellDemo.GuestCookie";
     public static string IdentityCookieName = "ReactMikeGellDemo.IdentityCookie"; // The authentication cookie. Contains the serialized claims principal object.

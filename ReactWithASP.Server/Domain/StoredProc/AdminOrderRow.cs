@@ -37,7 +37,7 @@ namespace ReactWithASP.Server.Domain.StoredProc
           GuestIDshort = GuestIDshort,
           AccountType = AccountType,
           Email = Email ?? string.Empty,
-          OrderPlacedDate = OrderPlaced.ToString(),
+          OrderPlacedDate = OrderPlaced.ToString(Infrastructure.MyExtensions.DefaultOrderPlacedDateFormat),
           PaymentReceivedAmount = PaymentReceived.ToString() ?? string.Empty,
           Outstanding = Outstanding.ToString() ?? string.Empty,
           ItemsOrdered = ItemsOrdered.ToString() ?? string.Empty,
