@@ -100,42 +100,12 @@ namespace ReactWithASP.Server.Domain
 
     public async Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum, string? backlogSearch)
     {
-      // Initialize date and time strings as null
-      string? backlogSearchDate = null;
-      string? backlogSearchTime = null;
-      /*
-       * This prevents the other text matches from working. Disable for now.
-      if (!string.IsNullOrEmpty(backlogSearch))
-      {
-        // Define all expected formats
-        string[] dformats = new string[] {
-          "dd/MM/yyyy h:mm:ss tt",
-          "yyyy-MM-dd HH:mm:ss", // Full date and time
-          "dd/MM/yyyy H:mm:ss",
-          "yyyy-MM-dd",          // Date only
-          "h:mm:ss tt",          // Time only (12-hour)
-          "HH:mm:ss",            // Time only
-          "dd/MM/yyyy",
-          "d/M/yyyy",
-        };
-        // Try to parse the user's input into a DateTimeOffset
-        if (DateTimeOffset.TryParseExact(
-            backlogSearch,
-            dformats,
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.None,
-            out DateTimeOffset parsedDateTimeOffset)
-        )
-        {
-          // If parsing is successful, format the DateTimeOffset into separate strings
-          backlogSearchDate = parsedDateTimeOffset.ToString("yyyy-MM-dd");
-          backlogSearchTime = parsedDateTimeOffset.ToString("HH:mm:ss");
-        }
-      }
-      */
+      // Compare database DateTime values to our search string by casting them to this format.
+      string dateMatchFormat = MyExtensions.DefaultOrderPlacedDateFormat;
+
       // Call the stored procedure with the new separate parameters
       IEnumerable<AdminOrderRow> rows = await context.AdminOrderRows
-          .FromSqlInterpolated($"EXEC GetAdminOrders {pageNum}, {12}, {backlogSearch}, {backlogSearchDate}, {backlogSearchTime}")
+          .FromSqlInterpolated($"EXEC GetAdminOrders {pageNum}, {12}, {backlogSearch}, {dateMatchFormat}")
           .ToListAsync();
       return rows;
     }
