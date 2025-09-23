@@ -17,7 +17,7 @@ namespace ReactWithASP.Server.Controllers.Admin
     }
 
     [HttpGet("admin-orders/{pageNum}")]    // GET "/api/admin-orders"
-    public async Task<IActionResult> GetOrders(Int32 pageNum = 1, string? bs = null)
+    public async Task<IActionResult> GetOrders(Int32 pageNum = 1, string? bs = null, Int32 ps = 12)
     {
       string error = string.Empty;
       try
@@ -26,7 +26,7 @@ namespace ReactWithASP.Server.Controllers.Admin
         if (!(PcreValidation.ValidString(bs, MyRegex.BacklogSearchOkayRegex))){
           return this.StatusCode(StatusCodes.Status400BadRequest, "Invalid search string");
         }
-        IEnumerable<AdminOrderRow> rows = await orderRepo.GetOrdersWithUsersAsync(pageNum, bs);
+        IEnumerable<AdminOrderRow> rows = await orderRepo.GetOrdersWithUsersAsync(bs, pageNum, ps);
         if (rows == null || !rows.Any())
         {
           // No results

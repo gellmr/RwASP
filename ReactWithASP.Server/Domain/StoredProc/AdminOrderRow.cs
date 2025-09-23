@@ -11,6 +11,7 @@ namespace ReactWithASP.Server.Domain.StoredProc
     private static Int32 maxLenItemsDisplay = 30;
 
     public Int32 OrderID { get; set; }
+    public Int32 RowNumber { get; set; } // The row number eg 1,2,3 of the current row, from the total result set. Continues to next page.
     public string? Username { get; set; }
     public string? UserID { get; set; }
     public string? GuestID { get; set; }
@@ -22,6 +23,7 @@ namespace ReactWithASP.Server.Domain.StoredProc
     public Int32? ItemsOrdered { get; set; }
     public string? Items { get; set; }
     public string OrderStatus { get; set; }
+    public Int32 TotalRows { get; set; } // Eg The total number of rows found by the query (but we only return one page from this set)
 
     public OrderSlugDTO OrderSlug {
       get{
@@ -30,6 +32,7 @@ namespace ReactWithASP.Server.Domain.StoredProc
         string GuestIDshort = (GuestID == null) ? null : ((GuestID.Length < 12) ? GuestID : (GuestID.Substring(0, 8) + "..."));
         return new OrderSlugDTO{
           ID = OrderID.ToString(),
+          RowNumber = RowNumber,
           Username = Username ?? string.Empty,
           UserID = UserID,
           GuestID = GuestID,
@@ -43,6 +46,7 @@ namespace ReactWithASP.Server.Domain.StoredProc
           ItemsOrdered = ItemsOrdered.ToString() ?? string.Empty,
           Items = itemDisplay,
           OrderStatus = OrderStatus,
+          TotalRows = TotalRows
         };
       }
     }

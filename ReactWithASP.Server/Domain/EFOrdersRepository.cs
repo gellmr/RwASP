@@ -98,14 +98,14 @@ namespace ReactWithASP.Server.Domain
       return false;
     }
 
-    public async Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(Int32 pageNum, string? backlogSearch)
+    public async Task<IEnumerable<AdminOrderRow>> GetOrdersWithUsersAsync(string? backlogSearch, Int32 pageNum=1, Int32 pageSize=12)
     {
       // Compare database DateTime values to our search string by casting them to this format.
       string dateMatchFormat = MyExtensions.DefaultOrderPlacedDateFormat;
 
       // Call the stored procedure with the new separate parameters
       IEnumerable<AdminOrderRow> rows = await context.AdminOrderRows
-          .FromSqlInterpolated($"EXEC GetAdminOrders {pageNum}, {12}, {backlogSearch}, {dateMatchFormat}")
+          .FromSqlInterpolated($"EXEC GetAdminOrders {pageNum}, {pageSize}, {backlogSearch}, {dateMatchFormat}")
           .ToListAsync();
       return rows;
     }

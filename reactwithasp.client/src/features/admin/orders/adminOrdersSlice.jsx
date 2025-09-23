@@ -14,6 +14,8 @@ export const adminOrdersSlice = createSlice({
     //  orderStatus            'OrderPlaced'
     //  outstanding            '60.00'
     //  paymentReceivedAmount  '0.00'
+    //  rowNumber              1
+    //  totalRows              100
     //  userID                 '72699C8D.....................0C817A9'
     //  userIDshort            '72699C8D...'
     //  username               'FirstName LastName'

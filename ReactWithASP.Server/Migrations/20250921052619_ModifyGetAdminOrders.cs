@@ -20,7 +20,9 @@ namespace ReactWithASP.Server.Migrations
           SET @Search = '%' + @BacklogSearch + '%';
 
           -- Now, execute the main query.
-          SELECT ord.ID as 'OrderID',
+          SELECT
+            CAST(ROW_NUMBER() OVER (ORDER BY ord.OrderPlacedDate DESC, ord.UserID ASC, ord.ID DESC) AS INT) AS RowNumber,
+            ord.ID as 'OrderID',
             CASE WHEN usr.UserName IS NOT NULL THEN (usr.UserName) ELSE (guest.FirstName + ' ' + guest.LastName) END AS 'Username',
             CASE WHEN usr.Id IS NOT NULL THEN (usr.Id) END AS 'UserID',
             CASE WHEN guest.ID IS NOT NULL THEN convert(nvarchar(50), guest.ID) END AS 'GuestID',
@@ -31,7 +33,8 @@ namespace ReactWithASP.Server.Migrations
             CASE WHEN ordWPay.PaymentReceived IS NULL THEN rpay.InvoiceTot ELSE (rpay.InvoiceTot - ordWPay.PaymentReceived) END AS 'Outstanding',
             CASE WHEN opQty.ItemsOrdered IS NULL THEN 0 ELSE opQty.ItemsOrdered END AS 'ItemsOrdered',
             ispTitles.Items as Items,
-            ord.OrderStatus
+            ord.OrderStatus,
+            CAST(COUNT(*) OVER() AS INT) AS TotalRows
           FROM [RwaspDatabase].[dbo].Orders as ord
           LEFT JOIN (
             -- {ord#, ItemsOrdered} Aggregated ordered product quantity.

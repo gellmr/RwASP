@@ -23,8 +23,13 @@ function AdminOrders()
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const [pageSize, setPageSize] = useState(10);
   const { page } = useParams();
-  const numPages = 6;
+  const gotResults = adminOrders && adminOrders.length;
+  const totResults = gotResults ? adminOrders[0].totalRows : 0;
+  const extraPage = ((totResults % pageSize) > 0) ? 1 : 0;
+  const numPages = Math.floor((totResults / pageSize)) + extraPage;
+  
   const pageIntP = (page !== undefined) ? page : 1; // 1 = first page
   const myRoute = "/admin/orders/";
 
@@ -44,7 +49,7 @@ function AdminOrders()
     console.log("Try to load Orders for /admin/orders page...");
     const bpage = (pageIntP === undefined) ? ("") : ("/" + pageIntP);
     const bs = backlogSearch.trim();
-    const query = nullOrUndefined(bs) ? ("") : "?bs=" + encodeURIComponent(bs);
+    const query = nullOrUndefined(bs) ? ("") : "?bs=" + encodeURIComponent(bs) + "&ps=" + pageSize;
     const url = window.location.origin + "/api/admin-orders" + bpage + query;
     axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
@@ -116,19 +121,29 @@ function AdminOrders()
     dispatch(setBacklogSearch(str));
   };
 
+  const FoundMessage = function () {
+    const s = totResults == 1 ? '' : 's'; // Plural for readability
+    if (!gotResults) {
+      return <></>;
+    }
+    return (
+      <div>Found {totResults} order{s}</div>
+    );
+  }
+
   const pageMarkup = (
     <div className="adminOrderPMarkup">
       <div className="backlogSearchCont">
         <SearchInput parentHandleInputChange={handleSearchChange} initVal={backlogSearch} placeholder="Search backlog" />
       </div>
       {responsiveMessage}
+      {FoundMessage()}
       <div className="adminOrderPagin">
         <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
       </div>
 
       {/* Render the table if we have search results */}
-      {adminOrders && adminOrders.length > 0 ? (
-
+      {totResults > 0 ? (
       <div className="wrapClearTable">
         <div className="wrapLeftClearTable"></div>
         <div className="wrapTable">
@@ -136,6 +151,8 @@ function AdminOrders()
           <Table hover responsive className="adminOrdersTable">
             <thead>
               <tr>
+                <th>#Result</th>
+                {/* <th>##</th> */}
                 <th>OrderPlaced</th>
                 <th>OrderID</th>
                 <th>Username</th>
@@ -154,6 +171,8 @@ function AdminOrders()
             <tbody>
               { adminOrders.map(line =>
                 <tr key={line.id} className="backlogCursorRow" onClick={handleClickBacklogRow} data-orderid={line.id}>
+                  <td>{line.rowNumber}</td>
+                  {/* <td>{line.totalRows}</td> */}
                   <td>{line.orderPlacedDate}</td>
                   <td>{line.id}</td>
                   <td>{line.username}</td>
