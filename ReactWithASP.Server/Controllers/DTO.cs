@@ -153,6 +153,7 @@ namespace ReactWithASP.Server.DTO
   public class OrderSlugDTO // Used to render rows on the Admin Orders page.
   {
     public string? ID { get; set; }
+    public Int32 RowNumber { get; set; }
     public string? Username { get; set; }
     public string? UserID { get; set; }
     public string? GuestID { get; set; }
@@ -166,6 +167,7 @@ namespace ReactWithASP.Server.DTO
     public string? ItemsOrdered { get; set; }
     public string? Items { get; set; }
     public string? OrderStatus { get; set; }
+    public Int32 TotalRows { get; set; }
   }
 
   namespace OrderDTOs
