@@ -101,6 +101,13 @@ builder.Services.AddScoped<DataSeeder, DataSeeder>();
 
 // -------------------------------------------------------------
 
+// For GCP Cloud Run: Read the PORT environment variable dynamically assigned to the container
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    builder.WebHost.UseUrls($"http://*:{port}");
+}
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -111,11 +118,17 @@ app.UseAuthorization();
 app.UseSession();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope()){
-  var services = scope.ServiceProvider;
-  var custMigrator = services.GetRequiredService<CustomMigrator>();
-  await custMigrator.Execute();
-}
+// For GCP Cloud Run: Only execute migrations and seeder if explicitly requested.
+// We don't want Cloud Run container cold-starts trying to migrate the DB simultaneously.
+bool runMigrations = Environment.GetEnvironmentVariable("RUN_MIGRATIONS") == "true" || app.Environment.IsDevelopment();
 
+if (runMigrations)
+{
+    using (var scope = app.Services.CreateScope()){
+      var services = scope.ServiceProvider;
+      var custMigrator = services.GetRequiredService<CustomMigrator>();
+      await custMigrator.Execute();
+    }
+}
 app.MapFallbackToFile("/index.html");
 app.Run();

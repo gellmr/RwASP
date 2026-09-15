@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Infrastructure;
 using ReactWithASP.Server.DTO.AdminUserAccounts;
 using System.Security.Claims;
@@ -171,41 +171,63 @@ namespace ReactWithASP.Server.Controllers.Admin
           return this.StatusCode(StatusCodes.Status400BadRequest, "No file was uploaded");
         }
 
-        // Save to 'uploads' folder in wwwroot directory.
-        bool isDev = _hostingEnvironment.EnvironmentName.Equals("Development");
-        string UploadProfilePic = _config.GetSection("UploadProfilePic").Value;
-
-        // The "userpic" upload folder is within the SPA folder, which is located:
-        //    ..\reactwithasp.client\public\userpic    (development)
-        //    .\wwwroot\userpic                        (production)
-        // So we find the content root path of the server application...
-        //    C:\path\to\RwASP\ReactWithASP.Server  (development)
-        //    C:\path\to\RwASP-wwwroot              (production)
-        // And check if we are running in development mode...
-        //    C:\path\to\RwASP\ReactWithASP.Server
-        //    C:\path\to\RwASP <-- go up. Then append SPA path fragment
-        //    C:\path\to\RwASP\reactwithasp.client\public\userpic
-        // But for production there is no need to go up
-        //    C:\path\to\RwASP-wwwroot   (Append SPA path fragment)
-        //    C:\path\to\RwASP-wwwroot\wwwroot\userpic
-        string uploadsFolder = Path.Combine(_hostingEnvironment.ContentRootPath, UploadProfilePic);
-        if (isDev){
-          uploadsFolder = Path.Combine(Directory.GetParent(_hostingEnvironment.ContentRootPath).FullName, UploadProfilePic);
-        }
-
-        if (!Directory.Exists(uploadsFolder)){
-          Directory.CreateDirectory(uploadsFolder);
-        }
+        // In a GCP Cloud Run environment, we cannot save to the local file system
+        // because the container disk is ephemeral. We must upload to Google Cloud Storage.
+        string bucketName = _config["GCP:StorageBucketName"];
         var ext = Path.GetExtension(file.FileName);
-        var uniqueFileName = "userpic_" + Guid.NewGuid().ToString() + ext; // eg "userpic_854595........................cb38c7.png"
-        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-        
-        // Save to file system
-        using (var stream = new FileStream(filePath, FileMode.Create)){
-          await file.CopyToAsync(stream);
-        }
+        var uniqueFileName = "userpic_" + Guid.NewGuid().ToString() + ext;
+        string publicUrl = string.Empty;
+        string debugStr = string.Empty;
 
-        string pathToSave = "/userpic/" + uniqueFileName; // Relative to SPA root.
+        // If bucket name is not provided, fallback to the local file system (e.g. local dev)
+        if (string.IsNullOrEmpty(bucketName))
+        {
+          bool isDev = _hostingEnvironment.EnvironmentName.Equals("Development");
+          string UploadProfilePic = _config.GetSection("UploadProfilePic").Value;
+          string uploadsFolder = Path.Combine(_hostingEnvironment.ContentRootPath, UploadProfilePic);
+          
+          if (isDev){
+            uploadsFolder = Path.Combine(Directory.GetParent(_hostingEnvironment.ContentRootPath).FullName, UploadProfilePic);
+          }
+
+          if (!Directory.Exists(uploadsFolder)){
+            Directory.CreateDirectory(uploadsFolder);
+          }
+          
+          var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+          // Save to file system
+          using (var stream = new FileStream(filePath, FileMode.Create)){
+            await file.CopyToAsync(stream);
+          }
+          
+          publicUrl = "/userpic/" + uniqueFileName; // Relative to SPA root.
+          debugStr = uploadsFolder;
+        }
+        else 
+        {
+          // We are in GCP Production! Upload to Cloud Storage Bucket
+          using (var memoryStream = new MemoryStream()) 
+          {
+            await file.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+            
+            // Create a Google Cloud Storage client
+            var storage = await Google.Cloud.Storage.V1.StorageClient.CreateAsync();
+            
+            // Upload the object
+            await storage.UploadObjectAsync(
+                bucketName, 
+                $"userpic/{uniqueFileName}", // The path/name in the bucket
+                file.ContentType, 
+                memoryStream
+            );
+          }
+          
+          // Construct the public absolute URL so the React frontend can render it
+          publicUrl = $"https://storage.googleapis.com/{bucketName}/userpic/{uniqueFileName}";
+          debugStr = $"GCP Bucket: {bucketName}";
+        }
 
         // Get the user or guest that we are updating...
         string? idsave = null;
@@ -213,13 +235,13 @@ namespace ReactWithASP.Server.Controllers.Admin
         {
           // Look up Guest, update picture, save
           Guid gid = Guid.Parse(idval);
-          await _guestRepo.UpdateWithTransaction(new GuestUpdateDTO{ ID = gid, Picture = pathToSave });
+          await _guestRepo.UpdateWithTransaction(new GuestUpdateDTO{ ID = gid, Picture = publicUrl });
           idsave = gid.ToString().ToLower();
         }
         else
         {
           AppUser userToSave = await _userManager.FindByIdAsync(idval);
-          userToSave.Picture = pathToSave;
+          userToSave.Picture = publicUrl;
           var result = await _userManager.UpdateAsync(userToSave);
           if (!result.Succeeded){
             throw new Exception("Could not save user. " + result.Errors.First().Description);
@@ -230,9 +252,9 @@ namespace ReactWithASP.Server.Controllers.Admin
         // Respond with JSON including URL for the uploaded file.
         return this.StatusCode(StatusCodes.Status200OK, new {
           Message = "File uploaded successfully",
-          Picture = pathToSave,
+          Picture = publicUrl,
           idsave = idsave,       // Id of the user or guest to save on client.
-          debug = uploadsFolder  // Will be either C:\\path\\to\\RwASP\\reactwithasp.client\\public\\userpic   or   C:\\path\\to\\RwASP-wwwroot\\wwwroot\\userpic
+          debug = debugStr
         });
       }
       catch (GuestUpdateException ex)
