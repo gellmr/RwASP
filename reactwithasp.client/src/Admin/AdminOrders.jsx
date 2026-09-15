@@ -23,12 +23,11 @@ function AdminOrders()
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(12);
   const { page } = useParams();
   const gotResults = adminOrders && adminOrders.length;
   const totResults = gotResults ? adminOrders[0].totalRows : 0;
-  const extraPage = ((totResults % pageSize) > 0) ? 1 : 0;
-  const numPages = Math.floor((totResults / pageSize)) + extraPage;
+  const numPages = Math.ceil(totResults / pageSize);
   
   const pageIntP = (page !== undefined) ? page : 1; // 1 = first page
   const myRoute = "/admin/orders/";
@@ -49,7 +48,12 @@ function AdminOrders()
     console.log("Try to load Orders for /admin/orders page...");
     const bpage = (pageIntP === undefined) ? ("") : ("/" + pageIntP);
     const bs = backlogSearch.trim();
-    const query = nullOrUndefined(bs) ? ("") : "?bs=" + encodeURIComponent(bs) + "&ps=" + pageSize;
+    
+    let query = `?ps=${pageSize}`;
+    if (!nullOrUndefined(bs) && bs !== "") {
+      query += `&bs=${encodeURIComponent(bs)}`;
+    }
+    
     const url = window.location.origin + "/api/admin-orders" + bpage + query;
     axiosInstance.get(url).then((response) => {
       console.log('Data fetched:', response.data);
@@ -122,7 +126,10 @@ function AdminOrders()
   };
 
   const FoundMessage = function () {
-    const s = totResults == 1 ? '' : 's'; // Plural for readability
+    const s = totResults === 1 ? '' : 's'; // Plural for readability
+    if (backlogSearch.trim() !== "" && totResults === 0) {
+      return <div>Found 0 orders</div>;
+    }
     if (!gotResults) {
       return <></>;
     }
