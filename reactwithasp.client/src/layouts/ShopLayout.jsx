@@ -123,7 +123,7 @@ const ShopLayout = () =>
 
   return (
     <div >
-      <Container id="shopLayout" className={backCss} style={{ border: '' }}>
+      <Container id="shopLayout" className={backCss} style={{ border: '' }} data-guest-ready={guestID ? "true" : "false"}>
         <Row>
           <SiteNavBar />
         </Row>

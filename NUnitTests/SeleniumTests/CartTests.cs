@@ -52,8 +52,20 @@ namespace NUnitTests.SeleniumTests
     private void ClickAddThenGoToCart()
     {
       driver.Navigate().GoToUrl(viteUrl);
-      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-      try { AddBottleToCart(); }
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6));
+      try {
+        wait.Until(d => 
+        {
+          try {
+            var layoutElement = d.FindElement(By.CssSelector("div[data-guest-ready]"));
+            return layoutElement.GetAttribute("data-guest-ready") == "true";
+          }
+          catch (NoSuchElementException) {
+            return false;
+          }
+        });
+        AddBottleToCart();
+      }
       catch (WebDriverTimeoutException) { Assert.Fail(pageOrElementMissing); }
       try
       {
@@ -84,7 +96,7 @@ namespace NUnitTests.SeleniumTests
     [Test]
     public void IncrementInCart_QtyAndPriceUpdates()
     {
-      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6));
       ClickAddThenGoToCart();
       if (inCartItemOneTitle == null){ Assert.Fail("Cart Page - Item One - not found"); return; }
       IWebElement? summaryRow = null;
