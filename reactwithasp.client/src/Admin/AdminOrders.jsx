@@ -123,6 +123,9 @@ function AdminOrders()
 
   const handleSearchChange = (str) => {
     dispatch(setBacklogSearch(str));
+    if (pageIntP !== 1) {
+      navigate("/admin/orders/1");
+    }
   };
 
   const FoundMessage = function () {
