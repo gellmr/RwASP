@@ -133,11 +133,14 @@ namespace NUnitTests.SeleniumTests
         Assert.That(driver.Url, Does.Contain("/checkoutsuccess"), "Failed to reach checkout success page.");
 
         myOrdNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdCssBtn)));
-        wait.Until(ExpectedConditions.TextToBePresentInElement(myOrdNavBtn, "My Orders (1)"));
+        // Instead of waiting on the cached element, poll the locator until text appears
+        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector(myOrdCssBtn), "My Orders (1)"));
+        // Re-fetch to ensure we have the latest DOM node for the final assertion
+        myOrdNavBtn = driver.FindElement(By.CssSelector(myOrdCssBtn));
       }
       catch (WebDriverTimeoutException ex)
       {
-        Assert.Fail("Timeout during SubmitEmpty_ShowsClientValidation " + ex.Message);
+        Assert.Fail("Timeout during SubmitAutofill " + ex.Message);
       }
       Assert.That(myOrdNavBtn.Text, Does.Contain("My Orders (1)"), "Checkout - success - My Orders Button - incorrect.");
     }

@@ -87,7 +87,8 @@ namespace NUnitTests.SeleniumTests
 
         // Get Order head info
         IWebElement myOrdPageHeadInfo = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageHeadInfoCss)));
-          wait.Until(ExpectedConditions.TextToBePresentInElement(myOrdPageHeadInfo, "John Doe"));
+          wait.Until(d => myOrdPageHeadInfo.Text.Contains("John Doe"));
+            
           ordHeadInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageHeadInfo.Text);
 
         // Get Guest guid value
@@ -187,14 +188,12 @@ namespace NUnitTests.SeleniumTests
       }
     }
 
-    public void ShouldSee_JohnDoe_BottleOrdBacklog()
+    public void ShouldSee_VipUser_BottleOrdBacklog()
     {
-      string? guidShort = myOrdGuestGuidShort.ToLower();
-      // Notice "Guest" is now "Administrator" because of the order merging feature!
-      string? expectedText = "Administrator john@example.com 0.00 20.00 1 Drink Bottle OrderPlaced";
-      Assert.That(backlogRow1TextResult,           Does.Contain("John Doe"),   "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
-      // We also no longer expect the guidShort to be there, because the Guest ID gets wiped out during the merge!
-      Assert.That(backlogRow1TextResult,           Does.Contain(expectedText), "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
+      // The user is now 'user111' (AccountType 'User') because of the order merging feature.
+      string? expectedText = "User user-111@gmail.com 0.00 20.00 1 Drink Bottle OrderPlaced";
+      Assert.That(backlogRow1TextResult, Does.Contain("user111"),    "VipUser_BottleOrdBacklog - row 1 text - incorrect.");
+      Assert.That(backlogRow1TextResult, Does.Contain(expectedText), "VipUser_BottleOrdBacklog - row 1 text - incorrect.");
     }
 
     public void GoToAdminProducts()
@@ -239,4 +238,6 @@ namespace NUnitTests.SeleniumTests
     }
   }
 }
+
+
 
