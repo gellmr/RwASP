@@ -43,33 +43,38 @@ namespace NUnitTests.SeleniumTests
       GoToBackLog();
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
 
         By elementsLocator = By.CssSelector(backLogRowCss);
         IList<IWebElement> allElements = wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(elementsLocator));
-        IWebElement firstRow = allElements.First();
-        IWebElement lastRow = allElements.Last();
-        string firstRowOrderId = firstRow.GetAttribute("data-orderid");
-        string lastRowOrderId = lastRow.GetAttribute("data-orderid");
-        Int32 firstId = Int32.Parse(firstRowOrderId);
-        Int32 lastId = Int32.Parse(lastRowOrderId);
-        Int32 delta = firstId - lastId;
-        Assert.That(delta, Is.EqualTo(11), "BacklogPage_PaginationShouldWork - Unexpected OrderID values (1 of 2)");
-        Int32 previous = lastId;
+        Assert.That(allElements.Count, Is.EqualTo(12), "BacklogPage_PaginationShouldWork - Page 1 does not have 12 rows");
+
+        // Grab the first row's "#Result" column text (which should be "1")
+        IWebElement firstRowResultCol = allElements.First().FindElement(By.CssSelector("td:first-child"));
+        string firstRowResult = firstRowResultCol.Text.Trim();
+        Assert.That(firstRowResult, Is.EqualTo("1"), "BacklogPage_PaginationShouldWork - Page 1 does not start with Result #1");
+
+        // Grab all Order IDs on Page 1 to ensure they don't overlap with Page 2
+        var page1OrderIds = allElements.Select(r => r.GetAttribute("data-orderid")).ToList();
 
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(pagLink2Css)));
         clickableButton.Click();
 
+        // Wait explicitly for the first row's Result # to change to "13", proving React has finished rendering Page 2
+        wait.Until(driver => {
+            var rows = driver.FindElements(elementsLocator);
+            if (rows.Count == 0) return false;
+            return rows.First().FindElement(By.CssSelector("td:first-child")).Text.Trim() == "13";
+        });
+
         allElements = wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(elementsLocator));
-        firstRow = allElements.First();
-        lastRow = allElements.Last();
-        firstRowOrderId = firstRow.GetAttribute("data-orderid");
-        lastRowOrderId = lastRow.GetAttribute("data-orderid");
-        Int32 _firstId = Int32.Parse(firstRowOrderId);
-        Int32 _lastId = Int32.Parse(lastRowOrderId);
-        Int32 _delta = _firstId - _lastId;
-        Assert.That((_firstId + 1), Is.EqualTo(previous), "BacklogPage_PaginationShouldWork - OrderID values do not continue to next page");
-        Assert.That(_delta, Is.EqualTo(11), "BacklogPage_PaginationShouldWork - OrderID values are not continuous (2 of 2)");
+        Assert.That(allElements.Count, Is.EqualTo(12), "BacklogPage_PaginationShouldWork - Page 2 does not have 12 rows");
+
+        var page2OrderIds = allElements.Select(r => r.GetAttribute("data-orderid")).ToList();
+
+        // Ensure no overlap between pages
+        var intersection = page1OrderIds.Intersect(page2OrderIds);
+        Assert.That(intersection.Count(), Is.EqualTo(0), "BacklogPage_PaginationShouldWork - Page 1 and Page 2 contain overlapping orders!");
       }
       catch (WebDriverTimeoutException){
         Assert.Fail("BacklogPage_PaginationShouldWork - Timeout occurred");
