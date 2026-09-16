@@ -105,7 +105,13 @@ if ($Up) {
             --database-version=SQLSERVER_2019_EXPRESS `
             --tier=db-custom-2-7680 `
             --region=$Region `
-            --root-password="$DbPassword"
+            --root-password="$DbPassword" `
+              --authorized-networks="0.0.0.0/0"
+
+        # GCP Cloud Run dynamically allocates IPs from a massive, shared Google pool.
+        # In an enterprise environment we would need Private Service Connect, or NAT Gateway.
+        # For this non-commercial portfolio project, I will allow all IPs (0.0.0.0/0)
+        # and rely on strict TLS, with very strong runtime password.
 
         Write-Host "Creating database '$DatabaseName' inside instance..."
         gcloud sql databases create $DatabaseName --instance=$SqlInstanceName
@@ -117,19 +123,19 @@ if ($Up) {
 }
 
 if ($Down) {
-    Write-Host "`n[DOWN] Deleting Cloud Run service '$ServiceName'..." -ForegroundColor Red
+    Write-Host "`n[DOWN] Deleting Cloud Run service '$ServiceName'..." -ForegroundColor DarkGray
     & cmd /c "gcloud run services delete $ServiceName --region=$Region --quiet 2>NUL" | Out-Null
     if ($LASTEXITCODE -eq 0) { Write-Host "Service deleted." } else { Write-Host "Service not found or already deleted." }
 
-    Write-Host "`n[DOWN] Deleting Artifact Registry repository '$RepoName'..." -ForegroundColor Red
+    Write-Host "`n[DOWN] Deleting Artifact Registry repository '$RepoName'..." -ForegroundColor DarkGray
     & cmd /c "gcloud artifacts repositories delete $RepoName --location=$Region --quiet 2>NUL" | Out-Null
     if ($LASTEXITCODE -eq 0) { Write-Host "Repository deleted." } else { Write-Host "Repository not found or already deleted." }
 
-    Write-Host "`n[DOWN] Deleting Storage Bucket '$BucketName' (including all files)..." -ForegroundColor Red
+    Write-Host "`n[DOWN] Deleting Storage Bucket '$BucketName' (including all files)..." -ForegroundColor DarkGray
     & cmd /c "gcloud storage rm --recursive gs://$BucketName 2>NUL" | Out-Null
     if ($LASTEXITCODE -eq 0) { Write-Host "Bucket deleted." } else { Write-Host "Bucket not found or already deleted." }
 
-    Write-Host "`n[DOWN] Deleting Cloud SQL instance '$SqlInstanceName'..." -ForegroundColor Red
+    Write-Host "`n[DOWN] Deleting Cloud SQL instance '$SqlInstanceName'..." -ForegroundColor DarkGray
     & cmd /c "gcloud sql instances delete $SqlInstanceName --quiet 2>NUL" | Out-Null
     if ($LASTEXITCODE -eq 0) { Write-Host "SQL instance deleted." } else { Write-Host "SQL instance not found or already deleted." }
 
