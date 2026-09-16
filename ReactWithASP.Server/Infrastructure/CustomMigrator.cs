@@ -21,16 +21,9 @@ namespace ReactWithASP.Server.Infrastructure
 
     public async Task Execute()
     {
-      try
-      {
-        await Context.Database.MigrateAsync();
-      }
-      catch (Exception ex)
-      {
-        // An error occurred while migrating / seeding.
-        // Migrations might not all have completed.
-      }
+      await Context.Database.MigrateAsync();
     }
   }
 }
+
 
