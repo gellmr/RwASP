@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Identity; // Provides PasswordHasher.
+using Microsoft.AspNet.Identity; // Provides PasswordHasher.
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -154,7 +154,8 @@ namespace ReactWithASP.Server.Infrastructure
         _context.SaveChanges();
       }catch(Exception ex)
       {
-        throw new Exception("Could not clear database tables");
+        Debug.WriteLine(ex.Message);
+        Debug.WriteLine("Could not clear database tables");
       }
 
       Guests = new Dictionary<string, Guest>();
@@ -196,8 +197,8 @@ namespace ReactWithASP.Server.Infrastructure
       try
       {
         // Populate Users
-        // [RwaspDatabase].[dbo].[AspNetUsers] does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
-        // [RwaspDatabase].[dbo].[Guests]      does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
+        // [dbo].[AspNetUsers] does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
+        // [dbo].[Guests]      does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
         AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
         appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
         for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
@@ -211,11 +212,11 @@ namespace ReactWithASP.Server.Infrastructure
       // Populate Orders
       try
       {
-        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[Orders] ON;");
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Orders] ON;");
         Orders = new List<Order>();
         orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
         for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
-        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[Orders] OFF;");
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Orders] OFF;");
       }
       catch(Exception ex)
       {
@@ -226,11 +227,11 @@ namespace ReactWithASP.Server.Infrastructure
       // Populate InStockProducts
       try
       {
-        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[InStockProducts] ON;");
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[InStockProducts] ON;");
         InStockProducts = new List<InStockProduct>();
         inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
         for (int pIdx = 0; pIdx < 27; pIdx++) { SeedInStockProducts(pIdx); }
-        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[InStockProducts] OFF;");
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[InStockProducts] OFF;");
       }
       catch (Exception ex)
       {
@@ -241,11 +242,11 @@ namespace ReactWithASP.Server.Infrastructure
       // Populate OrderedProducts
       try
       {
-        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[OrderedProducts] ON;");
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[OrderedProducts] ON;");
         OrderedProducts = new List<OrderedProduct>();
         orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
         for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
-        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[OrderedProducts] OFF;");
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[OrderedProducts] OFF;");
       }
       catch (Exception ex)
       {
@@ -256,11 +257,11 @@ namespace ReactWithASP.Server.Infrastructure
       // Populate OrderPayments
       try
       {
-        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[OrderPayments] ON;");
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[OrderPayments] ON;");
         OrderPayments = new List<OrderPayment>();
         orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
         for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
-        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[OrderPayments] OFF;");
+        await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[OrderPayments] OFF;");
       }
       catch (Exception ex)
       {
@@ -432,3 +433,4 @@ namespace ReactWithASP.Server.Infrastructure
     }
   }
 }
+

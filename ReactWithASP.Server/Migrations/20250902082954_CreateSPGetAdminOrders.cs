@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -26,13 +26,13 @@ namespace ReactWithASP.Server.Migrations
             CASE WHEN opQty.ItemsOrdered IS NULL THEN 0 ELSE opQty.ItemsOrdered END AS 'ItemsOrdered',
             ispTitles.Items as Items,
             ord.OrderStatus
-          FROM [RwaspDatabase].[dbo].Orders as ord
+          FROM [dbo].Orders as ord
 
           LEFT JOIN (
             -- {ord#, ItemsOrdered}    70 rows ~ aggregated op quantity for all 70 orders.
             --  1     322        
             --  2     21        
-            SELECT ord.ID as 'ord#', SUM(op.Quantity) AS 'ItemsOrdered' FROM [RwaspDatabase].[dbo].Orders ord LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID GROUP BY ord.ID
+            SELECT ord.ID as 'ord#', SUM(op.Quantity) AS 'ItemsOrdered' FROM [dbo].Orders ord LEFT JOIN [dbo].OrderedProducts op on ord.ID = op.OrderID GROUP BY ord.ID
           ) as opQty on ord.ID = opQty.[ord#]
 
           LEFT JOIN (
@@ -40,9 +40,9 @@ namespace ReactWithASP.Server.Migrations
             --  1     5153        
             --  2     1052        
             SELECT ord.ID as 'ord#', SUM(isp.Price * op.Quantity) as 'InvoiceTot'--
-            FROM [RwaspDatabase].[dbo].Orders as ord
-            LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID
-            LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
+            FROM [dbo].Orders as ord
+            LEFT JOIN [dbo].OrderedProducts op on ord.ID = op.OrderID
+            LEFT JOIN [dbo].InStockProducts isp on isp.ID = op.InStockProductID
             GROUP BY ord.ID
           ) as rpay on ord.ID = rpay.[ord#]
 
@@ -51,31 +51,31 @@ namespace ReactWithASP.Server.Migrations
             --  1        3000             
             --  2         552             
             SELECT mto.ID as 'OrderID', SUM(sub.[pay.Amount]) as 'PaymentReceived'
-            FROM [RwaspDatabase].[dbo].Orders as mto
+            FROM [dbo].Orders as mto
             INNER JOIN (
               -- {OrderID, pay.ID, pay.Amount}   46 rows ~ unaggregated payment data.
               --  2        1       250         
               --  2        1       250         
               --  2        1        52         
               SELECT ord.ID as 'OrderID', pay.ID AS 'pay.ID', pay.Amount as 'pay.Amount'
-              FROM [RwaspDatabase].[dbo].[OrderPayments] as pay
-            LEFT JOIN [RwaspDatabase].[dbo].Orders as ord on pay.OrderID = ord.ID
+              FROM [dbo].[OrderPayments] as pay
+            LEFT JOIN [dbo].Orders as ord on pay.OrderID = ord.ID
               GROUP BY ord.ID, pay.ID, pay.Amount
             )
             as sub ON mto.ID = sub.OrderID
             GROUP BY mto.ID
           ) AS ordWPay ON ord.ID = ordWPay.OrderID
 
-          LEFT JOIN [RwaspDatabase].[dbo].[AspNetUsers] AS usr ON ord.UserID = usr.Id
+          LEFT JOIN [dbo].[AspNetUsers] AS usr ON ord.UserID = usr.Id
 
-          LEFT JOIN [RwaspDatabase].[dbo].[Guests] AS guest ON ord.GuestID = guest.ID
+          LEFT JOIN [dbo].[Guests] AS guest ON ord.GuestID = guest.ID
 
           LEFT JOIN(
             -- {ord#, Items}    70 rows ~ string aggregated product titles, for each order.
             --  1    ""Life Jacket, Camping Towel, Waterproof Equipment Bag ...""
             --  2    ""Speed Chess Timer, Thinking Cap, Hydralite, Soccer Ball...""
-            SELECT ord.ID as 'ord#', STRING_AGG ( isp.Title, ', ' ) as 'Items' FROM [RwaspDatabase].[dbo].Orders ord
-            LEFT JOIN [RwaspDatabase].[dbo].OrderedProducts op on ord.ID = op.OrderID LEFT JOIN [RwaspDatabase].[dbo].InStockProducts isp on isp.ID = op.InStockProductID
+            SELECT ord.ID as 'ord#', STRING_AGG ( isp.Title, ', ' ) as 'Items' FROM [dbo].Orders ord
+            LEFT JOIN [dbo].OrderedProducts op on ord.ID = op.OrderID LEFT JOIN [dbo].InStockProducts isp on isp.ID = op.InStockProductID
             GROUP BY ord.ID
           ) As ispTitles ON ispTitles.[ord#] = ord.ID
 
@@ -95,3 +95,4 @@ namespace ReactWithASP.Server.Migrations
     }
   }
 }
+
