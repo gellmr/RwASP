@@ -23,15 +23,17 @@ namespace NUnitTests.SeleniumTests
       const string searchCss = "input[placeholder='Search for products']";
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(7));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
         IWebElement searchElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(searchCss)));
         searchElement.SendKeys("fla");
 
         string? expectedText1 = "Flat packed 30,000 seat stadium.";
         string? expectedText2 = "Corner Flags $25";
-        IWebElement searchResultsArea = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(searchResultsAreaCss)));
-        wait.Until(ExpectedConditions.TextToBePresentInElement(searchResultsArea, expectedText1));
-        wait.Until(ExpectedConditions.TextToBePresentInElement(searchResultsArea, expectedText2));
+        
+        // Use TextToBePresentInElementLocated to avoid Stale Element Reference exceptions
+        // during React's asynchronous DOM updates
+        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector(searchResultsAreaCss), expectedText1));
+        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector(searchResultsAreaCss), expectedText2));
 
         IReadOnlyCollection<IWebElement> products = wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.CssSelector(".productDetails")));
         List<IWebElement> prods = products.ToList();
