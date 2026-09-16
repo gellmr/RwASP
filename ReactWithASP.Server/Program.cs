@@ -128,6 +128,8 @@ if (runMigrations)
       var services = scope.ServiceProvider;
       var custMigrator = services.GetRequiredService<CustomMigrator>();
       await custMigrator.Execute();
+      var seeder = services.GetRequiredService<DataSeeder>();
+      await seeder.Execute();
     }
 }
 app.MapFallbackToFile("/index.html");

@@ -91,7 +91,7 @@ namespace ReactWithASP.Server.Infrastructure
     public static IList<InStockProduct> InStockProducts;
 
     public static List<OrderSeederDTO> orderDTOs;
-    public static IList<OrderV1> Orders;
+    public static IList<Order> Orders;
 
     public static List<OrderedProductSeederDTO> orderedProductDTOs;
     public static IList<OrderedProduct> OrderedProducts;
@@ -116,9 +116,13 @@ namespace ReactWithASP.Server.Infrastructure
       _userMeService = userMeService;
     }
 
-    public async Task Execute(string seedAfterMigrationName)
+    public async Task Execute()
     {
       Console.WriteLine("Begin transaction for data seeding...");
+      if (_context.Orders.Any()) {
+        Console.WriteLine("Database is already seeded. Skipping seeder.");
+        return;
+      }
       await using IDbContextTransaction transaction = await _context.Database.BeginTransactionAsync();
       try
       {
@@ -208,7 +212,7 @@ namespace ReactWithASP.Server.Infrastructure
       try
       {
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[Orders] ON;");
-        Orders = new List<OrderV1>();
+        Orders = new List<Order>();
         orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
         for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [RwaspDatabase].[dbo].[Orders] OFF;");
@@ -354,7 +358,7 @@ namespace ReactWithASP.Server.Infrastructure
       Guid? userId = dto.UserID;
       Guid? guestId = dto.GuestID;
       AppUser? user = AppUsers.FirstOrDefault(u => (Guid.Parse(u.Id) == userId) );
-      OrderV1 order = new OrderV1
+      Order order = new Order
       {
         ID = dto.ID,
         OrderPlacedDate = GetOrderDateTime(dto.OrderPlacedDate),
@@ -362,13 +366,15 @@ namespace ReactWithASP.Server.Infrastructure
         ReadyToShipDate = GetOrderDateTime(dto.ReadyToShipDate),
         ShipDate = GetOrderDateTime(dto.ShipDate),
         ReceivedDate = GetOrderDateTime(dto.ReceivedDate),
-        /* 
-         * Requires migration step 2 (or earlier) to run the DataSeeder.*/
-        BillingAddress = dto.BillingAddress ?? string.Empty,
-        ShippingAddress = dto.ShippingAddress ?? string.Empty,
-        
         OrderStatus = dto.OrderStatus ?? string.Empty,
       };
+      
+      var parser = new AddressParser(null, null);
+      var billDto = parser.ParseAddress(dto.BillingAddress ?? string.Empty);
+      var shipDto = parser.ParseAddress(dto.ShippingAddress ?? string.Empty);
+      
+      order.BillAddress = MyAddressDto.ToAddress(billDto);
+      order.ShipAddress = MyAddressDto.ToAddress(shipDto);
       if (user == null)
       {
         // Look up the Guest record for this appUserId
@@ -385,7 +391,7 @@ namespace ReactWithASP.Server.Infrastructure
       }
       // Save the order
       Orders.Add(order);
-      _context.LegacyOrders.Add(order);
+      _context.Orders.Add(order);
       _context.SaveChanges();
     }
 
@@ -394,7 +400,7 @@ namespace ReactWithASP.Server.Infrastructure
       OrderedProductSeederDTO dto = orderedProductDTOs[idx];
 
       InStockProduct isp = InStockProducts.FirstOrDefault(p => p.ID == dto.InStockProductID); // lookup navigation object
-      OrderV1 order = Orders.FirstOrDefault(o => o.ID == dto.OrderID);                        // lookup navigation object
+      Order order = Orders.FirstOrDefault(o => o.ID == dto.OrderID);                        // lookup navigation object
       OrderedProduct op = new OrderedProduct
       {
         ID = dto.ID,
@@ -411,7 +417,7 @@ namespace ReactWithASP.Server.Infrastructure
     {
       OrderPaymentSeederDTO dto = orderPaymentDTOs[idx];
 
-      OrderV1 order = Orders.FirstOrDefault(o => o.ID == dto.OrderID); // lookup navigation object
+      Order order = Orders.FirstOrDefault(o => o.ID == dto.OrderID); // lookup navigation object
       OrderPayment payment = new OrderPayment
       {
         ID = dto.ID,

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -23,25 +23,7 @@ namespace ReactWithASP.Server.Infrastructure
     {
       try
       {
-        var deployMarker = Path.Combine(ContentRootPath, "deploy_marker.txt");
-        if (File.Exists(deployMarker))
-        {
-          if (bool.Parse(Configuration["OnStart:Migrate"]))
-          {
-            var migrator = Context.GetInfrastructure().GetService<IMigrator>();
-            List<string> pendingMigrations = (await Context.Database.GetPendingMigrationsAsync()).ToList();
-            foreach (string pending in pendingMigrations)
-            {
-              await migrator.MigrateAsync(pending);
-              string seedAfter = Configuration["OnStart:SeedAfter"];
-              if (pending.Equals(seedAfter))
-              {
-                await Seeder.Execute(seedAfter);
-              }
-            }
-          }
-          File.Delete(deployMarker);
-        }
+        await Context.Database.MigrateAsync();
       }
       catch (Exception ex)
       {
@@ -51,3 +33,4 @@ namespace ReactWithASP.Server.Infrastructure
     }
   }
 }
+
