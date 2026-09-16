@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ReactWithASP.Server.Controllers;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Infrastructure;
@@ -39,10 +39,21 @@ namespace ReactWithASP.Server.Domain
     }
 
     public void ClearUserCartLines(string? uid)
-    {
-      IEnumerable<CartLine> lines = context.CartLines.Where(line => line.UserID != null && (line.AppUser.Id == uid));
-      ClearLines(lines);
-    }
+      {
+        IEnumerable<CartLine> lines = context.CartLines.Where(line => line.UserID != null && (line.AppUser.Id == uid));
+        ClearLines(lines);
+      }
+
+      public async Task MergeGuestCartIntoUserAsync(Guid guestId, string userId)
+      {
+        var guestCartLines = await context.CartLines.Where(c => c.GuestID == guestId).ToListAsync();
+        foreach(var line in guestCartLines) {
+          line.GuestID = null;
+          line.Guest = null;
+          line.UserID = userId;
+        }
+        await context.SaveChangesAsync();
+      }
 
     public void ClearCartLines(Nullable<Guid> guestID)
     {
@@ -157,3 +168,4 @@ namespace ReactWithASP.Server.Domain
     }
   }
 }
+

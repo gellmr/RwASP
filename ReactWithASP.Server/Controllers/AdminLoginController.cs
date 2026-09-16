@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Domain;
 using ReactWithASP.Server.Domain.Abstract;
@@ -92,7 +92,7 @@ namespace ReactWithASP.Server.Controllers
         if (uid != null){
           // Already logged in
           appUser = await _userManager.FindByIdAsync(vipUserId);
-          return LoginSuccessResponse(appUser, guestId); // Tell the user they are already logged in.
+          return await LoginSuccessResponse(appUser, guestId); // Tell the user they are already logged in.
         }
 
         // Not logged in yet...
@@ -115,7 +115,7 @@ namespace ReactWithASP.Server.Controllers
 
         if (result.Succeeded){
           cartLineRepo.ClearCartLines(guestId);
-          return LoginSuccessResponse(appUser, guestId); // Tell the user they are now logged in.
+          return await LoginSuccessResponse(appUser, guestId); // Tell the user they are now logged in.
         }
         if (result.RequiresTwoFactor){
           return this.StatusCode(StatusCodes.Status202Accepted, "Redirect the user to complete two-factor authentication");
@@ -133,3 +133,4 @@ namespace ReactWithASP.Server.Controllers
     }
   }
 }
+

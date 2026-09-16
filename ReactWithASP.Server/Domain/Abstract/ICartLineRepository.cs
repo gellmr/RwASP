@@ -1,4 +1,4 @@
-﻿namespace ReactWithASP.Server.Domain.Abstract
+namespace ReactWithASP.Server.Domain.Abstract
 {
   public interface ICartLineRepository
   {
@@ -8,5 +8,7 @@
     void RemoveById(Int32 cartLineIdRem);
     IEnumerable<CartLine> CartLines { get; }
     public IEnumerable<CartLine> WithIsps(IEnumerable<CartLine> lines);
+    public Task MergeGuestCartIntoUserAsync(Guid guestId, string userId);
   }
 }
+

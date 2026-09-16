@@ -1,4 +1,4 @@
-﻿using ReactWithASP.Server.Domain.StoredProc;
+using ReactWithASP.Server.Domain.StoredProc;
 using ReactWithASP.Server.DTO.MyOrders;
 
 namespace ReactWithASP.Server.Domain.Abstract
@@ -11,5 +11,7 @@ namespace ReactWithASP.Server.Domain.Abstract
     public Order GetOrderById(int orderid);
     public IEnumerable<Order>? GetMyOrders(string? uid, Guid? gid);
     public Task<IEnumerable<Order>?> GetAllOrdersAsync();
+    public Task MergeGuestOrdersIntoUserAsync(Guid guestId, string userId);
   }
 }
+

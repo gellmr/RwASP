@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ReactWithASP.Server.Domain.Abstract;
 using ReactWithASP.Server.Domain.StoredProc;
 using ReactWithASP.Server.DTO.MyOrders;
@@ -166,8 +166,19 @@ namespace ReactWithASP.Server.Domain
     }
 
     public async Task<IEnumerable<Order>?> GetAllOrdersAsync(){
-      return await context.Orders.ToListAsync();
-    }
+        return await context.Orders.ToListAsync();
+      }
+
+      public async Task MergeGuestOrdersIntoUserAsync(Guid guestId, string userId)
+      {
+        var guestOrders = await context.Orders.Where(o => o.GuestID == guestId).ToListAsync();
+        foreach(var o in guestOrders) {
+          o.GuestID = null;
+          o.Guest = null;
+          o.UserID = userId;
+        }
+        await context.SaveChangesAsync();
+      }
 
     // ------------------------------------------------------------------------------
     // Utility methods below are not part of repo interface
@@ -217,3 +228,4 @@ namespace ReactWithASP.Server.Domain
     }
   }
 }
+

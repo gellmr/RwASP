@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReactWithASP.Server.Domain;
@@ -30,9 +30,14 @@ namespace ReactWithASP.Server.Controllers
 
     // Generate a response indicating the user has successfully logged in
     [NonAction]
-    protected IActionResult LoginSuccessResponse(AppUser? appUser, Guid? guestId, bool isGoogle=false)
+    protected async Task<IActionResult> LoginSuccessResponse(AppUser? appUser, Guid? guestId, bool isGoogle=false)
     {
-      if (guestId != null) {
+      if (guestId != null && appUser != null) {
+        var orderRepo = HttpContext.RequestServices.GetRequiredService<IOrdersRepository>();
+        await cartLineRepo.MergeGuestCartIntoUserAsync(guestId.Value, appUser.Id);
+        await orderRepo.MergeGuestOrdersIntoUserAsync(guestId.Value, appUser.Id);
+      }
+      else if (guestId != null) {
         cartLineRepo.ClearCartLines(guestId);
       }
       DeleteGuestCookie();
@@ -51,3 +56,5 @@ namespace ReactWithASP.Server.Controllers
     }
   }
 }
+
+
