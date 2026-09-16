@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium;
+using OpenQA.Selenium;
 using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium.Chrome;
 
@@ -31,7 +31,9 @@ namespace NUnitTests.SeleniumTests
     protected void Setup()
     {
       // Set up the ChromeDriver. This line launches a new Chrome browser window.
-      driver = new ChromeDriver();
+      var options = new ChromeOptions();
+      options.AcceptInsecureCertificates = true;
+      driver = new ChromeDriver(options);
       //driver.Manage().Window.Maximize();
     }
 
@@ -48,3 +50,4 @@ namespace NUnitTests.SeleniumTests
     }
   }
 }
+
