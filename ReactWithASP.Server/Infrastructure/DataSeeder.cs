@@ -147,7 +147,6 @@ namespace ReactWithASP.Server.Infrastructure
         _context.OrderPayments.RemoveRange(_context.OrderPayments);
         _context.OrderedProducts.RemoveRange(_context.OrderedProducts);
         _context.InStockProducts.RemoveRange(_context.InStockProducts);
-        _context.LegacyOrders.RemoveRange(_context.LegacyOrders);
         _context.Users.RemoveRange(_context.Users);
         _context.CartLines.RemoveRange(_context.CartLines);
         _context.Guests.RemoveRange(_context.Guests);
@@ -433,4 +432,5 @@ namespace ReactWithASP.Server.Infrastructure
     }
   }
 }
+
 

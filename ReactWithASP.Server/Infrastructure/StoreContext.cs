@@ -1,4 +1,4 @@
-﻿using Google;
+using Google;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +16,6 @@ namespace ReactWithASP.Server.Infrastructure
     public DbSet<OrderedProduct> OrderedProducts { get; set; }
     public DbSet<InStockProduct> InStockProducts { get; set; }
     public DbSet<CartLine> CartLines { get; set; }
-    public DbSet<OrderV1> LegacyOrders { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Guest> Guests { get; set; }
     public DbSet<Address> Addresses { get; set; }
@@ -46,7 +45,6 @@ namespace ReactWithASP.Server.Infrastructure
       .HasForeignKey(o => o.GuestID)
       .OnDelete(DeleteBehavior.Restrict);
 
-      modelBuilder.Entity<OrderV1>().HasBaseType<UOrder>(); // Legacy
       modelBuilder.Entity<Order>().HasBaseType<UOrder>();   // Current
 
       /**/
@@ -92,3 +90,4 @@ namespace ReactWithASP.Server.Infrastructure
     }
   }
 }
+
