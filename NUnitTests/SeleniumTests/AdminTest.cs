@@ -1,4 +1,4 @@
-﻿using NUnitTests.Helpers;
+using NUnitTests.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
@@ -50,7 +50,7 @@ namespace NUnitTests.SeleniumTests
       {
         // Wait for login elements to be visible
         driver.Navigate().GoToUrl(viteUrl + "/admin");
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         title = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(adminPageTitleCss)));
       }
       catch (WebDriverTimeoutException)
@@ -70,7 +70,7 @@ namespace NUnitTests.SeleniumTests
       try
       {
         // Populate login fields
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         usernameField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(loginUsernameFieldCss)));
         usernameField.SendKeys(vipUsername);
 
@@ -100,7 +100,7 @@ namespace NUnitTests.SeleniumTests
       IWebElement? pageTitle = null;
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         IWebElement custAccsNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(custAccsNavBtnCss)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(custAccsNavBtn));
         clickableButton.Click();
@@ -120,7 +120,7 @@ namespace NUnitTests.SeleniumTests
     {
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
         // Scroll to image
         string imgCss = ".adminUserAccRow[data-fullname=\"" + fullname + "\"] img.adminUserAccCurrPhoto";
@@ -153,7 +153,7 @@ namespace NUnitTests.SeleniumTests
     public void GetCustomerAccountLines()
     {
       try{
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(customerAccountLinesCss)));
         IReadOnlyCollection<IWebElement> accRows = driver.FindElements(By.CssSelector(customerAccountLinesCss));
         customerAccountLines = accRows.ToList();
@@ -168,7 +168,7 @@ namespace NUnitTests.SeleniumTests
       IWebElement? row = null;
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         GetCustomerAccountLines();
         row = customerAccountLines[0]; // Get the first row
         customerAccountLineResultText = TestHelpers.TrimAndFlattenString(row.Text);

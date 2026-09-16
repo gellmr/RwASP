@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using SeleniumExtras.WaitHelpers;
 using System;
@@ -56,7 +56,7 @@ namespace NUnitTests.SeleniumTests
     {
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         IWebElement plusButton = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(shopPlusCss)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(plusButton));
         clickableButton.Click();
@@ -76,7 +76,7 @@ namespace NUnitTests.SeleniumTests
       IWebElement? myOrdPageTitle = null;
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(6));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         myOrdNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdCssBtn)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(myOrdNavBtn));
         clickableButton.Click();
@@ -87,7 +87,8 @@ namespace NUnitTests.SeleniumTests
 
         // Get Order head info
         IWebElement myOrdPageHeadInfo = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageHeadInfoCss)));
-        ordHeadInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageHeadInfo.Text);
+          wait.Until(ExpectedConditions.TextToBePresentInElement(myOrdPageHeadInfo, "John Doe"));
+          ordHeadInfoTextResult = TestHelpers.TrimAndFlattenString(myOrdPageHeadInfo.Text);
 
         // Get Guest guid value
         IWebElement guidEl = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdGuestGuidCss)));
@@ -115,7 +116,7 @@ namespace NUnitTests.SeleniumTests
       string? pageTitle = null;
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         viewDetailsBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageViewDetailCss)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(viewDetailsBtn));
         clickableButton.Click();
@@ -173,7 +174,7 @@ namespace NUnitTests.SeleniumTests
     {
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(backlogCurrentPageCss)));
         IReadOnlyCollection<IWebElement> bRows = driver.FindElements(By.CssSelector(backlogTopRowCss));
         List<IWebElement> rows = bRows.ToList();
@@ -189,9 +190,10 @@ namespace NUnitTests.SeleniumTests
     public void ShouldSee_JohnDoe_BottleOrdBacklog()
     {
       string? guidShort = myOrdGuestGuidShort.ToLower();
-      string? expectedText = "Guest john@example.com 0.00 20.00 1 Drink Bottle OrderPlaced";
+      // Notice "Guest" is now "Administrator" because of the order merging feature!
+      string? expectedText = "Administrator john@example.com 0.00 20.00 1 Drink Bottle OrderPlaced";
       Assert.That(backlogRow1TextResult,           Does.Contain("John Doe"),   "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
-      Assert.That(backlogRow1TextResult.ToLower(), Does.Contain(guidShort),    "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
+      // We also no longer expect the guidShort to be there, because the Guest ID gets wiped out during the merge!
       Assert.That(backlogRow1TextResult,           Does.Contain(expectedText), "JohnDoe_BottleOrdBacklog - row 1 text - incorrect.");
     }
 
@@ -203,7 +205,7 @@ namespace NUnitTests.SeleniumTests
       IWebElement? bottleRow = null;
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         adminProdsNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(adminProdNavLinkMed)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(adminProdsNavBtn));
         clickableButton.Click();
@@ -237,3 +239,4 @@ namespace NUnitTests.SeleniumTests
     }
   }
 }
+

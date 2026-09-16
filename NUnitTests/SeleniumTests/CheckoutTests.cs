@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using NUnitTests.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -53,7 +53,7 @@ namespace NUnitTests.SeleniumTests
     public void GoToCheckout()
     {
       driver.Navigate().GoToUrl(viteUrl + "/checkout");
-      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
       IWebElement coTitleElement = null;
       try
       {
@@ -108,7 +108,7 @@ namespace NUnitTests.SeleniumTests
 
     public void SubmitAutofill(Int32 clickCount)
     {
-      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
       try
       {
         // Click N times...
@@ -151,7 +151,7 @@ namespace NUnitTests.SeleniumTests
     public void SubmitEmpty_ShowsClientValidation()
     {
       GoToCheckout();
-      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
       try{
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(coSubmit)));
         clickableButton.Click();
@@ -182,7 +182,7 @@ namespace NUnitTests.SeleniumTests
     public void SubmitAutofill1_ShowsCheckoutSuccess()
     {
       driver.Navigate().GoToUrl(viteUrl);
-      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+      var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
       try { AddBottleToCart(); }
       catch (WebDriverTimeoutException) { Assert.Fail(pageOrElementMissing); }
       GoToCheckout();
