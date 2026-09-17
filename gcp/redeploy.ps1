@@ -57,7 +57,9 @@ $ImageTag = "$Region-docker.pkg.dev/$ProjectId/$RepoName/rwasp-image:latest"
 
 Write-Host "`n[1/2] Submitting build to Google Cloud Build..." -ForegroundColor Green
 $RootPath = Resolve-Path "$PSScriptRoot\.."
-gcloud builds submit "$RootPath" --tag $ImageTag
+gcloud builds submit "$RootPath" `
+  --config "$RootPath\gcp\cloudbuild.yaml" `
+  --substitutions="_IMAGE_TAG=$ImageTag,_VITE_GOOGLE_CLIENT_ID=$GoogleClientId"
 
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Cloud Build failed!"
