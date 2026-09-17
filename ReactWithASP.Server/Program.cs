@@ -57,10 +57,10 @@ builder.Services.AddControllers();
 
 // Enable Session
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options => {
-  options.Cookie.HttpOnly    = true;
-  options.Cookie.IsEssential = true;
-});
+//builder.Services.AddSession(options => {
+//  options.Cookie.HttpOnly    = true;
+//  options.Cookie.IsEssential = true;
+//});
 
 builder.Services.AddAuthentication(options =>{
   options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -108,7 +108,7 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseSession();
+//app.UseSession();
 app.MapControllers();
 
 // For GCP Cloud Run: Only execute migrations and seeder if explicitly requested.
