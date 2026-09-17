@@ -62,9 +62,16 @@ namespace ReactWithASP.Server.Infrastructure
   public static class MyExtensions
   {
     public static string DefaultOrderPlacedDateFormat = "dd/MM/yyyy h:mm:ss tt zzz";
-    public static string SessionGuestID = "SessionGuestID";
-    public static string GuestCookieName = "ReactMikeGellDemo.GuestCookie";
-    public static string IdentityCookieName = "ReactMikeGellDemo.IdentityCookie"; // The authentication cookie. Contains the serialized claims principal object.
+
+    //public static string SessionGuestID = "SessionGuestID";
+    //public static string GuestCookieName = "ReactMikeGellDemo.GuestCookie";
+
+    public static string GuestXHeaderName = "X-Guest-Id";
+
+    // The authentication cookie. Contains the serialized claims principal object.
+    // Note - Firebase proxy strips all cookies except the one named "__session"
+    // So we cannot use multiple cookies.
+    public static string IdentityCookieName = "__session";
 
     public static CookieOptions CookieOptions = new CookieOptions {
       HttpOnly = true,

@@ -24,7 +24,8 @@ namespace ReactWithASP.Server.Controllers
     }
 
     protected void DeleteGuestCookie(){
-      HttpContext.Response.Cookies.Delete(MyExtensions.GuestCookieName);
+      //HttpContext.Response.Cookies.Delete(MyExtensions.GuestCookieName);
+      Request.Headers.Remove(MyExtensions.GuestXHeaderName);
     }
 
     protected string? GetLoggedInUserIdFromIdentityCookie()
@@ -47,8 +48,9 @@ namespace ReactWithASP.Server.Controllers
 
         Guid? gid = null;
 
-        // See if guest ID cookie exists...
-        string cookieGuestId = Request.Cookies[MyExtensions.GuestCookieName];
+        // (Rather than using a guest cookie, here we use a stateless guest id token sent in header.)
+        // See if the guest id exists...
+        string cookieGuestId = Request.Headers[MyExtensions.GuestXHeaderName];
         if (string.IsNullOrEmpty(cookieGuestId))
         {
           // Could not get ID from cookie. We will create it in a moment...
@@ -76,7 +78,7 @@ namespace ReactWithASP.Server.Controllers
         
         // Persist ID to cookie.
         DeleteGuestCookie();
-        Response.Cookies.Append(MyExtensions.GuestCookieName, gid.ToString(), MyExtensions.CookieOptions);
+        Response.Headers.Append(MyExtensions.GuestXHeaderName, gid.ToString());
 
         // Return the finalized guest object.
         return guest;
