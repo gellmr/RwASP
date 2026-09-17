@@ -70,8 +70,12 @@ const ShopLayout = () =>
 
   // Fetch generated guest id from server, on page load.
   useEffect(() => {
-    fetchGuest();
-  }, [guestID, ordQty, myUserId]);
+    // Only fetch the guest session if we don't already have one, 
+    // and we aren't already logged in as a registered user.
+    if (guestID === null && myUserId === undefined) {
+      fetchGuest();
+    }
+  }, [guestID, myUserId]);
 
   useEffect(() => {
     if (!nullOrUndefined(myUserId) || !nullOrUndefined(guestID)) {

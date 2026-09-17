@@ -71,6 +71,10 @@ Write-Host "`n[2/2] Deploying image to Cloud Run..." -ForegroundColor Green
 gcloud run deploy $ServiceName --image $ImageTag --region $Region --allow-unauthenticated --set-env-vars="ConnectionStrings__StoreContext=$ConnectionString,Authentication__Google__ClientId=$GoogleClientId,Authentication__Google__ClientSecret=$GoogleClientSecret,GCP__StorageBucketName=$BucketName,RUN_MIGRATIONS=true"
 
 Write-Host "[3/3] Updating Firebase Hosting proxy..."
+# Ensure the proxy public folder exists so Firebase deploy doesn't fail
+if (!(Test-Path "proxypub")) {
+    New-Item -ItemType Directory -Force -Path (Join-Path $PSScriptRoot "proxypub") | Out-Null
+}
 $ConfigPath = Join-Path $PSScriptRoot "firebase.json"
 & cmd /c "npx firebase-tools deploy --only hosting --config `"$ConfigPath`" --project rwasp-gcp"
 

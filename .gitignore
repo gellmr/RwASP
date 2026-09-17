@@ -4,6 +4,7 @@
 # Ignore generated firebase cache files
 .firebase/
 *.cache
+gcp/firebase-debug.log
 
 # Ignore the build folder and contents...
 reactwithasp.client/obj/**
