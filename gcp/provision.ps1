@@ -47,7 +47,7 @@ Write-Host "`nSetting active GCP project to $ProjectId..."
 
 if ($Up) {
     Write-Host "`n[UP] Enabling required GCP APIs..." -ForegroundColor Green
-    & cmd /c "gcloud services enable compute.googleapis.com run.googleapis.com sqladmin.googleapis.com artifactregistry.googleapis.com storage.googleapis.com cloudbuild.googleapis.com 2>NUL" | Out-Null
+    & cmd /c "gcloud services enable compute.googleapis.com run.googleapis.com sqladmin.googleapis.com artifactregistry.googleapis.com storage.googleapis.com cloudbuild.googleapis.com firebase.googleapis.com firebasehosting.googleapis.com 2>NUL" | Out-Null
 
     Write-Host "`nGranting VPC Network permissions to Cloud Run Service Agent..." -ForegroundColor Green
     $projectNum = (& cmd /c "gcloud projects describe $ProjectId --format=value(projectNumber) 2>NUL").Trim()

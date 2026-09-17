@@ -1,5 +1,9 @@
 # The .vs folder contains machine and user specific files. It should not be committed to source control.
 .vs/*
 
+# Ignore generated firebase cache files
+.firebase/
+*.cache
+
 # Ignore the build folder and contents...
 reactwithasp.client/obj/**

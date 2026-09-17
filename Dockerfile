@@ -4,6 +4,10 @@
 FROM node:20 AS build-client
 WORKDIR /app/reactwithasp.client
 
+# Pass the Google Client ID as a build argument into Vite
+ARG VITE_GOOGLE_CLIENT_ID
+ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
+
 # Copy package.json and install dependencies
 COPY reactwithasp.client/package*.json ./
 RUN npm install
