@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -64,16 +63,10 @@ builder.Services.AddSession(options => {
 });
 
 builder.Services.AddAuthentication(options =>{
-  options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
-  options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+  options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
 .AddCookie(options => {
   options.Cookie.Name = MyExtensions.IdentityCookieName;
-})
-.AddGoogle(options => {
-  // Get Google tokens from config...
-  options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-  options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 });
 
 builder.Services.AddAuthorization();
