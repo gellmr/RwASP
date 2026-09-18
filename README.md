@@ -1,6 +1,6 @@
 # Online Store built with React and .NET Core
 
-This is Single Page Application built with React, Redux, Axiox, .NET Core, GCP, Cloud Run, Docker and Firebase.
+This is Single Page Application built with React, Redux, Axios, .NET Core, GCP, Cloud Run, Docker and Firebase.
 
 The site can be viewed at https://mikegelldemo.tech
 
