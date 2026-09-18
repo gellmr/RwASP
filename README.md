@@ -4,8 +4,6 @@ This is Single Page Application built with React, Redux, Axiox, .NET Core, GCP, 
 
 The site can be viewed at https://mikegelldemo.tech
 
-(Please allow a few seconds for the site to load.)
-
 The application allows you to browse or search for products, add to cart and proceed to checkout.
 
 Completed orders appear within the user's My Orders page.
