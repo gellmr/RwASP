@@ -2,7 +2,7 @@
 
 This is Single Page Application built with React, Redux, Axiox, .NET Core, Entity Framework and SQL Server.
 
-The site can be viewed at https://rwasp-app-uq6wrcck6q-km.a.run.app/
+The site can be viewed at https://mikegelldemo.tech
 
 (Please allow a few seconds for the site to load.)
 
