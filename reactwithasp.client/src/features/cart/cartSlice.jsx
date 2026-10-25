@@ -1,16 +1,29 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios';
 import { axiosInstance } from '@/axiosDefault.jsx';
 
-export const updateCartOnServer = createAsyncThunk( 'cart/updateCartOnServer',
-  async (jsonData, { rejectWithValue }) => {
+export const updateCartOnServer = createAsyncThunk('cart/updateCartOnServer',
+  async (jsonData, { rejectWithValue, signal }) => {
+    // The signal property here is created and managed by redux middleware.
+    // Redux has its own internal abort controller which generates this signal.
+    // It gets populated by redux after we invoke dispatch(...)
+    // It gets injected here for us to use.
+    // We can pass it directly to Axios which will listen for the abort signal.
+    // Similarly, rejectWithValue is a utility function injected by Redux, for us to use.
     try {
-      // Notify the server our Cart has changed.
-      const options = { headers: { 'Content-Type': 'application/json' } };
+      // Use abort controller to cancel stale requests if a new one replaces them.    
+      const options = {
+        headers: { 'Content-Type': 'application/json' },
+        signal // pass Redux signal directly to Axios.
+      };
       const response = await axiosInstance.post('/api/cart/update', jsonData, options);
       return response.data;
-    }
-    catch (error) {
-      return rejectWithValue(error.response.data); // This will trigger updateCartOnServer.rejected, with error.response.data as action.payload
+    } catch (error) {
+      // Ignore errors caused by intentional request cancellation.
+      if (axios.isCancel(error)) {
+        return rejectWithValue({ cancelled: true });
+      }
+      return rejectWithValue(error.response?.data || error.message); // This will trigger updateCartOnServer.rejected, with data or message as action.payload
     }
   }
 );

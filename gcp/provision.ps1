@@ -12,17 +12,17 @@ if (($Up -and $Down) -or (-not $Up -and -not $Down)) {
 
 # Configuration Variables
 $ProjectId = "rwasp-gcp"
-$Region = "australia-southeast2" # Melbourne, Australia
+$Region    = "australia-southeast2" # Melbourne, Australia
 
 # Resource Names
-$BucketName = "rwasp-gcp-userpics"
-$RepoName = "rwasp-gcp-docker-repo"
-$ServiceName = "rwasp-app"
+$BucketName      = "rwasp-gcp-userpics"
+$RepoName        = "rwasp-gcp-docker-repo"
+$ServiceName     = "rwasp-app"
 $SqlInstanceName = "rwasp-sql-instance"
-$DatabaseName = "rwasp_gcp_db"
+$DatabaseName    = "rwasp_gcp_db"
 
 # Secrets File (outside version control)
-$SecretsFile = "$HOME\sensitive\rwasp-gcp\secrets.md"
+$SecretsFile = "C:\sensitive\rwasp-gcp\secrets.md"
 
 # Helper to read DB Password from secrets.md
 $DbPassword = $null

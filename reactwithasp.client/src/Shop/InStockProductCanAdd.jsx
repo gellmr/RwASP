@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { setCartQuantity, updateCartOnServer } from '@/features/cart/cartSlice.jsx'
+import { dispatchDebouncedCartUpdate } from '@/MgDebounce';
 
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Button from 'react-bootstrap/Button';
@@ -50,14 +50,12 @@ function InStockProductCanAdd({ ispID, title, slug, price, category, cartLineID,
               <Button variant="light" style={{ borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} onClick={() => {
                 if (qtyInCartMarkup > 0) {
                   const newQty = qtyInCartInt - 1;
-                  dispatch(setCartQuantity({    cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
-                  dispatch(updateCartOnServer({ cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
+                  dispatchDebouncedCartUpdate(dispatch, cartLineID, newQty, copyProduct);
                 }
               }}><i className="bi bi-dash" style={{ fontSize: "13px" }}></i></Button>
               <Button variant="light" onClick={() => {
                 const newQty = qtyInCartInt + 1;
-                dispatch(setCartQuantity({    cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
-                dispatch(updateCartOnServer({ cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
+                dispatchDebouncedCartUpdate(dispatch, cartLineID, newQty, copyProduct);
               }}><i className="bi bi-plus" style={{ fontSize: "15px" }}></i></Button>
             </ButtonGroup>
           </Col>

@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { setCartQuantity, removeFromCart, updateCartOnServer } from '@/features/cart/cartSlice.jsx'
+import { removeFromCart, updateCartOnServer } from '@/features/cart/cartSlice.jsx'
+import { dispatchDebouncedCartUpdate } from '@/MgDebounce';
 
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -81,13 +82,11 @@ function CartProduct({ cartLineID })
               }}>Remove</Button>
               <Button variant="light btn-sm" disabled={cartLoading} onClick={() => {
                 const newQty = qtyInCartInt - 1;
-                dispatch(setCartQuantity({    cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
-                dispatch(updateCartOnServer({ cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
+                dispatchDebouncedCartUpdate(dispatch, cartLineID, newQty, copyProduct);
               }}><i className="bi bi-dash" style={{ fontSize: "15px" }} ></i></Button>
               <Button variant="light btn-sm" disabled={cartLoading} onClick={() => {
                 const newQty = qtyInCartInt + 1;
-                dispatch(setCartQuantity({    cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
-                dispatch(updateCartOnServer({ cartLineID:cartLineID, qty:newQty, isp:copyProduct }));
+                dispatchDebouncedCartUpdate(dispatch, cartLineID, newQty, copyProduct);
               }}><i className="bi bi-plus" style={{ fontSize: "15px" }} ></i></Button>
             </ButtonGroup>
           </Col>

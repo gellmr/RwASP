@@ -1,16 +1,16 @@
 $ErrorActionPreference = "Stop"
 
 # Configuration Variables
-$ProjectId = "rwasp-gcp"
-$Region = "australia-southeast2" # Melbourne
-$RepoName = "rwasp-gcp-docker-repo"
-$ServiceName = "rwasp-app"
+$ProjectId       = "rwasp-gcp"
+$Region          = "australia-southeast2" # Melbourne
+$RepoName        = "rwasp-gcp-docker-repo"
+$ServiceName     = "rwasp-app"
 $SqlInstanceName = "rwasp-sql-instance"
-$DatabaseName = "rwasp_gcp_db"
-$BucketName = "rwasp-gcp-userpics"
+$DatabaseName    = "rwasp_gcp_db"
+$BucketName      = "rwasp-gcp-userpics"
 
 # Secrets File (not in repo)
-$SecretsFile = "$HOME\sensitive\rwasp-gcp\secrets.md"
+$SecretsFile = "C:\sensitive\rwasp-gcp\secrets.md"
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host " GCP Redeploy Script" -ForegroundColor Cyan
