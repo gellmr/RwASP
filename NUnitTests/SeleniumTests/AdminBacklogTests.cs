@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
@@ -15,28 +15,6 @@ namespace NUnitTests.SeleniumTests
     public string? pagLink2Css = "a[href=\"/admin/orders/2\"]";
     public string? backLogRowCss = "tr.backlogCursorRow";
 
-    //[Test]
-    //public void BacklogPage_Search_OrderPlaced()
-    //{
-    //  // Date parsing behavior needs work.
-    //  GoToBackLog();
-    //  const string searchCss = "input[placeholder='Search backlog']";
-    //  try
-    //  {
-    //    var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-    //    // Enter a search string to see if the OrderPlaced column is searchable.
-    //    IWebElement searchElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(searchCss)));
-    //    searchElement.SendKeys("18/09/2025");
-    //    // Should see 3 results
-    //    // 18/09/2025 7:49:35 PM +08:00  109 user111  392943d5...            User  user-111@gmail.com 0.00  15.00   1 Thinking Cap  OrderPlaced
-    //    // 18/09/2025 6:07:37 PM +08:00  108 John Doe            D7AC05A9... Guest john@example.com   0.00  100.00  1 Life Jacket OrderPlaced
-    //    // 18/09/2025 6:00:44 PM +08:00  107 John Doe            D7AC05A9... Guest john@example.com   0.00  90.00   1 Chess Pieces - Full Set OrderPlaced
-    //  }
-    //  catch (WebDriverTimeoutException){
-    //    Assert.Fail("BacklogPage_SearchByOrderPlaced - Timeout occurred");
-    //  }
-    //}
-
     [Test]
     public void BacklogPage_PaginationShouldWork()
     {
@@ -44,9 +22,17 @@ namespace NUnitTests.SeleniumTests
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-
         By elementsLocator = By.CssSelector(backLogRowCss);
-        IList<IWebElement> allElements = wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(elementsLocator));
+
+        // Safely fetch Page 1 elements with retry logic for stability
+        IList<IWebElement> allElements = wait.Until(d => {
+          try {
+            var rows = d.FindElements(elementsLocator);
+            return (rows.Count == 12) ? rows : null;
+          } catch (StaleElementReferenceException) {
+            return null;
+          }
+        });
         Assert.That(allElements.Count, Is.EqualTo(12), "BacklogPage_PaginationShouldWork - Page 1 does not have 12 rows");
 
         // Grab the first row's "#Result" column text (which should be "1")
@@ -57,14 +43,33 @@ namespace NUnitTests.SeleniumTests
         // Grab all Order IDs on Page 1 to ensure they don't overlap with Page 2
         var page1OrderIds = allElements.Select(r => r.GetAttribute("data-orderid")).ToList();
 
-        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(pagLink2Css)));
+        // Find all matching anchors across the DOM (including any hidden responsive duplicates)
+        IWebElement clickableButton = wait.Until(d => {
+          var elements = d.FindElements(By.CssSelector(pagLink2Css));
+          foreach (var el in elements){ if (el.Displayed){ return el; } } // Return the first element that is actually visible to the user
+          return null; // Keep waiting if none are visible yet
+        });
         clickableButton.Click();
 
-        // Wait explicitly for the first row's Result # to change to "13", proving React has finished rendering Page 2
-        wait.Until(driver => {
-            var rows = driver.FindElements(elementsLocator);
+        wait.Until(d => {
+          try 
+          {
+            var rows = d.FindElements(elementsLocator);
             if (rows.Count == 0) return false;
-            return rows.First().FindElement(By.CssSelector("td:first-child")).Text.Trim() == "13";
+        
+            var firstCell = rows.First().FindElement(By.CssSelector("td:first-child"));
+            return firstCell.Text.Trim() == "13";
+          }
+          catch (StaleElementReferenceException)
+          {
+            // React is mid-render; ignore and let WebDriverWait retry
+            return false;
+          }
+          catch (NoSuchElementException)
+          {
+            // The <td> hasn't mounted yet inside the row; ignore and retry
+            return false;
+          }
         });
 
         allElements = wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(elementsLocator));

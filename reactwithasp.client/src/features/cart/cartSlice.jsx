@@ -52,6 +52,7 @@ export const cartSlice = createSlice({
     //   qty: 5
     // }
     isLoading: false,
+    isSyncing: false,
   },
   reducers: {
     setCart: (state, action) => {
@@ -60,6 +61,7 @@ export const cartSlice = createSlice({
     },
     setCartQuantity: (state, action) => {
       state.isLoading = true;
+      state.isSyncing = true;
       // Find the item (isp) in our array of InStockProducts
       const cartIndex  = state.cartLines.findIndex(item => item.cartLineID === action.payload.cartLineID); // -1 if not found in cart.
       if ((cartIndex === -1))
@@ -98,8 +100,12 @@ export const cartSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(updateCartOnServer.fulfilled, (state, action) => {
+    builder.addCase(updateCartOnServer.pending, (state) => {
+      state.isSyncing = true;
+    })
+    .addCase(updateCartOnServer.fulfilled, (state, action) => {
       console.log("updateCartOnServer.fulfilled");
+      state.isSyncing = false;
       const ispCopy = (action.payload.isp === null) ? null : JSON.parse(JSON.stringify(action.payload.isp));
       const removal = (action.payload.qty === 0) ? true : false;
       if (removal) {
@@ -121,7 +127,8 @@ export const cartSlice = createSlice({
 
     .addCase(updateCartOnServer.rejected, (state, action) => {
       console.log("updateCartOnServer.rejected");
-      if (action.payload.error == "ispRemove") {
+      state.isSyncing = false;
+      if (action.payload?.error == "ispRemove") {
         // Stale cookie has outdated ispID. Remove row from cart...
         state.cartLines = state.cartLines.filter(row => (row.isp.id != action.payload.ispRemove));
       }

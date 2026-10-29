@@ -2,8 +2,8 @@ import ResponsiveLink from '@/Nav/Links/ResponsiveLink';
 
 function BackLogBtn({ orderCount })
 {
-  const tinyContent = <>Orders Backlog</>;
-  const markup = <>Backlog</>;
+  const tinyContent = <>Orders</>;
+  const markup = <>Orders</>;
 
   return (
     <ResponsiveLink

@@ -1,13 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setAdminUserAccounts } from '@/features/admin/useraccounts/adminUserAccountsSlice.jsx'
 import { axiosInstance } from '@/axiosDefault.jsx';
+import usePagedSearch from '@/Admin/PagedSearch.jsx';
 import AdminTitleBar from "@/Admin/AdminTitleBar";
+import SearchInput from "@/Search/SearchInput";
+import PagLinks from "@/Admin/PagLinks";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image';
 import DragDropUserPicModal from "@/DragDropUserPicModal";
-import { useNavigate, NavLink } from "react-router";
+import { NavLink } from "react-router";
 import { nullOrUndefined } from '@/MgUtility.js';
 
 import '@/AdminUserShared.css'
@@ -15,52 +18,53 @@ import '@/AdminUserAccounts.css'
 
 const AdminUserAccounts = () =>
 {
-  const modalRef = useRef();
+  const dispatch     = useDispatch();
+  const modalRef     = useRef();
+  const rowsPerPage  = 10;
 
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const myRouteSeg = "/admin/useraccounts";
 
   const userAccounts = useSelector(state => state.adminUserAccounts.users);
-  const loginValue = useSelector(state => state.login.user);
+  const loginValue   = useSelector(state => state.login.user);
+  const myUserId     = (loginValue === null) ? undefined : loginValue.appUserId;
 
-  const myUserId = (loginValue === null) ? undefined : loginValue.appUserId;
+  // Define API fetcher passed into custom hook
+  const fetchAdminUserAccs = useCallback(async (page, search, limit, signal) => {
+    let query = `?ps=${limit}`;
+    if (search && search.trim()) {
+      query += `&bs=${encodeURIComponent(search.trim())}`;
+    }
+    try {
+      const response = await axiosInstance.get(`/api/admin-useraccounts/${page}${query}`, { signal });
+      dispatch(setAdminUserAccounts(response.data.users || []));
+      return response.data;
+    } catch (err) {
+      if (err.name !== 'CanceledError') {
+        dispatch(setAdminUserAccounts([]));
+      }
+      throw err;
+    }
+  }, [dispatch]);
 
-  const navigate = useNavigate();
-  if (loginValue === null) {
-    //navigate('/admin');
-  }
-
-  useEffect(() => {
-    fetchAdminUserAccs();
-  }, []);
-
-  async function fetchAdminUserAccs() {
-    setError("");
-    setIsLoading(true);
-    const url = window.location.origin + "/api/admin-useraccounts";
-    axiosInstance.get(url).then((response) => {
-      console.log('Data fetched:', response.data);
-      dispatch(setAdminUserAccounts(response.data));
-    })
-    .catch((error) => {
-      console.error('Request failed after retries:', error);
-      setError(error);
-      dispatch(setAdminUserAccounts([]));
-    })
-    .finally(() => {
-      console.log('Request (and retries) completed. This runs regardless of success or failure.');
-      setIsLoading(false);
-    });
-  }
+  const {
+    totResults,
+    totPages,
+    currPage,
+    searchTerm,
+    isLoading,
+    error,
+    handleSearchChange,
+  } = usePagedSearch(fetchAdminUserAccs, myRouteSeg, rowsPerPage);
+  
+  const getSequenceNumber = (index) => (currPage - 1) * rowsPerPage + index + 1;
   
   const handleClickPhoto = function (event) {
-    const idv = event.target.dataset.foruser;
-    const utype = event.target.dataset.usertype;
-    modalRef.current.showModal(idv, utype);
+    const idv = event.currentTarget.dataset.foruser;
+    const utype = event.currentTarget.dataset.usertype;
+    modalRef.current?.showModal(idv, utype);
   }
 
-  const userRowMarkup = function (user, isCurrentUser) {
+  const userRowMarkup = function (user, index, isCurrentUser) {
     const isGuest = user.guestID !== null;
     let usertype = '';
     let idval = '';
@@ -81,37 +85,42 @@ const AdminUserAccounts = () =>
     );
 
     return (
-      <Row key={idval} className={isCurrentUser ? "adminUserAccRow currUserRow" : 'adminUserAccRow'} data-fullname={user.fullName}>
+      <div key={idval}>
+        <div className="d-none d-sm-block custRowKey">
+          {getSequenceNumber(index)}
+        </div>
+        <Row className={isCurrentUser ? "adminUserAccRow currUserRow" : 'adminUserAccRow'} data-fullname={user.fullName}>
 
-        {/*large*/}
-        <Col xs={4} className="adminUserAccCell d-none d-sm-flex adminUserAccImage adminUserAccLarge">
-          <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserAccCurrPhoto" referrerPolicy="no-referrer" data-foruser={idval} data-usertype={usertype} />
-        </Col>
+          {/*large*/}
+          <Col xs={4} className="adminUserAccCell d-none d-sm-flex adminUserAccImage adminUserAccLarge">
+            <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserAccCurrPhoto" referrerPolicy="no-referrer" data-foruser={idval} data-usertype={usertype} />
+          </Col>
 
-        <Col xs={12} sm={8}>
-          <Row className="adminUserAccDetailsBox">
-            <Col className="adminUserAccCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col> <Col xs={9} className="adminUserAccCell fullNameCell">{user.fullName}</Col>
-            <Col className="adminUserAccCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserAccCell mgGuid">{idval}</Col>
-            {phoneRow}
-            <Col className="adminUserAccCell" xs={3}>Email</Col>                                             <Col xs={9} className="adminUserAccCell">{user.email}</Col>
-            <Col className="adminUserAccCell" xs={3}>Account Type</Col>                                      <Col xs={9} className="adminUserAccCell accountTypeCell">{accountType}</Col>
-          </Row>
-        </Col>
+          <Col xs={12} sm={8}>
+            <Row className="adminUserAccDetailsBox">
+              <Col className="adminUserAccCell" xs={3}>{isCurrentUser ? "(Logged in as) " : 'Full Name'}</Col> <Col xs={9} className="adminUserAccCell fullNameCell">{user.fullName}</Col>
+              <Col className="adminUserAccCell" xs={3}>User&nbsp;ID</Col>                                      <Col xs={9} className="adminUserAccCell mgGuid">{idval}</Col>
+              {phoneRow}
+              <Col className="adminUserAccCell" xs={3}>Email</Col>                                             <Col xs={9} className="adminUserAccCell">{user.email}</Col>
+              <Col className="adminUserAccCell" xs={3}>Account Type</Col>                                      <Col xs={9} className="adminUserAccCell accountTypeCell">{accountType}</Col>
+            </Row>
+          </Col>
 
-        {/*small*/}
-        <Col xs={12} className="adminUserAccCell d-sm-none adminUserAccImage adminUserAccSmall">
-          <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserAccCurrPhoto" referrerPolicy="no-referrer" data-foruser={idval} data-usertype={usertype} />
-        </Col>
+          {/*small*/}
+          <Col xs={12} className="adminUserAccCell d-sm-none adminUserAccImage adminUserAccSmall">
+            <Image src={(user.picture === undefined || user.picture === null) ? '/thumbs/noProfile120.png' : user.picture} rounded onClick={handleClickPhoto} className="adminUserAccCurrPhoto" referrerPolicy="no-referrer" data-foruser={idval} data-usertype={usertype} />
+          </Col>
 
-        <Col xs={12} className="adminUserAccDetailLinks">
-          <NavLink to={editLink} className={isCurrentUser ? "btn btn-light editAccLink editCurrUser" : "btn btn-light editAccLink"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
-            Edit Account <i className="bi bi-pencil-square"></i>
-          </NavLink>
-          <NavLink to={ordersLink} className={isCurrentUser ? "btn btn-light" : "btn btn-light"} style={{ textWrapMode: "nowrap", textDecoration: 'none' }}>
-            View Orders <i className="bi bi-arrow-right-short"></i>
-          </NavLink>
-        </Col>
-      </Row>
+          <Col xs={12} className="adminUserAccDetailLinks">
+            <NavLink to={editLink} className={isCurrentUser ? "btn btn-light editAccLink editCurrUser" : "btn btn-light editAccLink"} style={{ whiteSpace: "nowrap", textDecoration: 'none' }}>
+              Edit Account <i className="bi bi-pencil-square"></i>
+            </NavLink>
+            <NavLink to={ordersLink} className={isCurrentUser ? "btn btn-light" : "btn btn-light"} style={{ whiteSpace: "nowrap", textDecoration: 'none' }}>
+              View Orders <i className="bi bi-arrow-right-short"></i>
+            </NavLink>
+          </Col>
+        </Row>
+      </div>
     );
   }
 
@@ -123,7 +132,9 @@ const AdminUserAccounts = () =>
         </Col>
         <Col xs={12} lg={8} className="adminContainUserAccRow">
           <DragDropUserPicModal ref={modalRef} />
-          {userAccounts.map(user => userRowMarkup(user, (!nullOrUndefined(myUserId) && myUserId == user.id )))}
+          {(userAccounts || []).map((user, index) => 
+            userRowMarkup(user, index, !nullOrUndefined(myUserId) && myUserId === user.id)
+          )}
         </Col>
         <Col xs={0} lg={2}>
           {/*RSPACE*/}
@@ -147,6 +158,12 @@ const AdminUserAccounts = () =>
               <AdminTitleBar titleText="Customer Accounts" construction={false} />
             </Col>
             <Col xs={12}>
+              <div className="custAccsPagination">
+                <PagLinks length={totResults} totPages={totPages} currPage={currPage} myRoute={myRouteSeg} />
+              </div>
+              <div className="custAccSearchField">
+                <SearchInput initVal={searchTerm} placeholder="Search" parentHandleInputChange={handleSearchChange} style={{ width: '500px' }} />
+              </div>
               {markup}
             </Col>
           </Row>

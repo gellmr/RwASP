@@ -16,7 +16,7 @@ function LogOutButton()
       console.log('Logout success. ', response.data);
       dispatch(setLogin(null));
       console.log("Navigate to /");
-      navigate('/');
+      navigate('/logoutsuccess');
     })
     .catch((err) => {
       debugger;
@@ -27,7 +27,7 @@ function LogOutButton()
   };
 
   const tinyMarkup = () => (
-    <>Logout</>
+    <>Logout&nbsp;Admin</>
   );
 
   const markup = () => (

@@ -55,6 +55,9 @@ const ShopLayout = () =>
   if (location.pathname.includes("/myorders/")) {
     transparentClass = "shopLayoutTransparent bgStrongTransparent";
   }
+  if (location.pathname === "/logoutsuccess"){
+    transparentClass = "shopLayoutTransparent bgOrderFullTransparent";
+  }
   const bgTransparentClass = transparentClass;
 
   // Background css

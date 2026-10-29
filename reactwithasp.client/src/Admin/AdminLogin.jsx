@@ -101,13 +101,13 @@ function AdminLogin()
             <div style={{ marginBottom: 40 }}></div>
 
             <Stack direction="horizontal" gap={3} className="d-none d-sm-flex" style={{ marginTop: 10 }}>
-              <div className="me-auto">Other sign-in options:</div>
+              <div className="me-auto other-signin">Other sign-in options:</div>
               <div className="vr" />
               <GoogleLoginComp />
             </Stack>
             <Stack direction="vertical" className="d-flex d-sm-none" style={{ marginTop: 10 }}>
               <div className="me-auto"></div>
-              <div style={{ maxWidth: 250, alignSelf: "flex-start" }}>
+              <div className="other-signin" style={{ maxWidth: 250, alignSelf: "flex-start" }}>
                 Other sign-in options...
               </div>
               <hr />
@@ -115,8 +115,40 @@ function AdminLogin()
                 <GoogleLoginComp />
               </div>
             </Stack>
-
           </Row>
+
+          <Row>
+            <div className="d-none d-sm-block">
+              <div className="disclaimer" style={{paddingTop:35}}>
+                You can click through with Google sign-in to access the full Admin Console features.
+              </div>
+              <div className="disclaimer">
+                Admin Console allows you to search for orders, view customer accounts, and BI reports.
+              </div>
+              <div className="disclaimer" style={{paddingTop:10}}>
+                The customer accounts are all pretend data, not real people (pretend names, email addresses, etc).
+              </div>
+              <div className="disclaimer">
+                The profile pictures are from an anonymous free api called <a href="https://randomuser.me">randomuser.me</a>
+              </div>
+              <div className="disclaimer">
+                There is no credit card info, or real financial data.
+              </div>
+            </div>
+            <div className="d-block d-sm-none">
+              <div className="disclaimer" style={{paddingTop:35, textAlign:'justify'}}>
+                You can click through with Google sign-in to access the full Admin Console features. Admin Console allows you to search for orders, view customer accounts, and BI reports. The customer accounts are all pretend data, not real people (pretend names, email addresses, etc). The profile pictures are from an anonymous free api called <a href="https://randomuser.me">randomuser.me</a>. There is no credit card info, or real financial data.
+              </div>
+            </div>
+            <hr style={{marginTop:'15px', color: 'rgb(179, 179, 179)'}} />
+            <div className="disclaimer" style={{fontSize: 15, marginTop:2, paddingBottom: 16}}>
+              Below are some screenshots...
+            </div>
+            <img src="/graphics/example-con-backlog.png" />
+            <img src="/graphics/example-con-bi.png" style={{marginTop:28}}/>
+            <img src="/graphics/example-con-users.png" style={{marginTop:38}}/>
+          </Row>
+
         </Form>
       </div>
     </>

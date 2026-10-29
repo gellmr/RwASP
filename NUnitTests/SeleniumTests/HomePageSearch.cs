@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using SeleniumExtras.WaitHelpers;
 using System;
@@ -26,6 +26,11 @@ namespace NUnitTests.SeleniumTests
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
         IWebElement searchElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(searchCss)));
         searchElement.SendKeys("fla");
+
+        // Force the browser to register the value change immediately
+        IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+        js.ExecuteScript("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", searchElement);
+        js.ExecuteScript("arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", searchElement);
 
         string? expectedText1 = "Flat packed 30,000 seat stadium.";
         string? expectedText2 = "Corner Flags $25";

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { setInStock, setNoStock } from '@/features/inStock/inStockSlice.jsx'
 import { useParams } from 'react-router';
+import axios from 'axios';
 import { axiosInstance } from '@/axiosDefault.jsx';
 import ProductSearchBox from "@/Shop/ProductSearchBox";
 import PaginationLinks from "@/Shop/PaginationLinks";
@@ -57,31 +58,41 @@ function Shop()
   const gotItems = cartProducts.length > 0; // true if there are items in cart
   
   useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchProducts()
+    {
+      // Get list of products from server. Get all products or search by category.
+      const cat = category !== undefined ? "/category/" + category : "";
+      const query = (search !== undefined && search !== "") ? "?search=" + search : "";
+      const url = window.location.origin + "/api/products" + cat + query;
+
+      console.log("Axios retry..." + url);
+      axiosInstance.get(url, { signal: controller.signal }).then((response) => {
+        console.log('Data fetched:', response.data); // response.data is already JSON
+        dispatch(setInStock(response.data)); // Dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) {
+          console.log("Stale search request aborted:", url);
+          return;
+        }
+        setError(error);
+        dispatch(setNoStock()); // Failed to load products
+        setIsLoading(false);
+      })
+      .finally(() => {
+        console.log('fetchProducts Request (and retries) completed.');
+      });
+    }
+
     fetchProducts();
+
+    return () => {
+      controller.abort();
+    };
   }, [category, search]);
-
-  async function fetchProducts()
-  {
-    // Get list of products from server. Get all products or search by category.
-    const cat = category !== undefined ? "/category/" + category : "";
-    const query = (search !== undefined && search !== "") ? "?search=" + search : "";
-    const url = window.location.origin + "/api/products" + cat + query;
-
-    console.log("Axios retry..." + url);
-    axiosInstance.get(url).then((response) => {
-      console.log('Data fetched:', response.data); // response.data is already JSON
-      dispatch(setInStock(response.data)); // Dispatch 'setInStock' action to the reducer of our inStockSlice. Pass the action payload.
-    })
-    .catch((error) => {
-      //console.error('Request failed after retries:', error);
-      setError(error);
-      dispatch(setNoStock()); // Failed to load products
-    })
-    .finally(() => {
-      console.log('fetchProducts Request (and retries) completed.');
-      setIsLoading(false);
-    });
-  }
 
   const loadingSpinner = function () {
     return (

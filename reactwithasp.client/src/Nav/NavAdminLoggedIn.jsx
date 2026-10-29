@@ -5,6 +5,8 @@ import StackedLinks from "@/Nav/StackedLinks";
 
 import ShopButton from "@/Nav/Links/ShopButton";
 import ProductsBtn from '@/Nav/Links/ProductsBtn';
+import BiBtn from '@/Nav/Links/BiBtn';
+import HistBtn from '@/Nav/Links/HistBtn';
 import BackLogBtn from '@/Nav/Links/BackLogBtn';
 import CustAccountsBtn from '@/Nav/Links/CustAccountsBtn';
 import AdminConsoleBtn from "@/Nav/Links/AdminConsoleBtn";
@@ -20,6 +22,8 @@ function NavAdminLoggedIn()
       linkB={<BackLogBtn />}
       linkC={<CustAccountsBtn />}
       linkD={<ProductsBtn />}
+      linkE={<BiBtn />}
+      linkF={<HistBtn />}
     />
   );
 
@@ -29,6 +33,8 @@ function NavAdminLoggedIn()
       linkB={<BackLogBtn />}
       linkC={<CustAccountsBtn />}
       linkD={<ProductsBtn />}
+      linkE={<BiBtn />}
+      linkF={<HistBtn />}
     />
   );
 

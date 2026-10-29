@@ -144,11 +144,27 @@
   font-size: 12px;
   max-width: 195px;
 }
+.mg-admin-login-form {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  max-width: 600px;
+}
+.mg-admin-login-form .disclaimer{
+  color: #747474;
+  font-size: 10px;
+  line-height: 20px;
+}
+.mg-admin-login-form .disclaimer a{
+  text-decoration: none;
+}
 .mg-admin-login-form .btn {
   font-size: 12px;
 }
 .mg-admin-login-form input {
   font-size: 12px;
+}
+.mg-admin-login-form .other-signin{
+  padding-left:9px;
 }
 .bi-wrench {
   font-size: 20px;
@@ -550,12 +566,7 @@ th, td {
 
 
 
-/* ADMIN LOGIN PAGE */
-.mg-admin-login-form {
-  margin-top: 30px;
-  margin-bottom: 50px;
-  max-width: 600px;
-}
+
 
 /* ================================================= */
 /* ========= OTHER BREAKPOINTS BELOW HERE ========== */
@@ -576,7 +587,6 @@ th, td {
   }
   .mg-nav-items {
     /*border: 3px dashed purple;*/
-    align-items: center;
   }
   .mg-category-menu-r {
     /*border: 3px dashed purple;*/

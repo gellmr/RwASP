@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using SeleniumExtras.WaitHelpers;
 using NUnitTests.Helpers;
@@ -18,7 +18,7 @@ namespace NUnitTests.SeleniumTests
     public void EmptyCartPage_LoadsSuccessfully()
     {
       driver.Navigate().GoToUrl(viteUrl + "/cart");
-      string titleElement = ".shopLayoutTransparent.bgCartFullTransparent h2";
+      string titleElement = ".shopLayoutTransparent h2";
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
@@ -111,6 +111,11 @@ namespace NUnitTests.SeleniumTests
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(addBtn));
         clickableButton.Click(); // Add a second item
         wait.Until(ExpectedConditions.TextToBePresentInElement(medCartBtn, cartHasTwoItem));
+
+        // Click should have caused DOM tree teardown / rebuild. Therefore we must refresh our vars...
+        rows = driver.FindElements(By.CssSelector(inCartRows)).ToList();
+        row1 = rows[0];
+        summaryRow = rows[rows.Count - 1];
       }
       catch (WebDriverTimeoutException){
         Assert.Fail("Failed within Cart during IncrementInCart_QtyAndPriceUpdates test.");

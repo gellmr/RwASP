@@ -1,4 +1,4 @@
-﻿using NUnitTests.Helpers;
+using NUnitTests.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;

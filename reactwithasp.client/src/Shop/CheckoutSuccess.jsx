@@ -19,12 +19,12 @@ function CheckoutSuccess()
   }, []);
 
   return (
-    <>
+    <div className="checkoutThanks">
       <h2 style={{ marginTop: "20px", marginBottom:"15px" }}>Thanks!</h2>
       <p className={"mb-4"}>Your order has been submitted. We'll ship your goods as soon as possible.</p>
 
       <NavLink to={"/"} className={"btn btn-primary"}>Continue Shopping</NavLink>
-    </>
+    </div>
   );
 }
 export default CheckoutSuccess;

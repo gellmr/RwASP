@@ -9,6 +9,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from "react-router";
 import { clearCart } from '@/features/cart/cartSlice.jsx'
+import { setGuest } from '@/features/login/loginSlice.jsx'
 import { useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -134,6 +135,16 @@ const CheckoutFormik = () =>
         const jsonData = { cart: structuredClone(cart), ...values };
         const options = { headers: { 'Content-Type': 'application/json' } };
         const response = await axiosInstance.post(url, jsonData, options);
+        if (guestID) {
+          const fn = `${values.firstName} ${values.lastName}`.trim();
+          dispatch(setGuest({
+            id: guestID,
+            firstname: values.firstName,
+            lastname: values.lastName,
+            fullname: fn,
+            email: values.shipEmail
+          }));
+        }
         await dispatch(clearCart());
         navigate("/checkoutsuccess");
       } catch (error) {

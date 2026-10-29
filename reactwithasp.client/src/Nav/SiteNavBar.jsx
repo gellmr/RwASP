@@ -54,7 +54,7 @@ const SiteNavBar = ({ brandText = "SPORTS STORE", linkTo = "/" }) =>
 
   return (
     <>
-      <Navbar expand="sm" className="bg-body-tertiary bg-dark" id="navBar" data-bs-theme="dark">
+      <Navbar expand="md" className="bg-body-tertiary bg-dark" id="navBar" data-bs-theme="dark">
         <Container fluid={useFluid} style={{ maxWidth:"100%"}}>
           <NavLink to={linkTo} className="storeBrand" style={{ textWrapMode: "nowrap"}}>{brandText}</NavLink>
           {navContent()}

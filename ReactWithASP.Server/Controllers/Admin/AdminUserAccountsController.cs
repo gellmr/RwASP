@@ -73,29 +73,44 @@ namespace ReactWithASP.Server.Controllers.Admin
       }
     }
 
-    [HttpGet("admin-useraccounts")]
-    public ActionResult GetUserAccounts()
+    [HttpGet("admin-useraccounts/{page:int?}")]
+    public ActionResult GetUserAccounts(int page = 1, [FromQuery] int ps = 10, [FromQuery] string? bs = null)
     {
       try
       {
-        // Grab the current user id from claims of the currently logged in user.
-        string currentUserId = (User.Identity.IsAuthenticated) ? User.FindFirstValue(ClaimTypes.NameIdentifier) : string.Empty;
+        if (page < 1) page = 1;
+        if (ps < 1) ps = 10;
 
-        AppUser? curr = _userManager.Users.FirstOrDefault(user => user.Id == currentUserId);
-        UserDTO currentUser = UserDTO.TryParse(curr);
+        // Grab the current user id from claims of the currently logged in user.
+        string currentUserId = string.Empty;
+        if (User?.Identity?.IsAuthenticated == true){
+          currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+        }
+
+        // Safely parse current user if found
+        UserDTO? currentUser = null;
+        if (!string.IsNullOrEmpty(currentUserId)){
+          AppUser? curr = _userManager.Users.FirstOrDefault(user => user.Id == currentUserId);
+          if (curr != null){
+            currentUser = UserDTO.TryParse(curr);
+          }
+        }
 
         List<UserDTO> appUsers = _userManager.Users
           .Where(u => u.Id != currentUserId)
-          .OrderBy(user => user.PhoneNumber)                  // The rest of the list is sorted by phone number.
-          .Select( u => UserDTO.TryParse(u))
+          .OrderBy(user => user.PhoneNumber)
+          .AsEnumerable()
+          .Select(u => UserDTO.TryParse(u))
+          .Where(u => u != null) // Ensure no nulls from TryParse
           .ToList();
 
-        List<Guest> dguests = _guestRepo.Guests.Where(g =>
+        List<Guest> dguests = _guestRepo.Guests?.Where(g =>
           !string.IsNullOrEmpty(g.Email) &&
           !string.IsNullOrEmpty(g.FirstName)
-        ).ToList();
+        ).ToList() ?? new List<Guest>();
 
-        List<UserDTO> guests = dguests.Select(u => new UserDTO{
+        List<UserDTO> guests = dguests.Select(u => new UserDTO
+        {
           Email = u.Email,
           GuestID = u.ID,
           Id = null,
@@ -106,12 +121,32 @@ namespace ReactWithASP.Server.Controllers.Admin
         .OrderBy(u => u.FullName)
         .ToList();
 
-        List<UserDTO> allUsers = [currentUser, // Ensure current user appears at top
-          .. guests,   // Show guests above users
-          .. appUsers, // Show users
-        ];
+        List<UserDTO> allUsers = new List<UserDTO>();
+        if (currentUser != null){ allUsers.Add(currentUser); } // Ensure current user appears at top
+        allUsers.AddRange(guests);   // Show guests above users
+        allUsers.AddRange(appUsers); // Show users
 
-        return Ok(allUsers);
+        // Apply search filter if search term is provided
+        if (!string.IsNullOrEmpty(bs))
+        {
+          string term = bs.Trim().ToLower();
+          allUsers = allUsers.Where(u =>
+            u != null && (
+              (u.FullName != null && u.FullName.ToLower().Contains(term)) ||
+              (u.Email    != null && u.Email.ToLower().Contains(term))    ||
+              (u.UserName != null && u.UserName.ToLower().Contains(term))
+            )
+          ).ToList();
+        }
+        int totalRows = allUsers.Count;
+
+        // Apply pagination slice in memory
+        var pagedUsers = allUsers
+          .Skip((page - 1) * ps)
+          .Take(ps)
+          .ToList();
+
+        return Ok(new { users = pagedUsers, totalRows = totalRows });
       }
       catch (Exception ex)
       {

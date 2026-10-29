@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-﻿using Microsoft.Extensions.Configuration;
+using NUnit.Framework;
+using Microsoft.Extensions.Configuration;
 using NUnitTests.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -74,13 +74,13 @@ namespace NUnitTests.SeleniumTests
 
     private async Task StartVite(){
       TerminateExistingProcesses("node");
-      // This runs "npm run dev" in the given working directory. It will cause Vite to launch.
+      // This runs "npm start" in the given working directory. It will cause Vite to launch.
       viteProcess = new Process{
         StartInfo = GetDefProcessInfo( new ProcessStartInfo{
           FileName = "C:/Program Files/nodejs/npm.cmd",
-          Arguments = "run dev",
-          //WorkingDirectory = "../reactwithasp.client", // Root of the SPA project.
-          WorkingDirectory = "C:/Users/Michael Gell/source/repos/RwASP/reactwithasp.client", // Root of the SPA project.
+          Arguments = "start",
+          //WorkingDirectory = "../angularwithasp.client", // Root of the SPA project.
+          WorkingDirectory = "C:/repos/RwASP/reactwithasp.client", // Root of the SPA project.
         })
       };
       StartProcess(viteProcess, "ViteSPA", "C:/temp/ViteSPA.txt");
@@ -96,7 +96,7 @@ namespace NUnitTests.SeleniumTests
           //Arguments = $"run --urls \"{backendUrl}\" --launch-profile https",
           //Arguments = $"run --urls \"{backendUrl}\"",
           Arguments = "run",
-          WorkingDirectory = "C:/Users/Michael Gell/source/repos/RwASP/ReactWithASP.Server", // Root of the backend server project.
+          WorkingDirectory = "C:/repos/RwASP/reactwithasp.Server", // Root of the backend server project.
         })
       };
       StartProcess(backendProcess, "Backend", "C:/temp/Backend.txt");

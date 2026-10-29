@@ -15,7 +15,9 @@ namespace NUnitTests.SeleniumTests
     public string autoBtn = ".checkoutSubmitBtnGroup button[type=\"button\"]";
     public string validationElement = ".error";
     public string fieldElement = "input.form-control";
-    public string coSuccess = "#noShopLayout .shopLayoutTransparent";
+    //public string coSuccess = "#noShopLayout .shopLayoutTransparent";
+    public string coSuccess = "#shopLayout .shopLayoutTransparent";
+    public string coThanks = "#noShopLayout .checkoutThanks";
 
     public IWebElement? v_firstName = null;
     public IWebElement? v_lastName = null;
@@ -111,13 +113,28 @@ namespace NUnitTests.SeleniumTests
       var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
       try
       {
-        // Click N times...
-        for(int i = 0; i < clickCount; i++) {
-          IWebElement autoButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(autoBtn)));
+        // Click N times with safety against stale elements and DOM re-renders
+        for (int i = 0; i < clickCount; i++)
+        {
+          IWebElement autoButton = wait.Until(d =>
+          {
+            try
+            {
+              var element = d.FindElement(By.CssSelector(autoBtn));
+              return (element.Displayed && element.Enabled) ? element : null;
+            }
+            catch (StaleElementReferenceException)
+            {
+              return null;
+            }
+          });
+          IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+          js.ExecuteScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center', inline: 'nearest'});", autoButton);
           autoButton.Click();
         }
 
-        wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(fieldElement)));
+        // Wait for fields, extract them, and process
+        wait.Until(d => d.FindElements(By.CssSelector(fieldElement)).Count > 0);
         IReadOnlyCollection<IWebElement> allFields = driver.FindElements(By.CssSelector(fieldElement));
         List<IWebElement> fields = allFields.ToList();
         GetFields(fields);
@@ -125,24 +142,34 @@ namespace NUnitTests.SeleniumTests
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(coSubmit)));
         clickableButton.Click();
 
-        IWebElement coSuccessElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(coSuccess)));
+        IWebElement coSuccessElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(coThanks)));
         string successText = TestHelpers.TrimAndFlattenString(coSuccessElement.Text);
         Assert.That(successText, Does.Contain("Thanks!"), "Checkout - success - Title - incorrect.");
-        Assert.That(successText, Does.Contain("Your order has been submitted. We'll ship your goods as soon as possible."), "Checkout - success - Message - incorrect.");
+        Assert.That(successText, Does.Contain("Your order has been submitted"),              "Checkout - success - Message - incorrect.");
+        Assert.That(successText, Does.Contain("We'll ship your goods as soon as possible."), "Checkout - success - Message - incorrect.");
         Assert.That(successText, Does.Contain("Continue Shopping"), "Checkout - success - Button - incorrect.");
         Assert.That(driver.Url, Does.Contain("/checkoutsuccess"), "Failed to reach checkout success page.");
 
         myOrdNavBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdCssBtn)));
+
         // Instead of waiting on the cached element, poll the locator until text appears
-        wait.Until(ExpectedConditions.TextToBePresentInElementLocated(By.CssSelector(myOrdCssBtn), "My Orders (1)"));
+        // Poll until element contains either "My Orders (1)" OR "Orders (1)"
+        By myOrdLocator = By.CssSelector(myOrdCssBtn);
+        wait.Until(d => {
+          try { var el = d.FindElement(myOrdLocator); string txt = el.Text; return txt.Contains("My Orders (1)") || txt.Contains("Orders (1)"); }
+          catch (NoSuchElementException) { return false; }
+          catch (StaleElementReferenceException) { return false; }
+        });
+        
         // Re-fetch to ensure we have the latest DOM node for the final assertion
-        myOrdNavBtn = driver.FindElement(By.CssSelector(myOrdCssBtn));
+        myOrdNavBtn = driver.FindElement(myOrdLocator);
       }
       catch (WebDriverTimeoutException ex)
       {
         Assert.Fail("Timeout during SubmitAutofill " + ex.Message);
       }
-      Assert.That(myOrdNavBtn.Text, Does.Contain("My Orders (1)"), "Checkout - success - My Orders Button - incorrect.");
+      string finalNavText = myOrdNavBtn.Text;
+      Assert.That(finalNavText, Does.Contain("Orders (1)"), "Checkout - success - Orders Button - incorrect.");
     }
 
     [Test]
@@ -156,8 +183,22 @@ namespace NUnitTests.SeleniumTests
       GoToCheckout();
       var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
       try{
-        IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(coSubmit)));
-        clickableButton.Click();
+        IWebElement submitButton = wait.Until(d =>
+        {
+          try
+          {
+            var element = d.FindElement(By.CssSelector(coSubmit));
+            return (element.Displayed && element.Enabled) ? element : null;
+          }
+          catch (StaleElementReferenceException)
+          {
+            return null;
+          }
+        });
+        IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+        js.ExecuteScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center', inline: 'nearest'});", submitButton);
+        submitButton.Click();
+
         wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(validationElement)));
         IReadOnlyCollection<IWebElement> validations = driver.FindElements(By.CssSelector(validationElement));
         List<IWebElement> vals = validations.ToList();

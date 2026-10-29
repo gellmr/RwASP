@@ -6,7 +6,7 @@ import { useParams } from 'react-router';
 import { useNavigate } from "react-router";
 import Table from 'react-bootstrap/Table'
 import SearchInput from "@/Search/SearchInput";
-import PaginationLinks from "@/Shop/PaginationLinks";
+import PagLinks from "@/Admin/PagLinks";
 import AdminTitleBar from "@/Admin/AdminTitleBar";
 import Spinner from 'react-bootstrap/Spinner';
 import { axiosInstance } from '@/axiosDefault.jsx';
@@ -128,28 +128,19 @@ function AdminOrders()
     }
   };
 
-  const FoundMessage = function () {
-    const s = totResults === 1 ? '' : 's'; // Plural for readability
-    if (backlogSearch.trim() !== "" && totResults === 0) {
-      return <div>Found 0 orders</div>;
-    }
-    if (!gotResults) {
-      return <></>;
-    }
-    return (
-      <div>Found {totResults} order{s}</div>
-    );
-  }
-
   const pageMarkup = (
     <div className="adminOrderPMarkup">
       <div className="backlogSearchCont">
         <SearchInput parentHandleInputChange={handleSearchChange} initVal={backlogSearch} placeholder="Search backlog" />
       </div>
       {responsiveMessage}
-      {FoundMessage()}
-      <div className="adminOrderPagin">
-        <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
+      
+      <div className="adminOrderPagin d-flex d-md-none">
+        <PagLinks length={totResults} totPages={numPages} currPage={Number(pageIntP)} myRoute="/admin/orders" maxVisiblePages={5} />
+      </div>
+
+      <div className="adminOrderPagin d-none d-md-flex">
+        <PagLinks length={totResults} totPages={numPages} currPage={Number(pageIntP)} myRoute="/admin/orders" maxVisiblePages={10} />
       </div>
 
       {/* Render the table if we have search results */}
@@ -210,9 +201,14 @@ function AdminOrders()
         <div style={{ display: "flex", justifyContent: "center" }}>No records found</div>
       )}
 
-      <div className="adminOrderPagin">
-        <PaginationLinks numPages={numPages} currPage={pageIntP} myRoute={myRoute} />
+      <div className="adminOrderPagin d-none d-md-flex">
+        <PagLinks length={totResults} totPages={numPages} currPage={Number(pageIntP)} myRoute="/admin/orders" maxVisiblePages={10} />
       </div>
+
+      <div className="adminOrderPagin d-flex d-md-none">
+        <PagLinks length={totResults} totPages={numPages} currPage={Number(pageIntP)} myRoute="/admin/orders" maxVisiblePages={5} />
+      </div>
+
     </div>
   );
 

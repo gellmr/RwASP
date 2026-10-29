@@ -18,17 +18,18 @@ namespace NUnitTests.SeleniumTests
     public IWebElement? viewDetailsBtn = null;
     public IWebElement? adminProdsNavBtn = null;
     public const string shopPlusCss = ".addToCartBtnGroup button i.bi-plus";
-    public const string cartButtonCss = ".stackedLinks a.useResponsiveLink.md[href=\"/cart\"]";
+    public const string cartButtonCss = ".inlineLinks a.useResponsiveLink.mid[href=\"/cart\"]";
+    public const string cartInflightCand = ".inlineLink.linkB"; // this element may or may not have .inflight attached to it depending when we look.
     public const string cartHasOneItem = "Cart: 1";
     public const string cartHasTwoItem = "Cart: 2";
     public const decimal inCartItemOneUnitPrice = 20M;
-    public const string myOrdCssBtn = ".stackedLinks a.useResponsiveLink.md[href=\"/myorders\"]";
+    public const string myOrdCssBtn = ".inlineLinks a.useResponsiveLink.mid[href=\"/myorders\"]";
     public const string myOrdPageTitleCss = ".shopLayoutTransparent h2";
     public const string myOrdPageHeadInfoCss = ".myOrdersHeadInfo.myOrdersHeadInfo";
     public const string myOrdPageBodyInfoCss = ".myOrdersRect";
     public const string joeAddress = "123 River Gum Way, Unit 10/150, Third Floor, The Tall Apartment Building (Inc), SpringField, WA, Australia, 6525";
     public const string myOrdPageViewDetailCss = ".myOrdersRect a.btn.myOrdViewDetBtn";
-    public const string myOrdDetPageTitleCss = "#myOrdDetailPage h4.adminTitleBar";
+    public const string myOrdDetPageTitleCss = "#myOrdDetailPage .adminTitleBar";
 
     public const string myOrdDetPageHeadInfoCss = ".myOrdDetailImageHead";
     public const string myOrdDetPageBodyInfoCss = ".myOrdDetailImageBody";
@@ -46,7 +47,7 @@ namespace NUnitTests.SeleniumTests
     public const string? backlogTopRowCss = "tr.backlogCursorRow";
     public string? backlogRow1TextResult = null; // Not const. Gets set later
 
-    public const string? adminProdNavLinkMed = "#adminLayout nav#navBar .stackedLinks a.useResponsiveLink.md[href=\"/admin/products\"]";
+    public const string? adminProdNavLinkMed = "#adminLayout nav#navBar .inlineLinks a.useResponsiveLink.mid[href=\"/admin/products\"]";
     public const string? adminProdsTitleCss = "#adminLayout .adminCont h4.adminTitleBar";
     public const string? adminProdsBottleImgCss = "#adminLayout .adminProductsAll .adminProdImage img[src=\"/thumbs/tilt-bottle.png\"]";
     public const string? adminProdsBottleRowCss = "#adminLayout .adminProductsAll .adminProductRow";
@@ -57,11 +58,20 @@ namespace NUnitTests.SeleniumTests
       try
       {
         var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        var fastWait = new WebDriverWait(driver, TimeSpan.FromSeconds(5)){ PollingInterval = TimeSpan.FromMilliseconds(15)}; // Use high-frequency polling wait (every 15ms) to catch rapid state changes.
         IWebElement plusButton = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(shopPlusCss)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(plusButton));
-        clickableButton.Click();
-        IReadOnlyCollection<IWebElement> cartButtons = driver.FindElements(By.CssSelector(cartButtonCss));
-        List<IWebElement> btns = cartButtons.ToList(); // There are 2 sizes used at different bootstrap breakpoints
+        clickableButton.Click(); // Trigger the click that causes the brief .inflight state
+        By locator = By.CssSelector(cartInflightCand);
+        // Rapidly watch for .inflight to appear and then disappear
+        fastWait.Until(d => {
+          try{ var btn = d.FindElement(locator); string classAttr = btn.GetAttribute("class") ?? ""; return classAttr.Contains("inflight"); }catch (StaleElementReferenceException){ return false; }
+        });
+        fastWait.Until(d => {
+          try{ var btn = d.FindElement(locator); string classAttr = btn.GetAttribute("class") ?? ""; return !classAttr.Contains("inflight"); }catch (StaleElementReferenceException){ return false; }
+        });
+        IReadOnlyCollection<IWebElement> cartButtons = driver.FindElements(locator);
+        List<IWebElement> btns = cartButtons.ToList();
         medCartBtn = btns[0];
       }
       catch (WebDriverTimeoutException ex)
@@ -117,7 +127,7 @@ namespace NUnitTests.SeleniumTests
       string? pageTitle = null;
       try
       {
-        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
         viewDetailsBtn = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(myOrdPageViewDetailCss)));
         IWebElement clickableButton = wait.Until(ExpectedConditions.ElementToBeClickable(viewDetailsBtn));
         clickableButton.Click();
@@ -238,6 +248,3 @@ namespace NUnitTests.SeleniumTests
     }
   }
 }
-
-
-

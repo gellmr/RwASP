@@ -18,6 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 IHostEnvironment env = builder.Environment;
 
+// Load seed data. (Not in source control)
+builder.Configuration.AddJsonFile("seed-data.json", optional: false, reloadOnChange: true);
+
 // Load either Development or Production JSON config. (Not in source control)
 builder.Configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 

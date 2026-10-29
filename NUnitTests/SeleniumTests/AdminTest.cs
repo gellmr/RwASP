@@ -17,7 +17,7 @@ namespace NUnitTests.SeleniumTests
     public string? vipUsername;
     public string? vipPassword;
 
-    public const string? custAccsNavBtnCss = "#adminLayout nav#navBar .stackedLinks a.useResponsiveLink.md[href=\"/admin/useraccounts\"]";
+    public const string? custAccsNavBtnCss = "#adminLayout nav#navBar .inlineLinks a.useResponsiveLink.mid[href=\"/admin/useraccounts\"]";
     public const string? custAccsPageTitleCss = ".adminCont h4.adminTitleBar";
 
     public List<IWebElement>? customerAccountLines = null;

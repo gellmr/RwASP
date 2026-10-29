@@ -200,7 +200,8 @@ namespace ReactWithASP.Server.Infrastructure
         // [dbo].[Guests]      does not need us to set IDENTITY_INSERT on, as it already allows PK insertion.
         AppUsers = new List<AppUser> { vipAppUser }; _context.Users.Add(vipAppUser); _context.SaveChanges();
         appUserDTOs = _config.GetSection("users").Get<List<AppUserSeederDTO>>();
-        for (int u = 0; u < 39; u++) { SeedAppUsers(u); }
+        for (int u = 0; u < (appUserDTOs?.Count ?? 0); u++) { SeedAppUsers(u); }
+        _context.SaveChanges();
       }
       catch (Exception ex)
       {
@@ -214,7 +215,8 @@ namespace ReactWithASP.Server.Infrastructure
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Orders] ON;");
         Orders = new List<Order>();
         orderDTOs = _config.GetSection("orders").Get<List<OrderSeederDTO>>();
-        for (int oidx = 0; oidx < 70; oidx++) { SeedOrders(oidx); }
+        for (int oidx = 0; oidx < (orderDTOs?.Count ?? 0); oidx++) { SeedOrders(oidx); }
+        _context.SaveChanges();
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Orders] OFF;");
       }
       catch(Exception ex)
@@ -229,7 +231,8 @@ namespace ReactWithASP.Server.Infrastructure
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[InStockProducts] ON;");
         InStockProducts = new List<InStockProduct>();
         inStockDTOs = _config.GetSection("instockproducts").Get<List<InStockProductSeederDTO>>();
-        for (int pIdx = 0; pIdx < 27; pIdx++) { SeedInStockProducts(pIdx); }
+        for (int pIdx = 0; pIdx < (inStockDTOs?.Count ?? 0); pIdx++) { SeedInStockProducts(pIdx); }
+        _context.SaveChanges();
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[InStockProducts] OFF;");
       }
       catch (Exception ex)
@@ -244,7 +247,8 @@ namespace ReactWithASP.Server.Infrastructure
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[OrderedProducts] ON;");
         OrderedProducts = new List<OrderedProduct>();
         orderedProductDTOs = _config.GetSection("orderedproducts").Get<List<OrderedProductSeederDTO>>();
-        for (int idx = 0; idx < 200; idx++) { SeedOrderedProduct(idx); }
+        for (int idx = 0; idx < (orderedProductDTOs?.Count ?? 0); idx++) { SeedOrderedProduct(idx); }
+        _context.SaveChanges();
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[OrderedProducts] OFF;");
       }
       catch (Exception ex)
@@ -259,7 +263,8 @@ namespace ReactWithASP.Server.Infrastructure
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[OrderPayments] ON;");
         OrderPayments = new List<OrderPayment>();
         orderPaymentDTOs = _config.GetSection("orderpayments").Get<List<OrderPaymentSeederDTO>>();
-        for (int idx = 0; idx < 46; idx++) { SeedOrderPayment(idx); }
+        for (int idx = 0; idx < (orderPaymentDTOs?.Count ?? 0); idx++) { SeedOrderPayment(idx); }
+        _context.SaveChanges();
         await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[OrderPayments] OFF;");
       }
       catch (Exception ex)
@@ -287,8 +292,13 @@ namespace ReactWithASP.Server.Infrastructure
 
     private void SeedAppUsers(int u)
     {
-      AppUserSeederDTO dto = appUserDTOs[u];
-      string[] splitName = dto.UserName.Split(" ");
+      AppUserSeederDTO? dto = appUserDTOs?[u];
+      if (dto == null) return;
+
+      // Handle potential null UserName gracefully
+      string userName = dto.UserName ?? "Default User";
+      string[] splitName = userName.Split(" ");
+
       string? appUserId = (dto.Id == null) ? string.Empty : dto.Id.ToString().ToLower();
       if (dto.IsGuest == false)
       {
@@ -319,13 +329,12 @@ namespace ReactWithASP.Server.Infrastructure
           ID = (Guid)dto.GuestID,
           Email = dto.Email,
           Picture = (dto.Picture == null) ? string.Empty : dto.Picture,
-          FirstName = splitName[0],
-          LastName = splitName[1]
+          FirstName = splitName.Length > 0 ? splitName[0] : "Guest",
+          LastName = splitName.Length > 1 ? splitName[1] : "User"
         };
         Guests.Add(appUserId, guest); // record which AppUser this Guest belongs to
         _context.Guests.Add(guest);
       }
-      _context.SaveChanges();
     }
 
     private void SeedInStockProducts(int idx){
@@ -340,7 +349,6 @@ namespace ReactWithASP.Server.Infrastructure
       };
       InStockProducts.Add(prod);
       _context.InStockProducts.Add(prod);
-      _context.SaveChanges();
     }
 
     private static Nullable<DateTimeOffset> GetOrderDateTime(string input){
@@ -392,7 +400,6 @@ namespace ReactWithASP.Server.Infrastructure
       // Save the order
       Orders.Add(order);
       _context.Orders.Add(order);
-      _context.SaveChanges();
     }
 
     private void SeedOrderedProduct(int idx)
@@ -410,7 +417,6 @@ namespace ReactWithASP.Server.Infrastructure
       };
       OrderedProducts.Add(op);
       _context.OrderedProducts.Add(op);
-      _context.SaveChanges();
     }
 
     private void SeedOrderPayment(int idx)
@@ -428,7 +434,6 @@ namespace ReactWithASP.Server.Infrastructure
       };
       OrderPayments.Add(payment);
       _context.OrderPayments.Add(payment);
-      _context.SaveChanges();
     }
   }
 }

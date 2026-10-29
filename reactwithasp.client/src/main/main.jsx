@@ -3,6 +3,9 @@ import { StrictMode } from 'react'
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '@/Shop/store.jsx'
+import { injectStore } from '@/axiosDefault.jsx';
+
+injectStore(store);
 
 import { BrowserRouter, Routes, Route } from "react-router";
 import '@/main/main.css'
@@ -14,6 +17,7 @@ import MyOrders from '@/Shop/MyOrders.jsx'
 import MyOrderDetail from '@/Shop/MyOrderDetail.jsx'
 import Checkout from '@/Shop/Checkout.jsx'
 import CheckoutSuccess from '@/Shop/CheckoutSuccess.jsx'
+import LogoutSuccess from '@/Shop/LogoutSuccess.jsx'
 import AdminLogin from "@/Admin/AdminLogin.jsx";
 import AdminLayout from "@/Admin/AdminLayout.jsx";
 import AdminOrders from "@/Admin/AdminOrders.jsx";
@@ -23,6 +27,8 @@ import AdminUserAccounts from "@/Admin/AdminUserAccounts.jsx";
 import AdminUserEdit from "@/Admin/AdminUserEdit.jsx";
 import AdminUserOrders from "@/Admin/AdminUserOrders.jsx";
 import AdminUserPayments from "@/Admin/AdminUserPayments.jsx";
+import AdminBi from '@/Admin/AdminBi.jsx';
+import AdminHist from '@/Admin/AdminHist.jsx';
 import LoginLayout from "@/layouts/LoginLayout.jsx";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
@@ -32,7 +38,6 @@ createRoot(document.getElementById('root')).render(
   <PersistGate loading={null} persistor={persistor}>
     
   <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-    <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route element={<LoginLayout />}>
@@ -43,10 +48,12 @@ createRoot(document.getElementById('root')).render(
             <Route path="/admin/orders/:page?" element={<AdminOrders />} />
             <Route path="/admin/order/:orderid?" element={<AdminOrder />} />
             <Route path="/admin/products" element={<AdminProducts />} />
-            <Route path="/admin/useraccounts" element={<AdminUserAccounts />} />
+            <Route path="/admin/useraccounts/:page?" element={<AdminUserAccounts />} />
             <Route path="/admin/:usertype/:idval/edit" element={<AdminUserEdit />} />
             <Route path="/admin/:usertype/:idval/orders" element={<AdminUserOrders />} />
             <Route path="/admin/user/:userid/payments" element={<AdminUserPayments />} />
+            <Route path="/admin/bi"   element={<AdminBi />} />
+            <Route path="/admin/hist" element={<AdminHist />} />
           </Route>
 
           <Route element={<ShopLayout />}>
@@ -56,6 +63,7 @@ createRoot(document.getElementById('root')).render(
             <Route path="/category/:category/:page?" element={<Shop />} />
             <Route path="/myorders/:page?" element={<MyOrders />} />
             <Route path="/myorder/:orderid" element={<MyOrderDetail />} />
+            <Route path="/logoutsuccess" element={<LogoutSuccess />} />
           </Route>
 
           <Route element={<NoShopLayout />}>
@@ -63,7 +71,6 @@ createRoot(document.getElementById('root')).render(
           </Route>
         </Routes>
       </BrowserRouter>
-    </Provider>
   </GoogleOAuthProvider>
 
   </PersistGate>

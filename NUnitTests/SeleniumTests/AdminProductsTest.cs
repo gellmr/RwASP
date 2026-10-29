@@ -1,4 +1,4 @@
-﻿
+
 using static System.Net.Mime.MediaTypeNames;
 
 namespace NUnitTests.SeleniumTests
@@ -6,7 +6,6 @@ namespace NUnitTests.SeleniumTests
   [TestFixture]
   public class AdminProductsTest : AdminTest
   {
-
     [Test]
     public void Visit_AdminProductsPage_ShouldSeeBottle()
     {

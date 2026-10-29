@@ -3,7 +3,7 @@ import ResponsiveLink from '@/Nav/Links/ResponsiveLink';
 function CustAccountsBtn({ orderCount }) {
   const tinyMarkup = () => (<>Accounts</>);
   const smallMarkup = () => (<>Accounts</>);
-  const markup = () => (<>Customer&nbsp;Accounts</>);
+  const markup = () => (<>Accounts</>);
   return (
     <ResponsiveLink
       tinyMarkup={tinyMarkup}

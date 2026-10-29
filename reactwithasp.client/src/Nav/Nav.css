@@ -1,78 +1,44 @@
 
-
-.useResponsiveLink.xs {
-  /*color: red;*/
-}
-.useResponsiveLink.sm {
-  /*color: yellow;*/
-}
-.useResponsiveLink.md {
-  /*color: lime;*/
-}
-
+/* .useResponsiveLink.tiny { color: magenta; } */
+/* .useResponsiveLink.mid  { color: red;     } */
+/* .useResponsiveLink.lar  { color: maroon;  } */
 .useResponsiveLink
 {
   text-decoration:none;
   text-wrap-mode:nowrap;
-  font-size: 12px;
+  font-size:12px;
   padding:12px;
   padding-left:10px;
   padding-right:10px;
 }
-.useResponsiveLink.active {
-  color: #ffd298
+.useResponsiveLink.active { color: #ffd298 }
+.hideInlineBlockXXs{ display:none; }
+
+.inflight a{
+  color:rgb(173, 235, 255) !important;
 }
 
-.hideInlineBlockXXs{
-  display:none;
-}
-
-/* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
-/* ===== Custom Breakpoint - hideInlineBlockXXs ==== */
-/* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
-
+/* Custom Breakpoint - hideInlineBlockXXs */
 @media (min-width: 350px) {
-  .hideInlineBlockXXs {
-    display: inline-block;
-  }
+  .hideInlineBlockXXs { display: inline-block; }
 }
 
-/* ================================================= */
-/* =========             SMALL            ========== */
-/* ================================================= */
-
+/* SMALL */
 @media (min-width: 576px) {
-  .useResponsiveLink {
-    font-size: 12px;
-  }
+  .useResponsiveLink { font-size: 12px; }
 }
 
-/* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
-/* ======= Custom Breakpoint - MD-INERMEDIATE ====== */
-/* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
-
+/* Custom Breakpoint - MD-INERMEDIATE */
 @media (min-width: 708px) {
-  .useResponsiveLink {
-    font-size: 12px;
-  }
+  .useResponsiveLink { font-size: 12px; }
 }
 
-/* ================================================= */
-/* =========            MEDIUM            ========== */
-/* ================================================= */
-
+/* MEDIUM */
 @media (min-width: 768px) {
-  .useResponsiveLink {
-    font-size: 13px;
-  }
+  .useResponsiveLink { font-size: 13px; }
 }
 
-/* ================================================= */
-/* =========             LARGE            ========== */
-/* ================================================= */
-
+/* LARGE */
 @media (min-width: 992px) {
-  .useResponsiveLink {
-    font-size: 16px;
-  }
+  .useResponsiveLink { font-size: 16px; }
 }

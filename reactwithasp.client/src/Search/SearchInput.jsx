@@ -13,7 +13,7 @@ function SearchInput({ parentHandleInputChange, initVal="", placeholder="Search"
   };
 
   return (
-    <div>
+    <div className='mgSearchInput'>
 
       <InputGroup className="mb-3">
         <InputGroup.Text id="basic-addon1">

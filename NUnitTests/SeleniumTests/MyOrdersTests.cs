@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using SeleniumExtras.WaitHelpers;
 
@@ -11,7 +11,7 @@ namespace NUnitTests.SeleniumTests
     public void EmptyMyOrdersPage_LoadsSuccessfully()
     {
       driver.Navigate().GoToUrl(viteUrl + "/myorders");
-      string titleElement = ".shopLayoutTransparent.bgOrderFullTransparent h2";
+      string titleElement = ".shopLayoutTransparent h2";
       string noOrdersElement = ".ordersEmptyMsg";
       try
       {

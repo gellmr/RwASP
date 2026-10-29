@@ -18,6 +18,7 @@ appsettings.Production.json
 appsettings.Development.json
 appsettings.Test.json
 appsettings.json
+seed-data.json
 
 # Ignore uploads folder and contents
 uploads/
